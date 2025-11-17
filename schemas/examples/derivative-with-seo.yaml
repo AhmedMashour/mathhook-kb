@@ -1,0 +1,156 @@
+topic: "calculus.derivative"
+title: "Symbolic Differentiation"
+description: "Computes the derivative of an expression with respect to a variable using symbolic mathematics"
+
+mathematical_definition: "\\frac{d}{dx}f(x)"
+
+code_refs:
+  rust: "mathhook_core::calculus::derivative"
+  python: "mathhook.calculus.derivative"
+  nodejs: "mathhook.calculus.derivative"
+
+examples:
+  - title: "Power Rule"
+    explanation: "Demonstrates differentiation of polynomial expressions using the power rule"
+    code:
+      rust: |
+        use mathhook::expr;
+        let x = symbol!(x);
+        let f = expr!(x ^ 3);
+        let derivative = f.derivative(&x, 1);
+        assert_eq!(derivative, expr!(3 * (x ^ 2)));
+      python: |
+        from mathhook import expr, symbol
+        x = symbol('x')
+        f = expr('x^3')
+        derivative = f.derivative(x, 1)
+        assert derivative == expr('3*x^2')
+      nodejs: |
+        const { expr, symbol } = require('mathhook');
+        const x = symbol('x');
+        const f = expr('x^3');
+        const derivative = f.derivative(x, 1);
+        console.log(derivative.toString()); // "3*x^2"
+    expected_output: "3*x^2"
+
+  - title: "Chain Rule"
+    explanation: "Demonstrates differentiation of composite functions using the chain rule"
+    code:
+      rust: |
+        let f = expr!(sin(x ^ 2));
+        let derivative = f.derivative(&x, 1);
+        // Returns: 2*x*cos(x^2)
+      python: |
+        f = expr('sin(x^2)')
+        derivative = f.derivative(x, 1)
+        # Returns: 2*x*cos(x^2)
+      nodejs: |
+        const f = expr('sin(x^2)');
+        const derivative = f.derivative(x, 1);
+        // Returns: 2*x*cos(x^2)
+    expected_output: "2*x*cos(x^2)"
+
+  - title: "Product Rule"
+    explanation: "Demonstrates differentiation of products using the product rule"
+    code:
+      rust: |
+        let f = expr!(x * sin(x));
+        let derivative = f.derivative(&x, 1);
+        // Returns: sin(x) + x*cos(x)
+      python: |
+        f = expr('x*sin(x)')
+        derivative = f.derivative(x, 1)
+        # Returns: sin(x) + x*cos(x)
+      nodejs: |
+        const f = expr('x*sin(x)');
+        const derivative = f.derivative(x, 1);
+        // Returns: sin(x) + x*cos(x)
+    expected_output: "sin(x) + x*cos(x)"
+
+use_cases:
+  - "Physics: Calculate velocity and acceleration from position functions"
+  - "Economics: Find marginal cost and revenue functions"
+  - "Engineering: Optimize designs by finding critical points"
+  - "Machine Learning: Compute gradients for backpropagation"
+
+related_topics:
+  - "calculus.integral"
+  - "calculus.limit"
+  - "algebra.simplify"
+  - "functions.trigonometric"
+
+performance:
+  complexity: "O(n) where n is the number of nodes in the expression tree"
+  typical_time: "< 1ms for expressions with < 100 nodes"
+  benchmarks:
+    polynomial: "50 µs for degree 10 polynomial"
+    trigonometric: "75 µs for nested trig functions"
+    rational: "100 µs for rational functions"
+
+metadata:
+  schema_version: "1.0"
+  author: "MathHook Team"
+  last_updated: "2024-11-17"
+  tags:
+    - "calculus"
+    - "differentiation"
+    - "symbolic-math"
+    - "derivatives"
+    - "chain-rule"
+    - "product-rule"
+    - "power-rule"
+
+# SEO Optimization - CRITICAL for search engine visibility
+seo:
+  # Primary keywords (3-5 most important)
+  keywords:
+    - "symbolic differentiation"
+    - "derivative calculator"
+    - "automatic differentiation"
+    - "calculus library"
+    - "mathematical derivatives"
+
+  # Secondary keywords (related terms for long-tail SEO)
+  secondary_keywords:
+    - "chain rule calculator"
+    - "product rule differentiation"
+    - "power rule derivative"
+    - "partial derivatives"
+    - "gradient calculation"
+    - "jacobian matrix"
+    - "symbolic math library"
+    - "computer algebra system"
+    - "automatic diff"
+    - "backpropagation math"
+
+  # Meta description (150-160 characters, shown in Google search results)
+  meta_description: "Compute symbolic derivatives with MathHook's powerful CAS. Supports chain rule, product rule, power rule. Fast, accurate, and easy to use for Rust, Python, and JavaScript."
+
+  # Canonical URL (prevents duplicate content issues)
+  canonical_url: "https://docs.mathhook.org/calculus/derivative"
+
+  # Open Graph tags for social media (Twitter, Facebook, LinkedIn)
+  og_title: "Symbolic Differentiation - MathHook Computer Algebra System"
+  og_description: "Professional-grade symbolic differentiation library. Calculate derivatives symbolically with support for chain rule, product rule, and more. Available for Rust, Python, and JavaScript."
+  og_image: "https://docs.mathhook.org/images/derivatives-og.png"
+
+  # Twitter card type
+  twitter_card: "summary_large_image"
+
+  # Schema.org structured data type
+  schema_org_type: "TechArticle"
+
+  # Sitemap priority (0.0 to 1.0)
+  priority: 0.9
+
+  # Update frequency for search engines
+  change_frequency: "monthly"
+
+  # Language
+  language: "en"
+
+  # Alternative languages (for multilingual sites)
+  alternate_languages:
+    es: "https://docs.mathhook.org/es/calculus/derivative"
+    fr: "https://docs.mathhook.org/fr/calculus/derivative"
+    de: "https://docs.mathhook.org/de/calculus/derivative"

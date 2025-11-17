@@ -1,0 +1,16 @@
+[package]
+name = "kb-jupyter"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+description = "MathHook KB - kb-jupyter generator"
+
+[dependencies]
+kb-core = { path = "../kb-core" }
+serde.workspace = true
+serde_json.workspace = true
+tera.workspace = true
+anyhow.workspace = true

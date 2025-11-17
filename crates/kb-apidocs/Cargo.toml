@@ -1,0 +1,9 @@
+[package]
+name = "kb-apidocs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kb-core = { path = "../kb-core" }
+serde_json = "1.0"
+tera = "1.20"

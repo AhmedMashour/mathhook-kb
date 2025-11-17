@@ -1,0 +1,32 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated documentation
+/output/
+/docs-generated/
+*.ipynb
+*.pdf
+
+# Node.js (for Vue SSR generator)
+generators/vue-site/node_modules/
+generators/vue-site/.nuxt/
+generators/vue-site/.output/
+generators/vue-site/dist/
+
+# Temporary files
+*.tmp
+*.bak
