@@ -10,13 +10,18 @@ const CACHE_TTL_MS = 60 * 1000 // 1 minute in dev, increase for prod
 // Resolve data directory - works in both dev and production (Docker)
 function getDataDir(): string {
   const cwd = process.cwd()
+
   // Production: files are in .output/public/data/
   const prodPath = join(cwd, '.output', 'public', 'data')
   if (existsSync(prodPath)) {
+    console.log(`[docs-index] Using production path: ${prodPath}`)
     return prodPath
   }
+
   // Development: files are in public/data/
-  return join(cwd, 'public', 'data')
+  const devPath = join(cwd, 'public', 'data')
+  console.log(`[docs-index] Using development path: ${devPath} (cwd: ${cwd})`)
+  return devPath
 }
 
 export default defineEventHandler((event) => {
@@ -35,11 +40,16 @@ export default defineEventHandler((event) => {
 
     // Check file exists
     if (!existsSync(filePath)) {
-      console.error('Documentation index not found at:', filePath)
+      const cwd = process.cwd()
+      console.error(`[docs-index] File not found: ${filePath}`)
+      console.error(`[docs-index] cwd: ${cwd}`)
+      console.error(`[docs-index] Checking paths:`)
+      console.error(`  - ${join(cwd, '.output', 'public', 'data')}: ${existsSync(join(cwd, '.output', 'public', 'data'))}`)
+      console.error(`  - ${join(cwd, 'public', 'data')}: ${existsSync(join(cwd, 'public', 'data'))}`)
       throw createError({
         statusCode: 503,
         statusMessage: 'Service Unavailable',
-        message: 'Documentation index is not available'
+        message: `Documentation index is not available (path: ${filePath})`
       })
     }
 
