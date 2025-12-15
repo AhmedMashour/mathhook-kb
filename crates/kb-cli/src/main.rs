@@ -12,6 +12,7 @@ use kb_jupyter::JupyterGenerator;
 use kb_latex::LatexGenerator;
 use kb_llm_rag::LlmRagGenerator;
 use kb_mdbook::MdBookGenerator;
+use kb_sitemap::{PingerConfig, SearchEnginePinger, SitemapConfig, SitemapGenerator};
 use kb_vue::VueGenerator;
 use std::path::PathBuf;
 
@@ -54,6 +55,10 @@ enum Commands {
     /// Google Colab configuration and info
     #[command(subcommand)]
     Colab(ColabCommands),
+
+    /// Generate sitemap and optionally submit to search engines
+    #[command(subcommand)]
+    Sitemap(SitemapCommands),
 }
 
 #[derive(Subcommand)]
@@ -66,6 +71,50 @@ enum ColabCommands {
         /// Path to manifest file
         #[arg(short, long, default_value = "mathhook-docs-site/public/outputs/colab/manifest.json")]
         manifest: PathBuf,
+    },
+}
+
+#[derive(Subcommand)]
+enum SitemapCommands {
+    /// Generate sitemap.xml from schemas
+    Generate {
+        /// Path to schema file or directory
+        #[arg(value_name = "SCHEMA")]
+        schema_path: PathBuf,
+
+        /// Output directory for sitemap files
+        #[arg(short, long, default_value = "mathhook-docs-site/public")]
+        output: PathBuf,
+
+        /// Base URL for the site (e.g., https://mathhook.org)
+        #[arg(short, long, default_value = "https://mathhook.org")]
+        base_url: String,
+
+        /// URL path prefix for docs (e.g., /docs)
+        #[arg(long, default_value = "/docs")]
+        docs_prefix: String,
+
+        /// Also submit sitemap to search engines after generation
+        #[arg(long)]
+        submit: bool,
+    },
+
+    /// Submit existing sitemap to search engines (Google, Bing)
+    Submit {
+        /// Full URL to the sitemap (e.g., https://mathhook.org/sitemap.xml)
+        #[arg(value_name = "SITEMAP_URL")]
+        sitemap_url: String,
+
+        /// Verbose output
+        #[arg(short, long)]
+        verbose: bool,
+    },
+
+    /// Show sitemap configuration
+    Config {
+        /// Base URL for the site
+        #[arg(short, long, default_value = "https://mathhook.org")]
+        base_url: String,
     },
 }
 
@@ -84,6 +133,7 @@ fn main() -> Result<()> {
             Ok(())
         }
         Commands::Colab(colab_cmd) => handle_colab_command(colab_cmd),
+        Commands::Sitemap(sitemap_cmd) => handle_sitemap_command(sitemap_cmd),
     }
 }
 
@@ -458,6 +508,12 @@ fn list_command() {
     println!("\n🔧 Colab Commands:\n");
     println!("   kb colab config   Show current Colab/GitHub configuration");
     println!("   kb colab info     Show info about generated notebooks");
+    println!("\n🗺️  Sitemap Commands:\n");
+    println!("   kb sitemap generate <SCHEMA>  Generate sitemap.xml from schemas");
+    println!("   kb sitemap submit <URL>       Submit sitemap to Google/Bing");
+    println!("   kb sitemap config             Show sitemap configuration");
+    println!("\n   Generate and submit in one step:");
+    println!("     kb sitemap generate schemas/ --submit");
 }
 
 fn handle_colab_command(cmd: ColabCommands) -> Result<()> {
@@ -517,6 +573,115 @@ fn handle_colab_command(cmd: ColabCommands) -> Result<()> {
     }
 
     Ok(())
+}
+
+fn handle_sitemap_command(cmd: SitemapCommands) -> Result<()> {
+    match cmd {
+        SitemapCommands::Generate {
+            schema_path,
+            output,
+            base_url,
+            docs_prefix,
+            submit,
+        } => {
+            println!("🗺️  Generating sitemap...\n");
+
+            // Collect all schemas
+            let schemas = collect_schemas(&schema_path)?;
+
+            // Configure sitemap generator
+            let config = SitemapConfig::new(&base_url).with_docs_prefix(&docs_prefix);
+            let generator = SitemapGenerator::new(config);
+
+            // Load schemas
+            let mut loaded_schemas = Vec::new();
+            for path in &schemas {
+                let schema = Schema::load_from_file(path).context("Failed to load schema")?;
+                loaded_schemas.push(schema);
+            }
+
+            // Generate and write sitemap(s)
+            std::fs::create_dir_all(&output)?;
+            let written_files = generator
+                .write_to_directory(&loaded_schemas, &output)
+                .map_err(|e| anyhow::anyhow!("{}", e))?;
+
+            for file in &written_files {
+                println!("   ✅ {}", output.join(file).display());
+            }
+
+            let sitemap_count = loaded_schemas.len() + 2; // +2 for homepage and docs index
+            println!(
+                "\n🎉 Generated sitemap with {} URLs from {} schema(s)",
+                sitemap_count,
+                loaded_schemas.len()
+            );
+
+            // Submit to search engines if requested
+            if submit {
+                println!("\n📡 Submitting sitemap to search engines...\n");
+                let sitemap_url = format!("{}/sitemap.xml", base_url.trim_end_matches('/'));
+                submit_sitemap(&sitemap_url, false)?;
+            }
+
+            Ok(())
+        }
+
+        SitemapCommands::Submit { sitemap_url, verbose } => {
+            println!("📡 Submitting sitemap to search engines...\n");
+            println!("   Sitemap URL: {}\n", sitemap_url);
+            submit_sitemap(&sitemap_url, verbose)?;
+            println!("\n✅ Sitemap submission complete!");
+            Ok(())
+        }
+
+        SitemapCommands::Config { base_url } => {
+            println!("🗺️  Sitemap Configuration\n");
+            println!("Base URL:     {}", base_url);
+            println!("Docs Prefix:  /docs");
+            println!();
+            println!("Generated sitemap will include:");
+            println!("  • Homepage:   {} (priority: 1.0, weekly)", base_url);
+            println!("  • Docs index: {}/docs (priority: 0.9, weekly)", base_url);
+            println!("  • Doc pages:  {}/docs/{{topic}} (from schema SEO settings)", base_url);
+            println!();
+            println!("Search Engine Ping URLs:");
+            println!("  • Google: https://www.google.com/ping?sitemap=...");
+            println!("  • Bing:   https://www.bing.com/ping?sitemap=...");
+            println!();
+            println!("Usage:");
+            println!("  kb sitemap generate schemas/ --submit");
+            println!("  kb sitemap submit https://mathhook.org/sitemap.xml");
+            Ok(())
+        }
+    }
+}
+
+fn submit_sitemap(sitemap_url: &str, verbose: bool) -> Result<()> {
+    let config = if verbose {
+        PingerConfig::default().verbose()
+    } else {
+        PingerConfig::default()
+    };
+
+    let pinger = SearchEnginePinger::with_config(config);
+    let results = pinger.ping_all(sitemap_url);
+
+    let mut any_success = false;
+    for result in &results {
+        if result.success {
+            println!("   ✅ {}: {}", result.engine.name(), result.message);
+            any_success = true;
+        } else {
+            println!("   ❌ {}: {}", result.engine.name(), result.message);
+        }
+    }
+
+    if any_success {
+        Ok(())
+    } else {
+        anyhow::bail!("All search engine pings failed")
+    }
 }
 
 #[cfg(test)]

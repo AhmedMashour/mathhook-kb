@@ -111,12 +111,20 @@
       <div class="bg-rust-core/10 border-l-4 border-rust-core p-6 rounded-r-xl animate-fade-in">
         <div class="flex items-start">
           <span class="text-3xl mr-3">❌</span>
-          <div>
+          <div class="flex-1">
             <h2 class="text-xl font-semibold text-rust-core mb-2">Document Not Found</h2>
             <p class="text-chalk-400 mb-4">{{ error }}</p>
-            <NuxtLink to="/docs" class="text-solve-cyan hover:text-solve-cyan-300 font-medium transition-colors">
-              ← Back to documentation
-            </NuxtLink>
+            <div class="flex items-center gap-4">
+              <button
+                @click="retryLoad"
+                class="px-4 py-2 bg-rust-core/20 hover:bg-rust-core/30 text-rust-core font-medium rounded-lg transition-colors"
+              >
+                Try Again
+              </button>
+              <NuxtLink to="/docs" class="text-solve-cyan hover:text-solve-cyan-300 font-medium transition-colors">
+                ← Back to documentation
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
@@ -258,15 +266,15 @@
 
                 <!-- Code Content with Copy Button -->
                 <div class="relative group/code">
-                  <button @click="copyCode(example.code[activeTab[idx]], idx)"
+                  <button @click="copyCode(getCode(example, activeTab[idx]), idx)"
                           class="absolute top-3 right-3 px-3 py-1.5 bg-logic-navy-700/80 hover:bg-logic-navy-600 text-chalk-400 text-xs font-medium rounded-lg opacity-0 group-hover/code:opacity-100 transition-all duration-300 z-10 flex items-center gap-1.5 backdrop-blur-sm">
                     <span v-if="!copied[idx]">📋 Copy</span>
                     <span v-else class="text-step-green">✓ Copied!</span>
                   </button>
                   <Transition name="fade-code" mode="out-in">
-                    <pre v-if="activeTab[idx] === 'python'" :key="'python-'+idx" class="language-python !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.python, 'python')"></code></pre>
-                    <pre v-else-if="activeTab[idx] === 'rust'" :key="'rust-'+idx" class="language-rust !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.rust, 'rust')"></code></pre>
-                    <pre v-else-if="activeTab[idx] === 'nodejs'" :key="'nodejs-'+idx" class="language-javascript !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.nodejs, 'javascript')"></code></pre>
+                    <pre v-if="activeTab[idx] === 'python'" :key="'python-'+idx" class="language-python !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(getCode(example, 'python'), 'python')"></code></pre>
+                    <pre v-else-if="activeTab[idx] === 'rust'" :key="'rust-'+idx" class="language-rust !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(getCode(example, 'rust'), 'rust')"></code></pre>
+                    <pre v-else-if="activeTab[idx] === 'nodejs'" :key="'nodejs-'+idx" class="language-javascript !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(getCode(example, 'nodejs'), 'javascript')"></code></pre>
                   </Transition>
                 </div>
 
@@ -351,7 +359,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-python'
@@ -361,14 +369,28 @@ import katex from 'katex'
 import 'katex/dist/katex.min.css'
 
 const route = useRoute()
-const topic = route.params.topic
+const topic = computed(() => route.params.topic as string)
+
+// Validate topic format (matches server validation)
+const isValidTopic = (t: string): boolean => {
+  if (!t || t.length < 1 || t.length > 100) return false
+  if (t.includes('..') || t.includes('/') || t.includes('\\')) return false
+  return /^[a-z0-9][a-z0-9\-\.]*[a-z0-9]$|^[a-z0-9]$/i.test(t)
+}
 
 // SSR-compatible data fetching - renders full HTML for SEO crawlers
-const { data: schema, pending: loading, error: fetchError } = await useAsyncData(
-  `topic-${topic}`,
+const { data: schema, pending: loading, error: fetchError, refresh } = await useAsyncData(
+  `topic-${topic.value}`,
   async () => {
+    const t = topic.value
+    if (!isValidTopic(t)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Invalid topic format'
+      })
+    }
     // Use API route for SSR (server can read file directly)
-    const data = await $fetch(`/api/docs/${topic}`)
+    const data = await $fetch(`/api/docs/${t}`)
     return data
   },
   {
@@ -379,10 +401,16 @@ const { data: schema, pending: loading, error: fetchError } = await useAsyncData
 // Convert fetch error to displayable message
 const error = computed(() => {
   if (fetchError.value) {
-    return fetchError.value.statusMessage || `Document "${topic}" not found`
+    const err = fetchError.value as any
+    return err.statusMessage || err.message || `Document "${topic.value}" not found`
   }
   return null
 })
+
+// Retry loading on error
+const retryLoad = async () => {
+  await refresh()
+}
 
 const activeTab = ref({})
 const copied = ref({})
@@ -429,10 +457,35 @@ onUnmounted(() => {
   window.removeEventListener('mousemove', handleMouseMove)
 })
 
-// Copy code to clipboard
-const copyCode = async (code, idx) => {
+// Safely get code for a specific language from an example
+const getCode = (example: any, lang: string): string => {
+  if (!example?.code) return ''
+  return example.code[lang] || ''
+}
+
+// Copy code to clipboard with fallback
+const copyCode = async (code: string | undefined | null, idx: number) => {
+  if (!code) {
+    console.warn('No code to copy')
+    return
+  }
+
   try {
-    await navigator.clipboard.writeText(code)
+    // Modern clipboard API
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(code)
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = code
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-9999px'
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+    }
+
     copied.value[idx] = true
     setTimeout(() => {
       copied.value[idx] = false
@@ -442,10 +495,39 @@ const copyCode = async (code, idx) => {
   }
 }
 
-// Highlight code using Prism
-const highlightCode = (code, language) => {
-  if (typeof window === 'undefined') return code
-  return Prism.highlight(code, Prism.languages[language], language)
+// Highlight code using Prism with fallback
+const highlightCode = (code: string | undefined | null, language: string): string => {
+  // Handle null/undefined code
+  if (!code) return ''
+
+  // SSR safety check
+  if (typeof window === 'undefined') {
+    // Return escaped HTML for SSR
+    return code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+  }
+
+  // Check if language is supported
+  const lang = Prism.languages[language]
+  if (!lang) {
+    console.warn(`Prism: Language '${language}' not loaded, falling back to plain text`)
+    return code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+  }
+
+  try {
+    return Prism.highlight(code, lang, language)
+  } catch (e) {
+    console.error(`Prism highlight error for ${language}:`, e)
+    return code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+  }
 }
 
 // Render math using KaTeX
