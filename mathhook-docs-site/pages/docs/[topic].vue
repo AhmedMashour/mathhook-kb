@@ -352,7 +352,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-python'
 import 'prismjs/components/prism-rust'
@@ -363,15 +363,43 @@ import 'katex/dist/katex.min.css'
 const route = useRoute()
 const topic = route.params.topic
 
-const schema = ref(null)
-const loading = ref(true)
-const error = ref(null)
+// SSR-compatible data fetching - renders full HTML for SEO crawlers
+const { data: schema, pending: loading, error: fetchError } = await useAsyncData(
+  `topic-${topic}`,
+  async () => {
+    // Use API route for SSR (server can read file directly)
+    const data = await $fetch(`/api/docs/${topic}`)
+    return data
+  },
+  {
+    default: () => null
+  }
+)
+
+// Convert fetch error to displayable message
+const error = computed(() => {
+  if (fetchError.value) {
+    return fetchError.value.statusMessage || `Document "${topic}" not found`
+  }
+  return null
+})
+
 const activeTab = ref({})
 const copied = ref({})
 const scrolled = ref(false)
 const mouseX = ref(0)
 const mouseY = ref(0)
 const showBackToTop = ref(false)
+
+// Initialize active tabs when schema loads
+watch(schema, (newSchema) => {
+  if (newSchema?.examples) {
+    newSchema.examples.forEach((_, idx) => {
+      activeTab.value[idx] = 'python'
+      copied.value[idx] = false
+    })
+  }
+}, { immediate: true })
 
 // Scroll handler
 const handleScroll = () => {
@@ -390,30 +418,10 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-// Load schema data
-onMounted(async () => {
+// Client-only: Add event listeners
+onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('mousemove', handleMouseMove)
-
-  try {
-    const response = await fetch(`/data/${topic}.json`)
-    if (!response.ok) {
-      throw new Error(`Document "${topic}" not found`)
-    }
-    schema.value = await response.json()
-
-    // Initialize active tabs (default to Python)
-    if (schema.value.examples) {
-      schema.value.examples.forEach((_, idx) => {
-        activeTab.value[idx] = 'python'
-        copied.value[idx] = false
-      })
-    }
-  } catch (err) {
-    error.value = err.message
-  } finally {
-    loading.value = false
-  }
 })
 
 onUnmounted(() => {

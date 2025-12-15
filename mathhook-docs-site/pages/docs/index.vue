@@ -180,17 +180,17 @@
         </div>
       </div>
 
-      <!-- Categories -->
+      <!-- Categories - All content in DOM for SEO, browser defers rendering of off-screen sections -->
       <div v-else class="space-y-10">
         <section
           v-for="(items, category, categoryIndex) in filteredCategories"
           :key="category"
-          class="relative"
-          v-scroll-animate="{ animation: 'fade-up', delay: categoryIndex * 100 }"
+          class="relative category-section"
+          v-scroll-animate="{ animation: 'fade-up', delay: Math.min(categoryIndex * 50, 200), category }"
         >
           <!-- Category Card -->
           <div class="bg-logic-navy-800/30 border border-logic-navy-700/50 rounded-2xl p-6 backdrop-blur-sm hover:bg-logic-navy-800/50 transition-all duration-500">
-            <!-- Category Header -->
+            <!-- Category Header - Always render for SEO -->
             <div class="flex items-center gap-4 mb-6">
               <div
                 class="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 hover:scale-110 hover:rotate-3"
@@ -204,15 +204,14 @@
               </div>
             </div>
 
-            <!-- Topic Items -->
-            <div class="space-y-3">
+            <!-- Topic Items - In DOM for SEO, CSS defers rendering until visible -->
+            <div class="space-y-3 topics-container">
               <NuxtLink
                 v-for="(item, itemIndex) in items"
                 :key="item.topic"
                 :to="`/docs/${item.topic}`"
                 class="block p-4 rounded-xl transition-all duration-300 group border hover:-translate-y-1 hover:shadow-lg"
                 :class="getCategoryStyle(category).itemClass"
-                :style="{ transitionDelay: `${itemIndex * 50}ms` }"
               >
                 <div class="flex items-start justify-between gap-4">
                   <div class="flex-1">
@@ -256,11 +255,12 @@
 
 <script setup>
 const searchQuery = ref('')
-const categories = ref({})
-const loading = ref(true)
 const mounted = ref(false)
 const scrollY = ref(0)
 const parallax = ref({ x: 0, y: 0 })
+
+// Track which categories are visible (for client-side optimizations)
+const visibleCategories = ref(new Set())
 
 // Category configuration
 const categoryConfig = {
@@ -301,12 +301,13 @@ const getCategoryStyle = (category) => {
   }
 }
 
-// Scroll animation directive
+// Scroll animation directive with lazy rendering support
 const vScrollAnimate = {
   mounted(el, binding) {
     const options = binding.value || {}
     const animation = options.animation || 'fade-up'
     const delay = options.delay || 0
+    const categoryKey = options.category
 
     el.style.opacity = '0'
     el.style.transform = animation === 'fade-up' ? 'translateY(30px)' :
@@ -317,6 +318,10 @@ const vScrollAnimate = {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // Mark category as visible for rendering
+          if (categoryKey) {
+            visibleCategories.value.add(categoryKey)
+          }
           setTimeout(() => {
             el.style.opacity = '1'
             el.style.transform = 'translateY(0) translateX(0)'
@@ -324,7 +329,7 @@ const vScrollAnimate = {
           observer.unobserve(el)
         }
       })
-    }, { threshold: 0.1, rootMargin: '50px' })
+    }, { threshold: 0.1, rootMargin: '200px' }) // Increased rootMargin for earlier loading
 
     observer.observe(el)
   }
@@ -343,56 +348,58 @@ const handleMouseMove = (e) => {
   }
 }
 
-// Load all documentation metadata from pre-generated index (single request)
-onMounted(async () => {
+// Helper function to categorize topics
+const getCategory = (topicName) => {
+  if (topicName.startsWith('getting-started-')) return 'getting-started'
+  if (topicName.startsWith('advanced-pde-')) return 'advanced-pde'
+  return topicName.split('-')[0]
+}
+
+// SSR-compatible data fetching - renders full HTML for SEO crawlers
+const { data: categories, pending: loading } = await useAsyncData('docs-index', async () => {
+  // Use API route for SSR (server can read file directly)
+  const index = await $fetch('/api/docs-index')
+
+  const grouped = {}
+
+  // Process pre-loaded topics
+  for (const item of index.topics) {
+    const category = getCategory(item.topic)
+
+    if (!grouped[category]) {
+      grouped[category] = []
+    }
+
+    grouped[category].push({
+      topic: item.topic,
+      title: item.title,
+      description: item.description
+    })
+  }
+
+  // Sort categories by configured order
+  const sortedCategories = {}
+  Object.keys(grouped)
+    .sort((a, b) => (categoryConfig[a]?.order || 99) - (categoryConfig[b]?.order || 99))
+    .forEach(key => {
+      sortedCategories[key] = grouped[key]
+    })
+
+  return sortedCategories
+}, {
+  default: () => ({})
+})
+
+// Client-side only effects (animations, scroll tracking)
+onMounted(() => {
   mounted.value = true
+
+  // Mark first 3 categories as immediately visible (above the fold)
+  const categoryKeys = Object.keys(categories.value || {})
+  categoryKeys.slice(0, 3).forEach(key => visibleCategories.value.add(key))
+
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('mousemove', handleMouseMove, { passive: true })
-
-  try {
-    // Single request instead of N+1 requests
-    const response = await fetch('/data/_index.json')
-    if (!response.ok) {
-      throw new Error('Failed to load documentation index')
-    }
-    const index = await response.json()
-
-    const grouped = {}
-
-    const getCategory = (topicName) => {
-      if (topicName.startsWith('getting-started-')) return 'getting-started'
-      if (topicName.startsWith('advanced-pde-')) return 'advanced-pde'
-      return topicName.split('-')[0]
-    }
-
-    // Process pre-loaded topics (no additional requests needed)
-    for (const item of index.topics) {
-      const category = getCategory(item.topic)
-
-      if (!grouped[category]) {
-        grouped[category] = []
-      }
-
-      grouped[category].push({
-        topic: item.topic,
-        title: item.title,
-        description: item.description
-      })
-    }
-
-    const sortedCategories = {}
-    Object.keys(grouped)
-      .sort((a, b) => (categoryConfig[a]?.order || 99) - (categoryConfig[b]?.order || 99))
-      .forEach(key => {
-        sortedCategories[key] = grouped[key]
-      })
-
-    categories.value = sortedCategories
-  } catch (err) {
-    console.error('Failed to load documentation:', err)
-  } finally {
-    loading.value = false
-  }
 })
 
 onUnmounted(() => {
@@ -433,6 +440,18 @@ useHead({
 </script>
 
 <style scoped>
+/* Progressive rendering - content in DOM for SEO, but browser defers rendering of off-screen sections */
+.category-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px; /* Estimated height for layout stability */
+}
+
+/* Skip first 3 categories from content-visibility (above the fold) */
+.category-section:nth-child(-n+3) {
+  content-visibility: visible;
+  contain-intrinsic-size: none;
+}
+
 /* Blob animations - organic flowing movement */
 @keyframes blob-1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
