@@ -191,6 +191,28 @@ onMounted(() => {
   }
 })
 
+// Category order based on SUMMARY.md structure
+const CATEGORY_ORDER = [
+  'getting-started',
+  'getting',
+  'core',
+  'operations',
+  'evaluation',
+  'polynomial',
+  'advanced',
+  'ode',
+  'pde',
+  'parser',
+  'educational',
+  'performance',
+  'architecture',
+  'api',
+  'bindings',
+  'contributing',
+  'appendix',
+  'internal'
+]
+
 // Computed
 const groupedFiles = computed(() => {
   const groups = {}
@@ -201,9 +223,20 @@ const groupedFiles = computed(() => {
     }
     groups[category].push(file)
   })
-  // Sort categories alphabetically
+  // Sort categories by SUMMARY.md order, then alphabetically for unlisted
   return Object.keys(groups)
-    .sort()
+    .sort((a, b) => {
+      const aIndex = CATEGORY_ORDER.indexOf(a.toLowerCase())
+      const bIndex = CATEGORY_ORDER.indexOf(b.toLowerCase())
+      // If both are in the order list, sort by order
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
+      // If only a is in the list, a comes first
+      if (aIndex !== -1) return -1
+      // If only b is in the list, b comes first
+      if (bIndex !== -1) return 1
+      // Neither in list, sort alphabetically
+      return a.localeCompare(b)
+    })
     .reduce((sorted, key) => {
       sorted[key] = groups[key]
       return sorted
