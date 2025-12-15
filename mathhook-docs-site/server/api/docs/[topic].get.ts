@@ -10,6 +10,18 @@ const VALID_TOPIC_PATTERN = /^[a-z0-9][a-z0-9\-\.]*[a-z0-9]$|^[a-z0-9]$/i
 const cache = new Map<string, { data: unknown; timestamp: number }>()
 const CACHE_TTL_MS = 60 * 1000 // 1 minute in dev, increase for prod
 
+// Resolve data directory - works in both dev and production (Docker)
+function getDataDir(): string {
+  const cwd = process.cwd()
+  // Production: files are in .output/public/data/
+  const prodPath = join(cwd, '.output', 'public', 'data')
+  if (existsSync(prodPath)) {
+    return prodPath
+  }
+  // Development: files are in public/data/
+  return join(cwd, 'public', 'data')
+}
+
 function isValidTopic(topic: string): boolean {
   // Length check
   if (topic.length < 1 || topic.length > 100) return false
@@ -57,7 +69,7 @@ export default defineEventHandler((event) => {
 
   try {
     // Build safe file path
-    const dataDir = join(process.cwd(), 'public', 'data')
+    const dataDir = getDataDir()
     const filePath = normalize(join(dataDir, `${topic}.json`))
 
     // Security: Ensure resolved path is within data directory

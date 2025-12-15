@@ -7,6 +7,18 @@ import { join } from 'path'
 let indexCache: { data: unknown; timestamp: number } | null = null
 const CACHE_TTL_MS = 60 * 1000 // 1 minute in dev, increase for prod
 
+// Resolve data directory - works in both dev and production (Docker)
+function getDataDir(): string {
+  const cwd = process.cwd()
+  // Production: files are in .output/public/data/
+  const prodPath = join(cwd, '.output', 'public', 'data')
+  if (existsSync(prodPath)) {
+    return prodPath
+  }
+  // Development: files are in public/data/
+  return join(cwd, 'public', 'data')
+}
+
 export default defineEventHandler((event) => {
   // Check cache first
   if (indexCache && Date.now() - indexCache.timestamp < CACHE_TTL_MS) {
@@ -19,7 +31,7 @@ export default defineEventHandler((event) => {
 
   try {
     // Build file path
-    const filePath = join(process.cwd(), 'public', 'data', '_index.json')
+    const filePath = join(getDataDir(), '_index.json')
 
     // Check file exists
     if (!existsSync(filePath)) {
