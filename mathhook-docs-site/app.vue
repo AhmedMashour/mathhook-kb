@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+  <div class="min-h-screen bg-logic-navy-900">
     <NuxtPage />
   </div>
 </template>
@@ -7,7 +7,11 @@
 <script setup>
 useHead({
   htmlAttrs: {
-    lang: 'en'
+    lang: 'en',
+    class: 'dark'
+  },
+  bodyAttrs: {
+    class: 'font-sans antialiased'
   }
 })
 </script>

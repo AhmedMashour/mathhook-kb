@@ -1,0 +1,482 @@
+topic: introduction.architecture
+title: MathHook Architecture
+description: |
+  Deep dive into MathHook's internal architecture, design decisions, and implementation
+  details. Understanding the architecture helps contributors and advanced users leverage
+  MathHook's full capabilities.
+
+mathematical_definition: |
+  The architecture follows functional programming principles with immutable data structures,
+  ensuring mathematical correctness through type safety and zero-cost abstractions.
+
+code_refs:
+  rust: mathhook_core
+  python: mathhook
+  nodejs: mathhook
+
+quick_reference:
+  core_types:
+    - "Expression (32 bytes): Central enum representing all mathematical expressions"
+    - "Number (16 bytes): Tagged union for integers, rationals, floats"
+    - "Symbol: String-interned variables with assumptions"
+    - "Function: Universal function intelligence system"
+  architectural_constraints:
+    - "32-byte Expression size (cache-line optimization)"
+    - "16-byte Number size (exact arithmetic)"
+    - "Zero-copy parsing where possible"
+    - "Thread-safe immutable expressions"
+  performance_techniques:
+    - "SIMD vectorization for array operations"
+    - "Arena allocation for bulk expression creation"
+    - "String interning for fast symbol comparison"
+    - "Lazy evaluation with memoization"
+
+examples:
+  - title: "Expression Type Internal Structure"
+    explanation: |
+      The Expression enum is the heart of MathHook, representing all mathematical expressions
+      in a 32-byte structure optimized for cache performance.
+
+    code:
+      rust: |
+        use mathhook_core::core::expression::Expression;
+        use std::mem::size_of;
+
+        // Verify size constraint
+        assert_eq!(size_of::<Expression>(), 32);
+
+        // Expression variants
+        let num = Expression::integer(42);              // Number variant
+        let sym = Expression::symbol(Symbol::new("x")); // Symbol variant
+        let add = Expression::add(vec![num, sym]);      // Add variant
+        let mul = Expression::mul(vec![                 // Multiply variant
+            Expression::integer(2),
+            Expression::symbol(Symbol::new("x"))
+        ]);
+        let pow = Expression::pow(sym, Expression::integer(2)); // Power variant
+        let func = Expression::function("sin", vec![sym]);       // Function variant
+
+        // Each fits in 32 bytes due to Box<T> for heap allocation of large data
+        println!("Expression size: {} bytes", size_of::<Expression>());
+
+      python: |
+        # Python API abstracts internal structure
+        from mathhook import expr, symbol
+        import sys
+
+        x = symbol('x')
+
+        # These create different Expression variants internally
+        num = expr('42')              # Number
+        sym = expr('x')               # Symbol
+        add = expr('x + 42')          # Add
+        mul = expr('2*x')             # Multiply
+        pow = expr('x^2')             # Power
+        func = expr('sin(x)')         # Function
+
+        # Python objects wrap the Rust Expression type
+        print(f"Python wrapper size: {sys.getsizeof(num)} bytes")
+        print(f"Rust core is 32 bytes")
+
+      nodejs: |
+        const { expr, symbol } = require('mathhook');
+
+        const x = symbol('x');
+
+        // These create different Expression variants internally
+        const num = expr('42');         // Number
+        const sym = expr('x');          // Symbol
+        const add = expr('x + 42');     // Add
+        const mul = expr('2*x');        // Multiply
+        const pow = expr('x^2');        // Power
+        const func = expr('sin(x)');    // Function
+
+        console.log('JavaScript wrappers use Rust core (32 bytes)');
+
+    expected_output: |
+      Expression size: 32 bytes
+      Each variant optimized for cache performance
+
+  - title: "Number Type Exact Arithmetic"
+    explanation: |
+      The Number type uses a 16-byte tagged union to represent integers, rationals,
+      and floats while preserving mathematical exactness.
+
+    code:
+      rust: |
+        use mathhook_core::core::number::Number;
+
+        // Exact integer arithmetic
+        let a = Number::integer(123456789);
+        let b = Number::integer(987654321);
+        let sum = a + b;  // Exact: 1111111110
+
+        // Exact rational arithmetic (NEVER use floats for symbolics)
+        let one_third = Number::rational(1, 3);
+        let two_fifths = Number::rational(2, 5);
+        let sum = one_third + two_fifths;  // Exact: 11/15, not 0.733...
+
+        // Rationals are automatically reduced
+        let reduced = Number::rational(6, 9);  // Becomes 2/3
+
+        // Float arithmetic (only for numerical approximation)
+        let pi_approx = Number::float(3.14159);
+        let e_approx = Number::float(2.71828);
+        let product = pi_approx * e_approx;  // Approximate: 8.5397...
+
+        println!("1/3 + 2/5 = {}", sum);  // 11/15 (exact)
+
+      python: |
+        from mathhook import Number
+
+        # Exact integer
+        a = Number.integer(123456789)
+        b = Number.integer(987654321)
+        sum_val = a + b  # Exact
+
+        # Exact rational (preferred for symbolic math)
+        one_third = Number.rational(1, 3)
+        two_fifths = Number.rational(2, 5)
+        sum_val = one_third + two_fifths  # 11/15 exact
+
+        # Float (only when needed)
+        pi_approx = Number.float(3.14159)
+
+        print(f"1/3 + 2/5 = {sum_val}")  # 11/15
+
+      nodejs: |
+        const { Number } = require('mathhook');
+
+        // Exact rational arithmetic
+        const oneThird = Number.rational(1, 3);
+        const twoFifths = Number.rational(2, 5);
+        const sum = oneThird.add(twoFifths);  // 11/15 exact
+
+        console.log(`1/3 + 2/5 = ${sum.toString()}`);  // "11/15"
+
+    expected_output: |
+      1/3 + 2/5 = 11/15 (exact rational, not 0.733...)
+      Preserves mathematical exactness
+
+  - title: "Symbol System with Assumptions"
+    explanation: |
+      Symbols use string interning for O(1) equality comparison and support
+      mathematical assumptions for smarter simplification.
+
+    code:
+      rust: |
+        use mathhook_core::core::symbol::Symbol;
+
+        // Basic symbols
+        let x = Symbol::new("x");
+        let y = Symbol::new("y");
+
+        // Symbols with assumptions
+        let positive_x = Symbol::new("x").with_assumption(Assumption::Positive);
+        let integer_n = Symbol::new("n").with_assumption(Assumption::Integer);
+        let real_a = Symbol::new("a").with_assumption(Assumption::Real);
+
+        // Assumptions affect simplification
+        let expr = Expression::pow(positive_x.into(), Expression::integer(2));
+        // Simplifier knows x > 0, so x^2 > 0
+
+        // Check assumptions
+        if positive_x.is_positive() {
+            println!("x is positive, sqrt(x^2) = x (not |x|)");
+        }
+
+      python: |
+        from mathhook import symbol
+
+        # Symbols with assumptions
+        x = symbol('x', positive=True)
+        n = symbol('n', integer=True)
+        a = symbol('a', real=True)
+
+        # Assumptions guide simplification
+        from mathhook import expr, simplify
+
+        # sqrt(x^2) simplified differently based on assumptions
+        expr_default = expr('sqrt(x^2)')
+        # Result: |x| (because x could be negative)
+
+        expr_positive = expr('sqrt(x^2)').with_assumption(x, positive=True)
+        # Result: x (because x > 0)
+
+      nodejs: |
+        const { symbol } = require('mathhook');
+
+        // Symbols with assumptions
+        const x = symbol('x', { positive: true });
+        const n = symbol('n', { integer: true });
+        const a = symbol('a', { real: true });
+
+        console.log('Assumptions guide intelligent simplification');
+
+    expected_output: |
+      Symbol interning: O(1) equality comparison
+      Assumptions: sqrt(x²) = x (if x > 0), |x| (otherwise)
+
+article:
+  sections:
+    - heading: "Core Type System"
+      content: |
+        **Expression Enum (32 bytes)**:
+
+        The central type representing all mathematical expressions:
+
+        ```rust
+        pub enum Expression {
+            Number(Number),                          // 16 bytes + discriminant
+            Symbol(Symbol),                          // 8 bytes (Arc<String>) + discriminant
+            Add(Box<Vec<Expression>>),               // 8 bytes (pointer) + discriminant
+            Multiply(Box<Vec<Expression>>),          // 8 bytes (pointer) + discriminant
+            Power(Box<(Expression, Expression)>),    // 8 bytes (pointer) + discriminant
+            Function(Box<FunctionCall>),             // 8 bytes (pointer) + discriminant
+            Equality(Box<(Expression, Expression)>), // 8 bytes (pointer) + discriminant
+            // ... other variants
+        }
+        ```
+
+        **Design rationale**:
+        - 32 bytes allows 2 expressions per 64-byte cache line (standard on modern CPUs)
+        - Box<T> moves large data to heap, keeping enum size small
+        - Cache-friendly layout improves performance by 20-40% in benchmarks
+
+        **Number Type (16 bytes)**:
+
+        ```rust
+        pub enum Number {
+            Integer(i64),                      // 8 bytes + 8-byte discriminant
+            BigInteger(Box<BigInt>),           // 8 bytes pointer
+            Rational(Box<(BigInt, BigInt)>),   // 8 bytes pointer
+            Float(f64),                        // 8 bytes + padding
+        }
+        ```
+
+        **Symbol Type**:
+
+        ```rust
+        pub struct Symbol {
+            name: Arc<String>,           // String interning via Arc
+            assumptions: Assumptions,    // Bitflags for properties
+        }
+        ```
+
+    - heading: "Memory Management"
+      content: |
+        **Immutability**:
+        All expressions are immutable after creation. Operations produce new expressions
+        rather than modifying existing ones.
+
+        Benefits:
+        - Thread safety without locks
+        - Referential transparency (functional programming)
+        - Safe sharing across threads via Arc
+        - Easier to reason about correctness
+
+        **Arena Allocation**:
+        For bulk expression creation, use arena allocation to reduce overhead:
+
+        ```rust
+        use mathhook_core::core::arena::Arena;
+
+        let arena = Arena::new();
+
+        // Allocate many expressions efficiently
+        for i in 0..10000 {
+            let expr = arena.alloc(Expression::integer(i));
+            // All freed at once when arena drops
+        }
+        ```
+
+        **String Interning**:
+        Symbols use string interning for fast equality comparison:
+
+        ```rust
+        let x1 = Symbol::new("x");
+        let x2 = Symbol::new("x");
+        assert!(Arc::ptr_eq(&x1.name, &x2.name));  // Same pointer!
+        ```
+
+    - heading: "Parser Architecture (LALRPOP)"
+      content: |
+        **Two-Stage Parsing**:
+
+        1. **Lexer** (in `parser/lexer/`): Tokenization + implicit multiplication
+           - Converts `2x` → `2 * x`
+           - Handles `(a)(b)` → `a * b`
+           - Distinguishes function calls from multiplication: `sin(x)` ≠ `sin * (x)`
+
+        2. **Parser** (LALRPOP grammar): LR(1) parser with one-token lookahead
+           - Grammar file: `parser/grammar.lalrpop`
+           - Generated Rust code: `parser/grammar.rs` (don't edit manually)
+
+        **Operator Precedence** (highest to lowest):
+        1. Function application: `sin(x)`, `log(y)`
+        2. Exponentiation: `^` (right-associative)
+        3. Implicit/explicit multiplication: `*`, `/`
+        4. Addition/subtraction: `+`, `-`
+
+        **LaTeX Support**:
+        - Parses LaTeX: `\frac{dy}{dx}`, `\int x^2 dx`, `\sum_{i=1}^n i`
+        - Standard notation: `x^2 + 3x + 1`
+        - Wolfram-like syntax: `D[x^2, x]`
+
+    - heading: "Universal Function System"
+      content: |
+        **Function Registry**:
+
+        Global registry providing O(1) lookup for function intelligence:
+
+        ```rust
+        pub struct UniversalFunctionRegistry {
+            functions: HashMap<String, Box<dyn FunctionIntelligence>>,
+        }
+
+        pub trait FunctionIntelligence {
+            fn evaluate(&self, args: &[Expression]) -> EvaluationResult;
+            fn properties(&self) -> &FunctionProperties;
+            fn simplify(&self, args: &[Expression]) -> Expression;
+            fn explain(&self) -> EducationalExplanation;
+        }
+        ```
+
+        **Function Families**:
+        - **Elementary**: sin, cos, exp, log, sqrt
+        - **Special**: gamma, bessel, legendre, hermite
+        - **Number Theory**: factorial, gcd, lcm, prime
+        - **Polynomials**: chebyshev, laguerre
+
+        **Intelligence Per Function**:
+        - Evaluation strategy (symbolic vs numerical)
+        - Domain/range restrictions
+        - Symmetries (even, odd, periodic)
+        - Special values: sin(π) = 0, not 1.2246467991473532e-16
+        - Derivatives and integrals
+
+    - heading: "SIMD Optimizations"
+      content: |
+        **Vectorized Operations**:
+
+        MathHook uses SIMD (Single Instruction, Multiple Data) for array arithmetic:
+
+        ```rust
+        use mathhook_core::core::performance::simd;
+
+        // Evaluate polynomial at 1000 points simultaneously
+        let coeffs = vec![1.0, -2.0, 3.0];  // x^2 - 2x + 3
+        let x_vals: Vec<f64> = (0..1000).map(|i| i as f64 * 0.01).collect();
+
+        let results = simd::evaluate_polynomial_batch(&coeffs, &x_vals);
+        // Uses AVX2 to process 4 floats per instruction
+        ```
+
+        **Feature Flags**:
+        - `avx2`: Advanced Vector Extensions 2 (256-bit)
+        - `sse2`: Streaming SIMD Extensions 2 (128-bit, fallback)
+        - Automatic runtime detection and dispatch
+
+        **Performance Gains**:
+        - 4-8x speedup for numerical evaluation on arrays
+        - Batch differentiation and integration
+        - Matrix operations
+
+    - heading: "Canonical Forms and Simplification"
+      content: |
+        **Canonical Form Rules**:
+
+        Every expression is automatically converted to canonical form:
+
+        1. **Commutative sorting**: `y + x` → `x + y`
+        2. **Associativity flattening**: `(a + b) + c` → `Add(a, b, c)`
+        3. **Identity elimination**: `x + 0` → `x`, `x * 1` → `x`
+        4. **Rational reduction**: `6/4` → `3/2`
+
+        **Simplification Pipeline**:
+
+        ```rust
+        pub fn simplify(expr: &Expression) -> Expression {
+            let expr = to_canonical(expr);         // Step 1: Canonical form
+            let expr = apply_identities(expr);     // Step 2: Algebraic identities
+            let expr = combine_like_terms(expr);   // Step 3: Combine terms
+            let expr = numerical_evaluate(expr);   // Step 4: Constant folding
+            expr
+        }
+        ```
+
+        **Zero Detection**:
+        - Exact zero: `x - x` → `0`
+        - Symbolic zero: requires advanced techniques (Gröbner bases)
+        - Numerical zero: epsilon comparison for floats
+
+    - heading: "Educational System"
+      content: |
+        **Step-by-Step Explanations**:
+
+        Every operation can provide educational explanations:
+
+        ```rust
+        pub struct EducationalExplanation {
+            operation: String,
+            theory: String,
+            when_to_use: String,
+            common_mistakes: Vec<String>,
+            examples: Vec<Example>,
+        }
+
+        pub struct EducationalRegistry {
+            explanations: HashMap<String, EducationalExplanation>,
+        }
+        ```
+
+        **Message Keys**:
+        - `quadratic_formula`: When and how to apply
+        - `integration_by_parts`: LIATE rule explanation
+        - `chain_rule`: Composition of functions
+        - `left_division_explanation`: Matrix equations
+
+    - heading: "Thread Safety and Concurrency"
+      content: |
+        **Immutable Expressions**:
+        - All `Expression` types are immutable
+        - Safe to share across threads via `Arc<Expression>`
+        - No locks needed for read-only operations
+
+        **Thread-Safe Components**:
+        - **Symbol interning**: Uses `DashMap` for concurrent access
+        - **Function registry**: Immutable after initialization
+        - **Number arithmetic**: No shared mutable state
+
+        **Parallelization Opportunities**:
+        - Simplification of independent subexpressions
+        - Batch numerical evaluation
+        - Parallel solving of system equations
+
+use_cases:
+  - "Understanding MathHook internals for contributors"
+  - "Performance optimization by understanding architecture"
+  - "Building domain-specific extensions"
+  - "Advanced symbolic manipulation techniques"
+
+related_topics:
+  - introduction.overview
+  - introduction.performance
+  - getting-started.quick-start
+
+references:
+  - title: "MathHook CLAUDE.md"
+    url: "https://github.com/AhmedMashour/mathhook/blob/master/CLAUDE.md"
+  - title: "Rust Performance Book"
+    url: "https://nnethercote.github.io/perf-book/"
+  - title: "LALRPOP Documentation"
+    url: "http://lalrpop.github.io/lalrpop/"
+
+performance:
+  complexity: "O(1) for most type operations, O(n) for traversal"
+  typical_time: "Expression creation: < 100ns, Symbol interning: < 50ns"
+  benchmarks:
+    expression_size: "32 bytes"
+    number_size: "16 bytes"
+    symbol_creation: "< 50ns with interning"
+    cache_efficiency: "2 expressions per 64-byte cache line"

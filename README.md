@@ -147,31 +147,9 @@ at your option.
 
 Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## Roadmap
-
-### Phase 1: MVP (Current)
-- [x] Project structure
-- [x] CLAUDE.md guide
-- [ ] Core schema types
-- [ ] Jupyter generator
-- [ ] mdBook generator
-- [ ] LLM RAG generator
-
-### Phase 2: Advanced Outputs
-- [ ] Vue SSR site generator
-- [ ] Interactive API docs
-- [ ] Colab notebook support
-- [ ] LaTeX templates
-
-### Phase 3: Production
-- [ ] MCP server
-- [ ] Observable notebooks
-- [ ] Benchmark dashboard
-- [ ] CI/CD integration
-
 ## Related Projects
 
-- [MathHook](https://github.com/yourusername/mathhook) - Symbolic mathematics CAS in Rust
+- [MathHook](https://github.com/AhmedMashour/mathhook) - Symbolic mathematics CAS in Rust
 - [mdBook](https://rust-lang.github.io/mdBook/) - Markdown book generator
 - [Jupyter](https://jupyter.org/) - Interactive computing notebooks
 - [Nuxt](https://nuxt.com/) - Vue SSR framework

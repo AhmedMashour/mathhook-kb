@@ -1,0 +1,136 @@
+{
+  "topic": "introduction.overview",
+  "title": "MathHook Overview",
+  "description": "MathHook is a high-performance, educational computer algebra system (CAS) written in Rust.\nIt provides symbolic mathematics, equation solving, and step-by-step explanations optimized\nfor both performance and educational use across Python, Rust, and JavaScript.\n",
+  "mathematical_definition": "A Computer Algebra System (CAS) performs symbolic manipulation of mathematical expressions,\npreserving exact mathematical relationships rather than numerical approximations.\n",
+  "code_refs": {
+    "rust": "mathhook_core",
+    "python": "mathhook",
+    "nodejs": "mathhook"
+  },
+  "quick_reference": {
+    "core_capabilities": [
+      "Symbolic expression manipulation and simplification",
+      "Equation solving (algebraic, differential, systems)",
+      "Calculus operations (differentiation, integration, limits)",
+      "Matrix operations and linear algebra",
+      "Special functions (gamma, bessel, etc.)",
+      "Educational step-by-step explanations"
+    ],
+    "key_features": [
+      "High-performance Rust core with multi-language bindings",
+      "Exact symbolic arithmetic (rationals, not floating-point)",
+      "32-byte expression representation for cache efficiency",
+      "Educational mode with detailed explanations",
+      "LaTeX parsing and rendering"
+    ],
+    "languages": [
+      "Rust: Native performance, zero-cost abstractions",
+      "Python: via PyO3 bindings",
+      "JavaScript/Node.js: via NAPI bindings"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Symbolic Computation",
+      "explanation": "MathHook handles symbolic expressions exactly, preserving mathematical relationships\nwithout numerical approximation.\n",
+      "code": {
+        "python": "from mathhook import symbol, expr\n\n# Create symbols\nx = symbol('x')\ny = symbol('y')\n\n# Build expressions\nf = expr('x^2 + 2*x + 1')\n\n# Simplify\nsimplified = f.simplify()\nprint(simplified)  # (x + 1)^2\n\n# Factor\nfactored = f.factor()\nprint(factored)  # (x + 1)^2\n\n# Expand\nexpanded = expr('(x + 1)^3').expand()\nprint(expanded)  # x^3 + 3*x^2 + 3*x + 1\n",
+        "rust": "use mathhook::{symbol, expr};\n\n// Create symbols\nlet x = symbol!(x);\n\n// Build expressions\nlet f = expr!(x^2 + 2*x + 1);\n\n// Simplify\nlet simplified = f.simplify();\nprintln!(\"{}\", simplified);  // (x + 1)^2\n\n// Factor\nlet factored = f.factor();\nprintln!(\"{}\", factored);  // (x + 1)^2\n\n// Expand\nlet expanded = expr!((x + 1)^3).expand();\nprintln!(\"{}\", expanded);  // x^3 + 3*x^2 + 3*x + 1\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\n// Create symbols\nconst x = symbol('x');\n\n// Build expressions\nconst f = expr('x^2 + 2*x + 1');\n\n// Simplify\nconst simplified = f.simplify();\nconsole.log(simplified.toString());  // (x + 1)^2\n\n// Factor\nconst factored = f.factor();\nconsole.log(factored.toString());  // (x + 1)^2\n\n// Expand\nconst expanded = expr('(x + 1)^3').expand();\nconsole.log(expanded.toString());  // x^3 + 3*x^2 + 3*x + 1\n"
+      },
+      "expected_output": "Simplified: (x + 1)\u00b2\nFactored: (x + 1)\u00b2\nExpanded: x\u00b3 + 3x\u00b2 + 3x + 1\n"
+    },
+    {
+      "title": "Calculus Operations",
+      "explanation": "Symbolic differentiation and integration preserve exact mathematical relationships.\n",
+      "code": {
+        "python": "from mathhook import symbol, expr\n\nx = symbol('x')\n\n# Differentiation\nf = expr('x^3 + sin(x)')\ndf = f.derivative(x)\nprint(f\"f'(x) = {df}\")  # 3*x^2 + cos(x)\n\n# Integration\nintegral = expr('2*x').integrate(x)\nprint(f\"\u222b2x dx = {integral}\")  # x^2 + C\n\n# Definite integral\ndefinite = expr('x^2').integrate(x, 0, 2)\nprint(f\"\u222b\u2080\u00b2 x\u00b2 dx = {definite}\")  # 8/3\n",
+        "rust": "use mathhook::{symbol, expr};\n\nlet x = symbol!(x);\n\n// Differentiation\nlet f = expr!(x^3 + sin(x));\nlet df = f.derivative(&x, 1);\nprintln!(\"f'(x) = {}\", df);  // 3*x^2 + cos(x)\n\n// Integration\nlet integral = expr!(2*x).integrate(&x);\nprintln!(\"\u222b2x dx = {}\", integral);  // x^2 + C\n\n// Definite integral\nlet definite = expr!(x^2).integrate_definite(&x, &expr!(0), &expr!(2));\nprintln!(\"\u222b\u2080\u00b2 x\u00b2 dx = {}\", definite);  // 8/3\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\n\n// Differentiation\nconst f = expr('x^3 + sin(x)');\nconst df = f.derivative(x);\nconsole.log(`f'(x) = ${df}`);  // 3*x^2 + cos(x)\n\n// Integration\nconst integral = expr('2*x').integrate(x);\nconsole.log(`\u222b2x dx = ${integral}`);  // x^2 + C\n\n// Definite integral\nconst definite = expr('x^2').integrateDefinite(x, 0, 2);\nconsole.log(`\u222b\u2080\u00b2 x\u00b2 dx = ${definite}`);  // 8/3\n"
+      },
+      "expected_output": "f'(x) = 3x\u00b2 + cos(x)\n\u222b2x dx = x\u00b2 + C\n\u222b\u2080\u00b2 x\u00b2 dx = 8/3\n"
+    },
+    {
+      "title": "Equation Solving",
+      "explanation": "Solve algebraic and differential equations symbolically.\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, solve\n\nx = symbol('x')\n\n# Quadratic equation\neq = expr('x^2 - 5*x + 6 == 0')\nsolutions = solve(eq, x)\nprint(f\"Solutions: {solutions}\")  # [2, 3]\n\n# System of equations\ny = symbol('y')\neq1 = expr('x + y == 5')\neq2 = expr('x - y == 1')\nsolutions = solve([eq1, eq2], [x, y])\nprint(f\"System: {solutions}\")  # {x: 3, y: 2}\n\n# Differential equation\neq_ode = expr(\"y' + 2*y == 0\")\nsolution = solve_ode(eq_ode, y)\nprint(f\"ODE: {solution}\")  # y = C*exp(-2*x)\n",
+        "rust": "use mathhook::{symbol, expr, solve};\n\nlet x = symbol!(x);\n\n// Quadratic equation\nlet eq = expr!(x^2 - 5*x + 6 == 0);\nlet solutions = solve(&eq, &x);\nprintln!(\"Solutions: {:?}\", solutions);  // [2, 3]\n\n// System of equations\nlet y = symbol!(y);\nlet eq1 = expr!(x + y == 5);\nlet eq2 = expr!(x - y == 1);\nlet solutions = solve_system(&[eq1, eq2], &[x, y]);\nprintln!(\"System: {:?}\", solutions);  // {x: 3, y: 2}\n\n// Differential equation\nlet eq_ode = expr!(dy/dx + 2*y == 0);\nlet solution = solve_ode(&eq_ode, &y);\nprintln!(\"ODE: {}\", solution);  // y = C*exp(-2*x)\n",
+        "nodejs": "const { symbol, expr, solve } = require('mathhook');\n\nconst x = symbol('x');\n\n// Quadratic equation\nconst eq = expr('x^2 - 5*x + 6 == 0');\nconst solutions = solve(eq, x);\nconsole.log(`Solutions: ${solutions}`);  // [2, 3]\n\n// System of equations\nconst y = symbol('y');\nconst eq1 = expr('x + y == 5');\nconst eq2 = expr('x - y == 1');\nconst solutions = solve([eq1, eq2], [x, y]);\nconsole.log(`System: ${solutions}`);  // {x: 3, y: 2}\n\n// Differential equation\nconst eqOde = expr(\"y' + 2*y == 0\");\nconst solution = solveOde(eqOde, y);\nconsole.log(`ODE: ${solution}`);  // y = C*exp(-2*x)\n"
+      },
+      "expected_output": "Quadratic: x = 2, x = 3\nSystem: x = 3, y = 2\nODE: y = C\u00b7e^(-2x)\n"
+    }
+  ],
+  "article": {
+    "sections": [
+      {
+        "heading": "What is MathHook?",
+        "content": "MathHook is a modern computer algebra system designed for:\n\n**Performance**: Written in Rust with SIMD optimizations, 32-byte expression representation\nfor cache efficiency, and zero-copy parsing.\n\n**Education**: Step-by-step explanations, educational mode showing solution strategies,\nand clear mathematical notation.\n\n**Multi-language**: Native Rust performance with ergonomic bindings for Python and JavaScript,\nallowing use in web apps, data science workflows, and system programming.\n\n**Symbolic Mathematics**: Exact arithmetic using rationals (not floating-point),\npreserving mathematical relationships without approximation errors.\n"
+      },
+      {
+        "heading": "Core Architecture",
+        "content": "**Expression Type** (32 bytes):\n- Enum variants for all expression types (Add, Multiply, Power, Function, Symbol, Number)\n- Fits two expressions per 64-byte cache line for optimal performance\n- Uses `Box<T>` for recursive structures while maintaining size constraint\n\n**Number Type** (16 bytes):\n- Tagged union supporting integers, rationals, and floats\n- Arbitrary precision via `BigInt` for large integers\n- Exact rational arithmetic: 1/3 stays as 1/3, not 0.333...\n\n**Symbol Type**:\n- String interning for O(1) equality comparison\n- Support for assumptions (positive, real, integer, etc.)\n- Cheap cloning (reference counting)\n\n**Universal Function System**:\n- Modular intelligence per function family\n- O(1) registry lookup for function properties\n- SIMD-optimized numerical evaluation\n- Educational explanations built-in\n"
+      },
+      {
+        "heading": "Design Philosophy",
+        "content": "**Correctness First**: All mathematical operations must be correct in ALL cases.\nZero tolerance for regressions or approximation errors in symbolic mode.\n\n**Performance Second**: After correctness, optimize aggressively using Rust's\nzero-cost abstractions, SIMD, cache-friendly data structures, and arena allocation.\n\n**Educational Focus**: Every operation can provide step-by-step explanations,\nmaking MathHook ideal for learning and teaching mathematics.\n\n**Ergonomic APIs**: Both expression-centric (functional) and solver-object\n(stateful) APIs to match different use cases naturally.\n"
+      },
+      {
+        "heading": "Key Features",
+        "content": "**Symbolic Algebra**:\n- Expression simplification with canonical forms\n- Polynomial expansion and factoring\n- Rational expression manipulation\n- Trigonometric identity application\n\n**Calculus**:\n- Symbolic differentiation (power, product, quotient, chain rules)\n- Symbolic and numerical integration\n- Limits and L'H\u00f4pital's rule\n- Series expansions (Taylor, Fourier)\n\n**Equation Solving**:\n- Linear and polynomial equations\n- Systems of equations\n- Ordinary differential equations (ODEs)\n- Partial differential equations (PDEs)\n\n**Matrix Operations**:\n- Matrix arithmetic and operations\n- Determinants and inverses\n- Eigenvalues and eigenvectors\n- LU, QR, SVD decompositions\n\n**Special Functions**:\n- Gamma, Beta, Error functions\n- Bessel, Legendre, Hermite functions\n- Hypergeometric functions\n"
+      },
+      {
+        "heading": "Performance Characteristics",
+        "content": "**Expression Creation**: < 100ns (allocation overhead)\n\n**Parsing**: > 100K simple expressions/second\n\n**Simplification**: < 1ms for expressions with < 100 nodes\n\n**Comparison to Other Systems**:\n- Faster than SymPy (Python CAS)\n- Memory efficient: 32-byte expressions fit in cache\n\n**SIMD Optimizations**:\n- Vectorized operations for arrays\n- AVX2 and SSE2 support\n- Automatic fallback for non-SIMD targets\n"
+      },
+      {
+        "heading": "Installation",
+        "content": "**Python**:\n```bash\npip install mathhook\n```\n\n**Rust**:\n```toml\n[dependencies]\nmathhook = \"0.1\"\n```\n\n**Node.js**:\n```bash\nnpm install mathhook\n```\n"
+      },
+      {
+        "heading": "Educational Features",
+        "content": "**Step-by-Step Solutions**:\nEnable educational mode to see detailed solution strategies:\n\n```python\nfrom mathhook import symbol, expr, enable_educational_mode\n\nenable_educational_mode()\n\nx = symbol('x')\neq = expr('x^2 - 5*x + 6 == 0')\nsolution = solve(eq, x, show_steps=True)\n\n# Output includes:\n# 1. Identify equation type: quadratic\n# 2. Apply quadratic formula\n# 3. Simplify discriminant: b\u00b2 - 4ac = 25 - 24 = 1\n# 4. Calculate roots: x = (5 \u00b1 1)/2 = {2, 3}\n```\n\n**Explanation Registry**:\nAccess educational explanations for any operation:\n\n```python\nfrom mathhook.educational import get_explanation\n\nexplanation = get_explanation('quadratic_formula')\nprint(explanation.theory)\nprint(explanation.when_to_use)\nprint(explanation.common_mistakes)\n```\n"
+      }
+    ]
+  },
+  "use_cases": [
+    "Mathematics Education: Step-by-step solutions for students",
+    "Research: Symbolic mathematics in physics, engineering, data science",
+    "Web Applications: Interactive math tools and calculators",
+    "Scientific Computing: Exact symbolic computation before numerical evaluation",
+    "Computer Algebra: Foundation for building domain-specific math tools"
+  ],
+  "related_topics": [
+    "introduction.architecture",
+    "introduction.installation",
+    "getting-started.quick-start",
+    "algebra.simplify",
+    "calculus.derivatives"
+  ],
+  "references": [
+    {
+      "title": "MathHook Documentation",
+      "url": "https://docs.mathhook.org"
+    },
+    {
+      "title": "MathHook GitHub Repository",
+      "url": "https://github.com/AhmedMashour/mathhook"
+    },
+    {
+      "title": "Computer Algebra Systems: A Practical Guide",
+      "author": "Michael J. Wester",
+      "year": 1999
+    }
+  ],
+  "performance": {
+    "complexity": "Varies by operation; O(n) for most simplification, O(n\u00b2) for polynomial operations",
+    "typical_time": "< 1ms for common operations on expressions with < 100 nodes",
+    "benchmarks": {
+      "expression_creation": "< 100ns",
+      "parsing_simple": "< 10\u03bcs per expression",
+      "simplification": "< 1ms for 100 nodes",
+      "derivative": "< 500\u03bcs for polynomials"
+    }
+  }
+}

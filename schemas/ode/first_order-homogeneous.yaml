@@ -1,0 +1,414 @@
+topic: "ode"
+title: "Homogeneous Differential Equations"
+description: "Solve homogeneous first-order differential equations using substitution v = y/x with MathHook"
+
+mathematical_definition: "\\frac{dy}{dx} = f\\left(\\frac{y}{x}\\right)"
+
+quick_reference:
+  standard_form: "$\\frac{dy}{dx} = f\\left(\\frac{y}{x}\\right)$ or $M(x,y)dx + N(x,y)dy = 0$ where $M$ and $N$ are homogeneous of same degree"
+  substitution: "$v = \\frac{y}{x}$, so $y = vx$ and $\\frac{dy}{dx} = v + x\\frac{dv}{dx}$"
+  transformed_equation: "Separable in $v$ and $x$"
+  solution_steps:
+    - "Verify equation is homogeneous"
+    - "Substitute $v = y/x$ (or $v = x/y$ if easier)"
+    - "Equation becomes separable in $v$ and $x$"
+    - "Solve separable equation"
+    - "Back-substitute $v = y/x$"
+
+examples:
+  - title: "Basic Homogeneous Equation"
+    explanation: |
+      Solve: $\frac{dy}{dx} = \frac{x + y}{x}$
+
+      **Step 1**: Rewrite to see homogeneity
+      $$\frac{dy}{dx} = 1 + \frac{y}{x}$$
+
+      This is of the form $f(y/x)$, so it's homogeneous.
+
+      **Step 2**: Make substitution $v = \frac{y}{x}$
+      Then $y = vx$ and $\frac{dy}{dx} = v + x\frac{dv}{dx}$
+
+      **Step 3**: Substitute into equation
+      $$v + x\frac{dv}{dx} = 1 + v$$
+
+      Simplify:
+      $$x\frac{dv}{dx} = 1$$
+
+      **Step 4**: Solve separable equation
+      $$dv = \frac{dx}{x}$$
+
+      $$\int dv = \int \frac{dx}{x}$$
+
+      $$v = \ln|x| + C$$
+
+      **Step 5**: Back-substitute $v = y/x$
+      $$\frac{y}{x} = \ln|x| + C$$
+
+      **Solution**: $y = x\ln|x| + Cx$
+    code:
+      python: |
+        from mathhook import symbol, expr, solve_ode
+
+        x = symbol('x')
+        y = symbol('y', function_of=x)
+
+        # dy/dx = (x + y)/x = 1 + y/x
+        equation = expr(y.diff(x) - (x + y)/x)
+        solution = solve_ode(equation, y, method='homogeneous')
+        print(f"Solution: {solution}")
+      rust: |
+        use mathhook_core::{symbol, expr, solve_ode};
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // dy/dx = (x + y)/x
+        let equation = expr!(derivative(y, x) - ((x + y)/x));
+        let solution = solve_ode(&equation, &y, "homogeneous");
+        println!("Solution: {}", solution);
+      nodejs: |
+        const { symbol, expr, solveODE } = require('mathhook-node');
+
+        const x = symbol('x');
+        const y = symbol('y', { functionOf: x });
+
+        // dy/dx = (x + y)/x
+        const equation = expr(y.diff(x).sub(x.add(y).div(x)));
+        const solution = solveODE(equation, y, { method: 'homogeneous' });
+        console.log(`Solution: ${solution}`);
+
+  - title: "Homogeneous Equation in Standard Form"
+    explanation: |
+      Solve: $(x^2 + y^2)dx - 2xydy = 0$
+
+      **Step 1**: Check for homogeneity
+      - $M(x,y) = x^2 + y^2$ (degree 2)
+      - $N(x,y) = -2xy$ (degree 2)
+
+      Both are homogeneous of degree 2, so the equation is homogeneous.
+
+      **Step 2**: Convert to derivative form
+      $$\frac{dy}{dx} = \frac{M}{N} = \frac{x^2 + y^2}{-2xy}$$
+
+      **Step 3**: Make substitution $y = vx$
+      $$\frac{dy}{dx} = v + x\frac{dv}{dx}$$
+
+      **Step 4**: Substitute
+      $$v + x\frac{dv}{dx} = \frac{x^2 + (vx)^2}{-2x(vx)} = \frac{x^2(1 + v^2)}{-2v x^2} = -\frac{1 + v^2}{2v}$$
+
+      **Step 5**: Separate variables
+      $$x\frac{dv}{dx} = -\frac{1 + v^2}{2v} - v = -\frac{1 + v^2 + 2v^2}{2v} = -\frac{1 + 3v^2}{2v}$$
+
+      $$\frac{2v}{1 + 3v^2}dv = -\frac{dx}{x}$$
+
+      **Step 6**: Integrate both sides
+      $$\int \frac{2v}{1 + 3v^2}dv = -\int \frac{dx}{x}$$
+
+      Let $u = 1 + 3v^2$, then $du = 6v dv$:
+
+      $$\frac{1}{3}\ln|1 + 3v^2| = -\ln|x| + C$$
+
+      **Step 7**: Back-substitute $v = y/x$
+      $$\frac{1}{3}\ln\left|1 + 3\left(\frac{y}{x}\right)^2\right| = -\ln|x| + C$$
+
+      $$\ln|1 + 3y^2/x^2| = -3\ln|x| + 3C$$
+
+      $$|1 + 3y^2/x^2| = \frac{K}{|x|^3}$$
+
+      **Solution**: $x^2 + 3y^2 = Kx$ (implicit form)
+    code:
+      python: |
+        from mathhook import symbol, expr, solve_ode
+
+        x, y = symbol('x'), symbol('y', function_of=x)
+
+        # (x^2 + y^2)dx - 2xy*dy = 0
+        M = expr(x**2 + y**2)
+        N = expr(-2*x*y)
+
+        solution = solve_ode(M, N, y, method='homogeneous')
+        print(f"Solution: {solution}")
+      rust: |
+        use mathhook_core::{symbol, expr, solve_ode};
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // (x^2 + y^2)dx - 2xy*dy = 0
+        let M = expr!(x^2 + y^2);
+        let N = expr!(-2*x*y);
+
+        let solution = solve_ode_standard_form(&M, &N, &y, "homogeneous");
+        println!("Solution: {}", solution);
+      nodejs: |
+        const { symbol, expr, solveODE } = require('mathhook-node');
+
+        const x = symbol('x'), y = symbol('y', { functionOf: x });
+
+        // (x^2 + y^2)dx - 2xy*dy = 0
+        const M = expr(x.pow(2).add(y.pow(2)));
+        const N = expr(expr(-2).mul(x).mul(y));
+
+        const solution = solveODE(M, N, y, { method: 'homogeneous' });
+        console.log(`Solution: ${solution}`);
+
+article:
+  sections:
+    - title: "What is a Homogeneous Differential Equation?"
+      content: |
+        ### Definition ###
+
+        A first-order differential equation is **homogeneous** if it can be written in the form:
+
+        $$\frac{dy}{dx} = f\left(\frac{y}{x}\right)$$
+
+        where $f$ is some function of the single variable $\frac{y}{x}$.
+
+        ### Alternative Definition (Standard Form) ###
+
+        The equation $M(x,y)dx + N(x,y)dy = 0$ is homogeneous if $M$ and $N$ are **homogeneous functions of the same degree**.
+
+        A function $F(x,y)$ is **homogeneous of degree $n$** if:
+        $$F(tx, ty) = t^n F(x,y)$$
+
+        for all $t \neq 0$.
+
+        ### Examples of Homogeneous Functions ###
+
+        - $F(x,y) = x^2 + xy$ is homogeneous of degree 2:
+          $F(tx,ty) = (tx)^2 + (tx)(ty) = t^2(x^2 + xy) = t^2 F(x,y)$
+
+        - $F(x,y) = \frac{x^2 - y^2}{xy}$ is homogeneous of degree 0:
+          $F(tx,ty) = \frac{(tx)^2 - (ty)^2}{(tx)(ty)} = \frac{t^2(x^2 - y^2)}{t^2 xy} = F(x,y)$
+
+        - $F(x,y) = x + y + 1$ is NOT homogeneous (the constant term breaks it)
+
+    - title: "The Substitution v = y/x"
+      content: |
+        ### Why This Substitution Works ###
+
+        If the equation is $\frac{dy}{dx} = f\left(\frac{y}{x}\right)$, the natural substitution is:
+
+        $$v = \frac{y}{x}$$
+
+        This gives $y = vx$, and differentiating:
+
+        $$\frac{dy}{dx} = v + x\frac{dv}{dx}$$
+
+        (using the product rule)
+
+        ### Transformation Process ###
+
+        Substituting into the original equation:
+
+        $$v + x\frac{dv}{dx} = f(v)$$
+
+        Rearranging:
+
+        $$x\frac{dv}{dx} = f(v) - v$$
+
+        This is **separable**:
+
+        $$\frac{dv}{f(v) - v} = \frac{dx}{x}$$
+
+        ### After Solving ###
+
+        1. Integrate both sides to get $g(v) = \ln|x| + C$
+        2. Back-substitute $v = y/x$
+        3. Simplify to get solution in terms of $x$ and $y$
+
+    - title: "Alternative Substitution v = x/y"
+      content: |
+        ### When to Use This ###
+
+        Sometimes it's easier to use $v = \frac{x}{y}$ instead of $v = \frac{y}{x}$.
+
+        This is particularly helpful when $\frac{dy}{dx}$ has $x/y$ appearing more naturally than $y/x$.
+
+        ### The Process ###
+
+        With $v = \frac{x}{y}$:
+
+        - $x = vy$
+        - $\frac{dx}{dy} = v + y\frac{dv}{dy}$
+
+        The equation $\frac{dy}{dx} = f(y/x)$ becomes:
+
+        $$\frac{dx}{dy} = \frac{1}{f(y/x)}$$
+
+        And with $x/y = v$ (so $y/x = 1/v$):
+
+        $$v + y\frac{dv}{dy} = \frac{1}{f(1/v)}$$
+
+        ### Example ###
+
+        For $\frac{dy}{dx} = \frac{y}{x} + \frac{x}{y}$:
+
+        Using $v = x/y$ may simplify the algebra compared to $v = y/x$.
+
+    - title: "Solving Strategy"
+      content: |
+        ### Step-by-Step Method ###
+
+        **Given**: Homogeneous equation in any form
+
+        **Step 1: Identify Homogeneity**
+
+        Check if equation is of form $\frac{dy}{dx} = f(y/x)$
+
+        OR check if $M$ and $N$ are homogeneous of same degree.
+
+        **Step 2: Choose Substitution**
+
+        Usually $v = y/x$, but sometimes $v = x/y$ is easier.
+
+        **Step 3: Differentiate**
+
+        - If $v = y/x$: then $\frac{dy}{dx} = v + x\frac{dv}{dx}$
+        - If $v = x/y$: then $\frac{dx}{dy} = v + y\frac{dv}{dy}$
+
+        **Step 4: Substitute**
+
+        Replace all $y/x$ (or $x/y$) with $v$ and replace $\frac{dy}{dx}$ (or $\frac{dx}{dy}$).
+
+        **Step 5: Separate Variables**
+
+        Equation should become separable in $v$ and $x$ (or $v$ and $y$).
+
+        **Step 6: Integrate**
+
+        Integrate both sides.
+
+        **Step 7: Back-Substitute**
+
+        Replace $v$ with $y/x$ (or $x/y$) to get final solution.
+
+        **Step 8: Simplify**
+
+        Simplify the result. May be implicit or explicit.
+
+    - title: "Special Cases and Patterns"
+      content: |
+        ### Pattern 1: Degree Zero Functions ###
+
+        If $\frac{dy}{dx} = f(y/x)$ where $f$ is a rational function, the equation is homogeneous.
+
+        Example: $\frac{dy}{dx} = \frac{x^2 - y^2}{2xy}$ can be rewritten as:
+
+        $$\frac{dy}{dx} = \frac{1 - (y/x)^2}{2(y/x)}$$
+
+        ### Pattern 2: Linear Combinations in Numerator/Denominator ###
+
+        Equations like:
+        $$\frac{dy}{dx} = \frac{ax + by}{cx + dy}$$
+
+        are homogeneous (both numerator and denominator are degree 1).
+
+        ### Pattern 3: Almost Homogeneous ###
+
+        Equations like:
+        $$\frac{dy}{dx} = \frac{ax + by + e}{cx + dy + f}$$
+
+        with constants $e, f \neq 0$ are **NOT homogeneous** but can be made homogeneous by translation:
+
+        Let $X = x - x_0$, $Y = y - y_0$ where $(x_0, y_0)$ satisfies:
+        $$ax_0 + by_0 + e = 0$$
+        $$cx_0 + dy_0 + f = 0$$
+
+        Then transform to homogeneous equation in $X, Y$.
+
+        ### Pattern 4: Polar Coordinates ###
+
+        Homogeneous equations often simplify in polar coordinates:
+
+        With $x = r\cos\theta$, $y = r\sin\theta$:
+
+        $$\frac{dy}{dx} = \frac{\frac{dy}{d\theta}}{\frac{dx}{d\theta}}$$
+
+        Sometimes this gives a separable equation in $r$ and $\theta$.
+
+    - title: "Connection to Other Methods"
+      content: |
+        ### Homogeneous vs Exact ###
+
+        Some equations are both homogeneous and exact.
+
+        Example: $(x^2 + y^2)dx + 2xydy = 0$
+
+        - Homogeneous: Both terms degree 2
+        - Exact: $\frac{\partial M}{\partial y} = 2y = \frac{\partial N}{\partial x}$
+
+        You can solve using either method!
+
+        ### Homogeneous vs Separable ###
+
+        After substitution $v = y/x$, homogeneous equations become separable.
+
+        Some equations are **already separable** without substitution.
+
+        Example: $\frac{dy}{dx} = xy$ is separable (not homogeneous).
+
+        ### Homogeneous vs Bernoulli ###
+
+        Bernoulli equations: $\frac{dy}{dx} + P(x)y = Q(x)y^n$
+
+        Can be homogeneous if $P$ and $Q$ have special forms.
+
+        Example: $x\frac{dy}{dx} + y = y^2$ is both Bernoulli (with $n = 2$) and can be treated as homogeneous after rearrangement.
+
+    - title: "Verification and Implicit Solutions"
+      content: |
+        ### Verifying Solutions ###
+
+        After solving, always verify:
+
+        1. **Substitute back**: Put $y(x)$ into original equation
+        2. **Check algebra**: Ensure both sides match
+        3. **Check initial conditions**: If $y(x_0) = y_0$, verify it holds
+
+        ### Implicit vs Explicit Solutions ###
+
+        Homogeneous equations often give **implicit solutions** like:
+
+        $$G(x,y) = C$$
+
+        You may not be able to solve explicitly for $y = y(x)$.
+
+        **Implicit Function Theorem** can tell you when explicit solution exists:
+
+        If $\frac{\partial G}{\partial y} \neq 0$ at a point, then locally you can solve for $y(x)$.
+
+        ### Singular Solutions ###
+
+        Check for **singular solutions** - solutions that don't fit the general form.
+
+        These often arise from:
+        - $f(v) - v = 0$ having constant solutions $v = v_0$
+        - Gives $y = v_0 x$ (straight line through origin)
+
+        Example: For $\frac{dy}{dx} = \frac{y}{x}$, the general solution is $y = Cx$, but ALL lines through the origin are solutions (including $x = 0$).
+
+related_topics:
+  - slug: "ode-first_order-separable"
+    title: "Separable Differential Equations"
+    description: "Homogeneous equations reduce to separable form"
+  - slug: "ode-first_order-exact"
+    title: "Exact Differential Equations"
+    description: "Some equations are both homogeneous and exact"
+  - slug: "calculus-substitution"
+    title: "Substitution Methods"
+    description: "General technique used in solving ODEs"
+
+references:
+  - title: "Elementary Differential Equations"
+    author: "William E. Boyce and Richard C. DiPrima"
+    year: 2017
+    publisher: "Wiley"
+  - title: "Ordinary Differential Equations"
+    author: "Morris Tenenbaum and Harry Pollard"
+    year: 1985
+    publisher: "Dover Publications"
+  - title: "Differential Equations with Applications and Historical Notes"
+    author: "George F. Simmons"
+    year: 2016
+    publisher: "CRC Press"

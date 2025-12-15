@@ -1,0 +1,321 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Separable Differential Equations }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Solve first-order ordinary differential equations that can be separated into functions of x and y independently
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+\frac{dy}{dx} = g(x)h(y) \quad \Rightarrow \quad \int \frac{dy}{h(y)} = \int g(x)dx + C
+\end{equation}
+
+
+
+\section{Introduction}
+
+Imagine you're a detective investigating a crime scene, and you find a body.
+The coroner needs to estimate time of death. How? By measuring body temperature
+and using Newton's Law of Cooling—a separable differential equation. From modeling
+population growth to predicting how fast your coffee cools, separable ODEs are
+everywhere in nature and engineering.
+
+
+
+
+\section{ What Makes an ODE Separable? }
+
+A first-order ODE is **separable** if it can be written in the form:
+
+$$\\frac{dy}{dx} = g(x)h(y)$$
+
+Notice that the right-hand side factors into a function of $x$ multiplied by
+a function of $y$. This special structure allows us to algebraically manipulate
+the equation to get all $y$ terms on one side and all $x$ terms on the other.
+
+### Recognition Patterns
+
+**Separable:**
+- $dy/dx = xy$ (factors as $x \\cdot y$)
+- $dy/dx = e^{x+y} = e^x \\cdot e^y$ (exponential property)
+- $dy/dx = \\sin(x)\\cos(y)$ (product of functions)
+
+**NOT Separable:**
+- $dy/dx = x + y$ (sum, not product)
+- $dy/dx = xy + y^2$ (can't factor into g(x)h(y))
+- $dy/dx = \\sin(xy)$ (mixed argument)
+
+### The Key Insight
+
+If we can write $dy/dx = g(x)h(y)$, then we can rearrange:
+
+$$\\frac{dy}{h(y)} = g(x)dx$$
+
+Now both sides are ready to integrate independently!
+
+
+\section{ The Separation of Variables Method }
+
+The solution process has four clear steps:
+
+### Step 1: Verify Separability
+
+Check if the equation can be factored as $dy/dx = g(x)h(y)$.
+
+### Step 2: Separate Variables
+
+Rearrange to get all $y$ terms (including $dy$) on one side and all $x$ terms
+(including $dx$) on the other:
+
+$$\\frac{dy}{h(y)} = g(x)dx$$
+
+### Step 3: Integrate Both Sides
+
+$$\\int \\frac{dy}{h(y)} = \\int g(x)dx + C$$
+
+The constant of integration $C$ appears on the right side (convention).
+
+### Step 4: Solve for y (if possible)
+
+Try to solve algebraically for $y$ as an explicit function of $x$. Sometimes
+this isn't possible, and we get an **implicit solution** instead (which is
+still valid!).
+
+### Example: dy/dx = xy
+
+1. **Verify:** $g(x) = x$, $h(y) = y$ ✓
+2. **Separate:** $dy/y = x\\,dx$
+3. **Integrate:** $\\ln|y| = x^2/2 + C$
+4. **Solve:** $y = Ae^{x^2/2}$ (where $A = \\pm e^C$)
+
+
+\section{ Initial Value Problems }
+
+An **initial condition** $y(x_0) = y_0$ allows us to find the particular
+solution (a specific curve) rather than the general solution (a family of curves).
+
+### Method
+
+1. Find the general solution with constant $C$
+2. Substitute the initial condition: $y(x_0) = y_0$
+3. Solve for $C$
+4. Write the particular solution
+
+### Example: Exponential Growth with Initial Population
+
+**Problem:** $dy/dx = 0.5y$, $y(0) = 100$
+
+**General solution:**
+- Separate: $dy/y = 0.5\\,dx$
+- Integrate: $\\ln|y| = 0.5x + C$
+- Solve: $y = Ae^{0.5x}$
+
+**Apply initial condition:**
+- $y(0) = 100 \\Rightarrow Ae^0 = A = 100$
+
+**Particular solution:** $y = 100e^{0.5x}$
+
+This represents a population that doubles every $\\ln(2)/0.5 \\approx 1.386$ time units.
+
+
+\section{ Real-World Applications }
+
+Separable ODEs model countless phenomena in science and engineering.
+
+### Population Dynamics
+
+**Exponential Growth:** $dP/dt = rP$
+- Solution: $P(t) = P_0 e^{rt}$
+- Models: bacteria, investments, viral videos
+
+**Logistic Growth:** $dP/dt = rP(1 - P/K)$
+- Solution: $P(t) = K/(1 + Ae^{-rt})$
+- Models: species with limited resources, product adoption
+
+### Physics
+
+**Newton's Law of Cooling:** $dT/dt = k(T - T_{ambient})$
+- Forensic science: time of death estimation
+- Engineering: HVAC system design
+- Daily life: beverage cooling
+
+**Falling Objects with Air Resistance:** $dv/dt = g - kv$
+- Terminal velocity: $v_{terminal} = g/k$
+- Skydiving, raindrop dynamics
+
+### Chemistry
+
+**First-Order Reactions:** $dA/dt = -kA$
+- Radioactive decay
+- Drug metabolism
+- Chemical kinetics
+
+### Mixing Problems
+
+Tank with inflow and outflow: $dy/dt = r_{in}c_{in} - r_{out}(y/V)$
+- Water treatment plants
+- Pharmaceutical manufacturing
+- Environmental pollution modeling
+
+
+
+\section{Examples}
+
+
+\subsection{ Simple Exponential Growth }
+
+The simplest separable ODE models exponential growth: dy/dx = y.
+This can be separated as dy/y = dx, integrating gives ln|y| = x + C,
+which simplifies to y = Ce^x. This models population growth, radioactive
+decay (with negative constant), and compound interest.
+
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.ode import SeparableODESolver
+
+x = symbol('x')
+y = symbol('y')
+
+# dy/dx = y (exponential growth)
+rhs = y
+solver = SeparableODESolver()
+
+# General solution: y = C*e^x
+solution = solver.solve(rhs, y, x)
+print(f"General solution: {solution}")
+
+# Particular solution with y(0) = 3
+particular = solver.solve(rhs, y, x, initial=(0, 3))
+print(f"Particular solution: {particular}")  # y = 3*e^x
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+y = 3*e^x
+\end{verbatim}
+
+
+
+\subsection{ Logistic Growth Model }
+
+The logistic equation dy/dx = y(1-y) models population growth with carrying
+capacity. Separating variables: dy/(y(1-y)) = dx. Using partial fractions:
+(1/y + 1/(1-y))dy = dx. Integrating: ln|y/(1-y)| = x + C.
+Solving for y: y = 1/(1 + Ce^(-x)). This S-curve is fundamental in ecology,
+epidemiology, and marketing.
+
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.ode import SeparableODESolver
+
+x, y = symbol('x'), symbol('y')
+
+# dy/dx = y(1-y) (logistic growth)
+rhs = y * (1 - y)
+solver = SeparableODESolver()
+
+# With y(0) = 0.1 (10% initial population)
+solution = solver.solve(rhs, y, x, initial=(0, 0.1))
+print(solution)  # y = 1/(1 + 9*e^(-x))
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+y = 1/(1 + 9*e^(-x))
+\end{verbatim}
+
+
+
+\subsection{ Newton's Law of Cooling }
+
+Temperature change follows dT/dt = k(T - T_ambient). For T_ambient = 20°C,
+this becomes dT/dt = k(T - 20). Separating: dT/(T-20) = k*dt.
+Integrating: ln|T-20| = kt + C, so T = 20 + Ce^(kt). If T(0) = 100°C and
+k = -0.05, then T = 20 + 80*e^(-0.05t). This models coffee cooling,
+forensic time-of-death estimation, and HVAC systems.
+
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.ode import SeparableODESolver
+
+t = symbol('t')
+T = symbol('T')
+k = -0.05
+
+# dT/dt = k(T - 20)
+rhs = k * (T - 20)
+solver = SeparableODESolver()
+
+# T(0) = 100 (coffee starts at 100°C)
+solution = solver.solve(rhs, T, t, initial=(0, 100))
+print(f"Temperature: {solution}")  # T = 20 + 80*e^(-0.05t)
+
+# Evaluate at t = 10 minutes
+temp_at_10 = solution.subs(t, 10)
+print(f"After 10 min: {temp_at_10:.1f}°C")
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+T = 20 + 80*e^(-0.05t)
+\end{verbatim}
+
+
+
+
+
+\section{Conclusion}
+
+Separable differential equations are the foundation of ODE solving. Their
+simple form—factorable into $g(x)h(y)$—allows us to use basic integration
+rather than advanced techniques. From exponential growth to Newton's cooling,
+separable ODEs model fundamental processes in nature and engineering.
+
+Key takeaways:
+- **Recognition:** Can you factor the RHS as $g(x)h(y)$?
+- **Method:** Separate variables, integrate both sides
+- **Initial conditions:** Find the particular solution by substituting $y(x_0) = y_0$
+- **Watch out:** Don't lose singular solutions when dividing by $h(y)$
+
+
+
+\end{document}

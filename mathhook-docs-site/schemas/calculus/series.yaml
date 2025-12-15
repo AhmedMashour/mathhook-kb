@@ -1,0 +1,355 @@
+topic: calculus.series
+title: Series and Sequences
+description: |
+  Infinite series, convergence tests, Taylor series, Fourier series, and power series expansions.
+  Essential for approximation theory, analysis, and representing functions.
+
+mathematical_definition: |
+  A series is the sum of terms of a sequence: $$\\sum_{n=1}^{\\infty} a_n = a_1 + a_2 + a_3 + \\cdots$$
+
+  Convergence: A series converges if the sequence of partial sums has a finite limit.
+
+code_refs:
+  rust: mathhook_core::calculus::series
+  python: mathhook.calculus.series
+  nodejs: mathhook.calculus.series
+
+quick_reference:
+  convergence_tests:
+    - "Ratio test: $$\\lim_{n\\to\\infty} \\left|\\frac{a_{n+1}}{a_n}\\right| < 1$$"
+    - "Root test: $$\\lim_{n\\to\\infty} \\sqrt[n]{|a_n|} < 1$$"
+    - "Integral test: $$\\int_1^{\\infty} f(x) dx$$ converges"
+    - "Comparison test: Compare with known series"
+  power_series:
+    - "General form: $$\\sum_{n=0}^{\\infty} c_n(x-a)^n$$"
+    - "Radius of convergence: $$R = \\frac{1}{\\limsup_{n\\to\\infty} \\sqrt[n]{|c_n|}}$$"
+  taylor_series:
+    - "$$f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n$$"
+    - "Common: $$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$$"
+    - "$$\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$$"
+  fourier_series:
+    - "$$f(x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty} (a_n \\cos(nx) + b_n \\sin(nx))$$"
+
+examples:
+  - title: "Convergence Tests"
+    explanation: |
+      Test if a series converges using ratio test, root test, or comparison test.
+
+    code:
+      python: |
+        from mathhook import symbol, expr, series_converges
+
+        n = symbol('n')
+
+        # Geometric series: sum(r^n) converges if |r| < 1
+        r = expr('1/2')
+        series = expr('(1/2)^n')
+        converges, test = series_converges(series, n, test='ratio')
+        print(f"Geometric series converges: {converges}")  # True
+
+        # Ratio test for factorial series
+        series = expr('n! / (2^n)')
+        converges, test = series_converges(series, n, test='ratio')
+        print(f"Factorial series: {converges}")  # False (diverges)
+
+        # p-series: sum(1/n^p) converges if p > 1
+        p_series = expr('1/(n^2)')
+        converges, test = series_converges(p_series, n, test='integral')
+        print(f"p-series (p=2): {converges}")  # True
+
+      rust: |
+        use mathhook::{symbol, expr};
+        use mathhook::calculus::series::series_converges;
+
+        let n = symbol!(n);
+
+        // Geometric series
+        let series = expr!((1/2)^n);
+        let (converges, test_name) = series_converges(&series, &n, "ratio");
+        println!("Geometric series converges: {}", converges);
+
+        // p-series
+        let p_series = expr!(1 / (n^2));
+        let (converges, test_name) = series_converges(&p_series, &n, "integral");
+        println!("p-series converges: {}", converges);
+
+      nodejs: |
+        const { symbol, expr, seriesConverges } = require('mathhook');
+
+        const n = symbol('n');
+
+        // Geometric series
+        const series = expr('(1/2)^n');
+        const { converges, test } = seriesConverges(series, n, { test: 'ratio' });
+        console.log(`Geometric series converges: ${converges}`);
+
+        // p-series
+        const pSeries = expr('1/(n^2)');
+        const result = seriesConverges(pSeries, n, { test: 'integral' });
+        console.log(`p-series converges: ${result.converges}`);
+
+    expected_output: |
+      Geometric series converges: True (ratio test: limit = 1/2 < 1)
+      Factorial series: False (ratio test: limit = ∞)
+      p-series (p=2): True (integral test)
+
+  - title: "Taylor Series Expansion"
+    explanation: |
+      Approximate functions using Taylor series around a point.
+
+    code:
+      python: |
+        from mathhook import symbol, expr, taylor_series
+
+        x = symbol('x')
+
+        # Taylor series for exp(x) around x=0
+        exp_taylor = taylor_series(expr('exp(x)'), x, 0, order=5)
+        print(f"exp(x) ≈ {exp_taylor}")
+        # 1 + x + x²/2 + x³/6 + x⁴/24 + x⁵/120
+
+        # Taylor series for sin(x) around x=0
+        sin_taylor = taylor_series(expr('sin(x)'), x, 0, order=7)
+        print(f"sin(x) ≈ {sin_taylor}")
+        # x - x³/6 + x⁵/120 - x⁷/5040
+
+        # Taylor series for ln(1+x) around x=0
+        ln_taylor = taylor_series(expr('log(1+x)'), x, 0, order=4)
+        print(f"ln(1+x) ≈ {ln_taylor}")
+        # x - x²/2 + x³/3 - x⁴/4
+
+        # Approximate value using Taylor series
+        approx = exp_taylor.subs(x, 0.5).evalf()
+        print(f"e^0.5 ≈ {approx}")  # ≈ 1.648
+
+      rust: |
+        use mathhook::{symbol, expr};
+        use mathhook::calculus::series::taylor_series;
+
+        let x = symbol!(x);
+
+        // exp(x) Taylor series
+        let exp_taylor = taylor_series(&expr!(exp(x)), &x, &expr!(0), 5);
+        println!("exp(x) ≈ {}", exp_taylor);
+
+        // sin(x) Taylor series
+        let sin_taylor = taylor_series(&expr!(sin(x)), &x, &expr!(0), 7);
+        println!("sin(x) ≈ {}", sin_taylor);
+
+        // Numerical approximation
+        let approx = exp_taylor.subs(&x, &expr!(0.5)).evalf();
+        println!("e^0.5 ≈ {}", approx);
+
+      nodejs: |
+        const { symbol, expr, taylorSeries } = require('mathhook');
+
+        const x = symbol('x');
+
+        // exp(x) Taylor series
+        const expTaylor = taylorSeries(expr('exp(x)'), x, 0, 5);
+        console.log(`exp(x) ≈ ${expTaylor}`);
+
+        // sin(x) Taylor series
+        const sinTaylor = taylorSeries(expr('sin(x)'), x, 0, 7);
+        console.log(`sin(x) ≈ ${sinTaylor}`);
+
+        // Approximation
+        const approx = expTaylor.subs(x, 0.5).evalf();
+        console.log(`e^0.5 ≈ ${approx}`);
+
+    expected_output: |
+      exp(x) ≈ 1 + x + x²/2! + x³/3! + x⁴/4! + x⁵/5!
+      sin(x) ≈ x - x³/3! + x⁵/5! - x⁷/7!
+      ln(1+x) ≈ x - x²/2 + x³/3 - x⁴/4
+      e^0.5 ≈ 1.6487 (exact: 1.6487...)
+
+  - title: "Fourier Series"
+    explanation: |
+      Represent periodic functions as sums of sines and cosines.
+
+    code:
+      python: |
+        from mathhook import symbol, expr, fourier_series
+
+        x = symbol('x')
+
+        # Square wave function (period 2π)
+        # f(x) = 1 for 0 < x < π, f(x) = -1 for π < x < 2π
+        square_wave = fourier_series(
+            expr('sign(sin(x))'),
+            x,
+            period=expr('2*pi'),
+            terms=5
+        )
+        print(f"Square wave ≈ {square_wave}")
+        # (4/π)[sin(x) + sin(3x)/3 + sin(5x)/5 + ...]
+
+        # Sawtooth wave function
+        sawtooth = fourier_series(
+            expr('x'),
+            x,
+            interval=(-expr('pi'), expr('pi')),
+            terms=4
+        )
+        print(f"Sawtooth ≈ {sawtooth}")
+
+      rust: |
+        use mathhook::{symbol, expr};
+        use mathhook::calculus::series::fourier_series;
+
+        let x = symbol!(x);
+
+        // Square wave
+        let square = fourier_series(
+            &expr!(sign(sin(x))),
+            &x,
+            &expr!(2*pi),
+            5
+        );
+        println!("Square wave ≈ {}", square);
+
+      nodejs: |
+        const { symbol, expr, fourierSeries } = require('mathhook');
+
+        const x = symbol('x');
+
+        // Square wave
+        const square = fourierSeries(
+            expr('sign(sin(x))'),
+            x,
+            { period: expr('2*pi'), terms: 5 }
+        );
+        console.log(`Square wave ≈ ${square}`);
+
+    expected_output: |
+      Square wave ≈ (4/π)[sin(x) + sin(3x)/3 + sin(5x)/5 + ...]
+      Sawtooth ≈ 2[sin(x) - sin(2x)/2 + sin(3x)/3 - sin(4x)/4]
+
+article:
+  sections:
+    - heading: "Sequences and Series Basics"
+      content: |
+        **Sequence**: An ordered list of numbers $$a_1, a_2, a_3, \\ldots$$
+
+        **Series**: The sum of sequence terms $$\\sum_{n=1}^{\\infty} a_n$$
+
+        **Partial Sum**: $$S_N = \\sum_{n=1}^{N} a_n = a_1 + a_2 + \\cdots + a_N$$
+
+        **Convergence**: A series converges if $$\\lim_{N\\to\\infty} S_N$$ exists and is finite.
+
+        **Geometric Series**: $$\\sum_{n=0}^{\\infty} ar^n = \\frac{a}{1-r}$$ (converges if $$|r| < 1$$)
+
+        **Harmonic Series**: $$\\sum_{n=1}^{\\infty} \\frac{1}{n}$$ diverges (even though terms → 0)
+
+    - heading: "Convergence Tests"
+      content: |
+        **Ratio Test**: For $$\\sum a_n$$, let $$L = \\lim_{n\\to\\infty} \\left|\\frac{a_{n+1}}{a_n}\\right|$$
+        - $$L < 1$$: converges absolutely
+        - $$L > 1$$: diverges
+        - $$L = 1$$: inconclusive
+
+        **Root Test**: Let $$L = \\lim_{n\\to\\infty} \\sqrt[n]{|a_n|}$$
+        - $$L < 1$$: converges absolutely
+        - $$L > 1$$: diverges
+        - $$L = 1$$: inconclusive
+
+        **Integral Test**: If $$f(n) = a_n$$ is positive, decreasing, continuous:
+        - $$\\sum a_n$$ converges ⟺ $$\\int_1^{\\infty} f(x) dx$$ converges
+
+        **Comparison Test**: If $$0 \\leq a_n \\leq b_n$$ for all $$n$$:
+        - $$\\sum b_n$$ converges ⟹ $$\\sum a_n$$ converges
+        - $$\\sum a_n$$ diverges ⟹ $$\\sum b_n$$ diverges
+
+        **Alternating Series Test**: For $$\\sum (-1)^n a_n$$ with $$a_n > 0$$:
+        - Converges if $$a_n$$ decreasing and $$\\lim a_n = 0$$
+
+    - heading: "Power Series"
+      content: |
+        **Definition**: $$\\sum_{n=0}^{\\infty} c_n(x-a)^n$$ (series in powers of $$(x-a)$$)
+
+        **Radius of Convergence** $$R$$:
+        - Series converges absolutely for $$|x-a| < R$$
+        - Series diverges for $$|x-a| > R$$
+        - Must test endpoints $$x = a ± R$$ separately
+
+        **Finding $$R$$**:
+        - Ratio test: $$\\frac{1}{R} = \\lim_{n\\to\\infty} \\left|\\frac{c_{n+1}}{c_n}\\right|$$
+        - Root test: $$\\frac{1}{R} = \\limsup_{n\\to\\infty} \\sqrt[n]{|c_n|}$$
+
+        **Operations**:
+        - Term-by-term differentiation: $$\\frac{d}{dx}\\sum c_n(x-a)^n = \\sum nc_n(x-a)^{n-1}$$
+        - Term-by-term integration: $$\\int \\sum c_n(x-a)^n dx = \\sum \\frac{c_n}{n+1}(x-a)^{n+1}$$
+
+    - heading: "Taylor and Maclaurin Series"
+      content: |
+        **Taylor Series** (around $$x = a$$):
+        $$f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(a)}{n!}(x-a)^n$$
+
+        **Maclaurin Series** (Taylor series at $$a = 0$$):
+        $$f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(0)}{n!}x^n$$
+
+        **Common Maclaurin Series**:
+        - $$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots$$
+        - $$\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - \\cdots$$
+        - $$\\cos(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!} = 1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - \\cdots$$
+        - $$\\ln(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1} x^n}{n} = x - \\frac{x^2}{2} + \\frac{x^3}{3} - \\cdots$$ ($$|x| < 1$$)
+        - $$(1+x)^\\alpha = \\sum_{n=0}^{\\infty} \\binom{\\alpha}{n} x^n$$ (binomial series)
+
+        **Taylor Remainder** (error estimate):
+        $$R_n(x) = \\frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}$$ for some $$c$$ between $$a$$ and $$x$$
+
+    - heading: "Fourier Series"
+      content: |
+        **Definition**: Represent periodic function $$f(x)$$ with period $$2L$$:
+        $$f(x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty} \\left(a_n \\cos\\frac{n\\pi x}{L} + b_n \\sin\\frac{n\\pi x}{L}\\right)$$
+
+        **Fourier Coefficients**:
+        - $$a_0 = \\frac{1}{L} \\int_{-L}^{L} f(x) dx$$
+        - $$a_n = \\frac{1}{L} \\int_{-L}^{L} f(x) \\cos\\frac{n\\pi x}{L} dx$$
+        - $$b_n = \\frac{1}{L} \\int_{-L}^{L} f(x) \\sin\\frac{n\\pi x}{L} dx$$
+
+        **Convergence** (Dirichlet conditions):
+        Fourier series converges if:
+        1. $$f$$ is periodic
+        2. $$f$$ is piecewise continuous
+        3. $$f$$ has finite number of discontinuities
+        4. $$f$$ has finite number of extrema
+
+        At discontinuities, series converges to average: $$\\frac{f(x^-) + f(x^+)}{2}$$
+
+        **Even/Odd Functions**:
+        - Even function ($$f(-x) = f(x)$$): Only cosine terms ($$b_n = 0$$)
+        - Odd function ($$f(-x) = -f(x)$$): Only sine terms ($$a_n = 0$$)
+
+use_cases:
+  - "Function approximation using Taylor series"
+  - "Signal processing with Fourier series"
+  - "Solving differential equations via power series"
+  - "Numerical analysis and approximation theory"
+  - "Physics: quantum mechanics (perturbation theory)"
+  - "Engineering: control systems and vibrations"
+
+related_topics:
+  - calculus.derivatives
+  - calculus.integration
+  - calculus.limits
+  - special_functions.gamma
+  - ode.power-series-solutions
+
+references:
+  - title: "Calculus"
+    author: "James Stewart"
+    year: 2015
+    publisher: "Cengage Learning"
+  - title: "Introduction to Fourier Analysis"
+    author: "Norman Morrison"
+    year: 1994
+    publisher: "Wiley"
+
+performance:
+  complexity: "O(n) for n terms in series expansion"
+  typical_time: "< 10ms for 10 terms, < 100ms for 100 terms"
+  benchmarks:
+    taylor_expansion_10_terms: "5ms"
+    fourier_series_20_terms: "50ms"
+    convergence_test: "< 1ms"

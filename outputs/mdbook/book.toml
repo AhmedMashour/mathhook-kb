@@ -1,0 +1,24 @@
+[book]
+title = "MathHook Documentation"
+authors = ["MathHook Team"]
+description = "Complete documentation for MathHook Computer Algebra System"
+language = "en"
+multilingual = false
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+default-theme = "rust"
+git-repository-url = "https://github.com/AhmedMashour/mathhook"
+edit-url-template = "https://github.com/AhmedMashour/mathhook/edit/master/docs/{path}"
+
+[output.html.search]
+enable = true
+limit-results = 30
+
+[output.html.playground]
+editable = true
+copyable = true
+line-numbers = true

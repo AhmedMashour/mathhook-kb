@@ -1,0 +1,102 @@
+{
+  "topic": "ode",
+  "title": "Bernoulli Differential Equations",
+  "description": "Solve nonlinear first-order Bernoulli differential equations using substitution methods with MathHook",
+  "mathematical_definition": "\\frac{dy}{dx} + P(x)y = Q(x)y^n",
+  "quick_reference": {
+    "standard_form": "$\\frac{dy}{dx} + P(x)y = Q(x)y^n$ where $n \\neq 0, 1$",
+    "substitution": "$v = y^{1-n}$",
+    "method": "Transform to linear equation in $v$",
+    "solution_steps": [
+      "Identify $P(x)$, $Q(x)$, and $n$",
+      "Make substitution $v = y^{1-n}$",
+      "Solve resulting linear equation",
+      "Back-substitute to find $y$"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Bernoulli Equation",
+      "explanation": "Solve the Bernoulli equation: $\\frac{dy}{dx} + y = xy^2$\n\n**Step 1**: Identify parameters\n- $P(x) = 1$\n- $Q(x) = x$\n- $n = 2$\n\n**Step 2**: Make substitution $v = y^{1-2} = y^{-1}$\nThen $\\frac{dv}{dx} = -y^{-2}\\frac{dy}{dx}$\n\n**Step 3**: Transform equation\nMultiply original by $-y^{-2}$:\n$-y^{-2}\\frac{dy}{dx} - y^{-1} = -x$\n\nThis becomes: $\\frac{dv}{dx} - v = -x$\n\n**Step 4**: Solve linear equation\nIntegrating factor: $\\mu(x) = e^{-x}$\nSolution: $v = -x - 1 + Ce^x$\n\n**Step 5**: Back-substitute\n$y^{-1} = -x - 1 + Ce^x$\n$y = \\frac{1}{-x - 1 + Ce^x}$\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, solve_ode\n\nx = symbol('x')\ny = symbol('y', function_of=x)\n\n# dy/dx + y = x*y^2\nequation = expr(y.diff(x) + y - x*y**2)\nsolution = solve_ode(equation, y)\nprint(f\"Solution: {solution}\")\n",
+        "rust": "use mathhook_core::{symbol, expr, solve_ode};\n\nlet x = symbol!(x);\nlet y = symbol!(y);  // Function of x\n\n// dy/dx + y = x*y^2\nlet equation = expr!(derivative(y, x) + y - x*(y^2));\nlet solution = solve_ode(&equation, &y);\nprintln!(\"Solution: {}\", solution);\n",
+        "nodejs": "const { symbol, expr, solveODE } = require('mathhook-node');\n\nconst x = symbol('x');\nconst y = symbol('y', { functionOf: x });\n\n// dy/dx + y = x*y^2\nconst equation = expr(y.diff(x).add(y).sub(x.mul(y.pow(2))));\nconst solution = solveODE(equation, y);\nconsole.log(`Solution: ${solution}`);\n"
+      }
+    },
+    {
+      "title": "Bernoulli with Negative Power",
+      "explanation": "Solve: $\\frac{dy}{dx} - 2xy = -x y^{-1}$\n\nHere $n = -1$, so substitution is $v = y^{1-(-1)} = y^2$\n\nThis transforms to: $\\frac{dv}{dx} - 4xv = -2x$\n\nA linear equation we can solve with integrating factor.\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, solve_ode\n\nx = symbol('x')\ny = symbol('y', function_of=x)\n\n# dy/dx - 2xy = -x*y^(-1)\nequation = expr(y.diff(x) - 2*x*y + x*y**(-1))\nsolution = solve_ode(equation, y)\nprint(f\"Solution: {solution}\")\n",
+        "rust": "use mathhook_core::{symbol, expr, solve_ode};\n\nlet x = symbol!(x);\nlet y = symbol!(y);\n\n// dy/dx - 2xy = -x*y^(-1)\nlet equation = expr!(derivative(y, x) - (2*x*y) + (x*(y^(-1))));\nlet solution = solve_ode(&equation, &y);\nprintln!(\"Solution: {}\", solution);\n",
+        "nodejs": "const { symbol, expr, solveODE } = require('mathhook-node');\n\nconst x = symbol('x');\nconst y = symbol('y', { functionOf: x });\n\n// dy/dx - 2xy = -x*y^(-1)\nconst equation = expr(y.diff(x).sub(expr(2).mul(x).mul(y)).add(x.mul(y.pow(-1))));\nconst solution = solveODE(equation, y);\nconsole.log(`Solution: ${solution}`);\n"
+      }
+    }
+  ],
+  "article": {
+    "sections": [
+      {
+        "title": "What is a Bernoulli Equation?",
+        "content": "### Definition ###\n\nA **Bernoulli differential equation** has the form:\n\n$$\\frac{dy}{dx} + P(x)y = Q(x)y^n$$\n\nwhere:\n- $P(x)$ and $Q(x)$ are functions of $x$\n- $n$ is a real number (typically $n \\neq 0, 1$)\n\n### Special Cases ###\n\n- When $n = 0$: Reduces to linear equation $\\frac{dy}{dx} + P(x)y = Q(x)$\n- When $n = 1$: Separable equation $\\frac{dy}{dx} = (Q(x) - P(x))y$\n- When $n \\neq 0, 1$: True Bernoulli equation requiring substitution\n"
+      },
+      {
+        "title": "The Substitution Method",
+        "content": "### Why Substitution Works ###\n\nThe Bernoulli equation is **nonlinear** due to the $y^n$ term. The key insight is to make a substitution that transforms it into a **linear** equation.\n\n### Standard Substitution ###\n\nLet $v = y^{1-n}$\n\nThen:\n$$\\frac{dv}{dx} = (1-n)y^{-n}\\frac{dy}{dx}$$\n\n### Transformation Steps ###\n\n1. **Multiply** the original equation by $(1-n)y^{-n}$:\n   $$(1-n)y^{-n}\\frac{dy}{dx} + (1-n)P(x)y^{1-n} = (1-n)Q(x)$$\n\n2. **Recognize** that the left side is $\\frac{dv}{dx} + (1-n)P(x)v$\n\n3. **Result**: Linear equation in $v$:\n   $$\\frac{dv}{dx} + (1-n)P(x)v = (1-n)Q(x)$$\n\n4. **Solve** using integrating factor method\n\n5. **Back-substitute**: $v = y^{1-n}$ to find $y$\n"
+      },
+      {
+        "title": "Solution Strategy",
+        "content": "### Step-by-Step Process ###\n\n**Given**: $\\frac{dy}{dx} + P(x)y = Q(x)y^n$\n\n**Step 1: Identify Parameters**\n- Extract $P(x)$, $Q(x)$, and $n$\n- Verify $n \\neq 0, 1$ (otherwise different method)\n\n**Step 2: Make Substitution**\n- Set $v = y^{1-n}$\n- Compute $\\frac{dv}{dx} = (1-n)y^{-n}\\frac{dy}{dx}$\n\n**Step 3: Transform Equation**\n- Multiply original by $(1-n)y^{-n}$\n- Express in terms of $v$ and $\\frac{dv}{dx}$\n\n**Step 4: Solve Linear Equation**\n- Use integrating factor: $\\mu(x) = e^{\\int (1-n)P(x)dx}$\n- Solve: $v = e^{-\\int (1-n)P(x)dx}\\left[\\int (1-n)Q(x)e^{\\int (1-n)P(x)dx}dx + C\\right]$\n\n**Step 5: Back-Substitute**\n- Replace $v$ with $y^{1-n}$\n- Solve for $y$: $y = v^{\\frac{1}{1-n}}$\n"
+      },
+      {
+        "title": "Common Patterns",
+        "content": "### Pattern 1: Population Growth with Limiting Factor ###\n\nEquation: $\\frac{dP}{dt} = rP - kP^2$\n\nThis is Bernoulli with $n = 2$:\n- Rewrite as: $\\frac{dP}{dt} - rP = -kP^2$\n- Substitution: $v = P^{-1}$\n- Models population with carrying capacity\n\n### Pattern 2: Chemical Reactions ###\n\nEquation: $\\frac{dC}{dt} = k_1 - k_2C^2$\n\nBernoulli form with $n = 2$:\n- Common in autocatalytic reactions\n- $v = C^{-1}$ linearizes the equation\n\n### Pattern 3: Electric Circuits ###\n\nRL circuit with nonlinear resistor:\n$L\\frac{dI}{dt} + RI = VI^{-1}$\n\nBernoulli with $n = -1$\n"
+      },
+      {
+        "title": "Special Techniques",
+        "content": "### When $n$ is Negative ###\n\nFor $n < 0$, the equation is still Bernoulli but substitution is:\n$v = y^{1-n}$ where $1-n > 1$\n\nExample: $n = -1 \\Rightarrow v = y^2$\n\n### When $n$ is Rational ###\n\nFor $n = \\frac{p}{q}$, the substitution $v = y^{1-\\frac{p}{q}}$ may involve fractional powers.\n\nSometimes easier to use $w = y^q$ to avoid fractions.\n\n### Reduction to Bernoulli ###\n\nSome equations can be **transformed** into Bernoulli form:\n\n$$x\\frac{dy}{dx} + P(x)y = Q(x)y^n$$\n\nCan be converted by substitution $t = \\ln x$\n"
+      },
+      {
+        "title": "Verification of Solutions",
+        "content": "### Always Verify ###\n\nAfter solving, **substitute back** into original equation:\n\n1. Compute $\\frac{dy}{dx}$ from your solution\n2. Substitute $y$ and $\\frac{dy}{dx}$ into $\\frac{dy}{dx} + P(x)y = Q(x)y^n$\n3. Simplify and verify both sides are equal\n\n### Check Boundary Conditions ###\n\n- If initial condition $y(x_0) = y_0$ is given, verify it's satisfied\n- Ensure solution doesn't have singularities in the domain of interest\n\n### Domain Considerations ###\n\n- Solution $y = v^{\\frac{1}{1-n}}$ may have restrictions\n- For $n > 1$: $v$ must be positive if $\\frac{1}{1-n}$ has even denominator\n- Check where solution is defined and continuous\n"
+      }
+    ]
+  },
+  "related_topics": [
+    {
+      "slug": "ode-first_order-linear",
+      "title": "Linear First-Order ODEs",
+      "description": "Foundation for Bernoulli method"
+    },
+    {
+      "slug": "ode-first_order-separable",
+      "title": "Separable Differential Equations",
+      "description": "Alternative method for some Bernoulli cases"
+    },
+    {
+      "slug": "calculus-integration",
+      "title": "Integration Techniques",
+      "description": "Required for solving transformed equation"
+    }
+  ],
+  "references": [
+    {
+      "title": "Ordinary Differential Equations",
+      "author": "Morris Tenenbaum and Harry Pollard",
+      "year": 1985,
+      "publisher": "Dover Publications"
+    },
+    {
+      "title": "Elementary Differential Equations",
+      "author": "William E. Boyce and Richard C. DiPrima",
+      "year": 2017,
+      "publisher": "Wiley"
+    },
+    {
+      "title": "Differential Equations with Applications and Historical Notes",
+      "author": "George F. Simmons",
+      "year": 2016,
+      "publisher": "CRC Press"
+    }
+  ]
+}

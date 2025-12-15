@@ -1,0 +1,468 @@
+topic: algebra.matrix-operations
+title: Matrix Operations and Linear Algebra
+description: |
+  Comprehensive matrix operations including arithmetic, decompositions (LU, QR, SVD),
+  eigenvalues, determinants, and solving linear systems. Essential for linear algebra,
+  numerical analysis, and scientific computing.
+
+mathematical_definition: |
+  A matrix $A \in \mathbb{R}^{m \times n}$ is a rectangular array of numbers with $m$ rows
+  and $n$ columns. Matrix operations form the foundation of linear algebra.
+
+code_refs:
+  rust: mathhook_core::matrix
+  python: mathhook.matrix
+  nodejs: mathhook.matrix
+
+quick_reference:
+  basic_operations:
+    - "Addition: $C = A + B$ (element-wise, same dimensions)"
+    - "Scalar multiplication: $B = \\lambda A$"
+    - "Matrix multiplication: $C = AB$ (requires $\\\text{cols}(A) = \\\text{rows}(B)$)"
+    - "Transpose: $A^T$ (flip rows and columns)"
+  properties:
+    - "Determinant: $\\det(A)$ (square matrices only)"
+    - "Trace: $\\text{tr}(A) = \\sum_{i} a_{ii}$ (sum of diagonal)"
+    - "Rank: dimension of column/row space"
+    - "Inverse: $A^{-1}$ such that $AA^{-1} = I$"
+  decompositions:
+    - "LU: $A = LU$ (lower-upper triangular)"
+    - "QR: $A = QR$ (orthogonal × upper triangular)"
+    - "SVD: $A = U\\Sigma V^T$ (singular value decomposition)"
+    - "Eigendecomposition: $A = Q\\Lambda Q^{-1}$"
+
+examples:
+  - title: "Basic Matrix Operations"
+    explanation: |
+      Fundamental matrix arithmetic operations.
+
+    code:
+      python: |
+        from mathhook import Matrix
+
+        # Create matrices
+        A = Matrix([[1, 2], [3, 4]])
+        B = Matrix([[5, 6], [7, 8]])
+
+        # Addition
+        C = A + B
+        print(f"A + B =\n{C}")
+        # [[6, 8], [10, 12]]
+
+        # Scalar multiplication
+        D = 3 * A
+        print(f"3*A =\n{D}")
+        # [[3, 6], [9, 12]]
+
+        # Matrix multiplication
+        E = A @ B  # or A.mul(B)
+        print(f"A*B =\n{E}")
+        # [[19, 22], [43, 50]]
+
+        # Transpose
+        A_T = A.transpose()
+        print(f"A^T =\n{A_T}")
+        # [[1, 3], [2, 4]]
+
+      rust: |
+        use mathhook::matrix::Matrix;
+
+        // Create matrices
+        let a = Matrix::from_vec(vec![vec![1, 2], vec![3, 4]]);
+        let b = Matrix::from_vec(vec![vec![5, 6], vec![7, 8]]);
+
+        // Addition
+        let c = &a + &b;
+        println!("A + B =\n{}", c);
+
+        // Scalar multiplication
+        let d = &a * 3;
+        println!("3*A =\n{}", d);
+
+        // Matrix multiplication
+        let e = &a * &b;
+        println!("A*B =\n{}", e);
+
+        // Transpose
+        let a_t = a.transpose();
+        println!("A^T =\n{}", a_t);
+
+      nodejs: |
+        const { Matrix } = require('mathhook');
+
+        const A = Matrix.from([[1, 2], [3, 4]]);
+        const B = Matrix.from([[5, 6], [7, 8]]);
+
+        // Addition
+        const C = A.add(B);
+        console.log(`A + B =\n${C}`);
+
+        // Scalar multiplication
+        const D = A.scale(3);
+        console.log(`3*A =\n${D}`);
+
+        // Matrix multiplication
+        const E = A.mul(B);
+        console.log(`A*B =\n${E}`);
+
+        // Transpose
+        const A_T = A.transpose();
+        console.log(`A^T =\n${A_T}`);
+
+    expected_output: |
+      A + B = [[6, 8], [10, 12]]
+      3*A = [[3, 6], [9, 12]]
+      A*B = [[19, 22], [43, 50]]
+      A^T = [[1, 3], [2, 4]]
+
+  - title: "Determinant and Inverse"
+    explanation: |
+      Compute determinant and matrix inverse (for invertible square matrices).
+
+    code:
+      python: |
+        from mathhook import Matrix
+
+        A = Matrix([[1, 2], [3, 4]])
+
+        # Determinant
+        det_A = A.det()
+        print(f"det(A) = {det_A}")  # -2
+
+        # Inverse
+        A_inv = A.inverse()
+        print(f"A^(-1) =\n{A_inv}")
+        # [[-2, 1], [1.5, -0.5]]
+
+        # Verify: A * A^(-1) = I
+        I = A @ A_inv
+        print(f"A * A^(-1) =\n{I}")
+        # [[1, 0], [0, 1]]
+
+        # Larger matrix
+        B = Matrix([[2, -1, 0], [1, 3, 1], [0, 2, -1]])
+        det_B = B.det()
+        print(f"det(B) = {det_B}")  # -11
+
+      rust: |
+        use mathhook::matrix::Matrix;
+
+        let a = Matrix::from_vec(vec![vec![1, 2], vec![3, 4]]);
+
+        // Determinant
+        let det_a = a.det();
+        println!("det(A) = {}", det_a);  // -2
+
+        // Inverse
+        let a_inv = a.inverse().unwrap();
+        println!("A^(-1) =\n{}", a_inv);
+
+        // Verify
+        let identity = &a * &a_inv;
+        println!("A * A^(-1) =\n{}", identity);
+
+      nodejs: |
+        const { Matrix } = require('mathhook');
+
+        const A = Matrix.from([[1, 2], [3, 4]]);
+
+        // Determinant
+        const detA = A.det();
+        console.log(`det(A) = ${detA}`);  // -2
+
+        // Inverse
+        const AInv = A.inverse();
+        console.log(`A^(-1) =\n${AInv}`);
+
+        // Verify
+        const I = A.mul(AInv);
+        console.log(`A * A^(-1) =\n${I}`);
+
+    expected_output: |
+      det(A) = -2
+      A^(-1) = [[-2, 1], [1.5, -0.5]]
+      A * A^(-1) = [[1, 0], [0, 1]]
+
+  - title: "Eigenvalues and Eigenvectors"
+    explanation: |
+      Find eigenvalues λ and eigenvectors v such that Av = λv.
+
+    code:
+      python: |
+        from mathhook import Matrix
+
+        A = Matrix([[4, 1], [2, 3]])
+
+        # Eigenvalues and eigenvectors
+        eigenvalues, eigenvectors = A.eigen()
+
+        print(f"Eigenvalues: {eigenvalues}")
+        # [5, 2]
+
+        print(f"Eigenvectors:\n{eigenvectors}")
+        # [[1, -1], [2, 1]] (column vectors)
+
+        # Verify: A*v = λ*v
+        v1 = eigenvectors.col(0)
+        lambda1 = eigenvalues[0]
+        Av1 = A @ v1
+        lambda_v1 = lambda1 * v1
+        print(f"A*v1 = {Av1}")
+        print(f"λ1*v1 = {lambda_v1}")
+        # Should be equal
+
+      rust: |
+        use mathhook::matrix::Matrix;
+
+        let a = Matrix::from_vec(vec![vec![4, 1], vec![2, 3]]);
+
+        // Eigenvalues and eigenvectors
+        let (eigenvalues, eigenvectors) = a.eigen();
+
+        println!("Eigenvalues: {:?}", eigenvalues);
+        println!("Eigenvectors:\n{}", eigenvectors);
+
+        // Verify A*v = λ*v
+        let v1 = eigenvectors.column(0);
+        let lambda1 = eigenvalues[0];
+        let av1 = &a * &v1;
+        let lambda_v1 = &v1 * lambda1;
+        println!("A*v1 = {}", av1);
+        println!("λ1*v1 = {}", lambda_v1);
+
+      nodejs: |
+        const { Matrix } = require('mathhook');
+
+        const A = Matrix.from([[4, 1], [2, 3]]);
+
+        // Eigenvalues and eigenvectors
+        const { eigenvalues, eigenvectors } = A.eigen();
+
+        console.log(`Eigenvalues: ${eigenvalues}`);
+        console.log(`Eigenvectors:\n${eigenvectors}`);
+
+        // Verify A*v = λ*v
+        const v1 = eigenvectors.col(0);
+        const lambda1 = eigenvalues[0];
+        const Av1 = A.mul(v1);
+        const lambdaV1 = v1.scale(lambda1);
+
+    expected_output: |
+      Eigenvalues: [5, 2]
+      Eigenvectors: [[1, -1], [2, 1]]
+      A*v = λ*v verified
+
+  - title: "LU Decomposition"
+    explanation: |
+      Decompose A into lower triangular L and upper triangular U: A = LU.
+      Useful for solving linear systems efficiently.
+
+    code:
+      python: |
+        from mathhook import Matrix
+
+        A = Matrix([[2, 1, 1], [4, -6, 0], [-2, 7, 2]])
+
+        # LU decomposition
+        L, U = A.lu()
+
+        print(f"L (lower triangular) =\n{L}")
+        print(f"U (upper triangular) =\n{U}")
+
+        # Verify: L * U = A
+        product = L @ U
+        print(f"L*U =\n{product}")
+        # Should equal A
+
+        # Use LU to solve Ax = b
+        b = Matrix([[8], [-2], [3]])
+        x = A.solve_lu(b)
+        print(f"Solution x =\n{x}")
+
+      rust: |
+        use mathhook::matrix::Matrix;
+
+        let a = Matrix::from_vec(vec![
+            vec![2, 1, 1],
+            vec![4, -6, 0],
+            vec![-2, 7, 2]
+        ]);
+
+        // LU decomposition
+        let (l, u) = a.lu();
+
+        println!("L =\n{}", l);
+        println!("U =\n{}", u);
+
+        // Verify
+        let product = &l * &u;
+        println!("L*U =\n{}", product);
+
+      nodejs: |
+        const { Matrix } = require('mathhook');
+
+        const A = Matrix.from([[2, 1, 1], [4, -6, 0], [-2, 7, 2]]);
+
+        // LU decomposition
+        const { L, U } = A.lu();
+
+        console.log(`L =\n${L}`);
+        console.log(`U =\n${U}`);
+
+        // Verify
+        const product = L.mul(U);
+        console.log(`L*U =\n${product}`);
+
+    expected_output: |
+      L*U = A (verified)
+      LU decomposition enables efficient solving
+
+article:
+  sections:
+    - heading: "Matrix Basics"
+      content: |
+        A matrix is a rectangular array of numbers:
+
+        $$A = \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn}
+        \end{bmatrix}$$
+
+        **Dimensions**: $A \in \mathbb{R}^{m \times n}$ has $m$ rows and $n$ columns
+
+        **Special Matrices**:
+        - **Identity**: $I_n$ has 1s on diagonal, 0s elsewhere
+        - **Zero**: All elements are 0
+        - **Diagonal**: Non-zero only on diagonal
+        - **Symmetric**: $A = A^T$
+        - **Orthogonal**: $Q^TQ = I$
+
+    - heading: "Matrix Operations"
+      content: |
+        **Addition** (element-wise, same dimensions):
+        $$(A + B)_{ij} = a_{ij} + b_{ij}$$
+
+        **Scalar multiplication**:
+        $$(\lambda A)_{ij} = \lambda a_{ij}$$
+
+        **Matrix multiplication** (rows × columns):
+        $$(AB)_{ik} = \\sum_{j} a_{ij} b_{jk}$$
+
+        Properties:
+        - Associative: $(AB)C = A(BC)$
+        - Distributive: $A(B + C) = AB + AC$
+        - NOT commutative: $AB \neq BA$ in general
+        - Transpose: $(AB)^T = B^T A^T$
+
+    - heading: "Determinant"
+      content: |
+        For square matrix $A \in \mathbb{R}^{n \times n}$:
+
+        **2×2 case**:
+        $$\det\begin{bmatrix}a & b \\ c & d\end{bmatrix} = ad - bc$$
+
+        **3×3 case** (cofactor expansion):
+        $$\\det(A) = a_{11}C_{11} + a_{12}C_{12} + a_{13}C_{13}$$
+
+        where $C_{ij} = (-1)^{i+j}M_{ij}$ (cofactor) and $M_{ij}$ is minor
+
+        **Properties**:
+        - $\\det(AB) = \\det(A)\\det(B)$
+        - $\\det(A^T) = \\det(A)$
+        - $\\det(A^{-1}) = 1/\\det(A)$
+        - Matrix invertible ⟺ $\\det(A) \neq 0$
+
+    - heading: "Matrix Inverse"
+      content: |
+        For invertible $A$, the inverse $A^{-1}$ satisfies:
+        $$AA^{-1} = A^{-1}A = I$$
+
+        **Computation methods**:
+        - **Cofactor method**: $A^{-1} = \frac{1}{\\det(A)}\\text{adj}(A)$
+        - **Gaussian elimination**: Augment $[A|I]$, reduce to $[I|A^{-1}]$
+        - **LU decomposition**: Solve $Ax = e_i$ for each column
+
+        **Properties**:
+        - $(AB)^{-1} = B^{-1}A^{-1}$
+        - $(A^T)^{-1} = (A^{-1})^T$
+        - $(A^{-1})^{-1} = A$
+
+    - heading: "Eigenvalues and Eigenvectors"
+      content: |
+        For square matrix $A$, eigenvalue $\lambda$ and eigenvector $v$ satisfy:
+        $$Av = \lambda v$$
+
+        **Characteristic equation**:
+        $$\\det(A - \lambda I) = 0$$
+
+        This polynomial equation gives eigenvalues.
+
+        **Properties**:
+        - $\\text{tr}(A) = \sum \lambda_i$ (sum of eigenvalues = trace)
+        - $\\det(A) = \\prod \lambda_i$ (product of eigenvalues = determinant)
+        - Symmetric matrices have real eigenvalues
+        - Orthogonal eigenvectors for symmetric matrices
+
+        **Diagonalization**:
+        If $A$ has $n$ linearly independent eigenvectors:
+        $$A = Q\\Lambda Q^{-1}$$
+        where $\\Lambda = \\text{diag}(\lambda_1, ..., \lambda_n)$
+
+    - heading: "Matrix Decompositions"
+      content: |
+        **LU Decomposition**: $A = LU$
+        - $L$ is lower triangular
+        - $U$ is upper triangular
+        - Efficient for solving $Ax = b$
+
+        **QR Decomposition**: $A = QR$
+        - $Q$ is orthogonal ($Q^TQ = I$)
+        - $R$ is upper triangular
+        - Used in least squares, eigenvalue algorithms
+
+        **Singular Value Decomposition (SVD)**: $A = U\\Sigma V^T$
+        - $U$, $V$ are orthogonal
+        - $\\Sigma$ is diagonal with singular values
+        - Works for any matrix (not just square)
+        - Pseudo-inverse: $A^+ = V\\Sigma^+ U^T$
+
+        **Cholesky Decomposition**: $A = LL^T$
+        - For positive definite matrices
+        - $L$ is lower triangular
+        - More efficient than LU for this case
+
+use_cases:
+  - "Solving systems of linear equations"
+  - "Computer graphics transformations"
+  - "Machine learning (neural networks, PCA)"
+  - "Quantum mechanics (operators as matrices)"
+  - "Control theory and dynamical systems"
+  - "Network analysis and graph theory"
+
+related_topics:
+  - algebra.linear-systems
+  - algebra.vector-spaces
+  - numerical.least-squares
+  - calculus.jacobian-hessian
+
+references:
+  - title: "Introduction to Linear Algebra"
+    author: "Gilbert Strang"
+    year: 2016
+    publisher: "Wellesley-Cambridge Press"
+  - title: "Matrix Computations"
+    author: "Gene H. Golub and Charles F. Van Loan"
+    year: 2013
+    publisher: "Johns Hopkins University Press"
+
+performance:
+  complexity: "O(n³) for most operations on n×n matrices, O(n²·³⁷) for Strassen multiplication"
+  typical_time: "< 1ms for 10×10 matrices, 100ms for 100×100, 10s for 1000×1000"
+  benchmarks:
+    matrix_multiply_10x10: "50μs"
+    matrix_multiply_100x100: "100ms"
+    determinant_10x10: "200μs"
+    eigenvalues_10x10: "1ms"
+    lu_decomposition_100x100: "50ms"

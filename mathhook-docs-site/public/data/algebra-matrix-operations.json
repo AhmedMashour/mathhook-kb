@@ -1,0 +1,140 @@
+{
+  "topic": "algebra.matrix-operations",
+  "title": "Matrix Operations and Linear Algebra",
+  "description": "Comprehensive matrix operations including arithmetic, decompositions (LU, QR, SVD),\neigenvalues, determinants, and solving linear systems. Essential for linear algebra,\nnumerical analysis, and scientific computing.\n",
+  "mathematical_definition": "A matrix $A \\in \\mathbb{R}^{m \\times n}$ is a rectangular array of numbers with $m$ rows\nand $n$ columns. Matrix operations form the foundation of linear algebra.\n",
+  "code_refs": {
+    "rust": "mathhook_core::matrix",
+    "python": "mathhook.matrix",
+    "nodejs": "mathhook.matrix"
+  },
+  "quick_reference": {
+    "basic_operations": [
+      "Addition: $C = A + B$ (element-wise, same dimensions)",
+      "Scalar multiplication: $B = \\lambda A$",
+      "Matrix multiplication: $C = AB$ (requires $\\\text{cols}(A) = \\\text{rows}(B)$)",
+      "Transpose: $A^T$ (flip rows and columns)"
+    ],
+    "properties": [
+      "Determinant: $\\det(A)$ (square matrices only)",
+      "Trace: $\\text{tr}(A) = \\sum_{i} a_{ii}$ (sum of diagonal)",
+      "Rank: dimension of column/row space",
+      "Inverse: $A^{-1}$ such that $AA^{-1} = I$"
+    ],
+    "decompositions": [
+      "LU: $A = LU$ (lower-upper triangular)",
+      "QR: $A = QR$ (orthogonal \u00d7 upper triangular)",
+      "SVD: $A = U\\Sigma V^T$ (singular value decomposition)",
+      "Eigendecomposition: $A = Q\\Lambda Q^{-1}$"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Matrix Operations",
+      "explanation": "Fundamental matrix arithmetic operations.\n",
+      "code": {
+        "python": "from mathhook import Matrix\n\n# Create matrices\nA = Matrix([[1, 2], [3, 4]])\nB = Matrix([[5, 6], [7, 8]])\n\n# Addition\nC = A + B\nprint(f\"A + B =\\n{C}\")\n# [[6, 8], [10, 12]]\n\n# Scalar multiplication\nD = 3 * A\nprint(f\"3*A =\\n{D}\")\n# [[3, 6], [9, 12]]\n\n# Matrix multiplication\nE = A @ B  # or A.mul(B)\nprint(f\"A*B =\\n{E}\")\n# [[19, 22], [43, 50]]\n\n# Transpose\nA_T = A.transpose()\nprint(f\"A^T =\\n{A_T}\")\n# [[1, 3], [2, 4]]\n",
+        "rust": "use mathhook::matrix::Matrix;\n\n// Create matrices\nlet a = Matrix::from_vec(vec![vec![1, 2], vec![3, 4]]);\nlet b = Matrix::from_vec(vec![vec![5, 6], vec![7, 8]]);\n\n// Addition\nlet c = &a + &b;\nprintln!(\"A + B =\\n{}\", c);\n\n// Scalar multiplication\nlet d = &a * 3;\nprintln!(\"3*A =\\n{}\", d);\n\n// Matrix multiplication\nlet e = &a * &b;\nprintln!(\"A*B =\\n{}\", e);\n\n// Transpose\nlet a_t = a.transpose();\nprintln!(\"A^T =\\n{}\", a_t);\n",
+        "nodejs": "const { Matrix } = require('mathhook');\n\nconst A = Matrix.from([[1, 2], [3, 4]]);\nconst B = Matrix.from([[5, 6], [7, 8]]);\n\n// Addition\nconst C = A.add(B);\nconsole.log(`A + B =\\n${C}`);\n\n// Scalar multiplication\nconst D = A.scale(3);\nconsole.log(`3*A =\\n${D}`);\n\n// Matrix multiplication\nconst E = A.mul(B);\nconsole.log(`A*B =\\n${E}`);\n\n// Transpose\nconst A_T = A.transpose();\nconsole.log(`A^T =\\n${A_T}`);\n"
+      },
+      "expected_output": "A + B = [[6, 8], [10, 12]]\n3*A = [[3, 6], [9, 12]]\nA*B = [[19, 22], [43, 50]]\nA^T = [[1, 3], [2, 4]]\n"
+    },
+    {
+      "title": "Determinant and Inverse",
+      "explanation": "Compute determinant and matrix inverse (for invertible square matrices).\n",
+      "code": {
+        "python": "from mathhook import Matrix\n\nA = Matrix([[1, 2], [3, 4]])\n\n# Determinant\ndet_A = A.det()\nprint(f\"det(A) = {det_A}\")  # -2\n\n# Inverse\nA_inv = A.inverse()\nprint(f\"A^(-1) =\\n{A_inv}\")\n# [[-2, 1], [1.5, -0.5]]\n\n# Verify: A * A^(-1) = I\nI = A @ A_inv\nprint(f\"A * A^(-1) =\\n{I}\")\n# [[1, 0], [0, 1]]\n\n# Larger matrix\nB = Matrix([[2, -1, 0], [1, 3, 1], [0, 2, -1]])\ndet_B = B.det()\nprint(f\"det(B) = {det_B}\")  # -11\n",
+        "rust": "use mathhook::matrix::Matrix;\n\nlet a = Matrix::from_vec(vec![vec![1, 2], vec![3, 4]]);\n\n// Determinant\nlet det_a = a.det();\nprintln!(\"det(A) = {}\", det_a);  // -2\n\n// Inverse\nlet a_inv = a.inverse().unwrap();\nprintln!(\"A^(-1) =\\n{}\", a_inv);\n\n// Verify\nlet identity = &a * &a_inv;\nprintln!(\"A * A^(-1) =\\n{}\", identity);\n",
+        "nodejs": "const { Matrix } = require('mathhook');\n\nconst A = Matrix.from([[1, 2], [3, 4]]);\n\n// Determinant\nconst detA = A.det();\nconsole.log(`det(A) = ${detA}`);  // -2\n\n// Inverse\nconst AInv = A.inverse();\nconsole.log(`A^(-1) =\\n${AInv}`);\n\n// Verify\nconst I = A.mul(AInv);\nconsole.log(`A * A^(-1) =\\n${I}`);\n"
+      },
+      "expected_output": "det(A) = -2\nA^(-1) = [[-2, 1], [1.5, -0.5]]\nA * A^(-1) = [[1, 0], [0, 1]]\n"
+    },
+    {
+      "title": "Eigenvalues and Eigenvectors",
+      "explanation": "Find eigenvalues \u03bb and eigenvectors v such that Av = \u03bbv.\n",
+      "code": {
+        "python": "from mathhook import Matrix\n\nA = Matrix([[4, 1], [2, 3]])\n\n# Eigenvalues and eigenvectors\neigenvalues, eigenvectors = A.eigen()\n\nprint(f\"Eigenvalues: {eigenvalues}\")\n# [5, 2]\n\nprint(f\"Eigenvectors:\\n{eigenvectors}\")\n# [[1, -1], [2, 1]] (column vectors)\n\n# Verify: A*v = \u03bb*v\nv1 = eigenvectors.col(0)\nlambda1 = eigenvalues[0]\nAv1 = A @ v1\nlambda_v1 = lambda1 * v1\nprint(f\"A*v1 = {Av1}\")\nprint(f\"\u03bb1*v1 = {lambda_v1}\")\n# Should be equal\n",
+        "rust": "use mathhook::matrix::Matrix;\n\nlet a = Matrix::from_vec(vec![vec![4, 1], vec![2, 3]]);\n\n// Eigenvalues and eigenvectors\nlet (eigenvalues, eigenvectors) = a.eigen();\n\nprintln!(\"Eigenvalues: {:?}\", eigenvalues);\nprintln!(\"Eigenvectors:\\n{}\", eigenvectors);\n\n// Verify A*v = \u03bb*v\nlet v1 = eigenvectors.column(0);\nlet lambda1 = eigenvalues[0];\nlet av1 = &a * &v1;\nlet lambda_v1 = &v1 * lambda1;\nprintln!(\"A*v1 = {}\", av1);\nprintln!(\"\u03bb1*v1 = {}\", lambda_v1);\n",
+        "nodejs": "const { Matrix } = require('mathhook');\n\nconst A = Matrix.from([[4, 1], [2, 3]]);\n\n// Eigenvalues and eigenvectors\nconst { eigenvalues, eigenvectors } = A.eigen();\n\nconsole.log(`Eigenvalues: ${eigenvalues}`);\nconsole.log(`Eigenvectors:\\n${eigenvectors}`);\n\n// Verify A*v = \u03bb*v\nconst v1 = eigenvectors.col(0);\nconst lambda1 = eigenvalues[0];\nconst Av1 = A.mul(v1);\nconst lambdaV1 = v1.scale(lambda1);\n"
+      },
+      "expected_output": "Eigenvalues: [5, 2]\nEigenvectors: [[1, -1], [2, 1]]\nA*v = \u03bb*v verified\n"
+    },
+    {
+      "title": "LU Decomposition",
+      "explanation": "Decompose A into lower triangular L and upper triangular U: A = LU.\nUseful for solving linear systems efficiently.\n",
+      "code": {
+        "python": "from mathhook import Matrix\n\nA = Matrix([[2, 1, 1], [4, -6, 0], [-2, 7, 2]])\n\n# LU decomposition\nL, U = A.lu()\n\nprint(f\"L (lower triangular) =\\n{L}\")\nprint(f\"U (upper triangular) =\\n{U}\")\n\n# Verify: L * U = A\nproduct = L @ U\nprint(f\"L*U =\\n{product}\")\n# Should equal A\n\n# Use LU to solve Ax = b\nb = Matrix([[8], [-2], [3]])\nx = A.solve_lu(b)\nprint(f\"Solution x =\\n{x}\")\n",
+        "rust": "use mathhook::matrix::Matrix;\n\nlet a = Matrix::from_vec(vec![\n    vec![2, 1, 1],\n    vec![4, -6, 0],\n    vec![-2, 7, 2]\n]);\n\n// LU decomposition\nlet (l, u) = a.lu();\n\nprintln!(\"L =\\n{}\", l);\nprintln!(\"U =\\n{}\", u);\n\n// Verify\nlet product = &l * &u;\nprintln!(\"L*U =\\n{}\", product);\n",
+        "nodejs": "const { Matrix } = require('mathhook');\n\nconst A = Matrix.from([[2, 1, 1], [4, -6, 0], [-2, 7, 2]]);\n\n// LU decomposition\nconst { L, U } = A.lu();\n\nconsole.log(`L =\\n${L}`);\nconsole.log(`U =\\n${U}`);\n\n// Verify\nconst product = L.mul(U);\nconsole.log(`L*U =\\n${product}`);\n"
+      },
+      "expected_output": "L*U = A (verified)\nLU decomposition enables efficient solving\n"
+    }
+  ],
+  "article": {
+    "sections": [
+      {
+        "heading": "Matrix Basics",
+        "content": "A matrix is a rectangular array of numbers:\n\n$$A = \\begin{bmatrix}\na_{11} & a_{12} & \\cdots & a_{1n} \\\\\na_{21} & a_{22} & \\cdots & a_{2n} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\na_{m1} & a_{m2} & \\cdots & a_{mn}\n\\end{bmatrix}$$\n\n**Dimensions**: $A \\in \\mathbb{R}^{m \\times n}$ has $m$ rows and $n$ columns\n\n**Special Matrices**:\n- **Identity**: $I_n$ has 1s on diagonal, 0s elsewhere\n- **Zero**: All elements are 0\n- **Diagonal**: Non-zero only on diagonal\n- **Symmetric**: $A = A^T$\n- **Orthogonal**: $Q^TQ = I$\n"
+      },
+      {
+        "heading": "Matrix Operations",
+        "content": "**Addition** (element-wise, same dimensions):\n$$(A + B)_{ij} = a_{ij} + b_{ij}$$\n\n**Scalar multiplication**:\n$$(\\lambda A)_{ij} = \\lambda a_{ij}$$\n\n**Matrix multiplication** (rows \u00d7 columns):\n$$(AB)_{ik} = \\\\sum_{j} a_{ij} b_{jk}$$\n\nProperties:\n- Associative: $(AB)C = A(BC)$\n- Distributive: $A(B + C) = AB + AC$\n- NOT commutative: $AB \\neq BA$ in general\n- Transpose: $(AB)^T = B^T A^T$\n"
+      },
+      {
+        "heading": "Determinant",
+        "content": "For square matrix $A \\in \\mathbb{R}^{n \\times n}$:\n\n**2\u00d72 case**:\n$$\\det\\begin{bmatrix}a & b \\\\ c & d\\end{bmatrix} = ad - bc$$\n\n**3\u00d73 case** (cofactor expansion):\n$$\\\\det(A) = a_{11}C_{11} + a_{12}C_{12} + a_{13}C_{13}$$\n\nwhere $C_{ij} = (-1)^{i+j}M_{ij}$ (cofactor) and $M_{ij}$ is minor\n\n**Properties**:\n- $\\\\det(AB) = \\\\det(A)\\\\det(B)$\n- $\\\\det(A^T) = \\\\det(A)$\n- $\\\\det(A^{-1}) = 1/\\\\det(A)$\n- Matrix invertible \u27fa $\\\\det(A) \\neq 0$\n"
+      },
+      {
+        "heading": "Matrix Inverse",
+        "content": "For invertible $A$, the inverse $A^{-1}$ satisfies:\n$$AA^{-1} = A^{-1}A = I$$\n\n**Computation methods**:\n- **Cofactor method**: $A^{-1} = \\frac{1}{\\\\det(A)}\\\\text{adj}(A)$\n- **Gaussian elimination**: Augment $[A|I]$, reduce to $[I|A^{-1}]$\n- **LU decomposition**: Solve $Ax = e_i$ for each column\n\n**Properties**:\n- $(AB)^{-1} = B^{-1}A^{-1}$\n- $(A^T)^{-1} = (A^{-1})^T$\n- $(A^{-1})^{-1} = A$\n"
+      },
+      {
+        "heading": "Eigenvalues and Eigenvectors",
+        "content": "For square matrix $A$, eigenvalue $\\lambda$ and eigenvector $v$ satisfy:\n$$Av = \\lambda v$$\n\n**Characteristic equation**:\n$$\\\\det(A - \\lambda I) = 0$$\n\nThis polynomial equation gives eigenvalues.\n\n**Properties**:\n- $\\\\text{tr}(A) = \\sum \\lambda_i$ (sum of eigenvalues = trace)\n- $\\\\det(A) = \\\\prod \\lambda_i$ (product of eigenvalues = determinant)\n- Symmetric matrices have real eigenvalues\n- Orthogonal eigenvectors for symmetric matrices\n\n**Diagonalization**:\nIf $A$ has $n$ linearly independent eigenvectors:\n$$A = Q\\\\Lambda Q^{-1}$$\nwhere $\\\\Lambda = \\\\text{diag}(\\lambda_1, ..., \\lambda_n)$\n"
+      },
+      {
+        "heading": "Matrix Decompositions",
+        "content": "**LU Decomposition**: $A = LU$\n- $L$ is lower triangular\n- $U$ is upper triangular\n- Efficient for solving $Ax = b$\n\n**QR Decomposition**: $A = QR$\n- $Q$ is orthogonal ($Q^TQ = I$)\n- $R$ is upper triangular\n- Used in least squares, eigenvalue algorithms\n\n**Singular Value Decomposition (SVD)**: $A = U\\\\Sigma V^T$\n- $U$, $V$ are orthogonal\n- $\\\\Sigma$ is diagonal with singular values\n- Works for any matrix (not just square)\n- Pseudo-inverse: $A^+ = V\\\\Sigma^+ U^T$\n\n**Cholesky Decomposition**: $A = LL^T$\n- For positive definite matrices\n- $L$ is lower triangular\n- More efficient than LU for this case\n"
+      }
+    ]
+  },
+  "use_cases": [
+    "Solving systems of linear equations",
+    "Computer graphics transformations",
+    "Machine learning (neural networks, PCA)",
+    "Quantum mechanics (operators as matrices)",
+    "Control theory and dynamical systems",
+    "Network analysis and graph theory"
+  ],
+  "related_topics": [
+    "algebra.linear-systems",
+    "algebra.vector-spaces",
+    "numerical.least-squares",
+    "calculus.jacobian-hessian"
+  ],
+  "references": [
+    {
+      "title": "Introduction to Linear Algebra",
+      "author": "Gilbert Strang",
+      "year": 2016,
+      "publisher": "Wellesley-Cambridge Press"
+    },
+    {
+      "title": "Matrix Computations",
+      "author": "Gene H. Golub and Charles F. Van Loan",
+      "year": 2013,
+      "publisher": "Johns Hopkins University Press"
+    }
+  ],
+  "performance": {
+    "complexity": "O(n\u00b3) for most operations on n\u00d7n matrices, O(n\u00b2\u00b7\u00b3\u2077) for Strassen multiplication",
+    "typical_time": "< 1ms for 10\u00d710 matrices, 100ms for 100\u00d7100, 10s for 1000\u00d71000",
+    "benchmarks": {
+      "matrix_multiply_10x10": "50\u03bcs",
+      "matrix_multiply_100x100": "100ms",
+      "determinant_10x10": "200\u03bcs",
+      "eigenvalues_10x10": "1ms",
+      "lu_decomposition_100x100": "50ms"
+    }
+  }
+}

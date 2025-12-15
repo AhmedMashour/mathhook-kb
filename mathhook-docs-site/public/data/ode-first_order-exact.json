@@ -1,0 +1,108 @@
+{
+  "topic": "ode",
+  "title": "Exact Differential Equations",
+  "description": "Solve exact first-order differential equations using potential function methods with MathHook",
+  "mathematical_definition": "M(x,y)dx + N(x,y)dy = 0 \\text{ where } \\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}",
+  "quick_reference": {
+    "standard_form": "$M(x,y)dx + N(x,y)dy = 0$",
+    "exactness_test": "$\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$",
+    "solution_method": "Find potential function $F(x,y)$ where $F_x = M$ and $F_y = N$",
+    "solution_form": "$F(x,y) = C$",
+    "solution_steps": [
+      "Verify exactness condition",
+      "Integrate $M$ with respect to $x$",
+      "Differentiate result with respect to $y$",
+      "Compare with $N$ to find integration constant",
+      "Write solution as $F(x,y) = C$"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Basic Exact Equation",
+      "explanation": "Solve: $(2x + y)dx + (x + 2y)dy = 0$\n\n**Step 1**: Check exactness\n- $M(x,y) = 2x + y$, so $\\frac{\\partial M}{\\partial y} = 1$\n- $N(x,y) = x + 2y$, so $\\frac{\\partial N}{\\partial x} = 1$\n- Since $\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$, the equation is exact!\n\n**Step 2**: Find potential function $F(x,y)$\nIntegrate $M$ with respect to $x$:\n$$F(x,y) = \\int (2x + y)dx = x^2 + xy + g(y)$$\n\n**Step 3**: Determine $g(y)$\nWe need $\\frac{\\partial F}{\\partial y} = N$:\n$$\\frac{\\partial F}{\\partial y} = x + g'(y) = x + 2y$$\n\nSo $g'(y) = 2y$, which gives $g(y) = y^2$\n\n**Step 4**: Complete solution\n$F(x,y) = x^2 + xy + y^2$\n\n**Solution**: $x^2 + xy + y^2 = C$\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, solve_exact_ode\n\nx, y = symbol('x'), symbol('y')\n\n# (2x + y)dx + (x + 2y)dy = 0\nM = expr(2*x + y)\nN = expr(x + 2*y)\n\nsolution = solve_exact_ode(M, N, x, y)\nprint(f\"Solution: {solution}\")\n\n# Verify exactness\nfrom mathhook import diff\ndM_dy = diff(M, y)\ndN_dx = diff(N, x)\nprint(f\"Exactness check: \u2202M/\u2202y = {dM_dy}, \u2202N/\u2202x = {dN_dx}\")\n",
+        "rust": "use mathhook_core::{symbol, expr, solve_exact_ode, diff};\n\nlet x = symbol!(x);\nlet y = symbol!(y);\n\n// (2x + y)dx + (x + 2y)dy = 0\nlet M = expr!(2*x + y);\nlet N = expr!(x + 2*y);\n\nlet solution = solve_exact_ode(&M, &N, &x, &y);\nprintln!(\"Solution: {}\", solution);\n\n// Verify exactness\nlet dM_dy = diff(&M, &y);\nlet dN_dx = diff(&N, &x);\nprintln!(\"Exactness: \u2202M/\u2202y = {}, \u2202N/\u2202x = {}\", dM_dy, dN_dx);\n",
+        "nodejs": "const { symbol, expr, solveExactODE, diff } = require('mathhook-node');\n\nconst x = symbol('x'), y = symbol('y');\n\n// (2x + y)dx + (x + 2y)dy = 0\nconst M = expr(expr(2).mul(x).add(y));\nconst N = expr(x.add(expr(2).mul(y)));\n\nconst solution = solveExactODE(M, N, x, y);\nconsole.log(`Solution: ${solution}`);\n\n// Verify exactness\nconst dM_dy = diff(M, y);\nconst dN_dx = diff(N, x);\nconsole.log(`Exactness: \u2202M/\u2202y = ${dM_dy}, \u2202N/\u2202x = ${dN_dx}`);\n"
+      }
+    },
+    {
+      "title": "Exact Equation with Non-Exact Form (Using Integrating Factor)",
+      "explanation": "Sometimes an equation is **not exact** but can be made exact with an integrating factor.\n\nSolve: $ydx - xdy = 0$\n\n**Check exactness**:\n- $M = y$, $\\frac{\\partial M}{\\partial y} = 1$\n- $N = -x$, $\\frac{\\partial N}{\\partial x} = -1$\n- Not exact since $1 \\neq -1$\n\n**Find integrating factor**: Try $\\mu(x,y) = \\frac{1}{y^2}$\n\nMultiply equation: $\\frac{y}{y^2}dx - \\frac{x}{y^2}dy = 0$\n\nSimplifies to: $\\frac{1}{y}dx - \\frac{x}{y^2}dy = 0$\n\n**New check**:\n- $M = \\frac{1}{y}$, $\\frac{\\partial M}{\\partial y} = -\\frac{1}{y^2}$\n- $N = -\\frac{x}{y^2}$, $\\frac{\\partial N}{\\partial x} = -\\frac{1}{y^2}$\n- Now exact!\n\n**Solve**:\n$F(x,y) = \\int \\frac{1}{y}dx = \\frac{x}{y} + g(y)$\n\n$\\frac{\\partial F}{\\partial y} = -\\frac{x}{y^2} + g'(y) = -\\frac{x}{y^2}$\n\nSo $g'(y) = 0$, giving $g(y) = $ constant\n\n**Solution**: $\\frac{x}{y} = C$ or $x = Cy$\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, find_integrating_factor, solve_exact_ode\n\nx, y = symbol('x'), symbol('y')\n\n# y*dx - x*dy = 0\nM = expr(y)\nN = expr(-x)\n\n# Find integrating factor\nmu = find_integrating_factor(M, N, x, y)\nprint(f\"Integrating factor: {mu}\")\n\n# Multiply and solve\nM_new = M * mu\nN_new = N * mu\nsolution = solve_exact_ode(M_new, N_new, x, y)\nprint(f\"Solution: {solution}\")\n",
+        "rust": "use mathhook_core::{symbol, expr, find_integrating_factor, solve_exact_ode};\n\nlet x = symbol!(x);\nlet y = symbol!(y);\n\n// y*dx - x*dy = 0\nlet M = expr!(y);\nlet N = expr!(-x);\n\n// Find integrating factor\nlet mu = find_integrating_factor(&M, &N, &x, &y);\nprintln!(\"Integrating factor: {}\", mu);\n\n// Multiply and solve\nlet M_new = expr!(M * mu);\nlet N_new = expr!(N * mu);\nlet solution = solve_exact_ode(&M_new, &N_new, &x, &y);\nprintln!(\"Solution: {}\", solution);\n",
+        "nodejs": "const { symbol, expr, findIntegratingFactor, solveExactODE } = require('mathhook-node');\n\nconst x = symbol('x'), y = symbol('y');\n\n// y*dx - x*dy = 0\nconst M = expr(y);\nconst N = expr(x.neg());\n\n// Find integrating factor\nconst mu = findIntegratingFactor(M, N, x, y);\nconsole.log(`Integrating factor: ${mu}`);\n\n// Multiply and solve\nconst M_new = M.mul(mu);\nconst N_new = N.mul(mu);\nconst solution = solveExactODE(M_new, N_new, x, y);\nconsole.log(`Solution: ${solution}`);\n"
+      }
+    }
+  ],
+  "article": {
+    "sections": [
+      {
+        "title": "What is an Exact Differential Equation?",
+        "content": "### Definition ###\n\nAn **exact differential equation** has the form:\n\n$$M(x,y)dx + N(x,y)dy = 0$$\n\nwhere there exists a function $F(x,y)$ such that:\n\n$$dF = \\frac{\\partial F}{\\partial x}dx + \\frac{\\partial F}{\\partial y}dy = M(x,y)dx + N(x,y)dy$$\n\nThis means:\n- $\\frac{\\partial F}{\\partial x} = M(x,y)$\n- $\\frac{\\partial F}{\\partial y} = N(x,y)$\n\n### Why \"Exact\"? ###\n\nThe equation is called \"exact\" because the left side is an **exact differential** - it's the total differential of some function $F(x,y)$.\n\nWhen this is true, the equation $dF = 0$ immediately integrates to:\n$$F(x,y) = C$$\n\nThis is the **implicit solution**.\n"
+      },
+      {
+        "title": "The Exactness Test",
+        "content": "### How to Check Exactness ###\n\nGiven: $M(x,y)dx + N(x,y)dy = 0$\n\nThe equation is exact **if and only if**:\n\n$$\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$$\n\n### Why This Works ###\n\nIf $F(x,y)$ exists with $F_x = M$ and $F_y = N$, then by the equality of mixed partials:\n\n$$\\frac{\\partial^2 F}{\\partial y \\partial x} = \\frac{\\partial^2 F}{\\partial x \\partial y}$$\n\nwhich gives:\n\n$$\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$$\n\n### Practical Test ###\n\n1. Compute $\\frac{\\partial M}{\\partial y}$\n2. Compute $\\frac{\\partial N}{\\partial x}$\n3. If equal: exact! Proceed to find $F(x,y)$\n4. If not equal: not exact, need integrating factor\n"
+      },
+      {
+        "title": "Finding the Potential Function",
+        "content": "### Method 1: Integrate $M$ with respect to $x$ ###\n\n**Step 1**: Integrate $M(x,y)$ with respect to $x$, treating $y$ as constant:\n$$F(x,y) = \\int M(x,y)dx + g(y)$$\n\nHere $g(y)$ is an arbitrary function of $y$ (the \"constant\" of integration).\n\n**Step 2**: Differentiate with respect to $y$:\n$$\\frac{\\partial F}{\\partial y} = \\frac{\\partial}{\\partial y}\\left[\\int M(x,y)dx\\right] + g'(y)$$\n\n**Step 3**: Set equal to $N(x,y)$:\n$$\\frac{\\partial}{\\partial y}\\left[\\int M(x,y)dx\\right] + g'(y) = N(x,y)$$\n\n**Step 4**: Solve for $g'(y)$:\n$$g'(y) = N(x,y) - \\frac{\\partial}{\\partial y}\\left[\\int M(x,y)dx\\right]$$\n\n**Step 5**: Integrate to find $g(y)$:\n$$g(y) = \\int g'(y)dy$$\n\n**Step 6**: Write complete solution:\n$$F(x,y) = \\int M(x,y)dx + g(y) = C$$\n\n### Method 2: Integrate $N$ with respect to $y$ ###\n\nAlternatively, start by integrating $N$ with respect to $y$:\n$$F(x,y) = \\int N(x,y)dy + h(x)$$\n\nThen determine $h(x)$ by setting $\\frac{\\partial F}{\\partial x} = M(x,y)$.\n\nBoth methods give the same result.\n"
+      },
+      {
+        "title": "Integrating Factors",
+        "content": "### When Equation is Not Exact ###\n\nIf $\\frac{\\partial M}{\\partial y} \\neq \\frac{\\partial N}{\\partial x}$, the equation is **not exact**.\n\nHowever, we can multiply by an **integrating factor** $\\mu(x,y)$ to make it exact:\n\n$$\\mu(x,y)M(x,y)dx + \\mu(x,y)N(x,y)dy = 0$$\n\n### Finding Integrating Factors ###\n\n**Case 1**: $\\mu$ depends only on $x$, i.e., $\\mu = \\mu(x)$\n\nCondition:\n$$\\frac{1}{N}\\left(\\frac{\\partial M}{\\partial y} - \\frac{\\partial N}{\\partial x}\\right) = f(x) \\text{ (function of $x$ only)}$$\n\nThen:\n$$\\mu(x) = e^{\\int f(x)dx}$$\n\n**Case 2**: $\\mu$ depends only on $y$, i.e., $\\mu = \\mu(y)$\n\nCondition:\n$$\\frac{1}{M}\\left(\\frac{\\partial N}{\\partial x} - \\frac{\\partial M}{\\partial y}\\right) = g(y) \\text{ (function of $y$ only)}$$\n\nThen:\n$$\\mu(y) = e^{\\int g(y)dy}$$\n\n### Common Integrating Factors ###\n\n- $\\mu = \\frac{1}{xy}$\n- $\\mu = \\frac{1}{x^2 + y^2}$\n- $\\mu = \\frac{1}{x^2}$ or $\\frac{1}{y^2}$\n- $\\mu = x^n$ or $y^n$ for some integer $n$\n"
+      },
+      {
+        "title": "Geometric Interpretation",
+        "content": "### Level Curves ###\n\nThe solution $F(x,y) = C$ represents a **family of level curves** of the function $F$.\n\nEach value of $C$ gives a different curve, and these curves fill the $xy$-plane.\n\n### Direction Field ###\n\nThe equation $M(x,y)dx + N(x,y)dy = 0$ can be rewritten as:\n$$\\frac{dy}{dx} = -\\frac{M(x,y)}{N(x,y)}$$\n\nThis defines a **direction field** where the slope at each point $(x,y)$ is $-M/N$.\n\n### Orthogonal Trajectories ###\n\nThe curves $F(x,y) = C$ are **orthogonal trajectories** to the curves given by:\n$$N(x,y)dx - M(x,y)dy = 0$$\n\nThis means the two families of curves intersect at right angles.\n"
+      },
+      {
+        "title": "Common Patterns and Tricks",
+        "content": "### Pattern 1: Homogeneous Coefficients ###\n\nIf $M$ and $N$ are homogeneous of the same degree, the equation might be exact or have a simple integrating factor.\n\nExample: $M = x^2 - y^2$, $N = 2xy$ (both degree 2)\n\n### Pattern 2: Products of Functions ###\n\nEquations like $x^n y^m dx + x^p y^q dy = 0$ often have integrating factors of the form $\\mu = x^a y^b$.\n\n### Pattern 3: Exact After Rearrangement ###\n\nSometimes rearranging terms makes exactness obvious:\n\n$(y + 2x)dx + xdy = 0$ can be rewritten as $ydx + xdy + 2xdx = 0$\n\nNotice $ydx + xdy = d(xy)$, so this becomes $d(xy) + 2xdx = 0$.\n\n### Pattern 4: Grouping Terms ###\n\nLook for combinations like:\n- $ydx + xdy = d(xy)$\n- $\\frac{ydx - xdy}{y^2} = d\\left(\\frac{x}{y}\\right)$\n- $\\frac{xdy - ydx}{x^2} = d\\left(\\frac{y}{x}\\right)$\n- $\\frac{xdy - ydx}{x^2 + y^2} = d\\left(\\arctan\\frac{y}{x}\\right)$\n"
+      },
+      {
+        "title": "Verification and Special Cases",
+        "content": "### Verifying Solutions ###\n\nAfter finding $F(x,y) = C$, verify:\n\n1. **Check exactness**: $\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$ (or with integrating factor)\n2. **Check $F_x = M$**: Differentiate $F$ with respect to $x$\n3. **Check $F_y = N$**: Differentiate $F$ with respect to $y$\n4. **Substitute initial conditions**: If $y(x_0) = y_0$, find $C$\n\n### Singular Solutions ###\n\nSometimes the equation $\\frac{\\partial M}{\\partial y} = \\frac{\\partial N}{\\partial x}$ is satisfied only on certain curves.\n\nThese curves may give **singular solutions** that are not included in $F(x,y) = C$ for any $C$.\n\n### Explicit Solutions ###\n\nThe implicit solution $F(x,y) = C$ can sometimes be solved explicitly for $y = y(x)$ or $x = x(y)$.\n\nUse the **implicit function theorem** to determine when this is possible.\n"
+      }
+    ]
+  },
+  "related_topics": [
+    {
+      "slug": "calculus-partial-derivatives",
+      "title": "Partial Derivatives",
+      "description": "Required for exactness test"
+    },
+    {
+      "slug": "calculus-integration",
+      "title": "Integration Techniques",
+      "description": "Used to find potential function"
+    },
+    {
+      "slug": "ode-first_order-linear",
+      "title": "Linear First-Order ODEs",
+      "description": "Some exact equations are also linear"
+    }
+  ],
+  "references": [
+    {
+      "title": "Elementary Differential Equations",
+      "author": "William E. Boyce and Richard C. DiPrima",
+      "year": 2017,
+      "publisher": "Wiley"
+    },
+    {
+      "title": "Differential Equations with Applications and Historical Notes",
+      "author": "George F. Simmons",
+      "year": 2016,
+      "publisher": "CRC Press"
+    },
+    {
+      "title": "A First Course in Differential Equations",
+      "author": "J. David Logan",
+      "year": 2015,
+      "publisher": "Springer"
+    }
+  ]
+}

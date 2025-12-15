@@ -1,0 +1,119 @@
+{
+  "topic": "algebra",
+  "title": "Expression Simplification",
+  "description": "Simplify algebraic expressions using MathHook - combine like terms, factor, expand, rationalize, and apply algebraic identities",
+  "mathematical_definition": "Transform expression to equivalent canonical form with minimal complexity",
+  "quick_reference": {
+    "goal": "Reduce expression to simplest equivalent form",
+    "techniques": [
+      "Combine like terms: $3x + 5x = 8x$",
+      "Factor common terms: $6x + 9 = 3(2x + 3)$",
+      "Expand products: $(x+1)(x+2) = x^2 + 3x + 2$",
+      "Cancel common factors: $\\frac{6x}{2x} = 3$",
+      "Apply identities: $\\sin^2(x) + \\cos^2(x) = 1$"
+    ],
+    "common_identities": [
+      "$(a+b)^2 = a^2 + 2ab + b^2$",
+      "$a^2 - b^2 = (a+b)(a-b)$",
+      "$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$"
+    ]
+  },
+  "examples": [
+    {
+      "title": "Combining Like Terms",
+      "explanation": "Simplify: $3x^2 + 5x - 2x^2 + 7x + 4$\n\n**Step 1**: Group like terms\n- $x^2$ terms: $3x^2 - 2x^2$\n- $x$ terms: $5x + 7x$\n- Constant terms: $4$\n\n**Step 2**: Combine\n$$3x^2 - 2x^2 + 5x + 7x + 4 = x^2 + 12x + 4$$\n\n**Result**: $x^2 + 12x + 4$\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, simplify\n\nx = symbol('x')\nf = expr(3*x**2 + 5*x - 2*x**2 + 7*x + 4)\n\nsimplified = simplify(f)\nprint(f\"Original: {f}\")\nprint(f\"Simplified: {simplified}\")\n\n# Result: x\u00b2 + 12x + 4\n",
+        "rust": "use mathhook_core::{symbol, expr, simplify};\n\nlet x = symbol!(x);\nlet f = expr!(3*(x^2) + 5*x - 2*(x^2) + 7*x + 4);\n\nlet simplified = simplify(&f);\nprintln!(\"Original: {}\", f);\nprintln!(\"Simplified: {}\", simplified);\n",
+        "nodejs": "const { symbol, expr, simplify } = require('mathhook-node');\n\nconst x = symbol('x');\nconst f = expr(expr(3).mul(x.pow(2)).add(expr(5).mul(x))\n              .sub(expr(2).mul(x.pow(2))).add(expr(7).mul(x)).add(4));\n\nconst simplified = simplify(f);\nconsole.log(`Original: ${f}`);\nconsole.log(`Simplified: ${simplified}`);\n"
+      }
+    },
+    {
+      "title": "Factoring Polynomials",
+      "explanation": "Factor: $x^2 - 5x + 6$\n\n**Method**: Find two numbers that multiply to $6$ and add to $-5$\n\n- Factors of $6$: $1 \\\\times 6$, $2 \\\\times 3$\n- Which add to $-5$? $-2$ and $-3$ ($-2 + (-3) = -5$, $-2 \\\\times -3 = 6$)\n\n$$x^2 - 5x + 6 = (x - 2)(x - 3)$$\n\n**Verification**: $(x-2)(x-3) = x^2 - 3x - 2x + 6 = x^2 - 5x + 6$ \u2713\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, factor\n\nx = symbol('x')\nf = expr(x**2 - 5*x + 6)\n\nfactored = factor(f)\nprint(f\"Original: {f}\")\nprint(f\"Factored: {factored}\")\n\n# Result: (x - 2)(x - 3)\n",
+        "rust": "use mathhook_core::{symbol, expr, factor};\n\nlet x = symbol!(x);\nlet f = expr!(x^2 - 5*x + 6);\n\nlet factored = factor(&f);\nprintln!(\"Original: {}\", f);\nprintln!(\"Factored: {}\", factored);\n",
+        "nodejs": "const { symbol, expr, factor } = require('mathhook-node');\n\nconst x = symbol('x');\nconst f = expr(x.pow(2).sub(expr(5).mul(x)).add(6));\n\nconst factored = factor(f);\nconsole.log(`Original: ${f}`);\nconsole.log(`Factored: ${factored}`);\n"
+      }
+    },
+    {
+      "title": "Rationalizing Denominators",
+      "explanation": "Rationalize: $\\\\frac{1}{\\\\sqrt{2} + 1}$\n\n**Technique**: Multiply by conjugate over itself\n\nConjugate of $\\\\sqrt{2} + 1$ is $\\\\sqrt{2} - 1$\n\n$$\\\\frac{1}{\\\\sqrt{2} + 1} \\\\cdot \\\\frac{\\\\sqrt{2} - 1}{\\\\sqrt{2} - 1} = \\\\frac{\\\\sqrt{2} - 1}{(\\\\sqrt{2})^2 - 1^2}$$\n\n$$= \\\\frac{\\\\sqrt{2} - 1}{2 - 1} = \\\\sqrt{2} - 1$$\n\nNo radical in denominator!\n",
+      "code": {
+        "python": "from mathhook import symbol, expr, simplify, sqrt\n\nf = expr(1 / (sqrt(2) + 1))\n\nrationalized = simplify(f, rationalize=True)\nprint(f\"Original: {f}\")\nprint(f\"Rationalized: {rationalized}\")\n\n# Result: \u221a2 - 1\n",
+        "rust": "use mathhook_core::{symbol, expr, simplify, sqrt};\n\nlet f = expr!(1 / (sqrt(&expr!(2)) + expr!(1)));\n\nlet rationalized = simplify(&f, SimplifyOptions::rationalize());\nprintln!(\"Original: {}\", f);\nprintln!(\"Rationalized: {}\", rationalized);\n",
+        "nodejs": "const { symbol, expr, simplify, sqrt } = require('mathhook-node');\n\nconst f = expr(expr(1).div(sqrt(2).add(1)));\n\nconst rationalized = simplify(f, { rationalize: true });\nconsole.log(`Original: ${f}`);\nconsole.log(`Rationalized: ${rationalized}`);\n"
+      }
+    }
+  ],
+  "article": {
+    "sections": [
+      {
+        "title": "What is Simplification?",
+        "content": "### Goal of Simplification ###\n\nSimplification transforms an expression into an **equivalent** but **simpler** form.\n\n- **Equivalent**: Same value for all variable assignments\n- **Simpler**: Fewer operations, canonical form, easier to work with\n\n### Why Simplify? ###\n\n- Make expressions **easier to understand**\n- **Reveal structure** (factored form, patterns)\n- Enable **further manipulation** (solving, differentiation)\n- **Numerical stability** (avoid catastrophic cancellation)\n\n### What \"Simpler\" Means ###\n\nThere's no universal definition, but common goals:\n\n- **Fewer terms**: $x + x = 2x$ (2 terms \u2192 1 term)\n- **Lower degree**: Factor when possible\n- **Rationalized**: No radicals in denominators\n- **Canonical form**: Unique representation\n"
+      },
+      {
+        "title": "Combining Like Terms",
+        "content": "### Like Terms ###\n\nTerms are **like terms** if they have:\n- Same variables\n- Same exponents on each variable\n\nExamples:\n- $3x$ and $5x$ are like terms (both have $x^1$)\n- $2x^2$ and $-7x^2$ are like terms\n- $3x$ and $3x^2$ are NOT like (different exponents)\n- $5xy$ and $5xz$ are NOT like (different variables)\n\n### Combining Process ###\n\n**Rule**: Add/subtract coefficients, keep the variable part\n\n$$a \\cdot (\\text{var part}) + b \\cdot (\\text{var part}) = (a+b) \\cdot (\\text{var part})$$\n\n### Examples ###\n\n1. $7x + 3x = (7+3)x = 10x$\n\n2. $4x^2 y - 9x^2 y + 2x^2 y = (4 - 9 + 2)x^2 y = -3x^2 y$\n\n3. $5a + 3b - 2a + 7b = (5-2)a + (3+7)b = 3a + 10b$\n"
+      },
+      {
+        "title": "Expanding and Factoring",
+        "content": "### Expansion ###\n\n**Expanding** means applying distributive property to remove parentheses:\n\n$$a(b + c) = ab + ac$$\n\n**FOIL for binomials**: $(a+b)(c+d) = ac + ad + bc + bd$\n\n**Special products**:\n- $(a+b)^2 = a^2 + 2ab + b^2$\n- $(a-b)^2 = a^2 - 2ab + b^2$\n- $(a+b)(a-b) = a^2 - b^2$ (difference of squares)\n\n### Factoring ###\n\n**Factoring** is the reverse - pull out common factors:\n\n$$ab + ac = a(b + c)$$\n\n### Common Factoring Patterns ###\n\n1. **Common factor**: $6x + 9 = 3(2x + 3)$\n\n2. **Difference of squares**: $x^2 - 4 = (x+2)(x-2)$\n\n3. **Perfect square trinomial**: $x^2 + 6x + 9 = (x+3)^2$\n\n4. **Grouping**: $ax + ay + bx + by = a(x+y) + b(x+y) = (a+b)(x+y)$\n\n5. **Sum/difference of cubes**:\n   - $a^3 + b^3 = (a+b)(a^2 - ab + b^2)$\n   - $a^3 - b^3 = (a-b)(a^2 + ab + b^2)$\n"
+      },
+      {
+        "title": "Rational Expressions",
+        "content": "### Simplifying Rational Expressions ###\n\nA **rational expression** is a quotient of polynomials: $\\\\frac{P(x)}{Q(x)}$\n\n**Simplification process**:\n\n1. **Factor** numerator and denominator completely\n2. **Cancel** common factors\n3. Result is in **lowest terms**\n\n### Example ###\n\nSimplify: $\\\\frac{x^2 - 4}{x^2 + 4x + 4}$\n\n**Step 1**: Factor\n- Numerator: $x^2 - 4 = (x+2)(x-2)$\n- Denominator: $x^2 + 4x + 4 = (x+2)^2$\n\n**Step 2**: Cancel common factor $(x+2)$:\n\n$$\\\\frac{(x+2)(x-2)}{(x+2)^2} = \\\\frac{x-2}{x+2}$$\n\n(for $x \\\\neq -2$)\n\n### Adding/Subtracting Rational Expressions ###\n\nNeed **common denominator**:\n\n$$\\\\frac{a}{b} + \\\\frac{c}{d} = \\\\frac{ad + bc}{bd}$$\n\n### Multiplying/Dividing ###\n\n**Multiplication**: Multiply numerators and denominators\n\n$$\\\\frac{a}{b} \\\\cdot \\\\frac{c}{d} = \\\\frac{ac}{bd}$$\n\n**Division**: Multiply by reciprocal\n\n$$\\\\frac{a}{b} \\\\div \\\\frac{c}{d} = \\\\frac{a}{b} \\\\cdot \\\\frac{d}{c} = \\\\frac{ad}{bc}$$\n"
+      },
+      {
+        "title": "Rationalizing",
+        "content": "### Rationalizing Denominators ###\n\n**Goal**: Remove radicals from denominators\n\n### Single Radical ###\n\nMultiply by $\\\\frac{\\\\text{radical}}{\\\\text{radical}}$:\n\n$$\\\\frac{1}{\\\\sqrt{3}} \\\\cdot \\\\frac{\\\\sqrt{3}}{\\\\sqrt{3}} = \\\\frac{\\\\sqrt{3}}{3}$$\n\n### Binomial with Radical ###\n\nUse **conjugate** (change sign):\n\nConjugate of $a + b$ is $a - b$\n\n$$\\\\frac{1}{\\\\sqrt{5} + 2} \\\\cdot \\\\frac{\\\\sqrt{5} - 2}{\\\\sqrt{5} - 2} = \\\\frac{\\\\sqrt{5} - 2}{5 - 4} = \\\\sqrt{5} - 2$$\n\nUses $(a+b)(a-b) = a^2 - b^2$ to eliminate the radical.\n\n### Rationalizing Numerators ###\n\nSometimes useful in calculus (limits, derivatives):\n\n$$\\\\frac{\\\\sqrt{x+h} - \\\\sqrt{x}}{h} \\\\cdot \\\\frac{\\\\sqrt{x+h} + \\\\sqrt{x}}{\\\\sqrt{x+h} + \\\\sqrt{x}} = \\\\frac{(x+h) - x}{h(\\\\sqrt{x+h} + \\\\sqrt{x})}$$\n\n$$= \\\\frac{h}{h(\\\\sqrt{x+h} + \\\\sqrt{x})} = \\\\frac{1}{\\\\sqrt{x+h} + \\\\sqrt{x}}$$\n"
+      },
+      {
+        "title": "Algebraic Identities",
+        "content": "### Binomial Formulas ###\n\n$$(a + b)^2 = a^2 + 2ab + b^2$$\n\n$$(a - b)^2 = a^2 - 2ab + b^2$$\n\n$$(a + b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$$\n\n$$(a - b)^3 = a^3 - 3a^2b + 3ab^2 - b^3$$\n\n### Factoring Formulas ###\n\n$$a^2 - b^2 = (a+b)(a-b)$$ (difference of squares)\n\n$$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$$ (difference of cubes)\n\n$$a^3 + b^3 = (a+b)(a^2 - ab + b^2)$$ (sum of cubes)\n\n### Exponent Laws ###\n\n$$a^m \\\\cdot a^n = a^{m+n}$$\n\n$$\\\\frac{a^m}{a^n} = a^{m-n}$$\n\n$$(a^m)^n = a^{mn}$$\n\n$$(ab)^n = a^n b^n$$\n\n$$\\\\left(\\\\frac{a}{b}\\\\right)^n = \\\\frac{a^n}{b^n}$$\n\n$$a^0 = 1$$ (for $a \\\\neq 0$)\n\n$$a^{-n} = \\\\frac{1}{a^n}$$\n\n### Logarithm Laws ###\n\n$$\\\\log(ab) = \\\\log(a) + \\\\log(b)$$\n\n$$\\\\log\\\\left(\\\\frac{a}{b}\\\\right) = \\\\log(a) - \\\\log(b)$$\n\n$$\\\\log(a^n) = n\\\\log(a)$$\n\n$$\\\\log_a(a) = 1$$\n\n$$\\\\log_a(1) = 0$$\n\n### Trigonometric Identities ###\n\n$$\\\\sin^2(x) + \\\\cos^2(x) = 1$$\n\n$$1 + \\\\tan^2(x) = \\\\sec^2(x)$$\n\n$$1 + \\\\cot^2(x) = \\\\csc^2(x)$$\n\n$$\\\\sin(2x) = 2\\\\sin(x)\\\\cos(x)$$\n\n$$\\\\cos(2x) = \\\\cos^2(x) - \\\\sin^2(x) = 2\\\\cos^2(x) - 1 = 1 - 2\\\\sin^2(x)$$\n"
+      },
+      {
+        "title": "Simplification Strategies",
+        "content": "### General Approach ###\n\n1. **Remove parentheses** if expanding helps\n2. **Combine like terms**\n3. **Factor** if possible\n4. **Cancel** common factors in fractions\n5. **Rationalize** denominators if needed\n6. **Apply identities** to recognize patterns\n\n### Context Matters ###\n\n\"Simplest\" depends on context:\n\n- **For solving**: Factor completely\n- **For calculus**: Rationalized numerators may help\n- **For numerical evaluation**: Factored form may be more stable\n\n### Automatic Simplification with MathHook ###\n\nMathHook applies simplification rules automatically:\n\n- **Algebraic simplification**: Combine terms, factor, expand\n- **Trigonometric simplification**: Apply trig identities\n- **Logarithmic simplification**: Combine/expand logarithms\n- **Rational simplification**: Reduce fractions to lowest terms\n\n### Simplification Options ###\n\nControl simplification behavior:\n\n```python\nsimplify(expr, full=True)        # Maximum simplification\nsimplify(expr, rationalize=True) # Rationalize denominators\nsimplify(expr, factor=True)      # Factor completely\nsimplify(expr, expand=True)      # Expand products\nsimplify(expr, trig=True)        # Apply trig identities\n```\n"
+      }
+    ]
+  },
+  "related_topics": [
+    {
+      "slug": "algebra-solve",
+      "title": "Equation Solving",
+      "description": "Solving equations uses simplification"
+    },
+    {
+      "slug": "calculus-derivatives",
+      "title": "Differentiation",
+      "description": "Simplify derivatives for easier analysis"
+    },
+    {
+      "slug": "calculus-integration",
+      "title": "Integration",
+      "description": "Simplify integrands before integrating"
+    }
+  ],
+  "references": [
+    {
+      "title": "Algebra and Trigonometry",
+      "author": "Michael Sullivan",
+      "year": 2019,
+      "publisher": "Pearson"
+    },
+    {
+      "title": "College Algebra",
+      "author": "Robert Blitzer",
+      "year": 2017,
+      "publisher": "Pearson"
+    },
+    {
+      "title": "Precalculus: Mathematics for Calculus",
+      "author": "James Stewart",
+      "year": 2015,
+      "publisher": "Cengage"
+    }
+  ]
+}

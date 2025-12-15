@@ -1,0 +1,347 @@
+topic: calculus.limits
+title: Limits and Continuity
+description: |
+  Fundamental concepts of limits, continuity, and asymptotic behavior. Limits form the
+  foundation of calculus, defining derivatives, integrals, and continuity.
+
+mathematical_definition: |
+  The limit of f(x) as x approaches a is L if f(x) can be made arbitrarily close to L
+  by making x sufficiently close to a.
+
+  Formally: lim[x→a] f(x) = L means for every ε > 0, there exists δ > 0 such that
+  |f(x) - L| < ε whenever 0 < |x - a| < δ
+
+code_refs:
+  rust: mathhook_core::calculus::limits
+  python: mathhook.calculus.limits
+  nodejs: mathhook.calculus.limits
+
+quick_reference:
+  basic_limits:
+    - "Polynomial: lim[x→a] p(x) = p(a)"
+    - "Rational: lim[x→a] f(x)/g(x) = f(a)/g(a) if g(a) ≠ 0"
+    - "Trigonometric: lim[x→0] sin(x)/x = 1"
+    - "Exponential: lim[x→∞] (1 + 1/x)^x = e"
+  techniques:
+    - "Direct substitution (when defined)"
+    - "Factoring and cancellation"
+    - "Conjugate multiplication"
+    - "L'Hôpital's rule (indeterminate forms)"
+    - "Squeeze theorem"
+  indeterminate_forms:
+    - "0/0, ∞/∞, 0·∞, ∞-∞, 0^0, 1^∞, ∞^0"
+
+examples:
+  - title: "Basic Limit Evaluation"
+    explanation: |
+      For continuous functions, limits can be evaluated by direct substitution.
+
+    code:
+      python: |
+        from mathhook import symbol, expr, limit
+
+        x = symbol('x')
+
+        # Polynomial limit
+        f = expr('x^2 + 3*x + 2')
+        lim = limit(f, x, 2)
+        print(f"lim[x→2] (x² + 3x + 2) = {lim}")  # 12
+
+        # Rational function
+        g = expr('(x^2 - 1)/(x - 1)')
+        lim = limit(g, x, 1)
+        print(f"lim[x→1] (x²-1)/(x-1) = {lim}")  # 2 (after cancellation)
+
+        # Trigonometric limit
+        h = expr('sin(x)/x')
+        lim = limit(h, x, 0)
+        print(f"lim[x→0] sin(x)/x = {lim}")  # 1
+
+      rust: |
+        use mathhook::{symbol, expr, limit};
+
+        let x = symbol!(x);
+
+        // Polynomial
+        let f = expr!(x^2 + 3*x + 2);
+        let lim = limit(&f, &x, &expr!(2));
+        println!("lim[x→2] = {}", lim);  // 12
+
+        // Rational with cancellation
+        let g = expr!((x^2 - 1)/(x - 1));
+        let lim = limit(&g, &x, &expr!(1));
+        println!("lim[x→1] = {}", lim);  // 2
+
+        // Trigonometric
+        let h = expr!(sin(x)/x);
+        let lim = limit(&h, &x, &expr!(0));
+        println!("lim[x→0] sin(x)/x = {}", lim);  // 1
+
+      nodejs: |
+        const { symbol, expr, limit } = require('mathhook');
+
+        const x = symbol('x');
+
+        // Polynomial
+        const f = expr('x^2 + 3*x + 2');
+        const lim1 = limit(f, x, 2);
+        console.log(`lim[x→2] = ${lim1}`);  // 12
+
+        // Rational
+        const g = expr('(x^2 - 1)/(x - 1)');
+        const lim2 = limit(g, x, 1);
+        console.log(`lim[x→1] = ${lim2}`);  // 2
+
+        // Trigonometric
+        const h = expr('sin(x)/x');
+        const lim3 = limit(h, x, 0);
+        console.log(`lim[x→0] sin(x)/x = ${lim3}`);  // 1
+
+    expected_output: |
+      lim[x→2] (x² + 3x + 2) = 12
+      lim[x→1] (x²-1)/(x-1) = 2
+      lim[x→0] sin(x)/x = 1
+
+  - title: "L'Hôpital's Rule"
+    explanation: |
+      For indeterminate forms 0/0 or ∞/∞, apply L'Hôpital's rule:
+      lim[x→a] f(x)/g(x) = lim[x→a] f'(x)/g'(x)
+
+    code:
+      python: |
+        from mathhook import symbol, expr, limit
+
+        x = symbol('x')
+
+        # 0/0 form
+        f = expr('(exp(x) - 1)/x')
+        lim = limit(f, x, 0, method='lhopital')
+        print(f"lim[x→0] (e^x - 1)/x = {lim}")  # 1
+
+        # ∞/∞ form
+        g = expr('x^2/exp(x)')
+        lim = limit(g, x, 'oo', method='lhopital')
+        print(f"lim[x→∞] x²/e^x = {lim}")  # 0
+
+        # Multiple applications
+        h = expr('(1 - cos(x))/x^2')
+        lim = limit(h, x, 0, method='lhopital')
+        print(f"lim[x→0] (1-cos(x))/x² = {lim}")  # 1/2
+
+      rust: |
+        use mathhook::{symbol, expr, limit};
+
+        let x = symbol!(x);
+
+        // L'Hôpital for 0/0
+        let f = expr!((exp(x) - 1)/x);
+        let lim = limit(&f, &x, &expr!(0));
+        println!("lim = {}", lim);  // 1
+
+        // L'Hôpital for ∞/∞
+        let g = expr!(x^2 / exp(x));
+        let lim = limit(&g, &x, &expr!(oo));
+        println!("lim = {}", lim);  // 0
+
+      nodejs: |
+        const { symbol, expr, limit } = require('mathhook');
+
+        const x = symbol('x');
+
+        // L'Hôpital rule
+        const f = expr('(exp(x) - 1)/x');
+        const lim = limit(f, x, 0, { method: 'lhopital' });
+        console.log(`lim = ${lim}`);  // 1
+
+    expected_output: |
+      lim[x→0] (e^x - 1)/x = 1 (by L'Hôpital)
+      lim[x→∞] x²/e^x = 0 (exponential dominates polynomial)
+      lim[x→0] (1-cos(x))/x² = 1/2
+
+  - title: "One-Sided and Infinite Limits"
+    explanation: |
+      Evaluate limits from the left (x→a⁻), right (x→a⁺), or at infinity.
+
+    code:
+      python: |
+        from mathhook import symbol, expr, limit
+
+        x = symbol('x')
+
+        # One-sided limits
+        f = expr('1/x')
+        lim_left = limit(f, x, 0, dir='-')
+        lim_right = limit(f, x, 0, dir='+')
+        print(f"lim[x→0⁻] 1/x = {lim_left}")   # -∞
+        print(f"lim[x→0⁺] 1/x = {lim_right}")  # +∞
+
+        # Limit at infinity
+        g = expr('(3*x^2 + 2)/(x^2 - 1)')
+        lim_inf = limit(g, x, 'oo')
+        print(f"lim[x→∞] = {lim_inf}")  # 3
+
+        # Limit to negative infinity
+        h = expr('exp(x)')
+        lim_ninf = limit(h, x, '-oo')
+        print(f"lim[x→-∞] e^x = {lim_ninf}")  # 0
+
+      rust: |
+        use mathhook::{symbol, expr, limit};
+
+        let x = symbol!(x);
+
+        // One-sided limits
+        let f = expr!(1/x);
+        let lim_left = limit_left(&f, &x, &expr!(0));
+        let lim_right = limit_right(&f, &x, &expr!(0));
+
+        // Limit at infinity
+        let g = expr!((3*x^2 + 2)/(x^2 - 1));
+        let lim_inf = limit(&g, &x, &expr!(oo));
+
+      nodejs: |
+        const { symbol, expr, limit } = require('mathhook');
+
+        const x = symbol('x');
+
+        // One-sided limits
+        const f = expr('1/x');
+        const limLeft = limit(f, x, 0, { dir: 'left' });
+        const limRight = limit(f, x, 0, { dir: 'right' });
+
+        // At infinity
+        const g = expr('(3*x^2 + 2)/(x^2 - 1)');
+        const limInf = limit(g, x, Infinity);
+        console.log(`lim[x→∞] = ${limInf}`);  // 3
+
+    expected_output: |
+      lim[x→0⁻] 1/x = -∞
+      lim[x→0⁺] 1/x = +∞
+      lim[x→∞] (3x²+2)/(x²-1) = 3
+
+article:
+  sections:
+    - heading: "Definition of Limit"
+      content: |
+        The limit captures the behavior of a function near a point, even if the
+        function is undefined at that point.
+
+        **Informal**: lim[x→a] f(x) = L means f(x) gets arbitrarily close to L
+        as x gets close to a.
+
+        **Formal (ε-δ definition)**: For every ε > 0, there exists δ > 0 such that
+        |f(x) - L| < ε whenever 0 < |x - a| < δ
+
+        **One-sided limits**:
+        - Right limit: lim[x→a⁺] f(x) (approach from right)
+        - Left limit: lim[x→a⁻] f(x) (approach from left)
+        - Two-sided limit exists iff left and right limits exist and are equal
+
+    - heading: "Limit Laws"
+      content: |
+        If lim[x→a] f(x) = L and lim[x→a] g(x) = M, then:
+
+        **Sum**: lim[x→a] (f + g)(x) = L + M
+
+        **Difference**: lim[x→a] (f - g)(x) = L - M
+
+        **Product**: lim[x→a] (f · g)(x) = L · M
+
+        **Quotient**: lim[x→a] (f/g)(x) = L/M (if M ≠ 0)
+
+        **Constant multiple**: lim[x→a] c·f(x) = c·L
+
+        **Power**: lim[x→a] [f(x)]^n = L^n
+
+    - heading: "Continuity"
+      content: |
+        A function f is continuous at a if:
+        1. f(a) is defined
+        2. lim[x→a] f(x) exists
+        3. lim[x→a] f(x) = f(a)
+
+        **Types of discontinuity**:
+        - **Removable**: lim exists but f(a) undefined or different
+        - **Jump**: left and right limits exist but are different
+        - **Infinite**: limit is ±∞
+        - **Essential**: limit doesn't exist (oscillation)
+
+        **Continuous functions**:
+        - Polynomials (everywhere)
+        - Rational functions (where denominator ≠ 0)
+        - Trigonometric functions (at appropriate points)
+        - Exponential and logarithmic functions (in their domains)
+
+    - heading: "Indeterminate Forms and L'Hôpital's Rule"
+      content: |
+        **Indeterminate forms**: 0/0, ∞/∞, 0·∞, ∞-∞, 0^0, 1^∞, ∞^0
+
+        **L'Hôpital's Rule** (for 0/0 or ∞/∞):
+        If lim[x→a] f(x) = lim[x→a] g(x) = 0 (or both ±∞), then:
+        lim[x→a] f(x)/g(x) = lim[x→a] f'(x)/g'(x)
+
+        provided the right side exists.
+
+        **Other forms** reduce to 0/0 or ∞/∞:
+        - 0·∞: Rewrite as (1/g)/(1/f) or f/(1/g)
+        - ∞-∞: Combine into single fraction
+        - 0^0, 1^∞, ∞^0: Take logarithm first
+
+    - heading: "Squeeze Theorem"
+      content: |
+        If g(x) ≤ f(x) ≤ h(x) near a, and lim[x→a] g(x) = lim[x→a] h(x) = L,
+        then lim[x→a] f(x) = L.
+
+        **Classic application**: Prove lim[x→0] sin(x)/x = 1
+
+        For 0 < x < π/2:
+        sin(x) < x < tan(x)
+        Dividing by sin(x): 1 < x/sin(x) < 1/cos(x)
+        Taking reciprocals: cos(x) < sin(x)/x < 1
+        As x→0, cos(x)→1, so by squeeze theorem, sin(x)/x → 1
+
+    - heading: "Limits at Infinity"
+      content: |
+        **Rational functions**: Compare degrees of numerator and denominator
+
+        - deg(num) < deg(den): limit is 0
+        - deg(num) = deg(den): limit is ratio of leading coefficients
+        - deg(num) > deg(den): limit is ±∞
+
+        **Example**: lim[x→∞] (3x² + 2)/(x² - 1) = 3
+
+        **Horizontal asymptotes**: y = L if lim[x→±∞] f(x) = L
+
+        **Vertical asymptotes**: x = a if lim[x→a] f(x) = ±∞
+
+use_cases:
+  - "Calculus foundation: defining derivatives and integrals"
+  - "Analyzing function behavior and asymptotes"
+  - "Optimization: finding extrema and critical points"
+  - "Physics: instantaneous velocity and acceleration"
+  - "Numerical analysis: convergence of sequences and series"
+
+related_topics:
+  - calculus.derivatives
+  - calculus.continuity
+  - calculus.series
+  - calculus.lhopital-rule
+
+references:
+  - title: "Calculus"
+    author: "James Stewart"
+    year: 2015
+    publisher: "Cengage Learning"
+  - title: "Calculus: Early Transcendentals"
+    author: "William L. Briggs and Lyle Cochran"
+    year: 2018
+    publisher: "Pearson"
+
+performance:
+  complexity: "O(n) for polynomial evaluation, O(n²) for rational functions with simplification"
+  typical_time: "< 1ms for simple limits, < 100ms for complex expressions requiring L'Hôpital"
+  benchmarks:
+    direct_substitution: "< 100μs"
+    lhopital_single: "< 10ms"
+    lhopital_multiple: "< 50ms"
+    symbolic_infinity: "< 5ms"

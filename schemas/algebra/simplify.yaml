@@ -1,0 +1,435 @@
+topic: "algebra"
+title: "Expression Simplification"
+description: "Simplify algebraic expressions using MathHook - combine like terms, factor, expand, rationalize, and apply algebraic identities"
+
+mathematical_definition: "Transform expression to equivalent canonical form with minimal complexity"
+
+quick_reference:
+  goal: "Reduce expression to simplest equivalent form"
+  techniques:
+    - "Combine like terms: $3x + 5x = 8x$"
+    - "Factor common terms: $6x + 9 = 3(2x + 3)$"
+    - "Expand products: $(x+1)(x+2) = x^2 + 3x + 2$"
+    - "Cancel common factors: $\\frac{6x}{2x} = 3$"
+    - "Apply identities: $\\sin^2(x) + \\cos^2(x) = 1$"
+  common_identities:
+    - "$(a+b)^2 = a^2 + 2ab + b^2$"
+    - "$a^2 - b^2 = (a+b)(a-b)$"
+    - "$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$"
+
+examples:
+  - title: "Combining Like Terms"
+    explanation: |
+      Simplify: $3x^2 + 5x - 2x^2 + 7x + 4$
+
+      **Step 1**: Group like terms
+      - $x^2$ terms: $3x^2 - 2x^2$
+      - $x$ terms: $5x + 7x$
+      - Constant terms: $4$
+
+      **Step 2**: Combine
+      $$3x^2 - 2x^2 + 5x + 7x + 4 = x^2 + 12x + 4$$
+
+      **Result**: $x^2 + 12x + 4$
+    code:
+      python: |
+        from mathhook import symbol, expr, simplify
+
+        x = symbol('x')
+        f = expr(3*x**2 + 5*x - 2*x**2 + 7*x + 4)
+
+        simplified = simplify(f)
+        print(f"Original: {f}")
+        print(f"Simplified: {simplified}")
+
+        # Result: x² + 12x + 4
+      rust: |
+        use mathhook_core::{symbol, expr, simplify};
+
+        let x = symbol!(x);
+        let f = expr!(3*(x^2) + 5*x - 2*(x^2) + 7*x + 4);
+
+        let simplified = simplify(&f);
+        println!("Original: {}", f);
+        println!("Simplified: {}", simplified);
+      nodejs: |
+        const { symbol, expr, simplify } = require('mathhook-node');
+
+        const x = symbol('x');
+        const f = expr(expr(3).mul(x.pow(2)).add(expr(5).mul(x))
+                      .sub(expr(2).mul(x.pow(2))).add(expr(7).mul(x)).add(4));
+
+        const simplified = simplify(f);
+        console.log(`Original: ${f}`);
+        console.log(`Simplified: ${simplified}`);
+
+  - title: "Factoring Polynomials"
+    explanation: |
+      Factor: $x^2 - 5x + 6$
+
+      **Method**: Find two numbers that multiply to $6$ and add to $-5$
+
+      - Factors of $6$: $1 \\times 6$, $2 \\times 3$
+      - Which add to $-5$? $-2$ and $-3$ ($-2 + (-3) = -5$, $-2 \\times -3 = 6$)
+
+      $$x^2 - 5x + 6 = (x - 2)(x - 3)$$
+
+      **Verification**: $(x-2)(x-3) = x^2 - 3x - 2x + 6 = x^2 - 5x + 6$ ✓
+    code:
+      python: |
+        from mathhook import symbol, expr, factor
+
+        x = symbol('x')
+        f = expr(x**2 - 5*x + 6)
+
+        factored = factor(f)
+        print(f"Original: {f}")
+        print(f"Factored: {factored}")
+
+        # Result: (x - 2)(x - 3)
+      rust: |
+        use mathhook_core::{symbol, expr, factor};
+
+        let x = symbol!(x);
+        let f = expr!(x^2 - 5*x + 6);
+
+        let factored = factor(&f);
+        println!("Original: {}", f);
+        println!("Factored: {}", factored);
+      nodejs: |
+        const { symbol, expr, factor } = require('mathhook-node');
+
+        const x = symbol('x');
+        const f = expr(x.pow(2).sub(expr(5).mul(x)).add(6));
+
+        const factored = factor(f);
+        console.log(`Original: ${f}`);
+        console.log(`Factored: ${factored}`);
+
+  - title: "Rationalizing Denominators"
+    explanation: |
+      Rationalize: $\\frac{1}{\\sqrt{2} + 1}$
+
+      **Technique**: Multiply by conjugate over itself
+
+      Conjugate of $\\sqrt{2} + 1$ is $\\sqrt{2} - 1$
+
+      $$\\frac{1}{\\sqrt{2} + 1} \\cdot \\frac{\\sqrt{2} - 1}{\\sqrt{2} - 1} = \\frac{\\sqrt{2} - 1}{(\\sqrt{2})^2 - 1^2}$$
+
+      $$= \\frac{\\sqrt{2} - 1}{2 - 1} = \\sqrt{2} - 1$$
+
+      No radical in denominator!
+    code:
+      python: |
+        from mathhook import symbol, expr, simplify, sqrt
+
+        f = expr(1 / (sqrt(2) + 1))
+
+        rationalized = simplify(f, rationalize=True)
+        print(f"Original: {f}")
+        print(f"Rationalized: {rationalized}")
+
+        # Result: √2 - 1
+      rust: |
+        use mathhook_core::{symbol, expr, simplify, sqrt};
+
+        let f = expr!(1 / (sqrt(&expr!(2)) + expr!(1)));
+
+        let rationalized = simplify(&f, SimplifyOptions::rationalize());
+        println!("Original: {}", f);
+        println!("Rationalized: {}", rationalized);
+      nodejs: |
+        const { symbol, expr, simplify, sqrt } = require('mathhook-node');
+
+        const f = expr(expr(1).div(sqrt(2).add(1)));
+
+        const rationalized = simplify(f, { rationalize: true });
+        console.log(`Original: ${f}`);
+        console.log(`Rationalized: ${rationalized}`);
+
+article:
+  sections:
+    - title: "What is Simplification?"
+      content: |
+        ### Goal of Simplification ###
+
+        Simplification transforms an expression into an **equivalent** but **simpler** form.
+
+        - **Equivalent**: Same value for all variable assignments
+        - **Simpler**: Fewer operations, canonical form, easier to work with
+
+        ### Why Simplify? ###
+
+        - Make expressions **easier to understand**
+        - **Reveal structure** (factored form, patterns)
+        - Enable **further manipulation** (solving, differentiation)
+        - **Numerical stability** (avoid catastrophic cancellation)
+
+        ### What "Simpler" Means ###
+
+        There's no universal definition, but common goals:
+
+        - **Fewer terms**: $x + x = 2x$ (2 terms → 1 term)
+        - **Lower degree**: Factor when possible
+        - **Rationalized**: No radicals in denominators
+        - **Canonical form**: Unique representation
+
+    - title: "Combining Like Terms"
+      content: |
+        ### Like Terms ###
+
+        Terms are **like terms** if they have:
+        - Same variables
+        - Same exponents on each variable
+
+        Examples:
+        - $3x$ and $5x$ are like terms (both have $x^1$)
+        - $2x^2$ and $-7x^2$ are like terms
+        - $3x$ and $3x^2$ are NOT like (different exponents)
+        - $5xy$ and $5xz$ are NOT like (different variables)
+
+        ### Combining Process ###
+
+        **Rule**: Add/subtract coefficients, keep the variable part
+
+        $$a \cdot (\text{var part}) + b \cdot (\text{var part}) = (a+b) \cdot (\text{var part})$$
+
+        ### Examples ###
+
+        1. $7x + 3x = (7+3)x = 10x$
+
+        2. $4x^2 y - 9x^2 y + 2x^2 y = (4 - 9 + 2)x^2 y = -3x^2 y$
+
+        3. $5a + 3b - 2a + 7b = (5-2)a + (3+7)b = 3a + 10b$
+
+    - title: "Expanding and Factoring"
+      content: |
+        ### Expansion ###
+
+        **Expanding** means applying distributive property to remove parentheses:
+
+        $$a(b + c) = ab + ac$$
+
+        **FOIL for binomials**: $(a+b)(c+d) = ac + ad + bc + bd$
+
+        **Special products**:
+        - $(a+b)^2 = a^2 + 2ab + b^2$
+        - $(a-b)^2 = a^2 - 2ab + b^2$
+        - $(a+b)(a-b) = a^2 - b^2$ (difference of squares)
+
+        ### Factoring ###
+
+        **Factoring** is the reverse - pull out common factors:
+
+        $$ab + ac = a(b + c)$$
+
+        ### Common Factoring Patterns ###
+
+        1. **Common factor**: $6x + 9 = 3(2x + 3)$
+
+        2. **Difference of squares**: $x^2 - 4 = (x+2)(x-2)$
+
+        3. **Perfect square trinomial**: $x^2 + 6x + 9 = (x+3)^2$
+
+        4. **Grouping**: $ax + ay + bx + by = a(x+y) + b(x+y) = (a+b)(x+y)$
+
+        5. **Sum/difference of cubes**:
+           - $a^3 + b^3 = (a+b)(a^2 - ab + b^2)$
+           - $a^3 - b^3 = (a-b)(a^2 + ab + b^2)$
+
+    - title: "Rational Expressions"
+      content: |
+        ### Simplifying Rational Expressions ###
+
+        A **rational expression** is a quotient of polynomials: $\\frac{P(x)}{Q(x)}$
+
+        **Simplification process**:
+
+        1. **Factor** numerator and denominator completely
+        2. **Cancel** common factors
+        3. Result is in **lowest terms**
+
+        ### Example ###
+
+        Simplify: $\\frac{x^2 - 4}{x^2 + 4x + 4}$
+
+        **Step 1**: Factor
+        - Numerator: $x^2 - 4 = (x+2)(x-2)$
+        - Denominator: $x^2 + 4x + 4 = (x+2)^2$
+
+        **Step 2**: Cancel common factor $(x+2)$:
+
+        $$\\frac{(x+2)(x-2)}{(x+2)^2} = \\frac{x-2}{x+2}$$
+
+        (for $x \\neq -2$)
+
+        ### Adding/Subtracting Rational Expressions ###
+
+        Need **common denominator**:
+
+        $$\\frac{a}{b} + \\frac{c}{d} = \\frac{ad + bc}{bd}$$
+
+        ### Multiplying/Dividing ###
+
+        **Multiplication**: Multiply numerators and denominators
+
+        $$\\frac{a}{b} \\cdot \\frac{c}{d} = \\frac{ac}{bd}$$
+
+        **Division**: Multiply by reciprocal
+
+        $$\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\cdot \\frac{d}{c} = \\frac{ad}{bc}$$
+
+    - title: "Rationalizing"
+      content: |
+        ### Rationalizing Denominators ###
+
+        **Goal**: Remove radicals from denominators
+
+        ### Single Radical ###
+
+        Multiply by $\\frac{\\text{radical}}{\\text{radical}}$:
+
+        $$\\frac{1}{\\sqrt{3}} \\cdot \\frac{\\sqrt{3}}{\\sqrt{3}} = \\frac{\\sqrt{3}}{3}$$
+
+        ### Binomial with Radical ###
+
+        Use **conjugate** (change sign):
+
+        Conjugate of $a + b$ is $a - b$
+
+        $$\\frac{1}{\\sqrt{5} + 2} \\cdot \\frac{\\sqrt{5} - 2}{\\sqrt{5} - 2} = \\frac{\\sqrt{5} - 2}{5 - 4} = \\sqrt{5} - 2$$
+
+        Uses $(a+b)(a-b) = a^2 - b^2$ to eliminate the radical.
+
+        ### Rationalizing Numerators ###
+
+        Sometimes useful in calculus (limits, derivatives):
+
+        $$\\frac{\\sqrt{x+h} - \\sqrt{x}}{h} \\cdot \\frac{\\sqrt{x+h} + \\sqrt{x}}{\\sqrt{x+h} + \\sqrt{x}} = \\frac{(x+h) - x}{h(\\sqrt{x+h} + \\sqrt{x})}$$
+
+        $$= \\frac{h}{h(\\sqrt{x+h} + \\sqrt{x})} = \\frac{1}{\\sqrt{x+h} + \\sqrt{x}}$$
+
+    - title: "Algebraic Identities"
+      content: |
+        ### Binomial Formulas ###
+
+        $$(a + b)^2 = a^2 + 2ab + b^2$$
+
+        $$(a - b)^2 = a^2 - 2ab + b^2$$
+
+        $$(a + b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$$
+
+        $$(a - b)^3 = a^3 - 3a^2b + 3ab^2 - b^3$$
+
+        ### Factoring Formulas ###
+
+        $$a^2 - b^2 = (a+b)(a-b)$$ (difference of squares)
+
+        $$a^3 - b^3 = (a-b)(a^2 + ab + b^2)$$ (difference of cubes)
+
+        $$a^3 + b^3 = (a+b)(a^2 - ab + b^2)$$ (sum of cubes)
+
+        ### Exponent Laws ###
+
+        $$a^m \\cdot a^n = a^{m+n}$$
+
+        $$\\frac{a^m}{a^n} = a^{m-n}$$
+
+        $$(a^m)^n = a^{mn}$$
+
+        $$(ab)^n = a^n b^n$$
+
+        $$\\left(\\frac{a}{b}\\right)^n = \\frac{a^n}{b^n}$$
+
+        $$a^0 = 1$$ (for $a \\neq 0$)
+
+        $$a^{-n} = \\frac{1}{a^n}$$
+
+        ### Logarithm Laws ###
+
+        $$\\log(ab) = \\log(a) + \\log(b)$$
+
+        $$\\log\\left(\\frac{a}{b}\\right) = \\log(a) - \\log(b)$$
+
+        $$\\log(a^n) = n\\log(a)$$
+
+        $$\\log_a(a) = 1$$
+
+        $$\\log_a(1) = 0$$
+
+        ### Trigonometric Identities ###
+
+        $$\\sin^2(x) + \\cos^2(x) = 1$$
+
+        $$1 + \\tan^2(x) = \\sec^2(x)$$
+
+        $$1 + \\cot^2(x) = \\csc^2(x)$$
+
+        $$\\sin(2x) = 2\\sin(x)\\cos(x)$$
+
+        $$\\cos(2x) = \\cos^2(x) - \\sin^2(x) = 2\\cos^2(x) - 1 = 1 - 2\\sin^2(x)$$
+
+    - title: "Simplification Strategies"
+      content: |
+        ### General Approach ###
+
+        1. **Remove parentheses** if expanding helps
+        2. **Combine like terms**
+        3. **Factor** if possible
+        4. **Cancel** common factors in fractions
+        5. **Rationalize** denominators if needed
+        6. **Apply identities** to recognize patterns
+
+        ### Context Matters ###
+
+        "Simplest" depends on context:
+
+        - **For solving**: Factor completely
+        - **For calculus**: Rationalized numerators may help
+        - **For numerical evaluation**: Factored form may be more stable
+
+        ### Automatic Simplification with MathHook ###
+
+        MathHook applies simplification rules automatically:
+
+        - **Algebraic simplification**: Combine terms, factor, expand
+        - **Trigonometric simplification**: Apply trig identities
+        - **Logarithmic simplification**: Combine/expand logarithms
+        - **Rational simplification**: Reduce fractions to lowest terms
+
+        ### Simplification Options ###
+
+        Control simplification behavior:
+
+        ```python
+        simplify(expr, full=True)        # Maximum simplification
+        simplify(expr, rationalize=True) # Rationalize denominators
+        simplify(expr, factor=True)      # Factor completely
+        simplify(expr, expand=True)      # Expand products
+        simplify(expr, trig=True)        # Apply trig identities
+        ```
+
+related_topics:
+  - slug: "algebra-solve"
+    title: "Equation Solving"
+    description: "Solving equations uses simplification"
+  - slug: "calculus-derivatives"
+    title: "Differentiation"
+    description: "Simplify derivatives for easier analysis"
+  - slug: "calculus-integration"
+    title: "Integration"
+    description: "Simplify integrands before integrating"
+
+references:
+  - title: "Algebra and Trigonometry"
+    author: "Michael Sullivan"
+    year: 2019
+    publisher: "Pearson"
+  - title: "College Algebra"
+    author: "Robert Blitzer"
+    year: 2017
+    publisher: "Pearson"
+  - title: "Precalculus: Mathematics for Calculus"
+    author: "James Stewart"
+    year: 2015
+    publisher: "Cengage"

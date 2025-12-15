@@ -1,0 +1,527 @@
+/**
+ * MathHook Brand Styles
+ * ======================
+ * Tagline: "Symbolic Power. Educational Clarity. Native Speed."
+ *
+ * Typography Baseline:
+ * - Inter: Clean, highly legible, excellent for technical content
+ *   - Optimized for screens, x-height focused
+ *   - Tabular figures for aligned numbers
+ *   - OpenType features for technical precision
+ * - JetBrains Mono: Purpose-built for code
+ *   - Ligatures optional (disabled by default for clarity)
+ *   - Optimized for long reading sessions
+ *
+ * Brand Colors:
+ * - Logic Navy (#0F172A): Backgrounds, depth
+ * - Rust Core (#E64524): Primary accent, CTAs
+ * - Solve Cyan (#06B6D4): Secondary accent, speed
+ * - Chalk White (#F8FAFC): Text, formulas
+ * - Step Green (#10B981): Success, educational steps
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Base Layer: Design Tokens === */
+@layer base {
+  :root {
+    /* Brand Colors */
+    --color-logic-navy: #0F172A;
+    --color-rust-core: #E64524;
+    --color-solve-cyan: #06B6D4;
+    --color-chalk-white: #F8FAFC;
+    --color-step-green: #10B981;
+
+    /* Semantic Colors */
+    --color-background: var(--color-logic-navy);
+    --color-background-elevated: #1E293B;
+    --color-background-card: #1E293B;
+    --color-text-primary: var(--color-chalk-white);
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #94A3B8;
+    --color-border: #334155;
+    --color-border-subtle: #1E293B;
+
+    /* Typography - Engineering Baseline */
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+
+    /* Type Scale - Optimized for technical content */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --letter-spacing-tight: -0.025em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.025em;
+
+    /* Spacing */
+    --spacing-section: 8rem;
+    --spacing-card: 2rem;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+    --transition-slow: 500ms ease;
+
+    /* Shadows */
+    --shadow-glow-cyan: 0 0 40px rgba(6, 182, 212, 0.3);
+    --shadow-glow-rust: 0 0 40px rgba(230, 69, 36, 0.3);
+    --shadow-glow-green: 0 0 40px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Light mode overrides */
+  .light {
+    --color-background: var(--color-chalk-white);
+    --color-background-elevated: #FFFFFF;
+    --color-background-card: #FFFFFF;
+    --color-text-primary: var(--color-logic-navy);
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748B;
+    --color-border: #E2E8F0;
+    --color-border-subtle: #F1F5F9;
+  }
+
+  /* Base HTML styling */
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-logic-navy-900 text-chalk;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: var(--line-height-normal);
+    /* Inter OpenType features for engineering precision:
+     * cv02: Alternate 'a' - single-story for better distinction
+     * cv03: Alternate 'g' - single-story
+     * cv04: Alternate 'i' - no serifs
+     * cv11: Single-story lowercase 'y'
+     * tnum: Tabular figures - aligned numbers for technical content
+     * zero: Slashed zero - distinguish 0 from O
+     */
+    font-feature-settings: 'cv02' 1, 'cv03' 1, 'cv04' 1, 'tnum' 1, 'zero' 1;
+  }
+
+  /* Selection styling */
+  ::selection {
+    @apply bg-solve-cyan/30 text-chalk;
+  }
+
+  /* Headings - Inter with tight tracking */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    @apply font-bold;
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+  }
+
+  h1 { @apply text-4xl md:text-5xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  h3 { @apply text-xl md:text-2xl; }
+  h4 { @apply text-lg md:text-xl; }
+
+  /* Code elements - JetBrains Mono */
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+    /* JetBrains Mono settings:
+     * calt: Contextual alternates (ligatures) - disabled for clarity
+     * zero: Slashed zero
+     */
+    font-feature-settings: 'calt' 0, 'zero' 1;
+  }
+
+  /* Inline code */
+  code:not(pre code) {
+    @apply px-1.5 py-0.5 bg-logic-navy-800 rounded text-sm;
+  }
+
+  /* Paragraph spacing for technical content */
+  p {
+    line-height: var(--line-height-relaxed);
+    @apply mb-4;
+  }
+
+  /* Lists */
+  ul, ol {
+    @apply mb-4 pl-4;
+  }
+
+  li {
+    @apply mb-1;
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Links */
+  a {
+    @apply transition-colors duration-150;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-solve-cyan;
+  }
+
+  /* Number styling for technical content */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .slashed-zero {
+    font-feature-settings: 'zero' 1;
+  }
+
+  /* Scrollbar styling for dark mode */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-logic-navy-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-logic-navy-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-logic-navy-500;
+  }
+}
+
+/* === Component Layer: Reusable Components === */
+@layer components {
+  /* Brand gradient text */
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-rust-core via-rust-core-300 to-solve-cyan;
+  }
+
+  /* Brand gradient backgrounds */
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, var(--color-rust-core) 0%, var(--color-solve-cyan) 100%);
+  }
+
+  .bg-gradient-brand-hover {
+    background: linear-gradient(135deg, #F47A5C 0%, #22D3EE 100%);
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-logic-navy-500/50 backdrop-blur-lg rounded-2xl border border-logic-navy-700 p-6;
+    @apply transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:border-solve-cyan/50 hover:shadow-glow-cyan hover:scale-[1.02];
+  }
+
+  .card-rust-hover {
+    @apply hover:border-rust-core/50 hover:shadow-glow-rust hover:scale-[1.02];
+  }
+
+  .card-green-hover {
+    @apply hover:border-step-green/50 hover:shadow-glow-green hover:scale-[1.02];
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply px-8 py-4 bg-gradient-to-r from-rust-core to-rust-core-400 rounded-xl;
+    @apply font-semibold text-chalk shadow-lg;
+    @apply hover:from-rust-core-400 hover:to-rust-core hover:shadow-glow-rust;
+    @apply transform transition-all duration-200 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply px-8 py-4 bg-logic-navy-500 rounded-xl;
+    @apply font-semibold text-chalk border border-logic-navy-600;
+    @apply hover:bg-logic-navy-400 hover:border-solve-cyan/50;
+    @apply transform transition-all duration-200 hover:scale-105;
+  }
+
+  .btn-cyan {
+    @apply px-8 py-4 bg-gradient-to-r from-solve-cyan to-solve-cyan-400 rounded-xl;
+    @apply font-semibold text-logic-navy-900 shadow-lg;
+    @apply hover:shadow-glow-cyan;
+    @apply transform transition-all duration-200 hover:scale-105;
+  }
+
+  /* Code block styling */
+  .code-block {
+    @apply bg-logic-navy-800 rounded-xl p-6 font-mono text-sm;
+    @apply border border-logic-navy-700;
+    @apply overflow-x-auto;
+  }
+
+  /* Terminal window styling */
+  .terminal-window {
+    @apply bg-logic-navy-800/80 backdrop-blur-lg rounded-2xl border border-logic-navy-700;
+    @apply shadow-2xl overflow-hidden;
+  }
+
+  .terminal-header {
+    @apply flex gap-2 p-4 border-b border-logic-navy-700;
+  }
+
+  .terminal-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .terminal-dot-red { @apply bg-rust-core; }
+  .terminal-dot-yellow { @apply bg-amber-500; }
+  .terminal-dot-green { @apply bg-step-green; }
+
+  /* Section containers */
+  .section {
+    @apply py-24 md:py-32 px-4;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Feature card with icon */
+  .feature-card {
+    @apply card card-hover relative overflow-hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-solve-cyan/10 to-transparent opacity-0;
+    @apply transition-opacity duration-300;
+  }
+
+  .feature-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Stats display */
+  .stat {
+    @apply text-center;
+  }
+
+  .stat-value {
+    @apply text-4xl md:text-5xl font-bold mb-2;
+  }
+
+  .stat-label {
+    @apply text-chalk-500;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-cyan {
+    @apply bg-solve-cyan/10 text-solve-cyan border border-solve-cyan/20;
+  }
+
+  .badge-rust {
+    @apply bg-rust-core/10 text-rust-core border border-rust-core/20;
+  }
+
+  .badge-green {
+    @apply bg-step-green/10 text-step-green border border-step-green/20;
+  }
+
+  /* Navigation link */
+  .nav-link {
+    @apply text-chalk-500 hover:text-chalk transition-colors duration-150;
+  }
+
+  .nav-link-active {
+    @apply text-solve-cyan font-medium;
+  }
+
+  /* Callout boxes for documentation */
+  .callout {
+    @apply p-4 rounded-lg border-l-4;
+  }
+
+  .callout-note {
+    @apply bg-solve-cyan/10 border-solve-cyan text-chalk;
+  }
+
+  .callout-warning {
+    @apply bg-amber-500/10 border-amber-500 text-chalk;
+  }
+
+  .callout-error {
+    @apply bg-rust-core/10 border-rust-core text-chalk;
+  }
+
+  .callout-success {
+    @apply bg-step-green/10 border-step-green text-chalk;
+  }
+
+  .callout-performance {
+    @apply bg-solve-cyan/10 border-solve-cyan text-chalk;
+  }
+
+  /* The "Explanation Block" for step-by-step */
+  .explanation-block {
+    @apply bg-logic-navy-800 rounded-lg p-6 border-l-4 border-step-green;
+  }
+
+  .explanation-block-header {
+    @apply text-step-green font-semibold mb-2;
+  }
+
+  /* Benchmark badge */
+  .benchmark-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full;
+    @apply bg-solve-cyan/10 text-solve-cyan font-mono text-sm;
+    @apply border border-solve-cyan/20;
+  }
+}
+
+/* === Utility Layer: One-off Utilities === */
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in-up {
+    animation: fade-in-up 1s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animation-delay-100 { animation-delay: 0.1s; }
+  .animation-delay-200 { animation-delay: 0.2s; }
+  .animation-delay-300 { animation-delay: 0.3s; }
+  .animation-delay-400 { animation-delay: 0.4s; }
+  .animation-delay-500 { animation-delay: 0.5s; }
+  .animation-delay-600 { animation-delay: 0.6s; }
+  .animation-delay-2000 { animation-delay: 2s; }
+  .animation-delay-4000 { animation-delay: 4s; }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient masks */
+  .mask-gradient-b {
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+
+  /* Glow effects */
+  .glow-cyan {
+    box-shadow: var(--shadow-glow-cyan);
+  }
+
+  .glow-rust {
+    box-shadow: var(--shadow-glow-rust);
+  }
+
+  .glow-green {
+    box-shadow: var(--shadow-glow-green);
+  }
+}
+
+/* === Keyframe Animations === */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+/* === KaTeX Math Styling Overrides === */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  @apply my-6;
+}
+
+/* Math in dark backgrounds */
+.katex-mathml {
+  display: none;
+}
+
+/* === Prism.js Code Highlighting Overrides === */
+pre[class*="language-"],
+code[class*="language-"] {
+  @apply text-chalk-200;
+  background: transparent !important;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  @apply text-chalk-600;
+}
+
+.token.punctuation {
+  @apply text-chalk-400;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  @apply text-step-green;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  @apply text-solve-cyan;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  @apply text-rust-core-300;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  @apply text-rust-core;
+}
+
+.token.function {
+  @apply text-solve-cyan-400;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  @apply text-amber-400;
+}
+
+.token.class-name {
+  @apply text-solve-cyan;
+}

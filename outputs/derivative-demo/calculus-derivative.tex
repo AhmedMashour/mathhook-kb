@@ -1,0 +1,124 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic Differentiation }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Computes the derivative of an expression with respect to a variable using
+symbolic differentiation rules. Supports power rule, product rule, quotient
+rule, chain rule, and derivatives of elementary functions.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+$$\frac{d}{dx} f(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Power Rule }
+
+The derivative of x^n is n*x^(n-1). This is one of the fundamental
+rules of calculus and applies to any real exponent n.
+
+
+\begin{lstlisting}
+x = symbol('x')
+f = expr('x^3')
+df = f.derivative(x)
+# Result: 3*x^2
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+3*x^2
+\end{verbatim}
+
+
+
+\subsection{ Chain Rule }
+
+When differentiating a composition of functions f(g(x)), we use the
+chain rule: (f∘g)'(x) = f'(g(x)) · g'(x)
+
+
+\begin{lstlisting}
+x = symbol('x')
+f = expr('sin(x^2)')
+df = f.derivative(x)
+# Result: 2*x*cos(x^2)
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+2*x*cos(x^2)
+\end{verbatim}
+
+
+
+\subsection{ Product Rule }
+
+For the product of two functions u(x)·v(x), the derivative is
+u'(x)·v(x) + u(x)·v'(x)
+
+
+\begin{lstlisting}
+x = symbol('x')
+f = expr('x^2 * sin(x)')
+df = f.derivative(x)
+# Result: 2*x*sin(x) + x^2*cos(x)
+
+\end{lstlisting}
+
+
+\textbf{Output:}
+
+\begin{verbatim}
+2*x*sin(x) + x^2*cos(x)
+\end{verbatim}
+
+
+
+
+
+
+\end{document}

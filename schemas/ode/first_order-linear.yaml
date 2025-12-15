@@ -1,0 +1,300 @@
+topic: "ordinary-differential-equations"
+title: "Linear First-Order Differential Equations"
+description: "Solve linear first-order ODEs using the integrating factor method with MathHook"
+
+mathematical_definition: "\\frac{dy}{dx} + P(x)y = Q(x)"
+
+examples:
+  - title: "Basic Linear ODE"
+    explanation: |
+      Solve the linear first-order ODE: $\\frac{dy}{dx} + 2y = 3e^x$
+
+      This is in standard form with $P(x) = 2$ and $Q(x) = 3e^x$.
+      MathHook automatically computes the integrating factor $\\mu(x) = e^{\\int P(x)dx} = e^{2x}$.
+    code:
+      python: |
+        from mathhook import symbol, Function, solve_ode
+
+        x = symbol('x')
+        y = Function('y')
+
+        # dy/dx + 2y = 3e^x
+        equation = y.diff(x) + 2*y - 3*exp(x)
+
+        solution = solve_ode(equation, y, x)
+        print(f"General solution: {solution}")
+      rust: |
+        use mathhook_core::ode::{ODESolver, LinearFirstOrderSolver};
+        use mathhook_core::{symbol, expr};
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // dy/dx + 2y = 3e^x
+        let solver = LinearFirstOrderSolver::new();
+        let equation = expr!((dy/dx) + (2*y) - (3*exp(x)));
+
+        let solution = solver.solve(&equation, &y, &x);
+        println!("General solution: {}", solution);
+      nodejs: |
+        const { symbol, Function, solveODE } = require('mathhook-node');
+
+        const x = symbol('x');
+        const y = Function('y');
+
+        // dy/dx + 2y = 3e^x
+        const equation = y.diff(x).add(y.mul(2)).sub(exp(x).mul(3));
+
+        const solution = solveODE(equation, y, x);
+        console.log(`General solution: ${solution}`);
+    expected_output: "y = e^x + Ce^(-2x)"
+
+  - title: "Variable Coefficient Linear ODE"
+    explanation: |
+      Solve $\\frac{dy}{dx} + \\frac{y}{x} = x^2$
+
+      Here $P(x) = \\frac{1}{x}$ and $Q(x) = x^2$.
+      The integrating factor is $\\mu(x) = e^{\\int \\frac{1}{x}dx} = x$.
+    code:
+      python: |
+        from mathhook import symbol, Function, solve_ode
+
+        x = symbol('x')
+        y = Function('y')
+
+        # dy/dx + y/x = x^2
+        equation = y.diff(x) + y/x - x**2
+
+        solution = solve_ode(equation, y, x)
+        print(f"General solution: {solution}")
+      rust: |
+        use mathhook_core::ode::LinearFirstOrderSolver;
+        use mathhook_core::{symbol, expr};
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // dy/dx + y/x = x^2
+        let solver = LinearFirstOrderSolver::new();
+        let equation = expr!((dy/dx) + (y/x) - (x^2));
+
+        let solution = solver.solve(&equation, &y, &x);
+        println!("General solution: {}", solution);
+      nodejs: |
+        const { symbol, Function, solveODE } = require('mathhook-node');
+
+        const x = symbol('x');
+        const y = Function('y');
+
+        // dy/dx + y/x = x^2
+        const equation = y.diff(x).add(y.div(x)).sub(x.pow(2));
+
+        const solution = solveODE(equation, y, x);
+        console.log(`General solution: ${solution}`);
+    expected_output: "y = (x^3)/4 + C/x"
+
+  - title: "Initial Value Problem"
+    explanation: |
+      Solve $\\frac{dy}{dx} - y = 2$, $y(0) = 1$
+
+      First find the general solution, then apply the initial condition to find $C$.
+    code:
+      python: |
+        from mathhook import symbol, Function, solve_ivp
+
+        x = symbol('x')
+        y = Function('y')
+
+        # dy/dx - y = 2, y(0) = 1
+        equation = y.diff(x) - y - 2
+
+        solution = solve_ivp(equation, y, x, initial_conditions={y(0): 1})
+        print(f"Particular solution: {solution}")
+      rust: |
+        use mathhook_core::ode::LinearFirstOrderSolver;
+        use mathhook_core::{symbol, expr};
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // dy/dx - y = 2, y(0) = 1
+        let solver = LinearFirstOrderSolver::new();
+        let equation = expr!((dy/dx) - y - 2);
+
+        let general_solution = solver.solve(&equation, &y, &x);
+        let particular = solver.apply_initial_condition(
+            &general_solution,
+            &x,
+            expr!(0),
+            expr!(1)
+        );
+        println!("Particular solution: {}", particular);
+      nodejs: |
+        const { symbol, Function, solveIVP } = require('mathhook-node');
+
+        const x = symbol('x');
+        const y = Function('y');
+
+        // dy/dx - y = 2, y(0) = 1
+        const equation = y.diff(x).sub(y).sub(2);
+
+        const solution = solveIVP(equation, y, x, {[y(0)]: 1});
+        console.log(`Particular solution: ${solution}`);
+    expected_output: "y = -2 + 3e^x"
+
+article:
+  introduction:
+    hook: |
+      **Linear first-order differential equations** are one of the most fundamental types of ODEs. They appear in numerous applications including population dynamics, radioactive decay, electrical circuits, and heat transfer. The general form is $\\frac{dy}{dx} + P(x)y = Q(x)$, where $P(x)$ and $Q(x)$ are given functions.
+
+      The **integrating factor method** provides a systematic approach to solve these equations by transforming them into an exact equation that can be integrated directly.
+
+  sections:
+    - title: "Standard Form"
+      content: |
+        A linear first-order ODE must be written in the standard form:
+
+        $$\\frac{dy}{dx} + P(x)y = Q(x)$$
+
+        where:
+        - $P(x)$ is the **coefficient function** (multiplies $y$)
+        - $Q(x)$ is the **forcing function** (non-homogeneous term)
+
+        ### Examples of Standard Form ###
+
+        **Already in standard form**:
+        - $\\frac{dy}{dx} + 2y = 3e^x$ → $P(x) = 2$, $Q(x) = 3e^x$
+        - $\\frac{dy}{dx} + \\frac{y}{x} = x^2$ → $P(x) = \\frac{1}{x}$, $Q(x) = x^2$
+
+        **Requires rearrangement**:
+        - $x\\frac{dy}{dx} + y = x^3$ → Divide by $x$ → $\\frac{dy}{dx} + \\frac{y}{x} = x^2$
+        - $2\\frac{dy}{dx} - 4y = 6x$ → Divide by $2$ → $\\frac{dy}{dx} - 2y = 3x$
+
+    - title: "The Integrating Factor Method"
+      content: |
+        The integrating factor method is a systematic procedure:
+
+        ### Step 1: Identify $P(x)$ ###
+        Write the equation in standard form and identify $P(x)$.
+
+        ### Step 2: Compute the Integrating Factor ###
+        Calculate $\\mu(x) = e^{\\int P(x)dx}$
+
+        **Note**: No constant of integration is needed here.
+
+        ### Step 3: Multiply Both Sides ###
+        Multiply the entire equation by $\\mu(x)$:
+        $$\\mu(x)\\frac{dy}{dx} + \\mu(x)P(x)y = \\mu(x)Q(x)$$
+
+        The left side becomes the derivative of a product:
+        $$\\frac{d}{dx}[\\mu(x)y] = \\mu(x)Q(x)$$
+
+        ### Step 4: Integrate Both Sides ###
+        $$\\mu(x)y = \\int \\mu(x)Q(x)dx + C$$
+
+        ### Step 5: Solve for $y$ ###
+        $$y = \\frac{1}{\\mu(x)}\\left(\\int \\mu(x)Q(x)dx + C\\right)$$
+
+    - title: "Worked Example"
+      content: |
+        **Problem**: Solve $\\frac{dy}{dx} + 2y = 3e^x$
+
+        ### Solution ###
+
+        **Step 1**: Identify $P(x) = 2$ and $Q(x) = 3e^x$
+
+        **Step 2**: Compute integrating factor:
+        $$\\mu(x) = e^{\\int 2dx} = e^{2x}$$
+
+        **Step 3**: Multiply by $\\mu(x)$:
+        $$e^{2x}\\frac{dy}{dx} + 2e^{2x}y = 3e^{3x}$$
+
+        This is equivalent to:
+        $$\\frac{d}{dx}[e^{2x}y] = 3e^{3x}$$
+
+        **Step 4**: Integrate:
+        $$e^{2x}y = \\int 3e^{3x}dx = e^{3x} + C$$
+
+        **Step 5**: Solve for $y$:
+        $$y = e^{-2x}(e^{3x} + C) = e^x + Ce^{-2x}$$
+
+        This is the **general solution** containing an arbitrary constant $C$.
+
+    - title: "Special Cases"
+      content: |
+        ### Homogeneous Linear Equations ###
+        When $Q(x) = 0$, the equation $\\frac{dy}{dx} + P(x)y = 0$ is **homogeneous**.
+
+        Solution is simply:
+        $$y = Ce^{-\\int P(x)dx}$$
+
+        **Example**: $\\frac{dy}{dx} + 3y = 0$ has solution $y = Ce^{-3x}$
+
+        ### Constant Coefficients ###
+        When both $P$ and $Q$ are constants, the integrating factor is particularly simple.
+
+        For $\\frac{dy}{dx} + Py = Q$ (constants $P, Q$):
+        - Integrating factor: $\\mu = e^{Px}$
+        - General solution: $y = \\frac{Q}{P} + Ce^{-Px}$
+
+        **Example**: $\\frac{dy}{dx} + 2y = 6$ has solution $y = 3 + Ce^{-2x}$
+
+    - title: "Applications"
+      content: |
+        Linear first-order ODEs model many real-world phenomena:
+
+        ### Population Dynamics (with harvesting) ###
+        $$\\frac{dP}{dt} = kP - H$$
+        where $k$ is growth rate and $H$ is constant harvesting.
+
+        ### Radioactive Decay (with production) ###
+        $$\\frac{dN}{dt} = -\\lambda N + R(t)$$
+        where $\\lambda$ is decay constant and $R(t)$ is production rate.
+
+        ### RC Circuits ###
+        $$\\frac{dV}{dt} + \\frac{1}{RC}V = \\frac{E(t)}{RC}$$
+        where $E(t)$ is applied voltage.
+
+        ### Newton's Law of Cooling ###
+        $$\\frac{dT}{dt} = -k(T - T_\\text{ambient})$$
+        Rearranged: $\\frac{dT}{dt} + kT = kT_\\text{ambient}$
+
+  sidebars:
+    - type: "note"
+      title: "Why It Works"
+      content: |
+        The integrating factor method works because $\\mu(x) = e^{\\int P(x)dx}$ satisfies:
+        $$\\frac{d\\mu}{dx} = \\mu(x) \\cdot P(x)$$
+
+        This magical property turns the left side into a perfect derivative:
+        $$\\mu\\frac{dy}{dx} + \\mu Py = \\frac{d}{dx}[\\mu y]$$
+
+    - type: "warning"
+      title: "Common Mistakes"
+      content: |
+        **Division by zero**: When rearranging to standard form, be careful not to divide by zero. For example, $x\\frac{dy}{dx} + y = 0$ is undefined at $x=0$.
+
+        **Wrong sign**: The standard form is $\\frac{dy}{dx} + P(x)y = Q(x)$. If your equation has a minus sign, remember $P(x)$ will be negative.
+
+        **Forgetting $+C$**: The constant of integration in Step 4 is crucial for the general solution.
+
+    - type: "info"
+      title: "Existence and Uniqueness"
+      content: |
+        For the initial value problem:
+        $$\\frac{dy}{dx} + P(x)y = Q(x), \\quad y(x_0) = y_0$$
+
+        A unique solution exists on any interval where $P(x)$ and $Q(x)$ are continuous.
+
+        This is a consequence of the **Picard-Lindelöf theorem**.
+
+    - type: "performance"
+      title: "MathHook Performance"
+      content: |
+        MathHook's linear ODE solver:
+        - **Automatic standard form conversion**
+        - **Symbolic integrating factor computation**
+        - **Automatic simplification** of the final solution
+        - **Initial condition application** with symbolic algebra
+
+        Typical solving time: < 10ms for polynomial coefficients, < 50ms for transcendental functions.

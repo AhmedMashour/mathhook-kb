@@ -1,0 +1,453 @@
+topic: "special_functions"
+title: "The Gamma Function"
+description: "Understand and compute the Gamma function - generalization of factorial to complex numbers with MathHook"
+
+mathematical_definition: "\\Gamma(z) = \\int_0^{\\infty} t^{z-1} e^{-t} dt"
+
+quick_reference:
+  definition: "Gamma function extends factorial to complex numbers"
+  key_property: "$\\Gamma(n+1) = n!$ for non-negative integers $n$"
+  functional_equation: "$\\Gamma(z+1) = z\\Gamma(z)$"
+  special_values:
+    - "$\\Gamma(1) = 1$"
+    - "$\\Gamma(1/2) = \\sqrt{\\pi}$"
+    - "$\\Gamma(n+1) = n!$ for $n \\in \\mathbb{N}$"
+  reflection_formula: "$\\Gamma(z)\\Gamma(1-z) = \\frac{\\pi}{\\sin(\\pi z)}$"
+  domain: "All complex numbers except non-positive integers"
+
+examples:
+  - title: "Computing Gamma for Integers"
+    explanation: |
+      Compute: $\\Gamma(5)$
+
+      Using the property $\\Gamma(n+1) = n!$ for non-negative integers:
+
+      $$\\Gamma(5) = 4! = 4 \\times 3 \\times 2 \\times 1 = 24$$
+
+      **Derivation using functional equation**:
+
+      $$\\Gamma(5) = 4 \\cdot \\Gamma(4) = 4 \\cdot 3 \\cdot \\Gamma(3) = 4 \\cdot 3 \\cdot 2 \\cdot \\Gamma(2)$$
+
+      $$= 4 \\cdot 3 \\cdot 2 \\cdot 1 \\cdot \\Gamma(1) = 4 \\cdot 3 \\cdot 2 \\cdot 1 \\cdot 1 = 24$$
+    code:
+      python: |
+        from mathhook import gamma
+
+        result = gamma(5)
+        print(f"Γ(5) = {result}")
+
+        # Verify with factorial
+        import math
+        factorial_4 = math.factorial(4)
+        print(f"4! = {factorial_4}")
+        print(f"Γ(5) = 4! = {result}")
+      rust: |
+        use mathhook_core::functions::special::gamma;
+        use mathhook_core::expr;
+
+        let result = gamma(&expr!(5));
+        println!("Γ(5) = {}", result);
+
+        // Verify with factorial
+        let factorial_4 = (1..=4).product::<i64>();
+        println!("4! = {}", factorial_4);
+      nodejs: |
+        const { gamma } = require('mathhook-node');
+
+        const result = gamma(5);
+        console.log(`Γ(5) = ${result}`);
+
+        // Verify with factorial
+        const factorial = (n) => n <= 1 ? 1 : n * factorial(n - 1);
+        console.log(`4! = ${factorial(4)}`);
+
+  - title: "Half-Integer Values"
+    explanation: |
+      Compute: $\\Gamma(3/2)$
+
+      Using functional equation: $\\Gamma(z+1) = z\\Gamma(z)$
+
+      $$\\Gamma(3/2) = \\Gamma(1/2 + 1) = \\frac{1}{2} \\Gamma(1/2)$$
+
+      We know: $\\Gamma(1/2) = \\sqrt{\\pi}$
+
+      Therefore:
+
+      $$\\Gamma(3/2) = \\frac{1}{2} \\sqrt{\\pi}$$
+
+      **For $\\Gamma(5/2)$**:
+
+      $$\\Gamma(5/2) = \\Gamma(3/2 + 1) = \\frac{3}{2} \\Gamma(3/2) = \\frac{3}{2} \\cdot \\frac{1}{2} \\sqrt{\\pi} = \\frac{3\\sqrt{\\pi}}{4}$$
+
+      **General pattern** for half-integers $n + 1/2$:
+
+      $$\\Gamma\\left(n + \\frac{1}{2}\\right) = \\frac{(2n-1)!!}{2^n} \\sqrt{\\pi}$$
+
+      where $(2n-1)!! = 1 \\cdot 3 \\cdot 5 \\cdots (2n-1)$ (double factorial of odd numbers)
+    code:
+      python: |
+        from mathhook import gamma, sqrt, pi
+
+        result_1_2 = gamma(1/2)
+        print(f"Γ(1/2) = {result_1_2}")
+        print(f"√π = {sqrt(pi())}")
+
+        result_3_2 = gamma(3/2)
+        print(f"Γ(3/2) = {result_3_2}")
+        print(f"√π/2 = {sqrt(pi())/2}")
+
+        result_5_2 = gamma(5/2)
+        print(f"Γ(5/2) = {result_5_2}")
+        print(f"3√π/4 = {3*sqrt(pi())/4}")
+      rust: |
+        use mathhook_core::functions::special::gamma;
+        use mathhook_core::{expr, sqrt, pi};
+
+        let result_1_2 = gamma(&expr!(1/2));
+        println!("Γ(1/2) = {}", result_1_2);
+
+        let result_3_2 = gamma(&expr!(3/2));
+        println!("Γ(3/2) = {}", result_3_2);
+
+        let result_5_2 = gamma(&expr!(5/2));
+        println!("Γ(5/2) = {}", result_5_2);
+      nodejs: |
+        const { gamma, sqrt, pi } = require('mathhook-node');
+
+        const result_1_2 = gamma(0.5);
+        console.log(`Γ(1/2) = ${result_1_2}`);
+        console.log(`√π = ${sqrt(pi())}`);
+
+        const result_3_2 = gamma(1.5);
+        console.log(`Γ(3/2) = ${result_3_2}`);
+
+        const result_5_2 = gamma(2.5);
+        console.log(`Γ(5/2) = ${result_5_2}`);
+
+  - title: "Reflection Formula Application"
+    explanation: |
+      Verify reflection formula for $z = 1/4$:
+
+      $$\\Gamma(z)\\Gamma(1-z) = \\frac{\\pi}{\\sin(\\pi z)}$$
+
+      For $z = 1/4$:
+
+      $$\\Gamma(1/4) \\cdot \\Gamma(3/4) = \\frac{\\pi}{\\sin(\\pi/4)} = \\frac{\\pi}{\\sqrt{2}/2} = \\sqrt{2}\\pi$$
+
+      This is a powerful identity for computing Gamma values!
+    code:
+      python: |
+        from mathhook import gamma, pi, sin, sqrt
+        import math
+
+        z = 1/4
+        left = gamma(z) * gamma(1 - z)
+        right = pi() / sin(pi() * z)
+
+        print(f"Γ(1/4) · Γ(3/4) = {left}")
+        print(f"π/sin(π/4) = {right}")
+        print(f"√2 · π = {sqrt(2) * pi()}")
+
+        # Verify they're equal
+        print(f"Are they equal? {abs(left - right) < 1e-10}")
+      rust: |
+        use mathhook_core::functions::special::gamma;
+        use mathhook_core::functions::elementary::trig::sin;
+        use mathhook_core::{expr, pi, sqrt};
+
+        let z = expr!(1/4);
+        let left = expr!(gamma(&z) * gamma(&expr!(1 - z)));
+        let right = expr!(pi() / sin(&expr!(pi() * z)));
+
+        println!("Γ(1/4) · Γ(3/4) = {}", left);
+        println!("π/sin(π/4) = {}", right);
+      nodejs: |
+        const { gamma, pi, sin, sqrt } = require('mathhook-node');
+
+        const z = 0.25;
+        const left = gamma(z) * gamma(1 - z);
+        const right = pi() / sin(pi() * z);
+
+        console.log(`Γ(1/4) · Γ(3/4) = ${left}`);
+        console.log(`π/sin(π/4) = ${right}`);
+        console.log(`√2 · π = ${sqrt(2) * pi()}`);
+
+article:
+  sections:
+    - title: "What is the Gamma Function?"
+      content: |
+        ### Historical Context ###
+
+        The Gamma function was introduced by **Leonhard Euler** in the 18th century as a way to interpolate factorial values to non-integer arguments.
+
+        While factorial $n!$ is only defined for non-negative integers, the Gamma function extends this concept to all complex numbers (except non-positive integers).
+
+        ### Definition ###
+
+        The Gamma function is defined by the integral:
+
+        $$\\Gamma(z) = \\int_0^{\\infty} t^{z-1} e^{-t} dt$$
+
+        for $\\text{Re}(z) > 0$.
+
+        For other values of $z$, it's defined by **analytic continuation**.
+
+        ### Connection to Factorial ###
+
+        For non-negative integers $n$:
+
+        $$\\Gamma(n+1) = n!$$
+
+        **Why the shift?** Because $\\Gamma(1) = 0! = 1$, not $\\Gamma(0) = 0!$.
+
+        Examples:
+        - $\\Gamma(1) = 0! = 1$
+        - $\\Gamma(2) = 1! = 1$
+        - $\\Gamma(3) = 2! = 2$
+        - $\\Gamma(4) = 3! = 6$
+        - $\\Gamma(5) = 4! = 24$
+
+    - title: "Functional Equation and Recurrence"
+      content: |
+        ### The Fundamental Property ###
+
+        The Gamma function satisfies the **functional equation**:
+
+        $$\\Gamma(z+1) = z \\Gamma(z)$$
+
+        This is analogous to the factorial recurrence: $n! = n \\cdot (n-1)!$
+
+        ### Proof from Integral Definition ###
+
+        $$\\Gamma(z+1) = \\int_0^{\\infty} t^z e^{-t} dt$$
+
+        Using integration by parts with $u = t^z$ and $dv = e^{-t} dt$:
+
+        $$= \\left[-t^z e^{-t}\\right]_0^{\\infty} + z \\int_0^{\\infty} t^{z-1} e^{-t} dt$$
+
+        The boundary term vanishes, giving:
+
+        $$= z \\int_0^{\\infty} t^{z-1} e^{-t} dt = z \\Gamma(z)$$
+
+        ### Applications of Functional Equation ###
+
+        **Computing values recursively**:
+
+        $$\\Gamma(6) = 5 \\cdot \\Gamma(5) = 5 \\cdot 4 \\cdot \\Gamma(4) = \\cdots = 5! = 120$$
+
+        **Extending to negative values**:
+
+        $$\\Gamma(z) = \\frac{\\Gamma(z+1)}{z}$$
+
+        For example: $\\Gamma(-1/2) = \\frac{\\Gamma(1/2)}{-1/2} = -2\\sqrt{\\pi}$
+
+    - title: "Special Values"
+      content: |
+        ### Integer Values ###
+
+        $$\\Gamma(n+1) = n! \\quad \\text{for } n \\in \\mathbb{N}$$
+
+        ### Half-Integer Values ###
+
+        The most fundamental:
+
+        $$\\Gamma\\left(\\frac{1}{2}\\right) = \\sqrt{\\pi}$$
+
+        **Proof**: Using Gaussian integral
+
+        $$\\left[\\Gamma\\left(\\frac{1}{2}\\right)\\right]^2 = \\int_0^{\\infty} t^{-1/2} e^{-t} dt \\cdot \\int_0^{\\infty} s^{-1/2} e^{-s} ds$$
+
+        Convert to polar coordinates to get $\\pi$.
+
+        **Other half-integers** (using functional equation):
+
+        $$\\Gamma\\left(\\frac{3}{2}\\right) = \\frac{1}{2} \\sqrt{\\pi}$$
+
+        $$\\Gamma\\left(\\frac{5}{2}\\right) = \\frac{3}{4} \\sqrt{\\pi}$$
+
+        $$\\Gamma\\left(\\frac{7}{2}\\right) = \\frac{15}{8} \\sqrt{\\pi}$$
+
+        **General formula**:
+
+        $$\\Gamma\\left(n + \\frac{1}{2}\\right) = \\frac{(2n)!}{4^n n!} \\sqrt{\\pi} = \\frac{(2n-1)!!}{2^n} \\sqrt{\\pi}$$
+
+        where $(2n-1)!! = 1 \\cdot 3 \\cdot 5 \\cdots (2n-1)$ is the double factorial.
+
+        ### Negative Half-Integers ###
+
+        Using $\\Gamma(z) = \\frac{\\Gamma(z+1)}{z}$:
+
+        $$\\Gamma\\left(-\\frac{1}{2}\\right) = \\frac{\\Gamma(1/2)}{-1/2} = -2\\sqrt{\\pi}$$
+
+        $$\\Gamma\\left(-\\frac{3}{2}\\right) = \\frac{\\Gamma(-1/2)}{-3/2} = \\frac{4}{3}\\sqrt{\\pi}$$
+
+    - title: "Reflection Formula (Euler's Formula)"
+      content: |
+        ### The Formula ###
+
+        For $z$ not an integer:
+
+        $$\\Gamma(z) \\Gamma(1-z) = \\frac{\\pi}{\\sin(\\pi z)}$$
+
+        This is one of the most beautiful identities in mathematics!
+
+        ### Applications ###
+
+        1. **Computing Gamma for $z$ and $1-z$ together**:
+
+           If you know $\\Gamma(1/4) \\approx 3.6256$, then:
+
+           $$\\Gamma(3/4) = \\frac{\\pi}{\\sin(\\pi/4) \\cdot \\Gamma(1/4)} = \\frac{\\pi}{(\\sqrt{2}/2) \\cdot 3.6256}$$
+
+        2. **Extending to negative values**:
+
+           $$\\Gamma(-1/2) = \\frac{\\pi}{\\sin(-\\pi/2) \\cdot \\Gamma(3/2)} = \\frac{\\pi}{(-1) \\cdot \\sqrt{\\pi}/2} = -2\\sqrt{\\pi}$$
+
+        3. **Special case $z = 1/2$**:
+
+           $$\\Gamma(1/2) \\Gamma(1/2) = \\frac{\\pi}{\\sin(\\pi/2)} = \\pi$$
+
+           Therefore: $\\Gamma(1/2) = \\sqrt{\\pi}$ (taking positive root)
+
+        ### Proof Sketch ###
+
+        Uses the **infinite product representation** of the Gamma function and $\\sin(\\pi z)$.
+
+    - title: "Duplication Formula (Legendre)"
+      content: |
+        ### The Formula ###
+
+        $$\\Gamma(z) \\Gamma\\left(z + \\frac{1}{2}\\right) = \\frac{\\sqrt{\\pi}}{2^{2z-1}} \\Gamma(2z)$$
+
+        Also written as:
+
+        $$\\Gamma(2z) = \\frac{2^{2z-1}}{\\sqrt{\\pi}} \\Gamma(z) \\Gamma\\left(z + \\frac{1}{2}\\right)$$
+
+        ### Applications ###
+
+        **Example**: Compute $\\Gamma(2)$ using $z = 1$:
+
+        $$\\Gamma(2) = \\frac{2^{2(1)-1}}{\\sqrt{\\pi}} \\Gamma(1) \\Gamma(3/2) = \\frac{2}{\\sqrt{\\pi}} \\cdot 1 \\cdot \\frac{\\sqrt{\\pi}}{2} = 1$$
+
+        **Verifies**: $\\Gamma(2) = 1! = 1$ ✓
+
+        ### Relation to Beta Function ###
+
+        The duplication formula connects Gamma to the **Beta function**:
+
+        $$B(x,y) = \\frac{\\Gamma(x)\\Gamma(y)}{\\Gamma(x+y)}$$
+
+    - title: "Poles and Zeros"
+      content: |
+        ### Poles (Singularities) ###
+
+        The Gamma function has **simple poles** at:
+
+        $$z = 0, -1, -2, -3, \\ldots$$
+
+        (all non-positive integers)
+
+        At these points, $\\Gamma(z) \\to \\pm \\infty$.
+
+        **Residues** at the poles:
+
+        $$\\text{Res}(\\Gamma, -n) = \\frac{(-1)^n}{n!}$$
+
+        ### No Zeros ###
+
+        The Gamma function has **no zeros** anywhere in the complex plane!
+
+        This is a remarkable property - most special functions have both poles and zeros.
+
+        ### Implications ###
+
+        - $1/\\Gamma(z)$ is an **entire function** (analytic everywhere)
+        - Often easier to work with $1/\\Gamma(z)$ for analytic purposes
+
+    - title: "Numerical Computation"
+      content: |
+        ### For Large Arguments ###
+
+        **Stirling's Approximation**:
+
+        $$\\Gamma(z) \\sim \\sqrt{\\frac{2\\pi}{z}} \\left(\\frac{z}{e}\\right)^z \\quad \\text{as } z \\to \\infty$$
+
+        More accurate form:
+
+        $$\\ln \\Gamma(z) \\approx \\left(z - \\frac{1}{2}\\right) \\ln z - z + \\frac{1}{2}\\ln(2\\pi) + \\frac{1}{12z} - \\frac{1}{360z^3} + \\cdots$$
+
+        ### For Small Arguments ###
+
+        Use **functional equation** to shift to larger arguments:
+
+        $$\\Gamma(z) = \\frac{\\Gamma(z+n)}{z(z+1)(z+2)\\cdots(z+n-1)}$$
+
+        Then use series expansion or Stirling for $\\Gamma(z+n)$.
+
+        ### MathHook Implementation ###
+
+        MathHook uses:
+        - **Lanczos approximation** for general values (accurate to 15 digits)
+        - **Special values** for exact results (integers, half-integers)
+        - **Reflection formula** for negative values
+        - **Asymptotic expansion** for large arguments
+
+    - title: "Applications in Mathematics and Physics"
+      content: |
+        ### Probability and Statistics ###
+
+        **Gamma distribution** PDF:
+
+        $$f(x; k, \\theta) = \\frac{x^{k-1} e^{-x/\\theta}}{\\theta^k \\Gamma(k)}$$
+
+        **Chi-squared distribution**: Special case of Gamma distribution
+
+        **Beta distribution**: Uses Beta function $B(\\alpha, \\beta) = \\frac{\\Gamma(\\alpha)\\Gamma(\\beta)}{\\Gamma(\\alpha + \\beta)}$
+
+        ### Calculus and Analysis ###
+
+        **Gaussian integral**:
+
+        $$\\int_0^{\\infty} x^n e^{-x^2} dx = \\frac{\\Gamma\\left(\\frac{n+1}{2}\\right)}{2}$$
+
+        **Laplace transforms** of power functions:
+
+        $$\\mathcal{L}\\{t^n\\} = \\frac{\\Gamma(n+1)}{s^{n+1}}$$
+
+        ### Number Theory ###
+
+        **Riemann Zeta function** functional equation involves Gamma:
+
+        $$\\zeta(s) = 2^s \\pi^{s-1} \\sin\\left(\\frac{\\pi s}{2}\\right) \\Gamma(1-s) \\zeta(1-s)$$
+
+        ### Physics ###
+
+        - **Quantum mechanics**: Normalization of wave functions
+        - **Statistical mechanics**: Partition functions
+        - **String theory**: Veneziano amplitude
+        - **General relativity**: Schwarzschild metric calculations
+
+related_topics:
+  - slug: "special_functions-beta"
+    title: "Beta Function"
+    description: "Closely related to Gamma function"
+  - slug: "special_functions-bessel"
+    title: "Bessel Functions"
+    description: "Another important special function family"
+  - slug: "calculus-integration"
+    title: "Integration Techniques"
+    description: "Gamma function defined by integral"
+
+references:
+  - title: "Special Functions and Their Applications"
+    author: "N. N. Lebedev"
+    year: 1965
+    publisher: "Dover Publications"
+  - title: "Handbook of Mathematical Functions"
+    author: "Milton Abramowitz and Irene Stegun"
+    year: 1964
+    publisher: "National Bureau of Standards"
+  - title: "A Course of Modern Analysis"
+    author: "E. T. Whittaker and G. N. Watson"
+    year: 1927
+    publisher: "Cambridge University Press"

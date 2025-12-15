@@ -1,0 +1,466 @@
+topic: "calculus"
+title: "Symbolic Differentiation"
+description: "Compute derivatives symbolically using differentiation rules with MathHook - power rule, product rule, chain rule, and more"
+
+mathematical_definition: "\\frac{d}{dx}f(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}"
+
+quick_reference:
+  definition: "Derivative measures instantaneous rate of change"
+  notation: "$f'(x)$, $\\frac{df}{dx}$, $\\frac{d}{dx}f(x)$, $D_x f$"
+  basic_rules:
+    - "Power rule: $\\frac{d}{dx}x^n = nx^{n-1}$"
+    - "Constant multiple: $\\frac{d}{dx}(cf) = c\\frac{df}{dx}$"
+    - "Sum rule: $\\frac{d}{dx}(f + g) = \\frac{df}{dx} + \\frac{dg}{dx}$"
+    - "Product rule: $\\frac{d}{dx}(fg) = f\\frac{dg}{dx} + g\\frac{df}{dx}$"
+    - "Quotient rule: $\\frac{d}{dx}\\left(\\frac{f}{g}\\right) = \\frac{g\\frac{df}{dx} - f\\frac{dg}{dx}}{g^2}$"
+    - "Chain rule: $\\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)$"
+
+examples:
+  - title: "Basic Derivative - Power Rule"
+    explanation: |
+      Compute: $\frac{d}{dx}(x^5)$
+
+      Using the **power rule**: $\frac{d}{dx}x^n = nx^{n-1}$
+
+      $$\frac{d}{dx}(x^5) = 5x^{5-1} = 5x^4$$
+
+      **Verification**: For $f(x) = x^5$, we have $f'(x) = 5x^4$.
+
+      Test at $x = 2$: $f(2) = 32$, $f(2.001) = 32.08...$
+
+      Approximate derivative: $\frac{32.08 - 32}{0.001} \approx 80$
+
+      Exact: $f'(2) = 5(2^4) = 5(16) = 80$ ✓
+    code:
+      python: |
+        from mathhook import symbol, expr, diff
+
+        x = symbol('x')
+        f = expr(x**5)
+
+        derivative = diff(f, x)
+        print(f"f(x) = {f}")
+        print(f"f'(x) = {derivative}")
+
+        # Evaluate at a point
+        result = derivative.subs(x, 2)
+        print(f"f'(2) = {result}")
+      rust: |
+        use mathhook_core::{symbol, expr, diff};
+
+        let x = symbol!(x);
+        let f = expr!(x ^ 5);
+
+        let derivative = diff(&f, &x);
+        println!("f(x) = {}", f);
+        println!("f'(x) = {}", derivative);
+
+        // Evaluate at a point
+        let result = derivative.substitute(&x, &expr!(2));
+        println!("f'(2) = {}", result);
+      nodejs: |
+        const { symbol, expr, diff } = require('mathhook-node');
+
+        const x = symbol('x');
+        const f = expr(x.pow(5));
+
+        const derivative = diff(f, x);
+        console.log(`f(x) = ${f}`);
+        console.log(`f'(x) = ${derivative}`);
+
+        // Evaluate at a point
+        const result = derivative.subs(x, 2);
+        console.log(`f'(2) = ${result}`);
+
+  - title: "Product Rule"
+    explanation: |
+      Compute: $\frac{d}{dx}(x^2 \sin(x))$
+
+      Using the **product rule**: $\frac{d}{dx}(fg) = f'g + fg'$
+
+      Let $f(x) = x^2$ and $g(x) = \sin(x)$
+
+      Then:
+      - $f'(x) = 2x$
+      - $g'(x) = \cos(x)$
+
+      $$\frac{d}{dx}(x^2 \sin(x)) = (2x)(\sin x) + (x^2)(\cos x)$$
+
+      $$= 2x\sin(x) + x^2\cos(x)$$
+    code:
+      python: |
+        from mathhook import symbol, expr, diff, sin
+
+        x = symbol('x')
+        f = expr(x**2 * sin(x))
+
+        derivative = diff(f, x)
+        print(f"d/dx[x²sin(x)] = {derivative}")
+
+        # MathHook automatically applies product rule
+        # Result: 2x·sin(x) + x²·cos(x)
+      rust: |
+        use mathhook_core::{symbol, expr, diff};
+        use mathhook_core::functions::elementary::trig::sin;
+
+        let x = symbol!(x);
+        let f = expr!((x^2) * sin(&expr!(x)));
+
+        let derivative = diff(&f, &x);
+        println!("d/dx[x²sin(x)] = {}", derivative);
+      nodejs: |
+        const { symbol, expr, diff, sin } = require('mathhook-node');
+
+        const x = symbol('x');
+        const f = expr(x.pow(2).mul(sin(x)));
+
+        const derivative = diff(f, x);
+        console.log(`d/dx[x²sin(x)] = ${derivative}`);
+
+  - title: "Chain Rule - Composition"
+    explanation: |
+      Compute: $\frac{d}{dx}\sin(x^2)$
+
+      This is a composition: $f(g(x))$ where $f(u) = \sin(u)$ and $g(x) = x^2$
+
+      Using the **chain rule**: $\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$
+
+      - Inner function: $g(x) = x^2$, so $g'(x) = 2x$
+      - Outer function: $f(u) = \sin(u)$, so $f'(u) = \cos(u)$
+
+      $$\frac{d}{dx}\sin(x^2) = \cos(x^2) \cdot 2x = 2x\cos(x^2)$$
+    code:
+      python: |
+        from mathhook import symbol, expr, diff, sin
+
+        x = symbol('x')
+        f = expr(sin(x**2))
+
+        derivative = diff(f, x)
+        print(f"d/dx[sin(x²)] = {derivative}")
+
+        # Result: 2x·cos(x²)
+      rust: |
+        use mathhook_core::{symbol, expr, diff};
+        use mathhook_core::functions::elementary::trig::sin;
+
+        let x = symbol!(x);
+        let f = sin(&expr!(x^2));
+
+        let derivative = diff(&f, &x);
+        println!("d/dx[sin(x²)] = {}", derivative);
+      nodejs: |
+        const { symbol, expr, diff, sin } = require('mathhook-node');
+
+        const x = symbol('x');
+        const f = sin(x.pow(2));
+
+        const derivative = diff(f, x);
+        console.log(`d/dx[sin(x²)] = ${derivative}`);
+
+article:
+  sections:
+    - title: "What is a Derivative?"
+      content: |
+        ### Intuitive Understanding ###
+
+        The derivative measures how fast a function is changing at a particular point.
+
+        - **Geometric**: Slope of tangent line to curve
+        - **Physical**: Instantaneous velocity (rate of change of position)
+        - **Mathematical**: Limit of average rate of change as interval shrinks to zero
+
+        ### Formal Definition ###
+
+        The derivative of $f(x)$ at point $x$ is:
+
+        $$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+
+        provided this limit exists.
+
+        ### Notation ###
+
+        Many equivalent notations:
+        - Lagrange: $f'(x)$, $f''(x)$, $f'''(x)$
+        - Leibniz: $\frac{df}{dx}$, $\frac{dy}{dx}$
+        - Euler: $D_x f$, $D^2_x f$
+        - Newton: $\dot{f}$, $\ddot{f}$ (for time derivatives)
+
+    - title: "Basic Differentiation Rules"
+      content: |
+        ### Power Rule ###
+
+        $$\frac{d}{dx}(x^n) = nx^{n-1}$$
+
+        Works for all real $n$ (including negative and fractional exponents).
+
+        Examples:
+        - $\frac{d}{dx}(x^3) = 3x^2$
+        - $\frac{d}{dx}(x^{-1}) = -x^{-2}$
+        - $\frac{d}{dx}(x^{1/2}) = \frac{1}{2}x^{-1/2} = \frac{1}{2\sqrt{x}}$
+
+        ### Constant Rule ###
+
+        $$\frac{d}{dx}(c) = 0$$
+
+        Constants don't change, so rate of change is zero.
+
+        ### Constant Multiple Rule ###
+
+        $$\frac{d}{dx}(cf(x)) = c\frac{d}{dx}f(x)$$
+
+        You can "pull out" constant factors.
+
+        ### Sum Rule ###
+
+        $$\frac{d}{dx}(f(x) + g(x)) = \frac{d}{dx}f(x) + \frac{d}{dx}g(x)$$
+
+        Derivative of sum equals sum of derivatives.
+
+        ### Difference Rule ###
+
+        $$\frac{d}{dx}(f(x) - g(x)) = \frac{d}{dx}f(x) - \frac{d}{dx}g(x)$$
+
+        Same as sum rule, for subtraction.
+
+    - title: "Product and Quotient Rules"
+      content: |
+        ### Product Rule ###
+
+        For the product of two functions:
+
+        $$\frac{d}{dx}(f(x)g(x)) = f'(x)g(x) + f(x)g'(x)$$
+
+        **Mnemonic**: "First times derivative of second, plus second times derivative of first"
+
+        **Example**: $\frac{d}{dx}(x^2 e^x) = 2x \cdot e^x + x^2 \cdot e^x = (2x + x^2)e^x$
+
+        ### Quotient Rule ###
+
+        For the quotient of two functions:
+
+        $$\frac{d}{dx}\left(\frac{f(x)}{g(x)}\right) = \frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2}$$
+
+        **Mnemonic**: "Low d-high minus high d-low, over the square of what's below"
+
+        **Example**:
+        $$\frac{d}{dx}\left(\frac{x^2}{x+1}\right) = \frac{2x(x+1) - x^2(1)}{(x+1)^2} = \frac{2x^2 + 2x - x^2}{(x+1)^2} = \frac{x^2 + 2x}{(x+1)^2}$$
+
+        ### Alternative to Quotient Rule ###
+
+        You can rewrite $\frac{f}{g} = f \cdot g^{-1}$ and use product rule + chain rule:
+
+        $$\frac{d}{dx}\left(\frac{f}{g}\right) = \frac{d}{dx}(f \cdot g^{-1}) = f' \cdot g^{-1} + f \cdot (-1)g^{-2}g'$$
+
+        Same result, but sometimes easier.
+
+    - title: "The Chain Rule"
+      content: |
+        ### Statement ###
+
+        For a composition $f(g(x))$:
+
+        $$\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$$
+
+        **Leibniz Notation**: If $y = f(u)$ and $u = g(x)$, then:
+
+        $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
+
+        ### Intuition ###
+
+        The chain rule says: the rate of change of a composition equals the rate of change of the outer function (at the inner value) times the rate of change of the inner function.
+
+        ### Examples ###
+
+        1. $\frac{d}{dx}\sin(3x) = \cos(3x) \cdot 3 = 3\cos(3x)$
+
+        2. $\frac{d}{dx}(x^2 + 1)^{10} = 10(x^2 + 1)^9 \cdot 2x = 20x(x^2 + 1)^9$
+
+        3. $\frac{d}{dx}e^{x^2} = e^{x^2} \cdot 2x = 2xe^{x^2}$
+
+        ### Multiple Compositions ###
+
+        For $f(g(h(x)))$:
+
+        $$\frac{d}{dx}f(g(h(x))) = f'(g(h(x))) \cdot g'(h(x)) \cdot h'(x)$$
+
+        Work from outside in.
+
+    - title: "Derivatives of Common Functions"
+      content: |
+        ### Trigonometric Functions ###
+
+        $$\frac{d}{dx}\sin(x) = \cos(x)$$
+
+        $$\frac{d}{dx}\cos(x) = -\sin(x)$$
+
+        $$\frac{d}{dx}\tan(x) = \sec^2(x)$$
+
+        $$\frac{d}{dx}\cot(x) = -\csc^2(x)$$
+
+        $$\frac{d}{dx}\sec(x) = \sec(x)\tan(x)$$
+
+        $$\frac{d}{dx}\csc(x) = -\csc(x)\cot(x)$$
+
+        ### Inverse Trigonometric Functions ###
+
+        $$\frac{d}{dx}\arcsin(x) = \frac{1}{\sqrt{1-x^2}}$$
+
+        $$\frac{d}{dx}\arccos(x) = -\frac{1}{\sqrt{1-x^2}}$$
+
+        $$\frac{d}{dx}\arctan(x) = \frac{1}{1+x^2}$$
+
+        ### Exponential and Logarithmic ###
+
+        $$\frac{d}{dx}e^x = e^x$$
+
+        $$\frac{d}{dx}a^x = a^x \ln(a)$$
+
+        $$\frac{d}{dx}\ln(x) = \frac{1}{x}$$
+
+        $$\frac{d}{dx}\log_a(x) = \frac{1}{x\ln(a)}$$
+
+        ### Hyperbolic Functions ###
+
+        $$\frac{d}{dx}\sinh(x) = \cosh(x)$$
+
+        $$\frac{d}{dx}\cosh(x) = \sinh(x)$$
+
+        $$\frac{d}{dx}\tanh(x) = \operatorname{sech}^2(x)$$
+
+    - title: "Higher-Order Derivatives"
+      content: |
+        ### Definition ###
+
+        The **second derivative** is the derivative of the derivative:
+
+        $$f''(x) = \frac{d^2f}{dx^2} = \frac{d}{dx}\left(\frac{df}{dx}\right)$$
+
+        Similarly, the **$n$-th derivative** is:
+
+        $$f^{(n)}(x) = \frac{d^n f}{dx^n}$$
+
+        ### Interpretation ###
+
+        - **First derivative** $f'(x)$: Rate of change, velocity
+        - **Second derivative** $f''(x)$: Rate of change of rate of change, acceleration
+        - **Third derivative** $f'''(x)$: Jerk (in physics)
+
+        ### Example ###
+
+        For $f(x) = x^4$:
+
+        - $f'(x) = 4x^3$
+        - $f''(x) = 12x^2$
+        - $f'''(x) = 24x$
+        - $f^{(4)}(x) = 24$
+        - $f^{(5)}(x) = 0$
+
+        All higher derivatives are zero.
+
+        ### General Formula (Leibniz Rule) ###
+
+        For product of two functions:
+
+        $$\frac{d^n}{dx^n}(fg) = \sum_{k=0}^{n} \binom{n}{k} f^{(k)} g^{(n-k)}$$
+
+        Analogous to binomial theorem.
+
+    - title: "Implicit Differentiation"
+      content: |
+        ### When to Use ###
+
+        When $y$ is defined **implicitly** as a function of $x$ by an equation like:
+
+        $$F(x, y) = 0$$
+
+        you can't always solve for $y = f(x)$ explicitly.
+
+        ### Method ###
+
+        1. Differentiate both sides with respect to $x$
+        2. Treat $y$ as a function of $x$ (use chain rule when differentiating $y$ terms)
+        3. Solve for $\frac{dy}{dx}$
+
+        ### Example ###
+
+        Find $\frac{dy}{dx}$ if $x^2 + y^2 = 25$
+
+        **Step 1**: Differentiate both sides
+
+        $$\frac{d}{dx}(x^2 + y^2) = \frac{d}{dx}(25)$$
+
+        **Step 2**: Apply chain rule to $y^2$ (since $y = y(x)$)
+
+        $$2x + 2y\frac{dy}{dx} = 0$$
+
+        **Step 3**: Solve for $\frac{dy}{dx}$
+
+        $$\frac{dy}{dx} = -\frac{2x}{2y} = -\frac{x}{y}$$
+
+        ### Applications ###
+
+        - Curves defined by equations (circles, ellipses, implicit curves)
+        - Related rates problems
+        - Finding tangent lines to implicit curves
+
+    - title: "Applications of Derivatives"
+      content: |
+        ### Finding Extrema (Maxima and Minima) ###
+
+        **Critical points** occur where $f'(x) = 0$ or $f'(x)$ is undefined.
+
+        **First Derivative Test**:
+        - If $f'$ changes from positive to negative at $c$: local maximum
+        - If $f'$ changes from negative to positive at $c$: local minimum
+
+        **Second Derivative Test**:
+        - If $f'(c) = 0$ and $f''(c) > 0$: local minimum
+        - If $f'(c) = 0$ and $f''(c) < 0$: local maximum
+
+        ### Concavity and Inflection Points ###
+
+        - $f''(x) > 0$: function is **concave up** (curve opens upward)
+        - $f''(x) < 0$: function is **concave down** (curve opens downward)
+        - $f''(x) = 0$ (and changes sign): **inflection point**
+
+        ### Related Rates ###
+
+        When two quantities are related and both changing with time, use:
+
+        $$\frac{dy}{dt} = \frac{dy}{dx} \cdot \frac{dx}{dt}$$
+
+        (Chain rule with time as parameter)
+
+        ### L'Hôpital's Rule ###
+
+        For indeterminate forms $\frac{0}{0}$ or $\frac{\infty}{\infty}$:
+
+        $$\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$$
+
+        (provided the right limit exists)
+
+related_topics:
+  - slug: "calculus-integration"
+    title: "Symbolic Integration"
+    description: "Antiderivatives - inverse operation of differentiation"
+  - slug: "calculus-limits"
+    title: "Limits"
+    description: "Foundation of derivative definition"
+  - slug: "ode-first_order-separable"
+    title: "Differential Equations"
+    description: "Equations involving derivatives"
+
+references:
+  - title: "Calculus"
+    author: "James Stewart"
+    year: 2020
+    publisher: "Cengage"
+  - title: "Calculus: Early Transcendentals"
+    author: "William L. Briggs and Lyle Cochran"
+    year: 2018
+    publisher: "Pearson"
+  - title: "Thomas' Calculus"
+    author: "George B. Thomas Jr."
+    year: 2017
+    publisher: "Pearson"
