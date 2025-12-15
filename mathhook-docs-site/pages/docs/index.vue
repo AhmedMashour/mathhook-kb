@@ -304,6 +304,67 @@
           </div>
         </section>
 
+        <!-- Developer Documentation Section -->
+        <section class="card p-6">
+          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+            </div>
+            Developer Documentation
+          </h2>
+          <div class="space-y-3">
+            <NuxtLink
+              to="/docs/dev-claude-md"
+              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
+            >
+              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
+                CLAUDE.md - AI Agent Guide
+              </h3>
+              <p class="text-chalk-500 mt-1">
+                Critical guidance for AI agents working on the MathHook Knowledge Base Engine
+              </p>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/docs/dev-architecture"
+              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
+            >
+              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
+                System Architecture
+              </h3>
+              <p class="text-chalk-500 mt-1">
+                Deep dive into the multi-format documentation generation system design
+              </p>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/docs/dev-schema-reference"
+              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
+            >
+              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
+                Schema Reference
+              </h3>
+              <p class="text-chalk-500 mt-1">
+                Complete specification of the schema format for documentation generation
+              </p>
+            </NuxtLink>
+
+            <NuxtLink
+              to="/docs/dev-generator-guide"
+              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
+            >
+              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
+                Generator Guide
+              </h3>
+              <p class="text-chalk-500 mt-1">
+                Step-by-step guide for implementing new output format generators
+              </p>
+            </NuxtLink>
+          </div>
+        </section>
+
         <!-- Coming Soon Section -->
         <section class="card p-6 border-dashed border-logic-navy-600">
           <h2 class="text-2xl font-semibold mb-4 text-chalk-500 flex items-center gap-3">

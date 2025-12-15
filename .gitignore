@@ -30,3 +30,7 @@ generators/vue-site/dist/
 # Temporary files
 *.tmp
 *.bak
+
+
+# AI related files
+CLAUDE.md

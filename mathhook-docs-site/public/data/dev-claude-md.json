@@ -1,0 +1,84 @@
+{
+  "topic": "dev.claude-md",
+  "title": "CLAUDE.md - AI Agent Development Guide",
+  "description": "Critical guidance for AI agents (Claude Code and similar) working on the MathHook Knowledge Base Engine codebase. Contains non-negotiable requirements, development rules, and best practices.",
+  "mathematical_definition": "\\text{Single Source of Truth} \\rightarrow \\text{One Schema} \\rightarrow \\text{12+ Output Formats}",
+  "examples": [
+    {
+      "title": "Schema Validation Pattern",
+      "explanation": "All schemas MUST validate before any generation begins. Never skip validation - it ensures correct output and prevents cascading failures.\n\n**Rule**: Validate on parse with required fields, correct types, valid code references, and syntactically correct examples.",
+      "code": {
+        "python": "# Python schema validation pattern\nfrom mathhook_kb import Schema, ValidationError\n\ndef generate_jupyter(schema_path: str) -> dict:\n    # Load and validate schema\n    schema = Schema.load(schema_path)\n    \n    # Validation happens automatically on load\n    # If invalid, raises ValidationError with:\n    # - File path\n    # - Line number\n    # - Field name\n    # - Suggested fix\n    \n    return schema.to_jupyter()\n\n# Example validation error:\n# ValidationError: Missing required field 'description'\n#   File: schemas/calculus/derivative.yaml\n#   Line: 5\n#   Suggestion: Add 'description: |' field\n",
+        "rust": "// Rust schema validation pattern\nuse kb_core::schema::Schema;\nuse anyhow::Result;\n\n// WRONG: Skip validation\nfn generate_jupyter_bad(schema: Schema) -> Notebook {\n    // Directly use schema fields without checking\n    // This can cause runtime panics!\n}\n\n// CORRECT: Validate first\nfn generate_jupyter(schema: Schema) -> Result<Notebook> {\n    schema.validate()?;  // Fails early if invalid\n    \n    // Now safe to use schema\n    let notebook = build_notebook(&schema)?;\n    validate_notebook_json(&notebook)?;\n    \n    Ok(notebook)\n}\n",
+        "nodejs": "// JavaScript schema validation pattern\nconst { Schema, ValidationError } = require('mathhook-kb');\n\nasync function generateJupyter(schemaPath) {\n    // Load and validate schema\n    const schema = await Schema.load(schemaPath);\n    \n    // validate() throws with detailed error info\n    schema.validate();\n    \n    return schema.toJupyter();\n}\n\n// Example error message:\n// ValidationError: Invalid code reference 'mathhook_core::calculus::deriv'\n//   File: schemas/calculus/derivative.yaml\n//   Line: 45\n//   Did you mean 'mathhook_core::calculus::derivative'?\n"
+      },
+      "expected_output": "Schema validated successfully\nGenerated notebook: derivative.ipynb"
+    },
+    {
+      "title": "Multi-Language Consistency Testing",
+      "explanation": "Code examples in Rust/Python/JavaScript MUST produce mathematically equivalent results.\n\n**Common pitfalls**:\n- Floating point precision differences\n- Off-by-one in array indexing\n- Different function names across bindings",
+      "code": {
+        "python": "# Test cross-language consistency\nimport subprocess\nimport json\n\ndef test_cross_language_example(example):\n    \"\"\"Verify Rust, Python, JS produce same output\"\"\"\n    \n    # Execute each language's code\n    rust_result = run_rust_code(example['code']['rust'])\n    python_result = run_python_code(example['code']['python'])\n    js_result = run_js_code(example['code']['nodejs'])\n    \n    # Compare results\n    assert rust_result == python_result, \\\n        f\"Rust/Python differ: {rust_result} != {python_result}\"\n    assert python_result == js_result, \\\n        f\"Python/JS differ: {python_result} != {js_result}\"\n    \n    return True\n\n# Use rational arithmetic to avoid float issues\n# x^2 where x=3 should give 9 in ALL languages\n",
+        "rust": "#[test]\nfn test_cross_language_consistency() {\n    let schema = load_schema(\"derivative.yaml\");\n    \n    for example in schema.examples {\n        let rust_result = execute_rust(&example.code.rust);\n        let python_result = execute_python(&example.code.python);\n        let js_result = execute_js(&example.code.nodejs);\n        \n        assert_eq!(\n            rust_result, python_result,\n            \"Rust and Python outputs differ for '{}'\",\n            example.title\n        );\n        assert_eq!(\n            python_result, js_result,\n            \"Python and JavaScript outputs differ for '{}'\",\n            example.title\n        );\n    }\n}\n",
+        "nodejs": "// Jest test for cross-language consistency\nconst { execSync } = require('child_process');\n\ndescribe('Cross-language consistency', () => {\n    test('examples produce same output', () => {\n        const schema = require('./derivative.json');\n        \n        schema.examples.forEach(example => {\n            const rustResult = runRust(example.code.rust);\n            const pythonResult = runPython(example.code.python);\n            const jsResult = runJS(example.code.nodejs);\n            \n            expect(rustResult).toEqual(pythonResult);\n            expect(pythonResult).toEqual(jsResult);\n        });\n    });\n});\n"
+      },
+      "expected_output": "All 3 languages produce: 3*x^2\nCross-language consistency: PASSED"
+    },
+    {
+      "title": "Idempotent Generation",
+      "explanation": "Running the generator twice on the same schema MUST produce identical output. No timestamps, random IDs, or UUIDs.\n\n**Why it matters**:\n- Version control diffs show only real changes\n- Reproducible builds for CI/CD\n- Predictable behavior",
+      "code": {
+        "python": "# WRONG: Non-deterministic output\nfrom datetime import datetime\nimport uuid\n\ndef generate_header_bad():\n    return f\"Generated at {datetime.now()}\"  # Different each run!\n\ndef generate_cell_id_bad():\n    return str(uuid.uuid4())  # Random each time!\n\n# CORRECT: Deterministic output\nimport hashlib\n\ndef generate_header(schema):\n    return f\"Generated from schema: {schema['topic']}\"\n\ndef generate_cell_id(content):\n    # Hash-based stable ID\n    return f\"cell-{hashlib.sha256(content.encode()).hexdigest()[:8]}\"\n",
+        "rust": "use std::collections::hash_map::DefaultHasher;\nuse std::hash::{Hash, Hasher};\n\n// WRONG: Timestamps make output non-deterministic\nfn generate_header_bad() -> String {\n    format!(\"Generated at {}\", chrono::Utc::now())\n}\n\n// WRONG: Random IDs differ each run\nfn generate_cell_id_bad() -> String {\n    uuid::Uuid::new_v4().to_string()\n}\n\n// CORRECT: Deterministic generation\nfn generate_header(schema: &Schema) -> String {\n    format!(\"Generated from schema: {}\", schema.topic)\n}\n\n// CORRECT: Hash-based stable IDs\nfn generate_cell_id(content: &str) -> String {\n    let mut hasher = DefaultHasher::new();\n    content.hash(&mut hasher);\n    format!(\"cell-{:x}\", hasher.finish())\n}\n",
+        "nodejs": "const crypto = require('crypto');\n\n// WRONG: Non-deterministic\nfunction generateHeaderBad() {\n    return `Generated at ${new Date().toISOString()}`;\n}\n\nfunction generateCellIdBad() {\n    return crypto.randomUUID();  // Different each time!\n}\n\n// CORRECT: Deterministic\nfunction generateHeader(schema) {\n    return `Generated from schema: ${schema.topic}`;\n}\n\nfunction generateCellId(content) {\n    const hash = crypto.createHash('sha256')\n        .update(content)\n        .digest('hex');\n    return `cell-${hash.slice(0, 8)}`;\n}\n"
+      },
+      "expected_output": "# Test idempotency:\nmathhook-kb build && cp -r output output-v1\nmathhook-kb build && diff -r output output-v1\n# Should show: No differences"
+    }
+  ],
+  "article": {
+    "introduction": {
+      "hook": "**CLAUDE.md** is the critical guidance document for AI agents working on the MathHook Knowledge Base Engine. It defines non-negotiable requirements that ensure correctness, consistency, and reliability across all generated documentation formats.\n\nThe Knowledge Base Engine transforms single schema definitions into 12+ output formats - from Jupyter notebooks to LaTeX papers. This guide ensures AI agents understand the architectural constraints and development rules required for successful contributions."
+    },
+    "sections": [
+      {
+        "title": "Core Directives (Non-Negotiable)",
+        "content": "These requirements have the **absolute highest priority**. Violating them causes system failures or data corruption.\n\n### 1. Schema Validation First ###\n\nEvery schema MUST validate before generation:\n- Use JSON Schema or similar for strict validation\n- Check required fields exist\n- Validate code references point to real functions\n- Verify examples are syntactically correct\n\n### 2. No Silent Failures ###\n\nGenerator errors MUST be explicit and actionable:\n- Never skip failing schemas silently\n- Always report which schema failed and why\n- Provide file path, line number, field name in errors\n- Suggest fixes when possible\n\n### 3. Multi-Language Consistency ###\n\nCode examples MUST be mathematically equivalent across Rust/Python/JavaScript:\n- Same input produces same output across languages\n- Mathematical operations must match (e.g., $x^2$ in all three)\n- Test cross-language consistency automatically\n\n### 4. Output Correctness ###\n\nGenerated files MUST be syntactically valid:\n- `.ipynb` files must be valid Jupyter JSON\n- Markdown must render correctly\n- LaTeX must compile without errors\n- Vue components must be valid SFC syntax\n\n### 5. Idempotency ###\n\nRunning generator twice on same schema produces identical output:\n- No timestamps in generated files\n- Deterministic ordering (sorted alphabetically)\n- No random IDs or UUIDs"
+      },
+      {
+        "title": "Rule Priority System",
+        "content": "Rules are categorized by severity:\n\n**Red (CRITICAL)**: Violating causes system failures or data corruption\n- Schema validation\n- Multi-language consistency\n- Output file validity\n- Idempotency\n\n**Yellow (IMPORTANT)**: Strong preference, exceptions require justification\n- Template separation from content\n- Generator extensibility via traits\n- Actionable error messages\n- Performance (<1s per schema)\n\n**Green (RECOMMENDED)**: Best practices, follow when practical\n- Code quality (`cargo fmt`, `cargo clippy`)\n- Documentation with rustdoc examples\n- Module size limits (500 lines max)"
+      },
+      {
+        "title": "Common AI Agent Pitfalls",
+        "content": "### Mistakes to Avoid ###\n\n1. **Generating invalid JSON**: Always validate `.ipynb` structure before writing\n\n2. **Inconsistent code examples**: Test Rust/Python/JS equivalence - don't assume they're correct\n\n3. **Hardcoding paths**: Use configurable template/output directories\n\n4. **Silent errors**: Never swallow validation failures - they indicate real problems\n\n5. **Non-deterministic output**: No timestamps, random IDs, or UUIDs in generated content\n\n6. **Template in code**: Keep formatting in `.tera` template files, not hardcoded in Rust\n\n7. **Missing error context**: Always include file path and line number in error messages"
+      },
+      {
+        "title": "Quick Start for AI Agents",
+        "content": "### First Time Working on mathhook-kb? ###\n\n1. Read the **CRITICAL** sections first\n2. Understand the schema format (Hybrid Option C)\n3. Look at example schemas in `schemas/examples/`\n4. Review one generator implementation (`kb-jupyter`)\n5. Run tests to understand expected behavior: `cargo test`\n\n### When Adding a New Generator ###\n\n1. Implement `OutputGenerator` trait\n2. Create templates in `templates/{generator-name}/`\n3. Add integration test in `tests/integration/`\n4. Validate output in test (syntax check)\n5. Update CLI to include new generator\n6. Document in README\n\n### When Modifying Schema Format ###\n\n1. Update schema types in `kb-core/src/schema/`\n2. Update example schemas\n3. Update all generators to handle new fields\n4. Add validation for new fields\n5. Update tests\n6. Update CLAUDE.md schema example"
+      }
+    ],
+    "sidebars": [
+      {
+        "type": "warning",
+        "title": "Critical Rule",
+        "content": "**Correctness and clarity are paramount.** This project powers documentation for a mathematical library. Every generated file must be correct, or users will learn incorrect mathematics."
+      },
+      {
+        "type": "info",
+        "title": "When to Update CLAUDE.md",
+        "content": "Update CLAUDE.md when:\n- A new critical rule emerges\n- A new generator is added\n- Common mistakes are identified\n- Schema format changes\n- Testing strategy evolves\n\n**Tell the user immediately when you update this file and explain why.**"
+      }
+    ]
+  },
+  "use_cases": [
+    "AI agents contributing to mathhook-kb codebase",
+    "Understanding non-negotiable development requirements",
+    "Learning the schema validation patterns",
+    "Avoiding common pitfalls in documentation generation"
+  ],
+  "related_topics": [
+    "dev-architecture",
+    "dev-schema-reference",
+    "dev-generator-guide"
+  ]
+}
