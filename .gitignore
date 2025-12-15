@@ -23,10 +23,10 @@ Thumbs.db
 *.pdf
 
 # Node.js (for Vue SSR generator)
-generators/vue-site/node_modules/
-generators/vue-site/.nuxt/
-generators/vue-site/.output/
-generators/vue-site/dist/
+mathhook-docs-site/node_modules/
+mathhook-docs-site/.nuxt/
+mathhook-docs-site/.output/
+mathhook-docs-site/dist/
 
 # Temporary files
 *.tmp
