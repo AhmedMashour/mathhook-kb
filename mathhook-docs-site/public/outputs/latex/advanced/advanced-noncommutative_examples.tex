@@ -1,0 +1,323 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Noncommutative Algebra Examples }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Comprehensive examples of noncommutative algebra in MathHook covering
+quantum mechanics operators, matrix algebra, quaternion rotations, and
+bulk symbol creation patterns.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Noncommutative algebra**: An algebraic structure where multiplication
+is not commutative, i.e., $AB \neq BA$ in general.
+
+Key examples:
+- **Matrix multiplication**: $\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$
+- **Quantum operators**: $[\hat{x}, \hat{p}] = \hat{x}\hat{p} - \hat{p}\hat{x} = i\hbar$
+- **Quaternions**: $ij = k$, $ji = -k$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+# Noncommutative Algebra Examples
+
+This guide provides practical examples of working with noncommutative
+algebra in MathHook across different domains.
+
+## Quantum Mechanics
+
+### Position and Momentum Operators
+The canonical commutation relation: $[x, p] = xp - px = i\hbar$
+
+### Hamiltonian Eigenvalue Equation
+Solving $H|\psi\rangle = E|\psi\rangle$
+
+### Angular Momentum Operators
+Quantum angular momentum: $[L_x, L_y] = i\hbar L_z$
+
+## Matrix Algebra
+
+### Left vs Right Division
+- **Left division**: $AX = B \Rightarrow X = A^{-1}B$
+- **Right division**: $XA = B \Rightarrow X = BA^{-1}$
+
+Order of multiplication matters when the unknown is on different sides.
+
+## Quaternion Rotations
+
+### Basis Elements
+Quaternion basis $\{1, i, j, k\}$ with:
+- $ij = k$, $ji = -k$
+- $jk = i$, $kj = -i$
+- $ki = j$, $ik = -j$
+
+### 3D Rotations
+Rotating vector $v$ by quaternion $q$: $v' = qv\bar{q}$
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Quantum Commutator }
+
+Position-momentum canonical commutation relation [x,p] = iℏ
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+# Create operator symbols
+x = symbol('x', type='operator')  # Position operator
+p = symbol('p', type='operator')  # Momentum operator
+
+# Commutator: [x, p] = xp - px
+xp = x * p
+px = p * x
+commutator = xp - px
+
+# These are structurally different (noncommutative)
+assert str(xp) != str(px)
+
+# LaTeX output preserves operator hats
+latex = commutator.to_latex()
+# Output: \hat{x}\hat{p} - \hat{p}\hat{x}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Angular Momentum Operators }
+
+Quantum angular momentum with [Lx, Ly] = iℏLz
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+lx = symbol('Lx', type='operator')
+ly = symbol('Ly', type='operator')
+lz = symbol('Lz', type='operator')
+
+# Lx*Ly product
+lx_ly = lx * ly
+
+# Ly*Lx product
+ly_lx = ly * lx
+
+# These are NOT equal (noncommutative)
+assert str(lx_ly) != str(ly_lx)
+
+# Commutator [Lx, Ly] = Lx*Ly - Ly*Lx
+commutator = lx_ly - ly_lx
+# In quantum mechanics, this equals i*hbar*Lz
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Equation Left Division }
+
+Solve A*X = B using left division X = A^(-1)*B
+
+\begin{lstlisting}
+from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# Equation: A*X = B
+equation = A * X - B
+
+result = solver.solve(equation, X)
+# Returns: X = A.inv() * B (left multiplication by inverse)
+
+# Note: We multiply by A^(-1) on the LEFT because X is on the right of A
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Equation Right Division }
+
+Solve X*A = B using right division X = B*A^(-1)
+
+\begin{lstlisting}
+from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# Equation: X*A = B
+equation = X * A - B
+
+result = solver.solve(equation, X)
+# Returns: X = B * A.inv() (right multiplication by inverse)
+
+# Note: We multiply by A^(-1) on the RIGHT because X is on the left of A
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Quaternion Multiplication }
+
+Noncommutative quaternion basis multiplication i*j = k, j*i = -k
+
+\begin{lstlisting}
+from mathhook import symbol
+
+i = symbol('i', type='quaternion')
+j = symbol('j', type='quaternion')
+k = symbol('k', type='quaternion')
+
+# i*j = k
+ij = i * j
+
+# j*i = -k (different!)
+ji = j * i
+
+# Order matters - multiplication is noncommutative
+assert str(ij) != str(ji)
+
+# All quaternion products:
+# i*j = k, j*i = -k
+# j*k = i, k*j = -i
+# k*i = j, i*k = -j
+
+\end{lstlisting}
+
+
+
+
+\subsection{ 3D Rotation with Quaternions }
+
+Rotating a vector v by quaternion q: v' = q*v*conj(q)
+
+\begin{lstlisting}
+from mathhook import symbol
+
+q = symbol('q', type='quaternion')       # Rotation quaternion
+v = symbol('v', type='quaternion')       # Vector as pure quaternion
+q_conj = symbol('q_conj', type='quaternion')  # Conjugate of q
+
+# Rotation formula: v' = q*v*q_conj
+rotation = q * v * q_conj
+
+# The order matters:
+# q * v * q_conj ≠ q_conj * v * q
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Bulk Symbol Creation }
+
+Create multiple symbols at once using the symbols![] macro
+
+\begin{lstlisting}
+from mathhook import symbols
+
+# Multiple scalars (default type)
+x, y, z = symbols('x y z')
+
+# Multiple matrices
+A, B, C = symbols('A B C', type='matrix')
+
+# Multiple operators
+p, x_op, H = symbols('p x_op H', type='operator')
+
+# Multiple quaternions
+i, j, k = symbols('i j k', type='quaternion')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Complete Workflow Example }
+
+End-to-end example: create symbols, build equation, solve, format as LaTeX
+
+\begin{lstlisting}
+from mathhook import symbol, MatrixEquationSolver, SolverResult
+from mathhook.educational import MessageBuilder, MessageCategory, MessageType
+
+# 1. Create matrix symbols
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# 2. Build equation: A*X = B
+equation = A * X - B
+
+# 3. Solve equation
+solver = MatrixEquationSolver()
+result = solver.solve(equation, X)
+
+# 4. Format solution as LaTeX
+if isinstance(result, SolverResult.Single):
+    latex = result.solution.to_latex()
+    print(f"Solution: {latex}")
+    # Output: \mathbf{A}^{-1} \cdot \mathbf{B}
+
+# 5. Get educational explanation
+msg = MessageBuilder(
+    MessageCategory.NoncommutativeAlgebra,
+    MessageType.LeftMultiplyInverse,
+    step=0
+).build()
+
+if msg:
+    print(f"Explanation: {msg.description}")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

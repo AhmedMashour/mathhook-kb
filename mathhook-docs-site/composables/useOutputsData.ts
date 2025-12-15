@@ -64,7 +64,7 @@ export function useOutputsData() {
       color: 'amber',
       iconType: 'play',
       hasCustomAction: true,
-      externalActionUrl: 'https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/outputs/colab/',
+      externalActionUrl: 'https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/',
       externalActionText: 'Open in Colab'
     },
     {

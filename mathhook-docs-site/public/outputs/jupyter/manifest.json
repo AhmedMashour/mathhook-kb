@@ -1,0 +1,623 @@
+{
+  "generated_at": "2025-12-15T16:36:04Z",
+  "output_type": "Jupyter Notebooks",
+  "total_files": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.ipynb",
+        "title": "Symbolic Assumptions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-complex_numbers.ipynb",
+        "title": "Complex Number Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-differential_equations.ipynb",
+        "title": "Differential Equation Solving",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.ipynb",
+        "title": "Evaluation vs Simplification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-matrices.ipynb",
+        "title": "Matrix Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.ipynb",
+        "title": "Noncommutative Algebra",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.ipynb",
+        "title": "Noncommutative Algebra API Reference",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.ipynb",
+        "title": "Noncommutative Algebra Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.ipynb",
+        "title": "Boundary Conditions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-classification.ipynb",
+        "title": "PDE Classification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-examples.ipynb",
+        "title": "Complete PDE Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.ipynb",
+        "title": "Fourier Coefficients: Why They're Symbolic",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.ipynb",
+        "title": "Heat Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.ipynb",
+        "title": "Laplace Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.ipynb",
+        "title": "Method of Characteristics",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-overview.ipynb",
+        "title": "Partial Differential Equations (PDEs)",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-performance.ipynb",
+        "title": "PDE Module Performance Report",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.ipynb",
+        "title": "PDE Quick Reference Card",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_start.ipynb",
+        "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-registry.ipynb",
+        "title": "PDE Solver Registry System",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.ipynb",
+        "title": "Separation of Variables",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.ipynb",
+        "title": "SymPy Validation Workflow",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.ipynb",
+        "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-user_guide.ipynb",
+        "title": "PDE User Guide - MathHook CAS",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.ipynb",
+        "title": "Wave Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-piecewise.ipynb",
+        "title": "Piecewise Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-residue_calculus.ipynb",
+        "title": "Residue Calculus and Pole Finding",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-special_functions.ipynb",
+        "title": "Special Mathematical Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-system_solving.ipynb",
+        "title": "System of Equations Solving",
+        "category": "advanced"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.ipynb",
+        "title": "Symbolic Simplification",
+        "category": "api"
+      },
+      {
+        "filename": "api-calculus-operations.ipynb",
+        "title": "Symbolic Calculus: Differentiation and Integration",
+        "category": "api"
+      },
+      {
+        "filename": "api-core-expressions.ipynb",
+        "title": "Core Expression System",
+        "category": "api"
+      },
+      {
+        "filename": "api-matrix-operations.ipynb",
+        "title": "Matrix Operations and Noncommutative Algebra",
+        "category": "api"
+      },
+      {
+        "filename": "api-parser-latex.ipynb",
+        "title": "LaTeX Parsing and Mathematical Notation",
+        "category": "api"
+      },
+      {
+        "filename": "api-solver-equations.ipynb",
+        "title": "Symbolic and Numerical Equation Solving",
+        "category": "api"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.ipynb",
+        "title": "Changelog",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-errors.ipynb",
+        "title": "Error Messages",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-faq.ipynb",
+        "title": "Frequently Asked Questions",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-glossary.ipynb",
+        "title": "Glossary",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-notation.ipynb",
+        "title": "Mathematical Notation",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-risch_algorithm.ipynb",
+        "title": "The Risch Algorithm in MathHook",
+        "category": "appendix"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.ipynb",
+        "title": "Crate Structure",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-function-intelligence.ipynb",
+        "title": "Function Intelligence System",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-memory-layout.ipynb",
+        "title": "Memory Layout Optimization",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-principles.ipynb",
+        "title": "Design Principles",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-thread-safety.ipynb",
+        "title": "Thread Safety Guarantees",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-type-system.ipynb",
+        "title": "Type System",
+        "category": "architecture"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.ipynb",
+        "title": "Node.js/TypeScript API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-python.ipynb",
+        "title": "Python API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-wasm.ipynb",
+        "title": "WebAssembly Bindings",
+        "category": "bindings"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.ipynb",
+        "title": "Quick Reference for Core Math Functions",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-correctness.ipynb",
+        "title": "Mathematical Correctness",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-development.ipynb",
+        "title": "Development Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-documentation.ipynb",
+        "title": "Documentation Standards",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-style.ipynb",
+        "title": "Code Style Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-testing.ipynb",
+        "title": "Testing Strategy",
+        "category": "contributing"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.ipynb",
+        "title": "Mathematical Constants",
+        "category": "core"
+      },
+      {
+        "filename": "core-expressions.ipynb",
+        "title": "Expressions",
+        "category": "core"
+      },
+      {
+        "filename": "core-functions.ipynb",
+        "title": "Function System",
+        "category": "core"
+      },
+      {
+        "filename": "core-pattern-matching.ipynb",
+        "title": "Pattern Matching",
+        "category": "core"
+      },
+      {
+        "filename": "core-symbols-numbers.ipynb",
+        "title": "Symbols and Numbers",
+        "category": "core"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.ipynb",
+        "title": "Educational API",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-messages.ipynb",
+        "title": "Educational Message Registry",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-step_by_step.ipynb",
+        "title": "Step-by-Step Explanations",
+        "category": "educational"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.ipynb",
+        "title": "Function Evaluation",
+        "category": "evaluation"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.ipynb",
+        "title": "Introduction to MathHook",
+        "category": "getting"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.ipynb",
+        "title": "Basic Usage",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-common-patterns.ipynb",
+        "title": "Common Patterns",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-installation.ipynb",
+        "title": "Installation",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-learning-paths.ipynb",
+        "title": "Learning Paths",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-quick-start.ipynb",
+        "title": "Quick Start",
+        "category": "getting-started"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.ipynb",
+        "title": "Code Complexity Findings - Educational Integration Plan Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.ipynb",
+        "title": "Educational Integration Plan - Effort Estimation Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-plan.ipynb",
+        "title": "MathHook CAS - Educational Integration Implementation Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-error-handling.ipynb",
+        "title": "Error Handling & Fallback Architecture",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-feature-gap-tests.ipynb",
+        "title": "Feature Gap Tests Archive",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-investigation.ipynb",
+        "title": "MathHook CAS - Consolidated Investigation Report",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-overview.ipynb",
+        "title": "MathHook Complete Status",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.ipynb",
+        "title": "Calculus Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.ipynb",
+        "title": "Polynomial Performance Architecture Analysis",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.ipynb",
+        "title": "Simplification Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-solving-operations.ipynb",
+        "title": "Solving Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.ipynb",
+        "title": "Strategic Performance Roadmap: Path to Beating Symbolica",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.ipynb",
+        "title": "Fast Path Opportunities Assessment",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.ipynb",
+        "title": "Matrix Solver Integration Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.ipynb",
+        "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-type-dispatch-review.ipynb",
+        "title": "Comprehensive Type Dispatch & Educational Integration Review",
+        "category": "internal"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.ipynb",
+        "title": "Separable ODEs",
+        "category": "ode"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.ipynb",
+        "title": "Symbolic Differentiation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-evaluation.ipynb",
+        "title": "Expression Evaluation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-expansion-factoring.ipynb",
+        "title": "Expansion and Factoring",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-integration.ipynb",
+        "title": "Symbolic Integration",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-limits.ipynb",
+        "title": "Limits",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-series.ipynb",
+        "title": "Series Expansions",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-simplification.ipynb",
+        "title": "Symbolic Simplification",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-solving.ipynb",
+        "title": "Solving Equations",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-substitution.ipynb",
+        "title": "Substitution",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-summation.ipynb",
+        "title": "Summation and Products",
+        "category": "operations"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.ipynb",
+        "title": "Custom Parsers and Extensions",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-formatting.ipynb",
+        "title": "Expression Formatting",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-latex.ipynb",
+        "title": "LaTeX Notation",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-noncommutative_design.ipynb",
+        "title": "Parser Design for Noncommutative Algebra",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-wolfram.ipynb",
+        "title": "Wolfram Language Notation",
+        "category": "parser"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.ipynb",
+        "title": "Separation of Variables for PDEs",
+        "category": "pde"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.ipynb",
+        "title": "Performance Architecture",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-benchmarking.ipynb",
+        "title": "Benchmarking Guide",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-caching.ipynb",
+        "title": "Caching Strategies",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-comparison.ipynb",
+        "title": "Performance Comparison",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-parallel.ipynb",
+        "title": "Parallel Processing",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-simd.ipynb",
+        "title": "SIMD Operations",
+        "category": "performance"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.ipynb",
+        "title": "Polynomial Division and Factorization",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-finite-field.ipynb",
+        "title": "Finite Field Arithmetic",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-gcd.ipynb",
+        "title": "GCD Algorithms",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-groebner.ipynb",
+        "title": "Groebner Bases",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-overview.ipynb",
+        "title": "Polynomial Module Overview",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-special-families.ipynb",
+        "title": "Special Polynomial Families",
+        "category": "polynomial"
+      }
+    ]
+  }
+}

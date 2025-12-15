@@ -1,0 +1,61 @@
+{
+  "topic": "getting.started-introduction",
+  "title": "Introduction to MathHook",
+  "description": "MathHook is a high-performance educational computer algebra system (CAS) written in Rust,\ndesigned to combine mathematical correctness with exceptional performance.\n",
+  "code_refs": {
+    "rust": "mathhook",
+    "python": "mathhook",
+    "nodejs": "mathhook"
+  },
+  "examples": [
+    {
+      "title": "Expression Building",
+      "explanation": "Create mathematical expressions using macros",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet expr = expr!(add: (x ^ 2), (2 * x), 1);\n",
+        "python": "from mathhook import symbol, expr\n\nx = symbol('x')\nexpression = expr('x^2 + 2*x + 1')\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\nconst expression = expr('x^2 + 2*x + 1');\n"
+      }
+    },
+    {
+      "title": "Symbolic Computation",
+      "explanation": "Perform algebraic manipulations",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet expr = expr!(add: (x ^ 2), (2 * x), 1);\n\nlet simplified = expr.simplify();\nlet expanded = expr.expand();\nlet factored = expr.factor();\n",
+        "python": "from mathhook import symbol, expr\n\nx = symbol('x')\nexpression = expr('x^2 + 2*x + 1')\n\nsimplified = expression.simplify()\nexpanded = expression.expand()\nfactored = expression.factor()\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\nconst expression = expr('x^2 + 2*x + 1');\n\nconst simplified = expression.simplify();\nconst expanded = expression.expand();\nconst factored = expression.factor();\n"
+      }
+    },
+    {
+      "title": "Calculus Operations",
+      "explanation": "Compute derivatives and integrals",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet expr = expr!(add: (x ^ 2), (2 * x), 1);\n\nlet derivative = expr.derivative(x.clone());\nlet integral = expr.integrate(x, 0);\n",
+        "python": "from mathhook import symbol, expr\n\nx = symbol('x')\nexpression = expr('x^2 + 2*x + 1')\n\nderivative = expression.derivative(x)\nintegral = expression.integrate(x)\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\nconst expression = expr('x^2 + 2*x + 1');\n\nconst derivative = expression.derivative(x);\nconst integral = expression.integrate(x);\n"
+      }
+    }
+  ],
+  "article": {
+    "content": "# Introduction\n\nWelcome to the MathHook documentation! MathHook is a high-performance educational computer algebra system (CAS) written in Rust, designed to combine mathematical correctness with exceptional performance.\n\n## What is MathHook?\n\nMathHook is a symbolic mathematics engine that can:\n\n- **Parse** mathematical expressions from multiple formats (LaTeX, Wolfram Language, standard notation)\n- **Simplify** algebraic expressions using canonical forms and mathematical identities\n- **Differentiate** and **integrate** expressions symbolically\n- **Solve** equations and systems of equations\n- **Manipulate** matrices with full linear algebra support\n- **Explain** mathematical operations step-by-step for educational purposes\n\n## Why MathHook?\n\n### Performance-First Design\n\nMathHook is built from the ground up for speed:\n\n- **32-byte expression representation** fits perfectly in CPU cache lines\n- **SIMD operations** for vectorized arithmetic (2-4x speedup)\n- **Zero-copy parsing** directly constructs AST without intermediate allocations\n- **Thread-safe immutable expressions** enable parallel processing\n- **10-100x faster** than SymPy for common operations\n\n### Mathematical Correctness\n\nEvery operation in MathHook is designed to be mathematically correct:\n\n- Exact rational arithmetic (never loses precision)\n- Proper domain handling (sqrt, log, division by zero)\n- Canonical forms for reliable equality checking\n- Validated against SymPy\n\n### Educational Focus\n\nMathHook provides step-by-step explanations for all mathematical operations, making it ideal for:\n\n- Educational software\n- Mathematics learning platforms\n- Interactive mathematics tools\n- Automated tutoring systems\n\n### Multi-Language Support\n\nMathHook provides first-class bindings for:\n\n- **Rust** (native API with ergonomic macros)\n- **Python** (via PyO3)\n- **Node.js/TypeScript** (via NAPI-RS)\n- **WebAssembly** (coming soon)\n\n## Key Features\n\n### Expression Building\n\nCreate mathematical expressions naturally using the `expr!` and `symbol!` macros.\n\n### Symbolic Computation\n\nPerform algebraic manipulations symbolically:\n- Simplification\n- Expansion\n- Factorization\n\n### Calculus Operations\n\nCompute derivatives and integrals symbolically.\n\n### Equation Solving\n\nSolve equations and systems of equations.\n\n### Matrix Operations\n\nFull linear algebra support with symbolic and numeric matrices.\n\n## Architecture\n\nMathHook is organized as a multi-crate workspace:\n\n- **mathhook-core**: Core mathematical engine (pure Rust)\n- **mathhook**: High-level API with ergonomic macros\n- **mathhook-python**: Python bindings\n- **mathhook-node**: Node.js/TypeScript bindings\n- **mathhook-benchmarks**: Performance benchmarking suite\n\n## Design Principles\n\nMathHook follows five core principles (in priority order):\n\n1. **Mathematical Correctness First**: Every operation must be mathematically correct\n2. **Performance**: Cache-friendly data structures, SIMD operations, parallel processing\n3. **Ergonomic API**: Macros and operator overloading for natural expression\n4. **Educational Value**: Step-by-step explanations for all operations\n5. **Multi-Language**: First-class bindings for Python, Node.js, and WebAssembly\n"
+  },
+  "use_cases": [
+    "Educational software and learning platforms",
+    "Symbolic mathematics computation",
+    "Scientific computing applications",
+    "Interactive mathematics tools",
+    "Computer algebra systems"
+  ],
+  "related_topics": [
+    "getting-started.installation",
+    "getting-started.quick-start",
+    "getting-started.basic-usage",
+    "architecture.design-principles",
+    "performance.benchmarks"
+  ],
+  "performance": {},
+  "metadata": {
+    "schema_version": "1.0",
+    "last_updated": "2025-12-15"
+  }
+}

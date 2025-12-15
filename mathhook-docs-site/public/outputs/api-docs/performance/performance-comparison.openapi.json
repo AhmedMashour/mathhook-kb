@@ -1,0 +1,141 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "MathHook is designed for high performance while maintaining mathematical correctness.\nThis page shows how MathHook compares to other computer algebra systems, particularly SymPy.\n",
+    "title": "Performance Comparison",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/performance/comparison": {
+      "post": {
+        "description": "MathHook is designed for high performance while maintaining mathematical correctness.\nThis page shows how MathHook compares to other computer algebra systems, particularly SymPy.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "compare_operations": {
+                  "description": "Compare different calculus operation speeds",
+                  "summary": "Compare Operations",
+                  "value": {
+                    "expression": "mathhook.symbol('x')"
+                  }
+                },
+                "simple_performance_test": {
+                  "description": "Benchmark derivative computation performance",
+                  "summary": "Simple Performance Test",
+                  "value": {
+                    "expression": "mathhook.symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Performance Comparison",
+        "tags": [
+          "performance"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "performance operations",
+      "name": "performance"
+    }
+  ]
+}

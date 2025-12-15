@@ -1,0 +1,975 @@
+{
+  "config": {
+    "github_user": "AhmedMashour",
+    "github_repo": "mathhook-kb",
+    "github_branch": "master",
+    "notebooks_path": "colab-notebooks"
+  },
+  "total_notebooks": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.colab.ipynb",
+        "topic": "advanced.assumptions",
+        "title": "Symbolic Assumptions",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-assumptions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-assumptions.colab.ipynb"
+      },
+      {
+        "filename": "advanced-complex_numbers.colab.ipynb",
+        "topic": "advanced.complex_numbers",
+        "title": "Complex Number Operations",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-complex_numbers.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-complex_numbers.colab.ipynb"
+      },
+      {
+        "filename": "advanced-differential_equations.colab.ipynb",
+        "topic": "advanced.differential_equations",
+        "title": "Differential Equation Solving",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-differential_equations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-differential_equations.colab.ipynb"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.colab.ipynb",
+        "topic": "advanced.evaluation_vs_simplification",
+        "title": "Evaluation vs Simplification",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-evaluation_vs_simplification.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-evaluation_vs_simplification.colab.ipynb"
+      },
+      {
+        "filename": "advanced-matrices.colab.ipynb",
+        "topic": "advanced.matrices",
+        "title": "Matrix Operations",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-matrices.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-matrices.colab.ipynb"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.colab.ipynb",
+        "topic": "advanced.noncommutative_algebra",
+        "title": "Noncommutative Algebra",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_algebra.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_algebra.colab.ipynb"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.colab.ipynb",
+        "topic": "advanced.noncommutative_api_reference",
+        "title": "Noncommutative Algebra API Reference",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_api_reference.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_api_reference.colab.ipynb"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.colab.ipynb",
+        "topic": "advanced.noncommutative_examples",
+        "title": "Noncommutative Algebra Examples",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_examples.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-noncommutative_examples.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.colab.ipynb",
+        "topic": "advanced.pde.boundary_conditions",
+        "title": "Boundary Conditions",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-boundary_conditions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-boundary_conditions.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-classification.colab.ipynb",
+        "topic": "advanced.pde.classification",
+        "title": "PDE Classification",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-classification.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-classification.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-examples.colab.ipynb",
+        "topic": "advanced.pde.examples",
+        "title": "Complete PDE Examples",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-examples.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-examples.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.colab.ipynb",
+        "topic": "advanced.pde.fourier_coefficients",
+        "title": "Fourier Coefficients: Why They're Symbolic",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-fourier_coefficients.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-fourier_coefficients.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.colab.ipynb",
+        "topic": "advanced.pde.heat_equation",
+        "title": "Heat Equation Solver",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-heat_equation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-heat_equation.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.colab.ipynb",
+        "topic": "advanced.pde.laplace_equation",
+        "title": "Laplace Equation Solver",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-laplace_equation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-laplace_equation.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.colab.ipynb",
+        "topic": "advanced.pde.method_of_characteristics",
+        "title": "Method of Characteristics",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-method_of_characteristics.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-method_of_characteristics.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-overview.colab.ipynb",
+        "topic": "advanced.pde.overview",
+        "title": "Partial Differential Equations (PDEs)",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-overview.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-overview.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-performance.colab.ipynb",
+        "topic": "advanced.pde.performance",
+        "title": "PDE Module Performance Report",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-performance.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-performance.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.colab.ipynb",
+        "topic": "advanced.pde.quick_reference",
+        "title": "PDE Quick Reference Card",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-quick_reference.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-quick_reference.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-quick_start.colab.ipynb",
+        "topic": "advanced.pde.quick_start",
+        "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-quick_start.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-quick_start.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-registry.colab.ipynb",
+        "topic": "advanced.pde.registry",
+        "title": "PDE Solver Registry System",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-registry.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-registry.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.colab.ipynb",
+        "topic": "advanced.pde.separation_of_variables",
+        "title": "Separation of Variables",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-separation_of_variables.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-separation_of_variables.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.colab.ipynb",
+        "topic": "advanced.pde.sympy_validation",
+        "title": "SymPy Validation Workflow",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-sympy_validation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-sympy_validation.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.colab.ipynb",
+        "topic": "advanced.pde.technical_guide",
+        "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-technical_guide.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-technical_guide.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-user_guide.colab.ipynb",
+        "topic": "advanced.pde.user_guide",
+        "title": "PDE User Guide - MathHook CAS",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-user_guide.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-user_guide.colab.ipynb"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.colab.ipynb",
+        "topic": "advanced.pde.wave_equation",
+        "title": "Wave Equation Solver",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-wave_equation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-pde-wave_equation.colab.ipynb"
+      },
+      {
+        "filename": "advanced-piecewise.colab.ipynb",
+        "topic": "advanced.piecewise",
+        "title": "Piecewise Functions",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-piecewise.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-piecewise.colab.ipynb"
+      },
+      {
+        "filename": "advanced-residue_calculus.colab.ipynb",
+        "topic": "advanced.residue_calculus",
+        "title": "Residue Calculus and Pole Finding",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-residue_calculus.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-residue_calculus.colab.ipynb"
+      },
+      {
+        "filename": "advanced-special_functions.colab.ipynb",
+        "topic": "advanced.special_functions",
+        "title": "Special Mathematical Functions",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-special_functions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-special_functions.colab.ipynb"
+      },
+      {
+        "filename": "advanced-system_solving.colab.ipynb",
+        "topic": "advanced.system_solving",
+        "title": "System of Equations Solving",
+        "category": "advanced",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-system_solving.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/advanced/advanced-system_solving.colab.ipynb"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.colab.ipynb",
+        "topic": "bindings.nodejs",
+        "title": "Node.js/TypeScript API Guide",
+        "category": "bindings",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-nodejs.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-nodejs.colab.ipynb"
+      },
+      {
+        "filename": "bindings-python.colab.ipynb",
+        "topic": "bindings.python",
+        "title": "Python API Guide",
+        "category": "bindings",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-python.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-python.colab.ipynb"
+      },
+      {
+        "filename": "bindings-wasm.colab.ipynb",
+        "topic": "bindings.wasm",
+        "title": "WebAssembly Bindings",
+        "category": "bindings",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-wasm.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/bindings/bindings-wasm.colab.ipynb"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.colab.ipynb",
+        "topic": "performance.architecture",
+        "title": "Performance Architecture",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-architecture.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-architecture.colab.ipynb"
+      },
+      {
+        "filename": "performance-benchmarking.colab.ipynb",
+        "topic": "performance.benchmarking",
+        "title": "Benchmarking Guide",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-benchmarking.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-benchmarking.colab.ipynb"
+      },
+      {
+        "filename": "performance-caching.colab.ipynb",
+        "topic": "performance.caching",
+        "title": "Caching Strategies",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-caching.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-caching.colab.ipynb"
+      },
+      {
+        "filename": "performance-comparison.colab.ipynb",
+        "topic": "performance.comparison",
+        "title": "Performance Comparison",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-comparison.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-comparison.colab.ipynb"
+      },
+      {
+        "filename": "performance-parallel.colab.ipynb",
+        "topic": "performance.parallel",
+        "title": "Parallel Processing",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-parallel.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-parallel.colab.ipynb"
+      },
+      {
+        "filename": "performance-simd.colab.ipynb",
+        "topic": "performance.simd",
+        "title": "SIMD Operations",
+        "category": "performance",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-simd.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/performance/performance-simd.colab.ipynb"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.colab.ipynb",
+        "topic": "pde.separation-of-variables",
+        "title": "Separation of Variables for PDEs",
+        "category": "pde",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/pde/pde-separation-of-variables.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/pde/pde-separation-of-variables.colab.ipynb"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.colab.ipynb",
+        "topic": "api.algebra.simplification",
+        "title": "Symbolic Simplification",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-algebra-simplification.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-algebra-simplification.colab.ipynb"
+      },
+      {
+        "filename": "api-calculus-operations.colab.ipynb",
+        "topic": "api.calculus.operations",
+        "title": "Symbolic Calculus: Differentiation and Integration",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-calculus-operations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-calculus-operations.colab.ipynb"
+      },
+      {
+        "filename": "api-core-expressions.colab.ipynb",
+        "topic": "api.core.expressions",
+        "title": "Core Expression System",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-core-expressions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-core-expressions.colab.ipynb"
+      },
+      {
+        "filename": "api-matrix-operations.colab.ipynb",
+        "topic": "api.matrix.operations",
+        "title": "Matrix Operations and Noncommutative Algebra",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-matrix-operations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-matrix-operations.colab.ipynb"
+      },
+      {
+        "filename": "api-parser-latex.colab.ipynb",
+        "topic": "api.parser.latex",
+        "title": "LaTeX Parsing and Mathematical Notation",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-parser-latex.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-parser-latex.colab.ipynb"
+      },
+      {
+        "filename": "api-solver-equations.colab.ipynb",
+        "topic": "api.solver.equations",
+        "title": "Symbolic and Numerical Equation Solving",
+        "category": "api",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-solver-equations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/api/api-solver-equations.colab.ipynb"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.colab.ipynb",
+        "topic": "getting.started-introduction",
+        "title": "Introduction to MathHook",
+        "category": "getting",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting/getting-started-introduction.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting/getting-started-introduction.colab.ipynb"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.colab.ipynb",
+        "topic": "architecture.crate-structure",
+        "title": "Crate Structure",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-crate-structure.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-crate-structure.colab.ipynb"
+      },
+      {
+        "filename": "architecture-function-intelligence.colab.ipynb",
+        "topic": "architecture.function-intelligence",
+        "title": "Function Intelligence System",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-function-intelligence.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-function-intelligence.colab.ipynb"
+      },
+      {
+        "filename": "architecture-memory-layout.colab.ipynb",
+        "topic": "architecture.memory-layout",
+        "title": "Memory Layout Optimization",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-memory-layout.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-memory-layout.colab.ipynb"
+      },
+      {
+        "filename": "architecture-principles.colab.ipynb",
+        "topic": "architecture.principles",
+        "title": "Design Principles",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-principles.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-principles.colab.ipynb"
+      },
+      {
+        "filename": "architecture-thread-safety.colab.ipynb",
+        "topic": "architecture.thread-safety",
+        "title": "Thread Safety Guarantees",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-thread-safety.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-thread-safety.colab.ipynb"
+      },
+      {
+        "filename": "architecture-type-system.colab.ipynb",
+        "topic": "architecture.type-system",
+        "title": "Type System",
+        "category": "architecture",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-type-system.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/architecture/architecture-type-system.colab.ipynb"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.colab.ipynb",
+        "topic": "evaluation.function-evaluation",
+        "title": "Function Evaluation",
+        "category": "evaluation",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/evaluation/evaluation-function-evaluation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/evaluation/evaluation-function-evaluation.colab.ipynb"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.colab.ipynb",
+        "topic": "educational.api",
+        "title": "Educational API",
+        "category": "educational",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-api.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-api.colab.ipynb"
+      },
+      {
+        "filename": "educational-messages.colab.ipynb",
+        "topic": "educational.messages",
+        "title": "Educational Message Registry",
+        "category": "educational",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-messages.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-messages.colab.ipynb"
+      },
+      {
+        "filename": "educational-step_by_step.colab.ipynb",
+        "topic": "educational.step_by_step",
+        "title": "Step-by-Step Explanations",
+        "category": "educational",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-step_by_step.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/educational/educational-step_by_step.colab.ipynb"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.colab.ipynb",
+        "topic": "internal.complexity-findings",
+        "title": "Code Complexity Findings - Educational Integration Plan Review",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-complexity-findings.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-complexity-findings.colab.ipynb"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.colab.ipynb",
+        "topic": "internal.educational-effort-estimation",
+        "title": "Educational Integration Plan - Effort Estimation Review",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-educational-effort-estimation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-educational-effort-estimation.colab.ipynb"
+      },
+      {
+        "filename": "internal-educational-plan.colab.ipynb",
+        "topic": "internal.educational-plan",
+        "title": "MathHook CAS - Educational Integration Implementation Plan",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-educational-plan.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-educational-plan.colab.ipynb"
+      },
+      {
+        "filename": "internal-error-handling.colab.ipynb",
+        "topic": "internal.error-handling",
+        "title": "Error Handling & Fallback Architecture",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-error-handling.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-error-handling.colab.ipynb"
+      },
+      {
+        "filename": "internal-feature-gap-tests.colab.ipynb",
+        "topic": "internal.feature-gap-tests",
+        "title": "Feature Gap Tests Archive",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-feature-gap-tests.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-feature-gap-tests.colab.ipynb"
+      },
+      {
+        "filename": "internal-investigation.colab.ipynb",
+        "topic": "internal.investigation",
+        "title": "MathHook CAS - Consolidated Investigation Report",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-investigation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-investigation.colab.ipynb"
+      },
+      {
+        "filename": "internal-overview.colab.ipynb",
+        "topic": "internal.overview",
+        "title": "MathHook Complete Status",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-overview.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-overview.colab.ipynb"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.colab.ipynb",
+        "topic": "internal.performance.calculus-operations",
+        "title": "Calculus Operations Performance Profiling",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-calculus-operations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-calculus-operations.colab.ipynb"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.colab.ipynb",
+        "topic": "internal.performance.polynomial-architecture",
+        "title": "Polynomial Performance Architecture Analysis",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-polynomial-architecture.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-polynomial-architecture.colab.ipynb"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.colab.ipynb",
+        "topic": "internal.performance.simplification-operations",
+        "title": "Simplification Operations Performance Profiling",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-simplification-operations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-simplification-operations.colab.ipynb"
+      },
+      {
+        "filename": "internal-performance-solving-operations.colab.ipynb",
+        "topic": "internal.performance.solving-operations",
+        "title": "Solving Operations Performance Profiling",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-solving-operations.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-solving-operations.colab.ipynb"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.colab.ipynb",
+        "topic": "internal.performance.strategic-roadmap",
+        "title": "Strategic Performance Roadmap: Path to Beating Symbolica",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-strategic-roadmap.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-performance-strategic-roadmap.colab.ipynb"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.colab.ipynb",
+        "topic": "internal.planning.matrix-solver-integration",
+        "title": "Matrix Solver Integration Plan",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-matrix-solver-integration.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-matrix-solver-integration.colab.ipynb"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.colab.ipynb",
+        "topic": "internal.planning.phase3-and-phase5-summary",
+        "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-phase3-and-phase5-summary.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-phase3-and-phase5-summary.colab.ipynb"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.colab.ipynb",
+        "topic": "internal.planning.fast-path-opportunities",
+        "title": "Fast Path Opportunities Assessment",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-fast-path-opportunities.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-planning-fast-path-opportunities.colab.ipynb"
+      },
+      {
+        "filename": "internal-type-dispatch-review.colab.ipynb",
+        "topic": "internal.type-dispatch-review",
+        "title": "Comprehensive Type Dispatch & Educational Integration Review",
+        "category": "internal",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-type-dispatch-review.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/internal/internal-type-dispatch-review.colab.ipynb"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.colab.ipynb",
+        "topic": "polynomial.division",
+        "title": "Polynomial Division and Factorization",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-division.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-division.colab.ipynb"
+      },
+      {
+        "filename": "polynomial-finite-field.colab.ipynb",
+        "topic": "polynomial.finite-field",
+        "title": "Finite Field Arithmetic",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-finite-field.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-finite-field.colab.ipynb"
+      },
+      {
+        "filename": "polynomial-gcd.colab.ipynb",
+        "topic": "polynomial.gcd",
+        "title": "GCD Algorithms",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-gcd.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-gcd.colab.ipynb"
+      },
+      {
+        "filename": "polynomial-groebner.colab.ipynb",
+        "topic": "polynomial.groebner",
+        "title": "Groebner Bases",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-groebner.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-groebner.colab.ipynb"
+      },
+      {
+        "filename": "polynomial-overview.colab.ipynb",
+        "topic": "polynomial.overview",
+        "title": "Polynomial Module Overview",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-overview.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-overview.colab.ipynb"
+      },
+      {
+        "filename": "polynomial-special-families.colab.ipynb",
+        "topic": "polynomial.special-families",
+        "title": "Special Polynomial Families",
+        "category": "polynomial",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-special-families.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/polynomial/polynomial-special-families.colab.ipynb"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.colab.ipynb",
+        "topic": "operations.differentiation",
+        "title": "Symbolic Differentiation",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-differentiation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-differentiation.colab.ipynb"
+      },
+      {
+        "filename": "operations-evaluation.colab.ipynb",
+        "topic": "operations.evaluation",
+        "title": "Expression Evaluation",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-evaluation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-evaluation.colab.ipynb"
+      },
+      {
+        "filename": "operations-expansion-factoring.colab.ipynb",
+        "topic": "operations.expansion-factoring",
+        "title": "Expansion and Factoring",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-expansion-factoring.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-expansion-factoring.colab.ipynb"
+      },
+      {
+        "filename": "operations-integration.colab.ipynb",
+        "topic": "operations.integration",
+        "title": "Symbolic Integration",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-integration.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-integration.colab.ipynb"
+      },
+      {
+        "filename": "operations-limits.colab.ipynb",
+        "topic": "operations.limits",
+        "title": "Limits",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-limits.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-limits.colab.ipynb"
+      },
+      {
+        "filename": "operations-series.colab.ipynb",
+        "topic": "operations.series",
+        "title": "Series Expansions",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-series.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-series.colab.ipynb"
+      },
+      {
+        "filename": "operations-simplification.colab.ipynb",
+        "topic": "operations.simplification",
+        "title": "Symbolic Simplification",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-simplification.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-simplification.colab.ipynb"
+      },
+      {
+        "filename": "operations-solving.colab.ipynb",
+        "topic": "operations.solving",
+        "title": "Solving Equations",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-solving.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-solving.colab.ipynb"
+      },
+      {
+        "filename": "operations-substitution.colab.ipynb",
+        "topic": "operations.substitution",
+        "title": "Substitution",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-substitution.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-substitution.colab.ipynb"
+      },
+      {
+        "filename": "operations-summation.colab.ipynb",
+        "topic": "operations.summation",
+        "title": "Summation and Products",
+        "category": "operations",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-summation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/operations/operations-summation.colab.ipynb"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.colab.ipynb",
+        "topic": "contributing.architecture-reference",
+        "title": "Quick Reference for Core Math Functions",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-architecture-reference.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-architecture-reference.colab.ipynb"
+      },
+      {
+        "filename": "contributing-correctness.colab.ipynb",
+        "topic": "contributing.correctness",
+        "title": "Mathematical Correctness",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-correctness.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-correctness.colab.ipynb"
+      },
+      {
+        "filename": "contributing-development.colab.ipynb",
+        "topic": "contributing.development",
+        "title": "Development Guide",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-development.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-development.colab.ipynb"
+      },
+      {
+        "filename": "contributing-documentation.colab.ipynb",
+        "topic": "contributing.documentation",
+        "title": "Documentation Standards",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-documentation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-documentation.colab.ipynb"
+      },
+      {
+        "filename": "contributing-style.colab.ipynb",
+        "topic": "contributing.style",
+        "title": "Code Style Guide",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-style.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-style.colab.ipynb"
+      },
+      {
+        "filename": "contributing-testing.colab.ipynb",
+        "topic": "contributing.testing",
+        "title": "Testing Strategy",
+        "category": "contributing",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-testing.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/contributing/contributing-testing.colab.ipynb"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.colab.ipynb",
+        "topic": "core.constants",
+        "title": "Mathematical Constants",
+        "category": "core",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-constants.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-constants.colab.ipynb"
+      },
+      {
+        "filename": "core-expressions.colab.ipynb",
+        "topic": "core.expressions",
+        "title": "Expressions",
+        "category": "core",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-expressions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-expressions.colab.ipynb"
+      },
+      {
+        "filename": "core-functions.colab.ipynb",
+        "topic": "core.functions",
+        "title": "Function System",
+        "category": "core",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-functions.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-functions.colab.ipynb"
+      },
+      {
+        "filename": "core-pattern-matching.colab.ipynb",
+        "topic": "core.pattern-matching",
+        "title": "Pattern Matching",
+        "category": "core",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-pattern-matching.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-pattern-matching.colab.ipynb"
+      },
+      {
+        "filename": "core-symbols-numbers.colab.ipynb",
+        "topic": "core.symbols-numbers",
+        "title": "Symbols and Numbers",
+        "category": "core",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-symbols-numbers.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/core/core-symbols-numbers.colab.ipynb"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.colab.ipynb",
+        "topic": "appendix.changelog",
+        "title": "Changelog",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-changelog.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-changelog.colab.ipynb"
+      },
+      {
+        "filename": "appendix-errors.colab.ipynb",
+        "topic": "appendix.errors",
+        "title": "Error Messages",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-errors.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-errors.colab.ipynb"
+      },
+      {
+        "filename": "appendix-faq.colab.ipynb",
+        "topic": "appendix.faq",
+        "title": "Frequently Asked Questions",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-faq.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-faq.colab.ipynb"
+      },
+      {
+        "filename": "appendix-glossary.colab.ipynb",
+        "topic": "appendix.glossary",
+        "title": "Glossary",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-glossary.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-glossary.colab.ipynb"
+      },
+      {
+        "filename": "appendix-notation.colab.ipynb",
+        "topic": "appendix.notation",
+        "title": "Mathematical Notation",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-notation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-notation.colab.ipynb"
+      },
+      {
+        "filename": "appendix-risch_algorithm.colab.ipynb",
+        "topic": "appendix.risch_algorithm",
+        "title": "The Risch Algorithm in MathHook",
+        "category": "appendix",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-risch_algorithm.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/appendix/appendix-risch_algorithm.colab.ipynb"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.colab.ipynb",
+        "topic": "getting-started.basic-usage",
+        "title": "Basic Usage",
+        "category": "getting-started",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-basic-usage.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-basic-usage.colab.ipynb"
+      },
+      {
+        "filename": "getting-started-common-patterns.colab.ipynb",
+        "topic": "getting-started.common-patterns",
+        "title": "Common Patterns",
+        "category": "getting-started",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-common-patterns.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-common-patterns.colab.ipynb"
+      },
+      {
+        "filename": "getting-started-installation.colab.ipynb",
+        "topic": "getting-started.installation",
+        "title": "Installation",
+        "category": "getting-started",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-installation.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-installation.colab.ipynb"
+      },
+      {
+        "filename": "getting-started-learning-paths.colab.ipynb",
+        "topic": "getting-started.learning-paths",
+        "title": "Learning Paths",
+        "category": "getting-started",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-learning-paths.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-learning-paths.colab.ipynb"
+      },
+      {
+        "filename": "getting-started-quick-start.colab.ipynb",
+        "topic": "getting-started.quick-start",
+        "title": "Quick Start",
+        "category": "getting-started",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-quick-start.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting-started/getting-started-quick-start.colab.ipynb"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.colab.ipynb",
+        "topic": "ode.separable",
+        "title": "Separable ODEs",
+        "category": "ode",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/ode/ode-separable.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/ode/ode-separable.colab.ipynb"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.colab.ipynb",
+        "topic": "parser.custom",
+        "title": "Custom Parsers and Extensions",
+        "category": "parser",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-custom.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-custom.colab.ipynb"
+      },
+      {
+        "filename": "parser-formatting.colab.ipynb",
+        "topic": "parser.formatting",
+        "title": "Expression Formatting",
+        "category": "parser",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-formatting.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-formatting.colab.ipynb"
+      },
+      {
+        "filename": "parser-latex.colab.ipynb",
+        "topic": "parser.latex",
+        "title": "LaTeX Notation",
+        "category": "parser",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-latex.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-latex.colab.ipynb"
+      },
+      {
+        "filename": "parser-noncommutative_design.colab.ipynb",
+        "topic": "parser.noncommutative_design",
+        "title": "Parser Design for Noncommutative Algebra",
+        "category": "parser",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-noncommutative_design.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-noncommutative_design.colab.ipynb"
+      },
+      {
+        "filename": "parser-wolfram.colab.ipynb",
+        "topic": "parser.wolfram",
+        "title": "Wolfram Language Notation",
+        "category": "parser",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-wolfram.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/parser/parser-wolfram.colab.ipynb"
+      }
+    ]
+  }
+}

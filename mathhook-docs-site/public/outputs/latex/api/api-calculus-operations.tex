@@ -1,0 +1,235 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic Calculus: Differentiation and Integration }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Symbolic differentiation and integration using automatic differentiation rules,
+integration strategies, and the Risch algorithm. Supports chain rule, product rule,
+quotient rule, and comprehensive integration techniques from table lookup to complete
+Risch algorithm for elementary functions.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Symbolic Calculus Operations
+
+## Differentiation
+
+### Overview
+Symbolic differentiation using automatic differentiation with:
+- **Power Rule**: $\frac{d}{dx} x^n = nx^{n-1}$
+- **Product Rule**: $\frac{d}{dx}(fg) = f'g + fg'$
+- **Quotient Rule**: $\frac{d}{dx}\frac{f}{g} = \frac{f'g - fg'}{g^2}$
+- **Chain Rule**: $\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$
+
+### Supported Functions
+- Trigonometric: sin, cos, tan, cot, sec, csc
+- Inverse trig: arcsin, arctan, arccos
+- Exponential/Logarithmic: exp, log, ln
+- Hyperbolic: sinh, cosh, tanh
+
+## Integration
+
+### 8-Layer Strategy Architecture
+1. **Table Lookup**: O(1) hash lookup for common patterns
+2. **Rational Functions**: Partial fraction decomposition
+3. **Function Registry**: Built-in antiderivatives
+4. **Integration by Parts**: LIATE heuristic
+5. **U-Substitution**: Chain rule patterns
+6. **Trigonometric**: Trig identities and reduction
+7. **Risch Algorithm**: Complete algorithm for elementary functions
+8. **Symbolic Fallback**: Return unevaluated integral
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Differentiation }
+
+Compute derivatives using power rule and chain rule
+
+\begin{lstlisting}
+from mathhook import symbol, derivative
+
+x = symbol('x')
+expr = x**3
+
+# First derivative: 3x^2
+df = derivative(expr, x)
+
+# Second derivative: 6x
+d2f = derivative(expr, x, order=2)
+
+# Complex function with chain rule
+from mathhook import sin
+expr = sin(x**2)
+deriv = derivative(expr, x)
+# Result: cos(x^2) * 2x
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Product and Quotient Rules }
+
+Differentiate products and quotients
+
+\begin{lstlisting}
+from mathhook import symbol, derivative
+
+x = symbol('x')
+
+# Product rule
+f = x**2
+g = x**3
+product = f * g
+deriv = derivative(product, x)
+# Result: 5*x^4
+
+# Quotient rule
+numerator = x**2
+denominator = x + 1
+quotient = numerator / denominator
+deriv = derivative(quotient, x)
+# Result: (2*x*(x+1) - x^2) / (x+1)^2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Partial Derivatives (Multivariable) }
+
+Compute partial derivatives with respect to each variable
+
+\begin{lstlisting}
+from mathhook import symbol, derivative
+
+x = symbol('x')
+y = symbol('y')
+expr = x**2 * y
+
+# Partial derivative with respect to x
+df_dx = derivative(expr, x)
+# Result: 2*x*y
+
+# Partial derivative with respect to y
+df_dy = derivative(expr, y)
+# Result: x^2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Basic Integration }
+
+Symbolic integration using layered strategy
+
+\begin{lstlisting}
+from mathhook import symbol, integrate
+
+x = symbol('x')
+
+# Simple polynomial
+expr = x**2
+result = integrate(expr, x)
+# Result: x^3/3 + C
+
+# Rational function
+expr = 1 / (x + 1)
+result = integrate(expr, x)
+# Result: ln|x+1| + C
+
+# Trigonometric
+from mathhook import sin
+expr = sin(x)
+result = integrate(expr, x)
+# Result: -cos(x) + C
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Integration by Parts and Substitution }
+
+Advanced integration techniques
+
+\begin{lstlisting}
+from mathhook import symbol, integrate, exp, sin
+
+x = symbol('x')
+
+# Integration by parts
+expr = x * exp(x)
+result = integrate(expr, x)
+# Result: e^x(x-1) + C
+
+# U-substitution
+expr = 2 * x * sin(x**2)
+result = integrate(expr, x)
+# Result: -cos(x^2) + C
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Real-World Application: Velocity and Acceleration }
+
+Physics application of derivatives
+
+\begin{lstlisting}
+from mathhook import symbol, derivative
+
+t = symbol('t')
+position = t**3 - 6*t**2 + 9*t
+
+velocity = derivative(position, t)
+# v(t) = 3t^2 - 12t + 9
+
+acceleration = derivative(position, t, order=2)
+# a(t) = 6t - 12
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

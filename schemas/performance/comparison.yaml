@@ -118,29 +118,97 @@ code_refs:
   nodejs: "mathhook-node"
 
 examples:
-  - title: "Quick Performance Benchmark"
-    explanation: "Run a quick benchmark to see MathHook's performance"
+  - title: "Simple Performance Test"
+    explanation: "Benchmark derivative computation performance"
     code:
-      bash: |
-        ./scripts/bench.sh quick
+      rust: |
+        use mathhook::prelude::*;
+        use std::time::Instant;
 
-  - title: "Compare Against Baseline"
-    explanation: "Save a baseline and compare performance after changes"
+        let x = symbol!(x);
+        let expr = expr!(x ^ 2);
+
+        let start = Instant::now();
+        for _ in 0..1000 {
+            let _ = expr.derivative(&x, 1);
+        }
+        let duration = start.elapsed();
+        println!("1000 derivatives: {:?}", duration);
+      python: |
+        import mathhook
+        import time
+
+        x = mathhook.symbol('x')
+        expr = mathhook.expr('x^2')
+
+        start = time.time()
+        for _ in range(1000):
+            expr.derivative(x)
+        duration = time.time() - start
+        print(f"1000 derivatives: {duration:.3f}s")
+      nodejs: |
+        const { symbol, expr } = require('mathhook');
+
+        const x = symbol('x');
+        const expression = expr('x^2');
+
+        const start = Date.now();
+        for (let i = 0; i < 1000; i++) {
+            expression.derivative(x);
+        }
+        const duration = Date.now() - start;
+        console.log(`1000 derivatives: ${duration}ms`);
+
+  - title: "Compare Operations"
+    explanation: "Compare different calculus operation speeds"
     code:
-      bash: |
-        # Save current as baseline
-        ./scripts/bench.sh save my-baseline
+      rust: |
+        use mathhook::prelude::*;
+        use std::time::Instant;
 
-        # Make changes...
+        let x = symbol!(x);
+        let expr = expr!((x ^ 2) * sin(x));
 
-        # Compare performance
-        ./scripts/bench.sh compare my-baseline
+        // Time derivative
+        let start = Instant::now();
+        let deriv = expr.derivative(&x, 1);
+        println!("Derivative time: {:?}", start.elapsed());
 
-  - title: "Validate Mathematical Correctness"
-    explanation: "Verify results against SymPy"
-    code:
-      bash: |
-        ./scripts/validate.sh
+        // Time simplification
+        let start = Instant::now();
+        let simplified = deriv.simplify();
+        println!("Simplify time: {:?}", start.elapsed());
+      python: |
+        import mathhook
+        import time
+
+        x = mathhook.symbol('x')
+        expr = mathhook.expr('x^2 * sin(x)')
+
+        # Time derivative
+        start = time.time()
+        deriv = expr.derivative(x)
+        print(f"Derivative time: {(time.time() - start)*1000:.3f}ms")
+
+        # Time simplification
+        start = time.time()
+        simplified = deriv.simplify()
+        print(f"Simplify time: {(time.time() - start)*1000:.3f}ms")
+      nodejs: |
+        const { symbol, expr } = require('mathhook');
+
+        const x = symbol('x');
+        const expression = expr('x^2 * sin(x)');
+
+        // Time derivative
+        let start = Date.now();
+        const deriv = expression.derivative(x);
+        console.log(`Derivative time: ${Date.now() - start}ms`);
+
+        // Time simplification
+        start = Date.now();
+        const simplified = deriv.simplify();
+        console.log(`Simplify time: ${Date.now() - start}ms`);
 
 performance:
   benchmarks:

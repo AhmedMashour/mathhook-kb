@@ -1,0 +1,380 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Benchmarking Guide
+
+> **Topic**: `performance.benchmarking`
+
+Comprehensive guide to MathHook's performance benchmarking infrastructure across all supported
+platforms (Rust, Python, Node.js), including benchmark usage, development workflow, and
+contributing new benchmarks.
+
+
+
+
+
+# Benchmarking Guide
+
+Comprehensive guide to MathHook's performance benchmarking infrastructure across all supported platforms.
+
+**Last Updated:** 2025-11-30T0300
+
+## Usage
+
+MathHook provides two unified entry points for performance and correctness validation:
+
+| Script | Purpose | Location |
+|--------|---------|----------|
+| `./scripts/bench.sh` | Performance benchmarking (Rust, Python, Node.js) | Criterion + bindings |
+| `./scripts/validate.sh` | Mathematical correctness (SymPy comparison) | Python validation scripts |
+
+### Performance Benchmarking
+
+```bash
+# Run all Rust benchmarks
+./scripts/bench.sh run
+
+# Quick run (reduced samples for faster feedback)
+./scripts/bench.sh quick
+
+# Run specific benchmark group
+./scripts/bench.sh rust polynomial_benchmarks
+
+# Cross-platform benchmarks
+./scripts/bench.sh python           # Python binding benchmarks
+./scripts/bench.sh node             # Node.js binding benchmarks
+
+# Baseline workflow (before/after comparison)
+./scripts/bench.sh save before      # Save baseline
+# ... make changes ...
+./scripts/bench.sh compare before   # Compare against baseline
+
+# CI mode (fails on >10% regression)
+./scripts/bench.sh ci
+
+# Check infrastructure status
+./scripts/bench.sh status
+```
+
+### Mathematical Validation
+
+```bash
+# Run all SymPy validations
+./scripts/validate.sh
+
+# Specific validation suites
+./scripts/validate.sh simplify      # Algebraic simplification
+./scripts/validate.sh ode           # ODE solver correctness
+./scripts/validate.sh summation     # Summation operations
+
+# Get help
+./scripts/validate.sh help
+```
+
+### Typical Development Workflow
+
+```bash
+# 1. Before making changes - save baseline
+./scripts/bench.sh save my-feature
+
+# 2. Make your changes...
+
+# 3. Verify mathematical correctness
+./scripts/validate.sh
+
+# 4. Compare performance
+./scripts/bench.sh compare my-feature
+
+# 5. If adding new algorithm, add benchmarks
+#    (see "Contributing Benchmarks" section)
+```
+
+## Directory Structure
+
+```
+crates/mathhook-benchmarks/
+├── benches/                      # Rust Criterion benchmarks
+│   ├── core_performance.rs       # Core operations + parsing variants
+│   ├── calculus_benchmarks.rs    # Derivatives, integrals
+│   ├── simplification_benchmarks.rs
+│   ├── solving_benchmarks.rs
+│   ├── polynomial_benchmarks.rs
+│   ├── function_evaluation_benchmarks.rs
+│   └── parsing_benchmarks.rs
+├── public/                       # Cross-platform benchmarks
+│   ├── python/                   # Python binding benchmarks
+│   └── node/                     # Node.js binding benchmarks
+├── baselines/                    # Baseline storage
+└── results/                      # Output files
+```
+
+## Benchmark Categories
+
+### Core Performance
+Basic operation benchmarks establishing performance baselines for expression creation,
+simplification, equation solving, and polynomial operations.
+
+### Calculus Operations
+Symbolic calculus performance for derivatives and integrals, including power rule,
+product rule, chain rule, quotient rule, and higher-order derivatives.
+
+### Equation Solving
+Solver performance across linear, quadratic, polynomial, system, matrix, and differential equations.
+
+### Simplification
+Algebraic simplification including polynomial, trigonometric, logarithmic, and large expression simplification.
+
+### Function Evaluation
+Elementary and special function performance including trigonometric, hyperbolic, exponential,
+logarithmic, and combinatorial functions.
+
+### Polynomial Module
+Comprehensive polynomial operations including GCD algorithms, division, factorization,
+resultants, Grobner basis, and special polynomial families.
+
+### Parsing Benchmarks
+Parser performance across expression complexity including basic parsing, complex expressions,
+and implicit multiplication.
+
+## Interpreting Results
+
+### What the Numbers Mean
+
+| Time | Operations/Second | Context |
+|------|-------------------|---------|
+| 1 ns | 1,000,000,000 | Memory access |
+| 10 ns | 100,000,000 | Simple expression creation |
+| 100 ns | 10,000,000 | Basic parsing |
+| 1 us | 1,000,000 | Simple simplification |
+| 10 us | 100,000 | Polynomial GCD |
+| 100 us | 10,000 | Complex calculus |
+| 1 ms | 1,000 | Large system solving |
+
+### Performance Expectations
+
+**MathHook vs Competitors:**
+```
+Rust (native) > Node.js (NAPI) > Python (PyO3)
+```
+
+**Expected Binding Overhead:**
+- **Python**: 2-5x slower than Rust (FFI overhead)
+- **Node.js**: 1.5-3x slower than Rust (NAPI overhead)
+- **Parsing**: Additional 10-30% overhead
+
+## Contributing Benchmarks
+
+### When to Add Benchmarks
+
+Add benchmarks when:
+- Implementing new algorithm (e.g., new GCD method)
+- Optimizing existing code (need before/after comparison)
+- Adding new operation type (e.g., new function family)
+- Performance is a key feature requirement
+
+### Best Practices
+
+1. **Always use `black_box`**: Prevents compiler from optimizing away work
+2. **Test both patterns**: Native AND parsing variants for comparison
+3. **Use meaningful groups**: Group related benchmarks together
+4. **Document expected ranges**: Note what "good" performance looks like
+5. **Test edge cases**: Empty, single element, maximum size
+6. **Parameterize where useful**: Use BenchmarkId for varying inputs
+7. **Set appropriate sample size**: Default is 100, adjust for slow benchmarks
+
+## CI/CD Integration
+
+### Cross-Platform Benchmark Pipeline
+
+The CI runs benchmarks across **all three platforms** in parallel:
+
+```
+Cross-Platform Benchmarks Workflow
+├── rust-benchmarks      # Criterion benchmarks (native)
+├── python-benchmarks    # PyO3 bindings via maturin
+├── node-benchmarks      # NAPI bindings via napi-rs
+├── summary              # Aggregate results + PR comment
+└── update-baselines     # On push to main/master
+```
+
+### Automatic Regression Detection
+
+Every pull request automatically:
+1. Runs benchmarks on **Rust, Python, and Node.js**
+2. Compares each platform against its baseline
+3. Posts unified comparison report as PR comment
+4. Reports per-platform status with details
+
+## Dashboard Auto-Discovery System
+
+MathHook's benchmark dashboard **automatically discovers** all benchmarks from all platforms
+without any hardcoding. This means:
+
+1. **Add a benchmark** to any platform (Rust, Python, Node.js)
+2. **Run the CI** or local script
+3. **New benchmark appears** in dashboard and comparison pages automatically
+
+See the full guide for complete documentation on benchmark categories, contribution guidelines,
+and troubleshooting.
+
+
+
+
+
+
+
+
+
+
+
+
+## Examples
+
+
+### Rust Criterion Benchmark Template
+
+Template for adding new benchmarks in Rust
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use criterion::{criterion_group, criterion_main, Criterion};
+use mathhook_core::{parse, symbol, Expression};
+use std::hint::black_box;
+
+fn bench_my_operation(c: &mut Criterion) {
+    let mut group = c.benchmark_group("my_operation_group");
+
+    let x = symbol!(x);
+
+    // Without parsing - measures pure algorithm
+    group.bench_function("operation_native", |b| {
+        let expr = Expression::add(vec![
+            Expression::symbol(x.clone()),
+            Expression::integer(1),
+        ]);
+        b.iter(|| black_box(expr.clone().my_operation()))
+    });
+
+    // With parsing - measures end-to-end user experience
+    group.bench_function("operation_with_parsing", |b| {
+        b.iter(|| {
+            let expr = parse("x + 1").unwrap();
+            black_box(expr.my_operation())
+        })
+    });
+
+    group.finish();
+}
+
+criterion_group!(benches, bench_my_operation);
+criterion_main!(benches);
+
+```
+</details>
+
+
+
+
+
+
+
+
+
+### Python Benchmark Example
+
+Adding benchmark to Python binding benchmarks
+
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+def bench_gcd_my_new_case():
+    """GCD of my new test case."""
+    f = mathhook.parse("x^3 - 1")
+    g = mathhook.parse("x^2 - 1")
+    return mathhook.gcd(f, g)
+
+# Add to benchmarks dict:
+benchmarks = {
+    # ... existing benchmarks ...
+    'gcd_my_new_case': bench_gcd_my_new_case,
+}
+
+```
+</details>
+
+
+
+
+
+
+
+### Node.js Benchmark Example
+
+Adding benchmark to Node.js binding benchmarks
+
+
+
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const benchmarks = {
+    // ... existing benchmarks ...
+
+    gcd_my_new_case: () => {
+        const f = mathhook.parse("x^3 - 1");
+        const g = mathhook.parse("x^2 - 1");
+        return mathhook.gcd(f, g);
+    },
+};
+
+```
+</details>
+
+
+
+
+
+
+
+
+## API Reference
+
+- **Rust**: `mathhook_benchmarks`
+- **Python**: `mathhook`
+- **JavaScript**: `mathhook-node`
+
+
+## See Also
+
+
+- [performance.comparison](../performance/comparison.md)
+
+- [performance.architecture](../performance/architecture.md)
+
+- [performance.simd](../performance/simd.md)
+
+- [performance.caching](../performance/caching.md)
+
+- [performance.parallel](../performance/parallel.md)
+
+

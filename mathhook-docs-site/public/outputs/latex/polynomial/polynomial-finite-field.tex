@@ -1,0 +1,268 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Finite Field Arithmetic }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Arithmetic in Z_p (integers modulo a prime p) essential for modular GCD algorithms. Provides
+field elements, polynomial operations over finite fields, and Chinese Remainder Theorem reconstruction.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Finite Field $\mathbb{Z}_p$**: For prime $p$, the integers modulo $p$ form a field:
+
+$$\mathbb{Z}_p = \{0, 1, 2, \ldots, p-1\}$$
+
+with operations:
+- Addition: $(a + b) \bmod p$
+- Multiplication: $(a \cdot b) \bmod p$
+- Inverse: $a^{-1} \bmod p$ exists for $a \neq 0$ (Fermat's Little Theorem: $a^{p-1} \equiv 1 \pmod{p}$)
+
+**Polynomial Ring $\mathbb{Z}_p[x]$**: Polynomials with coefficients in $\mathbb{Z}_p$:
+
+$$f(x) = a_n x^n + \cdots + a_1 x + a_0, \quad a_i \in \mathbb{Z}_p$$
+
+Properties:
+- $\mathbb{Z}_p[x]$ is a Euclidean domain
+- GCD computable via Euclidean algorithm
+- Unique factorization (up to units)
+
+**Chinese Remainder Theorem (CRT)**: For coprime moduli $m_1, m_2$:
+
+$$\mathbb{Z}/(m_1 m_2) \cong \mathbb{Z}/m_1 \times \mathbb{Z}/m_2$$
+
+Reconstruction formula:
+
+$$x \equiv a_1 m_2 (m_2^{-1} \bmod m_1) + a_2 m_1 (m_1^{-1} \bmod m_2) \pmod{m_1 m_2}$$
+
+**Modular Representations**:
+- **Positive**: $a \in [0, p)$
+- **Symmetric**: $a \in (-p/2, p/2]$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+The finite field module provides arithmetic in Z_p (integers modulo a prime p), essential for modular GCD algorithms.
+
+## Overview
+
+Finite field arithmetic is the backbone of Zippel's modular GCD algorithm:
+
+1. Reduce polynomials to Z_p[x]
+2. Compute GCD in Z_p[x] (efficient)
+3. Reconstruct integer coefficients via CRT
+
+## Field Elements (Z_p)
+
+Field elements support all arithmetic operations with automatic modular reduction.
+
+### Properties
+
+- All non-zero elements have multiplicative inverses
+- Division is well-defined for non-zero divisors
+- Modulus must be prime for a field
+
+## Polynomials over Z_p
+
+Polynomial operations in Z_p[x] including addition, multiplication, division with remainder,
+and GCD computation.
+
+## CRT Reconstruction
+
+Combine results from multiple primes using the Chinese Remainder Theorem.
+
+### CRT Formula
+
+For coprime moduli m1, m2:
+```
+x = a1 * m2 * (m2^(-1) mod m1) + a2 * m1 * (m1^(-1) mod m2) (mod m1*m2)
+```
+
+## Mathematical Background
+
+### Finite Field Properties
+
+Z_p is a field when p is prime:
+- Every non-zero element has a multiplicative inverse
+- Fermat's little theorem: a^(p-1) = 1 for a != 0
+- Inverse via extended Euclidean algorithm or a^(p-2) mod p
+
+### Polynomial Rings
+
+Z_p[x] is a Euclidean domain:
+- Division algorithm holds
+- GCD can be computed via Euclidean algorithm
+- Unique factorization (up to units)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Field Element Arithmetic }
+
+Basic operations in Z_p with automatic modular reduction
+
+\begin{lstlisting}
+from mathhook.polynomial.finite_field import FieldElement
+
+# Create elements in Z_7
+a = FieldElement(3, 7)  # 3 mod 7
+b = FieldElement(5, 7)  # 5 mod 7
+
+# Arithmetic
+sum_val = a + b       # 8 mod 7 = 1
+diff = a - b          # -2 mod 7 = 5
+prod = a * b          # 15 mod 7 = 1
+quot = a / b          # 3 * 5^(-1) mod 7 = 3 * 3 = 9 mod 7 = 2
+
+# Inverse
+inv = b.inverse()     # 5^(-1) mod 7 = 3
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Polynomial Operations in Z_p[x] }
+
+Create and manipulate polynomials over finite fields
+
+\begin{lstlisting}
+from mathhook.polynomial.finite_field import PolyZp
+
+# Create polynomial x^2 + 2x + 1 in Z_5[x]
+p = PolyZp.from_coeffs([1, 2, 1], 5)  # [a_0, a_1, a_2]
+
+# Polynomial properties
+deg = p.degree()           # 2
+coeffs = p.coefficients()  # [1, 2, 1]
+
+# Create from integer coefficients (auto-reduce mod p)
+q = PolyZp.from_coeffs([7, -3, 6], 5)  # becomes [2, 2, 1]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Polynomial Arithmetic in Z_p[x] }
+
+Add, multiply, divide polynomials over finite fields
+
+\begin{lstlisting}
+from mathhook.polynomial.finite_field import PolyZp
+
+f = PolyZp.from_coeffs([1, 0, 1], 5)  # x^2 + 1
+g = PolyZp.from_coeffs([1, 1], 5)     # x + 1
+
+# Addition
+sum_poly = f.add(g)
+
+# Multiplication
+prod = f.mul(g)
+
+# Division (quotient and remainder)
+quotient, remainder = f.div_rem(g)
+
+# Scalar multiplication
+scaled = f.scalar_mul(3)  # 3(x^2 + 1) = 3x^2 + 3
+
+\end{lstlisting}
+
+
+
+
+\subsection{ GCD in Z_p[x] }
+
+Compute GCD using Euclidean algorithm in finite field polynomial ring
+
+\begin{lstlisting}
+from mathhook.polynomial.finite_field import PolyZp
+
+f = PolyZp.from_coeffs([4, 0, 0, 1], 5)  # x^3 + 4 in Z_5[x]
+g = PolyZp.from_coeffs([1, 1], 5)         # x + 1 in Z_5[x]
+
+# Compute GCD
+gcd = f.gcd(g)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Extended GCD with Bezout Coefficients }
+
+Get GCD along with coefficients satisfying gcd = s*f + t*g
+
+\begin{lstlisting}
+from mathhook.polynomial.finite_field import PolyZp
+
+f = PolyZp.from_coeffs([1, 0, 1], 5)  # x^2 + 1
+g = PolyZp.from_coeffs([1, 1], 5)     # x + 1
+
+# Extended GCD: gcd = s*f + t*g
+gcd, s, t = f.extended_gcd(g)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ CRT Reconstruction }
+
+Combine results from multiple primes using Chinese Remainder Theorem
+
+\begin{lstlisting}
+from mathhook.polynomial.algorithms.zippel_gcd.helpers import crt_combine
+
+# Combine results from two primes
+coef1 = 3      # result mod p1
+mod1 = 7       # first prime
+coef2 = 5      # result mod p2
+mod2 = 11      # second prime
+
+combined = crt_combine(coef1, mod1, coef2, mod2)
+# combined is the unique value in range 0 to 77 satisfying both constraints
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

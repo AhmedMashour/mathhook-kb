@@ -32,8 +32,8 @@ enum Commands {
         #[arg(value_name = "SCHEMA")]
         schema_path: PathBuf,
 
-        /// Output directory
-        #[arg(short, long, default_value = "output")]
+        /// Output directory (default: mathhook-docs-site/public/outputs)
+        #[arg(short, long, default_value = "mathhook-docs-site/public/outputs")]
         output: PathBuf,
 
         /// Generators to run (comma-separated: jupyter,mdbook,llm-rag,vue,api-docs,colab,latex,json,all)
@@ -64,7 +64,7 @@ enum ColabCommands {
     /// Show info about generated notebooks and their Colab URLs
     Info {
         /// Path to manifest file
-        #[arg(short, long, default_value = "output/colab-notebooks/manifest.json")]
+        #[arg(short, long, default_value = "mathhook-docs-site/public/outputs/colab/manifest.json")]
         manifest: PathBuf,
     },
 }
@@ -97,21 +97,59 @@ fn build_command(
     // Collect all schemas to process
     let schemas = collect_schemas(&schema_path)?;
 
-    // Create output directory
-    std::fs::create_dir_all(&output_dir).context("Failed to create output directory")?;
+    // Create output subdirectories for each type
+    let jupyter_dir = output_dir.join("jupyter");
+    let mdbook_dir = output_dir.join("mdbook");
+    let llm_rag_dir = output_dir.join("llm-rag");
+    let vue_dir = output_dir.join("vue");
+    let api_docs_dir = output_dir.join("api-docs");
+    let colab_dir = output_dir.join("colab");
+    let latex_dir = output_dir.join("latex");
+    let json_dir = output_dir.join("json");
 
     // Parse generators to run
     let generators_list: Vec<&str> = generators_str.split(',').collect();
     let run_all = generators_list.contains(&"all");
+    let run_jupyter = run_all || generators_list.contains(&"jupyter");
+    let run_mdbook = run_all || generators_list.contains(&"mdbook");
+    let run_llm_rag = run_all || generators_list.contains(&"llm-rag");
+    let run_vue = run_all || generators_list.contains(&"vue");
+    let run_api_docs = run_all || generators_list.contains(&"api-docs");
     let run_colab = run_all || generators_list.contains(&"colab");
+    let run_latex = run_all || generators_list.contains(&"latex");
+    let run_json = run_all || generators_list.contains(&"json");
+
+    // Create directories for enabled generators
+    if run_jupyter {
+        std::fs::create_dir_all(&jupyter_dir).context("Failed to create jupyter directory")?;
+    }
+    if run_mdbook {
+        std::fs::create_dir_all(&mdbook_dir).context("Failed to create mdbook directory")?;
+    }
+    if run_llm_rag {
+        std::fs::create_dir_all(&llm_rag_dir).context("Failed to create llm-rag directory")?;
+    }
+    if run_vue {
+        std::fs::create_dir_all(&vue_dir).context("Failed to create vue directory")?;
+    }
+    if run_api_docs {
+        std::fs::create_dir_all(&api_docs_dir).context("Failed to create api-docs directory")?;
+    }
+    if run_colab {
+        std::fs::create_dir_all(&colab_dir).context("Failed to create colab directory")?;
+    }
+    if run_latex {
+        std::fs::create_dir_all(&latex_dir).context("Failed to create latex directory")?;
+    }
+    if run_json {
+        std::fs::create_dir_all(&json_dir).context("Failed to create json directory")?;
+    }
 
     let mut total_generated = 0;
 
     // Setup Colab manifest if we're generating Colab notebooks
-    // Colab notebooks go to root colab-notebooks/ folder (not inside output/)
     let colab_config = ColabConfig::default();
     let mut colab_manifest = ColabManifest::new(colab_config.clone());
-    let colab_base_dir = PathBuf::from("colab-notebooks");
 
     for schema_path in &schemas {
         println!("📄 Loading schema: {}", schema_path.display());
@@ -122,12 +160,19 @@ fn build_command(
 
         let mut generated_count = 0;
 
+        // Extract category from topic for organization
+        let category = schema.topic.split('.').next().unwrap_or("misc");
+
         // Run Jupyter generator
-        if run_all || generators_list.contains(&"jupyter") {
+        if run_jupyter {
             println!("📓 Generating Jupyter notebook...");
             let generator = JupyterGenerator::new();
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = jupyter_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -138,11 +183,15 @@ fn build_command(
         }
 
         // Run mdBook generator
-        if run_all || generators_list.contains(&"mdbook") {
+        if run_mdbook {
             println!("📚 Generating mdBook markdown...");
             let generator = MdBookGenerator::new()?;
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = mdbook_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -153,11 +202,15 @@ fn build_command(
         }
 
         // Run LLM-RAG generator
-        if run_all || generators_list.contains(&"llm-rag") {
+        if run_llm_rag {
             println!("🤖 Generating LLM-RAG markdown...");
             let generator = LlmRagGenerator::from_schema(&schema);
             let filename = format!("{}.rag.md", schema.topic.replace('.', "-"));
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = llm_rag_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -168,11 +221,15 @@ fn build_command(
         }
 
         // Run Vue generator
-        if run_all || generators_list.contains(&"vue") {
+        if run_vue {
             println!("🎨 Generating Vue SSR component...");
             let generator = VueGenerator::new()?;
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = vue_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -183,11 +240,15 @@ fn build_command(
         }
 
         // Run API docs generator
-        if run_all || generators_list.contains(&"api-docs") {
+        if run_api_docs {
             println!("📡 Generating API documentation...");
             let generator = ApiDocsGenerator::new()?;
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = api_docs_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -203,11 +264,8 @@ fn build_command(
             let generator = ColabGenerator::with_config(colab_config.clone());
             let filename = generator.get_output_filename(&schema);
 
-            // Extract category from topic (e.g., "calculus.derivative" -> "calculus")
-            let category = schema.topic.split('.').next().unwrap_or("misc");
-
-            // Create category directory
-            let category_dir = colab_base_dir.join(category);
+            // Create category directory inside colab
+            let category_dir = colab_dir.join(category);
             std::fs::create_dir_all(&category_dir)?;
 
             let output_path = category_dir.join(&filename);
@@ -224,11 +282,15 @@ fn build_command(
         }
 
         // Run LaTeX generator
-        if run_all || generators_list.contains(&"latex") {
+        if run_latex {
             println!("📄 Generating LaTeX documentation...");
             let generator = LatexGenerator::new()?;
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = latex_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -239,11 +301,15 @@ fn build_command(
         }
 
         // Run JSON schema data generator
-        if run_all || generators_list.contains(&"json") {
+        if run_json {
             println!("📋 Generating JSON schema data...");
             let generator = JsonGenerator::new();
             let filename = generator.get_output_filename(&schema);
-            let output_path = output_dir.join(&filename);
+
+            // Organize by category
+            let category_dir = json_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+            let output_path = category_dir.join(&filename);
 
             generator
                 .generate_to_file(&schema, &output_path)
@@ -262,7 +328,7 @@ fn build_command(
         println!("📋 Generating Colab manifest and READMEs...");
 
         // Save manifest
-        let manifest_path = colab_base_dir.join("manifest.json");
+        let manifest_path = colab_dir.join("manifest.json");
         colab_manifest
             .save(&manifest_path)
             .context("Failed to save Colab manifest")?;
@@ -270,59 +336,43 @@ fn build_command(
 
         // Generate main README
         let readme_content = colab_manifest.generate_readme();
-        let readme_path = colab_base_dir.join("README.md");
+        let readme_path = colab_dir.join("README.md");
         std::fs::write(&readme_path, readme_content)?;
         println!("   ✅ {}", readme_path.display());
 
         // Generate category READMEs
         for category in colab_manifest.sorted_categories() {
             if let Some(category_readme) = colab_manifest.generate_category_readme(category) {
-                let category_readme_path = colab_base_dir.join(category).join("README.md");
+                let category_readme_path = colab_dir.join(category).join("README.md");
                 std::fs::write(&category_readme_path, category_readme)?;
                 println!("   ✅ {}", category_readme_path.display());
             }
         }
 
         println!();
-        println!("🔗 Colab notebooks will be available at:");
-        println!(
-            "   https://github.com/{}/{}/tree/{}/{}",
-            colab_manifest.config.github_user,
-            colab_manifest.config.github_repo,
-            colab_manifest.config.github_branch,
-            colab_manifest.config.notebooks_path
-        );
+        println!("🔗 Colab notebooks available locally at: {}", colab_dir.display());
+        println!("   (Also hosted on GitHub for direct Colab access)");
         println!();
     }
 
     println!(
-        "🎉 Successfully generated {} output file(s) from {} schema(s) in {}",
+        "🎉 Successfully generated {} output file(s) from {} schema(s)",
         total_generated,
-        schemas.len(),
-        output_dir.display()
+        schemas.len()
     );
+    println!("   📁 Output directory: {}", output_dir.display());
 
     Ok(())
 }
 
-/// Collect all schema files from path (file or directory)
+/// Collect all schema files from path (file or directory, recursive)
 fn collect_schemas(path: &PathBuf) -> Result<Vec<PathBuf>> {
     let mut schemas = Vec::new();
 
     if path.is_file() {
         schemas.push(path.clone());
     } else if path.is_dir() {
-        for entry in std::fs::read_dir(path)? {
-            let entry = entry?;
-            let path = entry.path();
-            if path.is_file() {
-                if let Some(ext) = path.extension() {
-                    if ext == "yaml" || ext == "yml" {
-                        schemas.push(path);
-                    }
-                }
-            }
-        }
+        collect_schemas_recursive(path, &mut schemas)?;
         schemas.sort();
     }
 
@@ -330,7 +380,26 @@ fn collect_schemas(path: &PathBuf) -> Result<Vec<PathBuf>> {
         anyhow::bail!("No schema files found at {:?}", path);
     }
 
+    println!("📂 Found {} schema files\n", schemas.len());
     Ok(schemas)
+}
+
+/// Recursively collect schema files from directory
+fn collect_schemas_recursive(dir: &PathBuf, schemas: &mut Vec<PathBuf>) -> Result<()> {
+    for entry in std::fs::read_dir(dir)? {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_file() {
+            if let Some(ext) = path.extension() {
+                if ext == "yaml" || ext == "yml" {
+                    schemas.push(path);
+                }
+            }
+        } else if path.is_dir() {
+            collect_schemas_recursive(&path, schemas)?;
+        }
+    }
+    Ok(())
 }
 
 fn validate_command(schema_path: PathBuf) -> Result<()> {

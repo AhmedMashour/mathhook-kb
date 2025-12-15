@@ -1,0 +1,342 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Noncommutative Algebra API Reference }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Complete API reference for MathHook's noncommutative algebra support,
+including symbol creation macros, type queries, expression creation,
+equation solving, and LaTeX formatting.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Symbol Types**:
+- **Scalar** ($s$): Commutative, $s \cdot a = a \cdot s$ for all $a$
+- **Matrix** ($\mathbf{M}$): Noncommutative, $\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}$ in general
+- **Operator** ($\hat{O}$): Noncommutative, used in quantum mechanics
+- **Quaternion** ($q$): Noncommutative, $ij = k$, $ji = -k$
+
+**Commutativity**:
+$$\text{commutative}(a) \iff \forall b: a \cdot b = b \cdot a$$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+# Noncommutative Algebra API Reference
+
+Complete API reference for MathHook's noncommutative algebra support.
+
+## Symbol Creation API
+
+### `symbol!(name)` - Create Scalar Symbol
+Creates a scalar (commutative) symbol with the given name.
+
+**Syntax**: `symbol!(identifier)`
+**Returns**: `Symbol` with type `Scalar`
+
+### `symbol!(name; type)` - Create Typed Symbol
+Creates a symbol with specified type (matrix, operator, or quaternion).
+
+**Syntax**: `symbol!(identifier; type_keyword)`
+**Type keywords**: `matrix`, `operator`, `quaternion`
+**Returns**: `Symbol` with specified type
+
+### `symbols![...]` - Create Multiple Symbols
+Creates multiple symbols of the same type.
+
+**Syntax**: `symbols![id1, id2, ... => type]`
+**Returns**: `Vec<Symbol>`
+
+## Symbol Type API
+
+### `SymbolType` Enum
+```rust
+pub enum SymbolType {
+    Scalar,      // Commutative (default)
+    Matrix,      // Noncommutative
+    Operator,    // Noncommutative
+    Quaternion,  // Noncommutative
+}
+```
+
+### Type Query Methods
+- `symbol_type()` - Returns the symbol's type
+- `commutativity()` - Returns `Commutative` or `Noncommutative`
+
+## Expression Creation API
+
+- `Expression::symbol(sym)` - Create symbol expression
+- `Expression::add(terms)` - Create addition
+- `Expression::mul(factors)` - Create multiplication (order matters!)
+
+## Equation Solving API
+
+- `MatrixEquationSolver::new()` - Create solver
+- `solver.solve(equation, variable)` - Solve equation
+
+## LaTeX Formatting API
+
+- `expr.to_latex(context)` - Format as LaTeX
+
+**LaTeX Output by Type**:
+- **Scalar**: Standard notation (`x`, `θ`)
+- **Matrix**: Bold notation (`\mathbf{A}`)
+- **Operator**: Hat notation (`\hat{p}`)
+- **Quaternion**: Standard notation (`i`, `j`, `k`)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ symbol!(name) - Create Scalar Symbol }
+
+Creates a scalar (commutative) symbol with the given name
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+theta = symbol('theta')
+
+# Scalars are commutative
+assert x.symbol_type == 'scalar'
+assert x.is_commutative == True
+
+\end{lstlisting}
+
+
+
+
+\subsection{ symbol!(name; type) - Create Typed Symbol }
+
+Creates a symbol with specified type (matrix, operator, quaternion)
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Matrix (noncommutative)
+A = symbol('A', type='matrix')
+assert A.symbol_type == 'matrix'
+assert A.is_commutative == False
+
+# Operator (noncommutative)
+p = symbol('p', type='operator')
+assert p.symbol_type == 'operator'
+
+# Quaternion (noncommutative)
+i = symbol('i', type='quaternion')
+assert i.symbol_type == 'quaternion'
+
+\end{lstlisting}
+
+
+
+
+\subsection{ symbols![...] - Bulk Symbol Creation }
+
+Create multiple symbols at once with same type
+
+\begin{lstlisting}
+from mathhook import symbols
+
+# Multiple scalars (default)
+x, y, z = symbols('x y z')
+
+# Multiple matrices
+A, B, C = symbols('A B C', type='matrix')
+assert A.symbol_type == 'matrix'
+
+# Multiple operators
+p, x_op, H = symbols('p x_op H', type='operator')
+assert p.symbol_type == 'operator'
+
+# Multiple quaternions
+i, j, k = symbols('i j k', type='quaternion')
+assert i.symbol_type == 'quaternion'
+
+\end{lstlisting}
+
+
+
+
+\subsection{ SymbolType Enum and Query Methods }
+
+Check symbol type and commutativity
+
+\begin{lstlisting}
+from mathhook import symbol, SymbolType, Commutativity
+
+x = symbol('x')
+A = symbol('A', type='matrix')
+
+# Type check
+assert x.symbol_type == SymbolType.Scalar
+assert A.symbol_type == SymbolType.Matrix
+
+# Commutativity check
+assert x.commutativity == Commutativity.Commutative
+assert A.commutativity == Commutativity.Noncommutative
+
+# Check type
+if A.symbol_type == SymbolType.Matrix:
+    print("Matrix")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Expression::mul - Order Matters! }
+
+Creating multiplication expressions - order preserved for noncommutative
+
+\begin{lstlisting}
+from mathhook import symbol, Expression
+
+A = symbol('A', type='matrix')
+B = symbol('B', type='matrix')
+
+# A*B ≠ B*A in general
+ab = A * B
+ba = B * A
+
+# Structurally different
+assert str(ab) != str(ba)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ MatrixEquationSolver }
+
+Solve matrix equations accounting for noncommutativity
+
+\begin{lstlisting}
+from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# A*X = B → X = A^(-1)*B (left multiply by A^(-1))
+eq1 = A * X - B
+result1 = solver.solve(eq1, X)
+# Returns: X = A.inv() * B
+
+# X*A = B → X = B*A^(-1) (right multiply by A^(-1))
+eq2 = X * A - B
+result2 = solver.solve(eq2, X)
+# Returns: X = B * A.inv()
+
+\end{lstlisting}
+
+
+
+
+\subsection{ to_latex() - Type-Specific Formatting }
+
+LaTeX formatting respects symbol types
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Scalar: standard notation
+x = symbol('x')
+x_latex = x.to_latex()
+# Output: "x"
+
+# Matrix: bold notation
+A = symbol('A', type='matrix')
+a_latex = A.to_latex()
+# Output: "\mathbf{A}"
+
+# Operator: hat notation
+p = symbol('p', type='operator')
+p_latex = p.to_latex()
+# Output: "\hat{p}"
+
+# Quaternion: standard notation
+i = symbol('i', type='quaternion')
+i_latex = i.to_latex()
+# Output: "i"
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Error Handling }
+
+Handle errors from formatting and solving operations
+
+\begin{lstlisting}
+from mathhook import symbol, MatrixEquationSolver, SolverResult
+
+A = symbol('A', type='matrix')
+
+# Handle formatting errors
+try:
+    latex = A.to_latex()
+    print(f"LaTeX: {latex}")
+except Exception as e:
+    print(f"Formatting error: {e}")
+
+# Handle solver results
+solver = MatrixEquationSolver()
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+equation = A * X - B
+
+result = solver.solve(equation, X)
+if isinstance(result, SolverResult.Single):
+    print(f"Solution: {result.solution}")
+elif isinstance(result, SolverResult.Multiple):
+    print(f"Multiple solutions: {result.solutions}")
+elif isinstance(result, SolverResult.None_):
+    print("No solution exists")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

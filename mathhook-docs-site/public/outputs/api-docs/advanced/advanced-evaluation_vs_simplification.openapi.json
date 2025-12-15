@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Understand the critical differences between evaluation (computing numerical results\nwith domain checking) and simplification (algebraic transformation) in MathHook's\nsymbolic engine. Knowing when to use each operation is essential for correct\nmathematical computation.\n",
+    "title": "Evaluation vs Simplification",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/evaluation_vs_simplification": {
+      "post": {
+        "description": "Understand the critical differences between evaluation (computing numerical results\nwith domain checking) and simplification (algebraic transformation) in MathHook's\nsymbolic engine. Knowing when to use each operation is essential for correct\nmathematical computation.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_evaluation_vs_simplification": {
+                  "description": "Shows the fundamental difference between the two operations",
+                  "summary": "Basic Evaluation vs Simplification",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "domain_error_handling": {
+                  "description": "Evaluation catches mathematical domain errors",
+                  "summary": "Domain Error Handling",
+                  "value": {
+                    "expression": "expr('sqrt(-1)').evaluate()"
+                  }
+                },
+                "evaluation_with_variable_substitution": {
+                  "description": "Using evaluate_with_context for variable substitution",
+                  "summary": "Evaluation with Variable Substitution",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Evaluation vs Simplification",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

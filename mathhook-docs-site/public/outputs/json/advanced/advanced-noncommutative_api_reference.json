@@ -1,0 +1,105 @@
+{
+  "topic": "advanced.noncommutative_api_reference",
+  "title": "Noncommutative Algebra API Reference",
+  "description": "Complete API reference for MathHook's noncommutative algebra support,\nincluding symbol creation macros, type queries, expression creation,\nequation solving, and LaTeX formatting.\n",
+  "mathematical_definition": "**Symbol Types**:\n- **Scalar** ($s$): Commutative, $s \\cdot a = a \\cdot s$ for all $a$\n- **Matrix** ($\\mathbf{M}$): Noncommutative, $\\mathbf{A}\\mathbf{B} \\neq \\mathbf{B}\\mathbf{A}$ in general\n- **Operator** ($\\hat{O}$): Noncommutative, used in quantum mechanics\n- **Quaternion** ($q$): Noncommutative, $ij = k$, $ji = -k$\n\n**Commutativity**:\n$$\\text{commutative}(a) \\iff \\forall b: a \\cdot b = b \\cdot a$$\n",
+  "code_refs": {
+    "rust": "mathhook_core::symbol",
+    "python": "mathhook.symbol",
+    "nodejs": "mathhook.symbol"
+  },
+  "examples": [
+    {
+      "title": "symbol!(name) - Create Scalar Symbol",
+      "explanation": "Creates a scalar (commutative) symbol with the given name",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet theta = symbol!(theta);\n\n// Scalars are commutative\nassert_eq!(x.symbol_type(), SymbolType::Scalar);\nassert_eq!(x.commutativity(), Commutativity::Commutative);\n",
+        "python": "from mathhook import symbol\n\nx = symbol('x')\ntheta = symbol('theta')\n\n# Scalars are commutative\nassert x.symbol_type == 'scalar'\nassert x.is_commutative == True\n",
+        "nodejs": "const { symbol } = require('mathhook');\n\nconst x = symbol('x');\nconst theta = symbol('theta');\n\n// Scalars are commutative\nconsole.log(x.symbolType);  // 'scalar'\nconsole.log(x.isCommutative);  // true\n"
+      }
+    },
+    {
+      "title": "symbol!(name; type) - Create Typed Symbol",
+      "explanation": "Creates a symbol with specified type (matrix, operator, quaternion)",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\n// Matrix (noncommutative)\nlet A = symbol!(A; matrix);\nassert_eq!(A.symbol_type(), SymbolType::Matrix);\nassert_eq!(A.commutativity(), Commutativity::Noncommutative);\n\n// Operator (noncommutative)\nlet p = symbol!(p; operator);\nassert_eq!(p.symbol_type(), SymbolType::Operator);\n\n// Quaternion (noncommutative)\nlet i = symbol!(i; quaternion);\nassert_eq!(i.symbol_type(), SymbolType::Quaternion);\n",
+        "python": "from mathhook import symbol\n\n# Matrix (noncommutative)\nA = symbol('A', type='matrix')\nassert A.symbol_type == 'matrix'\nassert A.is_commutative == False\n\n# Operator (noncommutative)\np = symbol('p', type='operator')\nassert p.symbol_type == 'operator'\n\n# Quaternion (noncommutative)\ni = symbol('i', type='quaternion')\nassert i.symbol_type == 'quaternion'\n",
+        "nodejs": "const { symbol } = require('mathhook');\n\n// Matrix (noncommutative)\nconst A = symbol('A', {type: 'matrix'});\nconsole.log(A.symbolType);  // 'matrix'\nconsole.log(A.isCommutative);  // false\n\n// Operator (noncommutative)\nconst p = symbol('p', {type: 'operator'});\nconsole.log(p.symbolType);  // 'operator'\n\n// Quaternion (noncommutative)\nconst i = symbol('i', {type: 'quaternion'});\nconsole.log(i.symbolType);  // 'quaternion'\n"
+      }
+    },
+    {
+      "title": "symbols![...] - Bulk Symbol Creation",
+      "explanation": "Create multiple symbols at once with same type",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\n// Multiple scalars (default)\nlet scalars = symbols![x, y, z];\nassert_eq!(scalars.len(), 3);\n\n// Multiple matrices\nlet matrices = symbols![A, B, C => matrix];\nassert_eq!(matrices[0].symbol_type(), SymbolType::Matrix);\n\n// Multiple operators\nlet operators = symbols![p, x, H => operator];\nassert_eq!(operators[0].symbol_type(), SymbolType::Operator);\n\n// Multiple quaternions\nlet quaternions = symbols![i, j, k => quaternion];\nassert_eq!(quaternions[0].symbol_type(), SymbolType::Quaternion);\n",
+        "python": "from mathhook import symbols\n\n# Multiple scalars (default)\nx, y, z = symbols('x y z')\n\n# Multiple matrices\nA, B, C = symbols('A B C', type='matrix')\nassert A.symbol_type == 'matrix'\n\n# Multiple operators\np, x_op, H = symbols('p x_op H', type='operator')\nassert p.symbol_type == 'operator'\n\n# Multiple quaternions\ni, j, k = symbols('i j k', type='quaternion')\nassert i.symbol_type == 'quaternion'\n",
+        "nodejs": "const { symbols } = require('mathhook');\n\n// Multiple scalars (default)\nconst [x, y, z] = symbols(['x', 'y', 'z']);\n\n// Multiple matrices\nconst [A, B, C] = symbols(['A', 'B', 'C'], {type: 'matrix'});\nconsole.log(A.symbolType);  // 'matrix'\n\n// Multiple operators\nconst [p, x_op, H] = symbols(['p', 'x_op', 'H'], {type: 'operator'});\n\n// Multiple quaternions\nconst [i, j, k] = symbols(['i', 'j', 'k'], {type: 'quaternion'});\n"
+      }
+    },
+    {
+      "title": "SymbolType Enum and Query Methods",
+      "explanation": "Check symbol type and commutativity",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet A = symbol!(A; matrix);\n\n// Type check\nassert_eq!(x.symbol_type(), SymbolType::Scalar);\nassert_eq!(A.symbol_type(), SymbolType::Matrix);\n\n// Commutativity check\nassert_eq!(x.commutativity(), Commutativity::Commutative);\nassert_eq!(A.commutativity(), Commutativity::Noncommutative);\n\n// Match on type\nmatch A.symbol_type() {\n    SymbolType::Scalar => println!(\"Scalar\"),\n    SymbolType::Matrix => println!(\"Matrix\"),\n    SymbolType::Operator => println!(\"Operator\"),\n    SymbolType::Quaternion => println!(\"Quaternion\"),\n}\n",
+        "python": "from mathhook import symbol, SymbolType, Commutativity\n\nx = symbol('x')\nA = symbol('A', type='matrix')\n\n# Type check\nassert x.symbol_type == SymbolType.Scalar\nassert A.symbol_type == SymbolType.Matrix\n\n# Commutativity check\nassert x.commutativity == Commutativity.Commutative\nassert A.commutativity == Commutativity.Noncommutative\n\n# Check type\nif A.symbol_type == SymbolType.Matrix:\n    print(\"Matrix\")\n",
+        "nodejs": "const { symbol, SymbolType, Commutativity } = require('mathhook');\n\nconst x = symbol('x');\nconst A = symbol('A', {type: 'matrix'});\n\n// Type check\nconsole.log(x.symbolType === SymbolType.Scalar);  // true\nconsole.log(A.symbolType === SymbolType.Matrix);  // true\n\n// Commutativity check\nconsole.log(x.commutativity === Commutativity.Commutative);  // true\nconsole.log(A.commutativity === Commutativity.Noncommutative);  // true\n"
+      }
+    },
+    {
+      "title": "Expression::mul - Order Matters!",
+      "explanation": "Creating multiplication expressions - order preserved for noncommutative",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet A = symbol!(A; matrix);\nlet B = symbol!(B; matrix);\n\n// A*B ≠ B*A in general\nlet ab = Expression::mul(vec![\n    Expression::symbol(A.clone()),\n    Expression::symbol(B.clone())\n]);\n\nlet ba = Expression::mul(vec![\n    Expression::symbol(B),\n    Expression::symbol(A)\n]);\n\n// Structurally different\nassert_ne!(ab.to_string(), ba.to_string());\n\n// Using expr! macro (preferred)\nlet A = symbol!(A; matrix);\nlet B = symbol!(B; matrix);\nlet ab = expr!(A * B);\nlet ba = expr!(B * A);\nassert_ne!(ab.to_string(), ba.to_string());\n",
+        "python": "from mathhook import symbol, Expression\n\nA = symbol('A', type='matrix')\nB = symbol('B', type='matrix')\n\n# A*B ≠ B*A in general\nab = A * B\nba = B * A\n\n# Structurally different\nassert str(ab) != str(ba)\n",
+        "nodejs": "const { symbol, Expression } = require('mathhook');\n\nconst A = symbol('A', {type: 'matrix'});\nconst B = symbol('B', {type: 'matrix'});\n\n// A*B ≠ B*A in general\nconst ab = A.mul(B);\nconst ba = B.mul(A);\n\n// Structurally different\nconsole.log(ab.toString() !== ba.toString());  // true\n"
+      }
+    },
+    {
+      "title": "MatrixEquationSolver",
+      "explanation": "Solve matrix equations accounting for noncommutativity",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet solver = MatrixEquationSolver::new();\n\nlet A = symbol!(A; matrix);\nlet X = symbol!(X; matrix);\nlet B = symbol!(B; matrix);\n\n// A*X = B → X = A^(-1)*B (left multiply by A^(-1))\nlet eq1 = expr!((A * X) - B);\nlet result1 = solver.solve(&eq1, &X);\n// Returns: X = A^(-1) * B\n\n// X*A = B → X = B*A^(-1) (right multiply by A^(-1))\nlet eq2 = expr!((X * A) - B);\nlet result2 = solver.solve(&eq2, &X);\n// Returns: X = B * A^(-1)\n",
+        "python": "from mathhook import symbol, MatrixEquationSolver\n\nsolver = MatrixEquationSolver()\n\nA = symbol('A', type='matrix')\nX = symbol('X', type='matrix')\nB = symbol('B', type='matrix')\n\n# A*X = B → X = A^(-1)*B (left multiply by A^(-1))\neq1 = A * X - B\nresult1 = solver.solve(eq1, X)\n# Returns: X = A.inv() * B\n\n# X*A = B → X = B*A^(-1) (right multiply by A^(-1))\neq2 = X * A - B\nresult2 = solver.solve(eq2, X)\n# Returns: X = B * A.inv()\n",
+        "nodejs": "const { symbol, MatrixEquationSolver } = require('mathhook');\n\nconst solver = new MatrixEquationSolver();\n\nconst A = symbol('A', {type: 'matrix'});\nconst X = symbol('X', {type: 'matrix'});\nconst B = symbol('B', {type: 'matrix'});\n\n// A*X = B → X = A^(-1)*B (left multiply by A^(-1))\nconst eq1 = A.mul(X).sub(B);\nconst result1 = solver.solve(eq1, X);\n// Returns: X = A.inv().mul(B)\n\n// X*A = B → X = B*A^(-1) (right multiply by A^(-1))\nconst eq2 = X.mul(A).sub(B);\nconst result2 = solver.solve(eq2, X);\n// Returns: X = B.mul(A.inv())\n"
+      }
+    },
+    {
+      "title": "to_latex() - Type-Specific Formatting",
+      "explanation": "LaTeX formatting respects symbol types",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\n// Scalar: standard notation\nlet x = symbol!(x);\nlet x_latex = Expression::symbol(x).to_latex(None).unwrap();\n// Output: \"x\"\n\n// Matrix: bold notation\nlet A = symbol!(A; matrix);\nlet a_latex = Expression::symbol(A).to_latex(None).unwrap();\n// Output: \"\\mathbf{A}\"\n\n// Operator: hat notation\nlet p = symbol!(p; operator);\nlet p_latex = Expression::symbol(p).to_latex(None).unwrap();\n// Output: \"\\hat{p}\"\n\n// Quaternion: standard notation\nlet i = symbol!(i; quaternion);\nlet i_latex = Expression::symbol(i).to_latex(None).unwrap();\n// Output: \"i\"\n",
+        "python": "from mathhook import symbol\n\n# Scalar: standard notation\nx = symbol('x')\nx_latex = x.to_latex()\n# Output: \"x\"\n\n# Matrix: bold notation\nA = symbol('A', type='matrix')\na_latex = A.to_latex()\n# Output: \"\\mathbf{A}\"\n\n# Operator: hat notation\np = symbol('p', type='operator')\np_latex = p.to_latex()\n# Output: \"\\hat{p}\"\n\n# Quaternion: standard notation\ni = symbol('i', type='quaternion')\ni_latex = i.to_latex()\n# Output: \"i\"\n",
+        "nodejs": "const { symbol } = require('mathhook');\n\n// Scalar: standard notation\nconst x = symbol('x');\nconst xLatex = x.toLatex();\n// Output: \"x\"\n\n// Matrix: bold notation\nconst A = symbol('A', {type: 'matrix'});\nconst aLatex = A.toLatex();\n// Output: \"\\mathbf{A}\"\n\n// Operator: hat notation\nconst p = symbol('p', {type: 'operator'});\nconst pLatex = p.toLatex();\n// Output: \"\\hat{p}\"\n\n// Quaternion: standard notation\nconst i = symbol('i', {type: 'quaternion'});\nconst iLatex = i.toLatex();\n// Output: \"i\"\n"
+      }
+    },
+    {
+      "title": "Error Handling",
+      "explanation": "Handle errors from formatting and solving operations",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet A = symbol!(A; matrix);\nlet expr = Expression::symbol(A);\n\n// Handle formatting errors\nmatch expr.to_latex(None) {\n    Ok(latex) => println!(\"LaTeX: {}\", latex),\n    Err(e) => eprintln!(\"Formatting error: {}\", e),\n}\n\n// Handle solver results\nlet solver = MatrixEquationSolver::new();\nlet X = symbol!(X; matrix);\nlet B = symbol!(B; matrix);\nlet equation = expr!((A * X) - B);\n\nmatch solver.solve(&equation, &X) {\n    SolverResult::Single(solution) => {\n        println!(\"Solution: {}\", solution);\n    }\n    SolverResult::Multiple(solutions) => {\n        println!(\"Multiple solutions: {:?}\", solutions);\n    }\n    SolverResult::None => {\n        println!(\"No solution exists\");\n    }\n}\n",
+        "python": "from mathhook import symbol, MatrixEquationSolver, SolverResult\n\nA = symbol('A', type='matrix')\n\n# Handle formatting errors\ntry:\n    latex = A.to_latex()\n    print(f\"LaTeX: {latex}\")\nexcept Exception as e:\n    print(f\"Formatting error: {e}\")\n\n# Handle solver results\nsolver = MatrixEquationSolver()\nX = symbol('X', type='matrix')\nB = symbol('B', type='matrix')\nequation = A * X - B\n\nresult = solver.solve(equation, X)\nif isinstance(result, SolverResult.Single):\n    print(f\"Solution: {result.solution}\")\nelif isinstance(result, SolverResult.Multiple):\n    print(f\"Multiple solutions: {result.solutions}\")\nelif isinstance(result, SolverResult.None_):\n    print(\"No solution exists\")\n",
+        "nodejs": "const { symbol, MatrixEquationSolver, SolverResult } = require('mathhook');\n\nconst A = symbol('A', {type: 'matrix'});\n\n// Handle formatting errors\ntry {\n    const latex = A.toLatex();\n    console.log(`LaTeX: ${latex}`);\n} catch (e) {\n    console.error(`Formatting error: ${e.message}`);\n}\n\n// Handle solver results\nconst solver = new MatrixEquationSolver();\nconst X = symbol('X', {type: 'matrix'});\nconst B = symbol('B', {type: 'matrix'});\nconst equation = A.mul(X).sub(B);\n\nconst result = solver.solve(equation, X);\nif (result instanceof SolverResult.Single) {\n    console.log(`Solution: ${result.solution}`);\n} else if (result instanceof SolverResult.Multiple) {\n    console.log(`Multiple solutions: ${result.solutions}`);\n} else if (result instanceof SolverResult.None) {\n    console.log(\"No solution exists\");\n}\n"
+      }
+    }
+  ],
+  "article": {
+    "content": "# Noncommutative Algebra API Reference\n\nComplete API reference for MathHook's noncommutative algebra support.\n\n## Symbol Creation API\n\n### `symbol!(name)` - Create Scalar Symbol\nCreates a scalar (commutative) symbol with the given name.\n\n**Syntax**: `symbol!(identifier)`\n**Returns**: `Symbol` with type `Scalar`\n\n### `symbol!(name; type)` - Create Typed Symbol\nCreates a symbol with specified type (matrix, operator, or quaternion).\n\n**Syntax**: `symbol!(identifier; type_keyword)`\n**Type keywords**: `matrix`, `operator`, `quaternion`\n**Returns**: `Symbol` with specified type\n\n### `symbols![...]` - Create Multiple Symbols\nCreates multiple symbols of the same type.\n\n**Syntax**: `symbols![id1, id2, ... => type]`\n**Returns**: `Vec<Symbol>`\n\n## Symbol Type API\n\n### `SymbolType` Enum\n```rust\npub enum SymbolType {\n    Scalar,      // Commutative (default)\n    Matrix,      // Noncommutative\n    Operator,    // Noncommutative\n    Quaternion,  // Noncommutative\n}\n```\n\n### Type Query Methods\n- `symbol_type()` - Returns the symbol's type\n- `commutativity()` - Returns `Commutative` or `Noncommutative`\n\n## Expression Creation API\n\n- `Expression::symbol(sym)` - Create symbol expression\n- `Expression::add(terms)` - Create addition\n- `Expression::mul(factors)` - Create multiplication (order matters!)\n\n## Equation Solving API\n\n- `MatrixEquationSolver::new()` - Create solver\n- `solver.solve(equation, variable)` - Solve equation\n\n## LaTeX Formatting API\n\n- `expr.to_latex(context)` - Format as LaTeX\n\n**LaTeX Output by Type**:\n- **Scalar**: Standard notation (`x`, `θ`)\n- **Matrix**: Bold notation (`\\mathbf{A}`)\n- **Operator**: Hat notation (`\\hat{p}`)\n- **Quaternion**: Standard notation (`i`, `j`, `k`)\n"
+  },
+  "use_cases": [
+    "Quantum mechanics: defining position, momentum, and Hamiltonian operators",
+    "Linear algebra: solving matrix equations with noncommutative multiplication",
+    "Computer graphics: quaternion rotations for 3D transformations",
+    "Control systems: state-space representations with matrix arithmetic",
+    "Cryptography: matrix-based encryption schemes"
+  ],
+  "related_topics": [
+    "advanced.noncommutative_algebra",
+    "advanced.noncommutative_examples",
+    "core.symbols_numbers",
+    "parser.latex",
+    "educational.messages"
+  ],
+  "metadata": {
+    "schema_version": "1.0"
+  }
+}

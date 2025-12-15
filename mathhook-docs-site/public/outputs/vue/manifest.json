@@ -1,0 +1,623 @@
+{
+  "generated_at": "2025-12-15T16:36:04Z",
+  "output_type": "Vue Components",
+  "total_files": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.vue",
+        "title": "Symbolic Assumptions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-complex_numbers.vue",
+        "title": "Complex Number Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-differential_equations.vue",
+        "title": "Differential Equation Solving",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.vue",
+        "title": "Evaluation vs Simplification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-matrices.vue",
+        "title": "Matrix Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.vue",
+        "title": "Noncommutative Algebra",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.vue",
+        "title": "Noncommutative Algebra API Reference",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.vue",
+        "title": "Noncommutative Algebra Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.vue",
+        "title": "Boundary Conditions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-classification.vue",
+        "title": "PDE Classification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-examples.vue",
+        "title": "Complete PDE Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.vue",
+        "title": "Fourier Coefficients: Why They're Symbolic",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.vue",
+        "title": "Heat Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.vue",
+        "title": "Laplace Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.vue",
+        "title": "Method of Characteristics",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-overview.vue",
+        "title": "Partial Differential Equations (PDEs)",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-performance.vue",
+        "title": "PDE Module Performance Report",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.vue",
+        "title": "PDE Quick Reference Card",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_start.vue",
+        "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-registry.vue",
+        "title": "PDE Solver Registry System",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.vue",
+        "title": "Separation of Variables",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.vue",
+        "title": "SymPy Validation Workflow",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.vue",
+        "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-user_guide.vue",
+        "title": "PDE User Guide - MathHook CAS",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.vue",
+        "title": "Wave Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-piecewise.vue",
+        "title": "Piecewise Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-residue_calculus.vue",
+        "title": "Residue Calculus and Pole Finding",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-special_functions.vue",
+        "title": "Special Mathematical Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-system_solving.vue",
+        "title": "System of Equations Solving",
+        "category": "advanced"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.vue",
+        "title": "Symbolic Simplification",
+        "category": "api"
+      },
+      {
+        "filename": "api-calculus-operations.vue",
+        "title": "Symbolic Calculus: Differentiation and Integration",
+        "category": "api"
+      },
+      {
+        "filename": "api-core-expressions.vue",
+        "title": "Core Expression System",
+        "category": "api"
+      },
+      {
+        "filename": "api-matrix-operations.vue",
+        "title": "Matrix Operations and Noncommutative Algebra",
+        "category": "api"
+      },
+      {
+        "filename": "api-parser-latex.vue",
+        "title": "LaTeX Parsing and Mathematical Notation",
+        "category": "api"
+      },
+      {
+        "filename": "api-solver-equations.vue",
+        "title": "Symbolic and Numerical Equation Solving",
+        "category": "api"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.vue",
+        "title": "Changelog",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-errors.vue",
+        "title": "Error Messages",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-faq.vue",
+        "title": "Frequently Asked Questions",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-glossary.vue",
+        "title": "Glossary",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-notation.vue",
+        "title": "Mathematical Notation",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-risch_algorithm.vue",
+        "title": "The Risch Algorithm in MathHook",
+        "category": "appendix"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.vue",
+        "title": "Crate Structure",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-function-intelligence.vue",
+        "title": "Function Intelligence System",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-memory-layout.vue",
+        "title": "Memory Layout Optimization",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-principles.vue",
+        "title": "Design Principles",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-thread-safety.vue",
+        "title": "Thread Safety Guarantees",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-type-system.vue",
+        "title": "Type System",
+        "category": "architecture"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.vue",
+        "title": "Node.js/TypeScript API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-python.vue",
+        "title": "Python API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-wasm.vue",
+        "title": "WebAssembly Bindings",
+        "category": "bindings"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.vue",
+        "title": "Quick Reference for Core Math Functions",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-correctness.vue",
+        "title": "Mathematical Correctness",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-development.vue",
+        "title": "Development Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-documentation.vue",
+        "title": "Documentation Standards",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-style.vue",
+        "title": "Code Style Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-testing.vue",
+        "title": "Testing Strategy",
+        "category": "contributing"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.vue",
+        "title": "Mathematical Constants",
+        "category": "core"
+      },
+      {
+        "filename": "core-expressions.vue",
+        "title": "Expressions",
+        "category": "core"
+      },
+      {
+        "filename": "core-functions.vue",
+        "title": "Function System",
+        "category": "core"
+      },
+      {
+        "filename": "core-pattern-matching.vue",
+        "title": "Pattern Matching",
+        "category": "core"
+      },
+      {
+        "filename": "core-symbols-numbers.vue",
+        "title": "Symbols and Numbers",
+        "category": "core"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.vue",
+        "title": "Educational API",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-messages.vue",
+        "title": "Educational Message Registry",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-step_by_step.vue",
+        "title": "Step-by-Step Explanations",
+        "category": "educational"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.vue",
+        "title": "Function Evaluation",
+        "category": "evaluation"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.vue",
+        "title": "Introduction to MathHook",
+        "category": "getting"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.vue",
+        "title": "Basic Usage",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-common-patterns.vue",
+        "title": "Common Patterns",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-installation.vue",
+        "title": "Installation",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-learning-paths.vue",
+        "title": "Learning Paths",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-quick-start.vue",
+        "title": "Quick Start",
+        "category": "getting-started"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.vue",
+        "title": "Code Complexity Findings - Educational Integration Plan Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.vue",
+        "title": "Educational Integration Plan - Effort Estimation Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-plan.vue",
+        "title": "MathHook CAS - Educational Integration Implementation Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-error-handling.vue",
+        "title": "Error Handling & Fallback Architecture",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-feature-gap-tests.vue",
+        "title": "Feature Gap Tests Archive",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-investigation.vue",
+        "title": "MathHook CAS - Consolidated Investigation Report",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-overview.vue",
+        "title": "MathHook Complete Status",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.vue",
+        "title": "Calculus Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.vue",
+        "title": "Polynomial Performance Architecture Analysis",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.vue",
+        "title": "Simplification Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-solving-operations.vue",
+        "title": "Solving Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.vue",
+        "title": "Strategic Performance Roadmap: Path to Beating Symbolica",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.vue",
+        "title": "Fast Path Opportunities Assessment",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.vue",
+        "title": "Matrix Solver Integration Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.vue",
+        "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-type-dispatch-review.vue",
+        "title": "Comprehensive Type Dispatch & Educational Integration Review",
+        "category": "internal"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.vue",
+        "title": "Separable ODEs",
+        "category": "ode"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.vue",
+        "title": "Symbolic Differentiation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-evaluation.vue",
+        "title": "Expression Evaluation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-expansion-factoring.vue",
+        "title": "Expansion and Factoring",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-integration.vue",
+        "title": "Symbolic Integration",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-limits.vue",
+        "title": "Limits",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-series.vue",
+        "title": "Series Expansions",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-simplification.vue",
+        "title": "Symbolic Simplification",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-solving.vue",
+        "title": "Solving Equations",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-substitution.vue",
+        "title": "Substitution",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-summation.vue",
+        "title": "Summation and Products",
+        "category": "operations"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.vue",
+        "title": "Custom Parsers and Extensions",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-formatting.vue",
+        "title": "Expression Formatting",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-latex.vue",
+        "title": "LaTeX Notation",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-noncommutative_design.vue",
+        "title": "Parser Design for Noncommutative Algebra",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-wolfram.vue",
+        "title": "Wolfram Language Notation",
+        "category": "parser"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.vue",
+        "title": "Separation of Variables for PDEs",
+        "category": "pde"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.vue",
+        "title": "Performance Architecture",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-benchmarking.vue",
+        "title": "Benchmarking Guide",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-caching.vue",
+        "title": "Caching Strategies",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-comparison.vue",
+        "title": "Performance Comparison",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-parallel.vue",
+        "title": "Parallel Processing",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-simd.vue",
+        "title": "SIMD Operations",
+        "category": "performance"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.vue",
+        "title": "Polynomial Division and Factorization",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-finite-field.vue",
+        "title": "Finite Field Arithmetic",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-gcd.vue",
+        "title": "GCD Algorithms",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-groebner.vue",
+        "title": "Groebner Bases",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-overview.vue",
+        "title": "Polynomial Module Overview",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-special-families.vue",
+        "title": "Special Polynomial Families",
+        "category": "polynomial"
+      }
+    ]
+  }
+}

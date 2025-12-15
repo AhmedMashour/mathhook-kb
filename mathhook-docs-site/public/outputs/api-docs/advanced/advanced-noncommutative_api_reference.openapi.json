@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Complete API reference for MathHook's noncommutative algebra support,\nincluding symbol creation macros, type queries, expression creation,\nequation solving, and LaTeX formatting.\n",
+    "title": "Noncommutative Algebra API Reference",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/noncommutative_api_reference": {
+      "post": {
+        "description": "Complete API reference for MathHook's noncommutative algebra support,\nincluding symbol creation macros, type queries, expression creation,\nequation solving, and LaTeX formatting.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "symbol!(name)_-_create_scalar_symbol": {
+                  "description": "Creates a scalar (commutative) symbol with the given name",
+                  "summary": "symbol!(name) - Create Scalar Symbol",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "symbol!(name;_type)_-_create_typed_symbol": {
+                  "description": "Creates a symbol with specified type (matrix, operator, quaternion)",
+                  "summary": "symbol!(name; type) - Create Typed Symbol",
+                  "value": {
+                    "expression": "symbol('A', type"
+                  }
+                },
+                "symbols![...]_-_bulk_symbol_creation": {
+                  "description": "Create multiple symbols at once with same type",
+                  "summary": "symbols![...] - Bulk Symbol Creation",
+                  "value": {
+                    "expression": "symbols('x y z')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Noncommutative Algebra API Reference",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

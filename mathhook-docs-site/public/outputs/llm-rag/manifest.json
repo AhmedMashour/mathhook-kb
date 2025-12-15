@@ -1,0 +1,623 @@
+{
+  "generated_at": "2025-12-15T16:36:04Z",
+  "output_type": "LLM-Optimized RAG Markdown",
+  "total_files": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.rag.md",
+        "title": "Advanced Assumptions.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-complex_numbers.rag.md",
+        "title": "Advanced Complex Numbers.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-differential_equations.rag.md",
+        "title": "Advanced Differential Equations.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.rag.md",
+        "title": "Advanced Evaluation Vs Simplification.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-matrices.rag.md",
+        "title": "Advanced Matrices.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.rag.md",
+        "title": "Advanced Noncommutative Algebra.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.rag.md",
+        "title": "Advanced Noncommutative Api Reference.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.rag.md",
+        "title": "Advanced Noncommutative Examples.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.rag.md",
+        "title": "Advanced Pde Boundary Conditions.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-classification.rag.md",
+        "title": "Advanced Pde Classification.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-examples.rag.md",
+        "title": "Advanced Pde Examples.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.rag.md",
+        "title": "Advanced Pde Fourier Coefficients.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.rag.md",
+        "title": "Advanced Pde Heat Equation.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.rag.md",
+        "title": "Advanced Pde Laplace Equation.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.rag.md",
+        "title": "Advanced Pde Method Of Characteristics.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-overview.rag.md",
+        "title": "Advanced Pde Overview.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-performance.rag.md",
+        "title": "Advanced Pde Performance.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.rag.md",
+        "title": "Advanced Pde Quick Reference.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_start.rag.md",
+        "title": "Advanced Pde Quick Start.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-registry.rag.md",
+        "title": "Advanced Pde Registry.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.rag.md",
+        "title": "Advanced Pde Separation Of Variables.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.rag.md",
+        "title": "Advanced Pde Sympy Validation.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.rag.md",
+        "title": "Advanced Pde Technical Guide.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-user_guide.rag.md",
+        "title": "Advanced Pde User Guide.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.rag.md",
+        "title": "Advanced Pde Wave Equation.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-piecewise.rag.md",
+        "title": "Advanced Piecewise.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-residue_calculus.rag.md",
+        "title": "Advanced Residue Calculus.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-special_functions.rag.md",
+        "title": "Advanced Special Functions.Rag",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-system_solving.rag.md",
+        "title": "Advanced System Solving.Rag",
+        "category": "advanced"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.rag.md",
+        "title": "Api Algebra Simplification.Rag",
+        "category": "api"
+      },
+      {
+        "filename": "api-calculus-operations.rag.md",
+        "title": "Api Calculus Operations.Rag",
+        "category": "api"
+      },
+      {
+        "filename": "api-core-expressions.rag.md",
+        "title": "Api Core Expressions.Rag",
+        "category": "api"
+      },
+      {
+        "filename": "api-matrix-operations.rag.md",
+        "title": "Api Matrix Operations.Rag",
+        "category": "api"
+      },
+      {
+        "filename": "api-parser-latex.rag.md",
+        "title": "Api Parser Latex.Rag",
+        "category": "api"
+      },
+      {
+        "filename": "api-solver-equations.rag.md",
+        "title": "Api Solver Equations.Rag",
+        "category": "api"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.rag.md",
+        "title": "Appendix Changelog.Rag",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-errors.rag.md",
+        "title": "Appendix Errors.Rag",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-faq.rag.md",
+        "title": "Appendix Faq.Rag",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-glossary.rag.md",
+        "title": "Appendix Glossary.Rag",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-notation.rag.md",
+        "title": "Appendix Notation.Rag",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-risch_algorithm.rag.md",
+        "title": "Appendix Risch Algorithm.Rag",
+        "category": "appendix"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.rag.md",
+        "title": "Architecture Crate Structure.Rag",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-function-intelligence.rag.md",
+        "title": "Architecture Function Intelligence.Rag",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-memory-layout.rag.md",
+        "title": "Architecture Memory Layout.Rag",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-principles.rag.md",
+        "title": "Architecture Principles.Rag",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-thread-safety.rag.md",
+        "title": "Architecture Thread Safety.Rag",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-type-system.rag.md",
+        "title": "Architecture Type System.Rag",
+        "category": "architecture"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.rag.md",
+        "title": "Bindings Nodejs.Rag",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-python.rag.md",
+        "title": "Bindings Python.Rag",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-wasm.rag.md",
+        "title": "Bindings Wasm.Rag",
+        "category": "bindings"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.rag.md",
+        "title": "Contributing Architecture Reference.Rag",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-correctness.rag.md",
+        "title": "Contributing Correctness.Rag",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-development.rag.md",
+        "title": "Contributing Development.Rag",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-documentation.rag.md",
+        "title": "Contributing Documentation.Rag",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-style.rag.md",
+        "title": "Contributing Style.Rag",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-testing.rag.md",
+        "title": "Contributing Testing.Rag",
+        "category": "contributing"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.rag.md",
+        "title": "Core Constants.Rag",
+        "category": "core"
+      },
+      {
+        "filename": "core-expressions.rag.md",
+        "title": "Core Expressions.Rag",
+        "category": "core"
+      },
+      {
+        "filename": "core-functions.rag.md",
+        "title": "Core Functions.Rag",
+        "category": "core"
+      },
+      {
+        "filename": "core-pattern-matching.rag.md",
+        "title": "Core Pattern Matching.Rag",
+        "category": "core"
+      },
+      {
+        "filename": "core-symbols-numbers.rag.md",
+        "title": "Core Symbols Numbers.Rag",
+        "category": "core"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.rag.md",
+        "title": "Educational Api.Rag",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-messages.rag.md",
+        "title": "Educational Messages.Rag",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-step_by_step.rag.md",
+        "title": "Educational Step By Step.Rag",
+        "category": "educational"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.rag.md",
+        "title": "Evaluation Function Evaluation.Rag",
+        "category": "evaluation"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.rag.md",
+        "title": "Getting Started Introduction.Rag",
+        "category": "getting"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.rag.md",
+        "title": "Getting Started Basic Usage.Rag",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-common-patterns.rag.md",
+        "title": "Getting Started Common Patterns.Rag",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-installation.rag.md",
+        "title": "Getting Started Installation.Rag",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-learning-paths.rag.md",
+        "title": "Getting Started Learning Paths.Rag",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-quick-start.rag.md",
+        "title": "Getting Started Quick Start.Rag",
+        "category": "getting-started"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.rag.md",
+        "title": "Internal Complexity Findings.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.rag.md",
+        "title": "Internal Educational Effort Estimation.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-plan.rag.md",
+        "title": "Internal Educational Plan.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-error-handling.rag.md",
+        "title": "Internal Error Handling.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-feature-gap-tests.rag.md",
+        "title": "Internal Feature Gap Tests.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-investigation.rag.md",
+        "title": "Internal Investigation.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-overview.rag.md",
+        "title": "Internal Overview.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.rag.md",
+        "title": "Internal Performance Calculus Operations.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.rag.md",
+        "title": "Internal Performance Polynomial Architecture.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.rag.md",
+        "title": "Internal Performance Simplification Operations.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-solving-operations.rag.md",
+        "title": "Internal Performance Solving Operations.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.rag.md",
+        "title": "Internal Performance Strategic Roadmap.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.rag.md",
+        "title": "Internal Planning Fast Path Opportunities.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.rag.md",
+        "title": "Internal Planning Matrix Solver Integration.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.rag.md",
+        "title": "Internal Planning Phase3 And Phase5 Summary.Rag",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-type-dispatch-review.rag.md",
+        "title": "Internal Type Dispatch Review.Rag",
+        "category": "internal"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.rag.md",
+        "title": "Ode Separable.Rag",
+        "category": "ode"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.rag.md",
+        "title": "Operations Differentiation.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-evaluation.rag.md",
+        "title": "Operations Evaluation.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-expansion-factoring.rag.md",
+        "title": "Operations Expansion Factoring.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-integration.rag.md",
+        "title": "Operations Integration.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-limits.rag.md",
+        "title": "Operations Limits.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-series.rag.md",
+        "title": "Operations Series.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-simplification.rag.md",
+        "title": "Operations Simplification.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-solving.rag.md",
+        "title": "Operations Solving.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-substitution.rag.md",
+        "title": "Operations Substitution.Rag",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-summation.rag.md",
+        "title": "Operations Summation.Rag",
+        "category": "operations"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.rag.md",
+        "title": "Parser Custom.Rag",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-formatting.rag.md",
+        "title": "Parser Formatting.Rag",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-latex.rag.md",
+        "title": "Parser Latex.Rag",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-noncommutative_design.rag.md",
+        "title": "Parser Noncommutative Design.Rag",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-wolfram.rag.md",
+        "title": "Parser Wolfram.Rag",
+        "category": "parser"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.rag.md",
+        "title": "Pde Separation Of Variables.Rag",
+        "category": "pde"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.rag.md",
+        "title": "Performance Architecture.Rag",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-benchmarking.rag.md",
+        "title": "Performance Benchmarking.Rag",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-caching.rag.md",
+        "title": "Performance Caching.Rag",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-comparison.rag.md",
+        "title": "Performance Comparison.Rag",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-parallel.rag.md",
+        "title": "Performance Parallel.Rag",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-simd.rag.md",
+        "title": "Performance Simd.Rag",
+        "category": "performance"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.rag.md",
+        "title": "Polynomial Division.Rag",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-finite-field.rag.md",
+        "title": "Polynomial Finite Field.Rag",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-gcd.rag.md",
+        "title": "Polynomial Gcd.Rag",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-groebner.rag.md",
+        "title": "Polynomial Groebner.Rag",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-overview.rag.md",
+        "title": "Polynomial Overview.Rag",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-special-families.rag.md",
+        "title": "Polynomial Special Families.Rag",
+        "category": "polynomial"
+      }
+    ]
+  }
+}

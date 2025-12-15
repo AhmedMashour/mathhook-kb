@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Arithmetic in Z_p (integers modulo a prime p) essential for modular GCD algorithms. Provides\nfield elements, polynomial operations over finite fields, and Chinese Remainder Theorem reconstruction.\n",
+    "title": "Finite Field Arithmetic",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/polynomial/finite-field": {
+      "post": {
+        "description": "Arithmetic in Z_p (integers modulo a prime p) essential for modular GCD algorithms. Provides\nfield elements, polynomial operations over finite fields, and Chinese Remainder Theorem reconstruction.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "field_element_arithmetic": {
+                  "description": "Basic operations in Z_p with automatic modular reduction",
+                  "summary": "Field Element Arithmetic",
+                  "value": {
+                    "expression": "FieldElement(3, 7)  # 3 mod 7"
+                  }
+                },
+                "polynomial_arithmetic_in_z_p[x]": {
+                  "description": "Add, multiply, divide polynomials over finite fields",
+                  "summary": "Polynomial Arithmetic in Z_p[x]",
+                  "value": {
+                    "expression": "PolyZp.from_coeffs([1, 0, 1], 5)  # x^2 + 1"
+                  }
+                },
+                "polynomial_operations_in_z_p[x]": {
+                  "description": "Create and manipulate polynomials over finite fields",
+                  "summary": "Polynomial Operations in Z_p[x]",
+                  "value": {
+                    "expression": "PolyZp.from_coeffs([1, 2, 1], 5)  # [a_0, a_1, a_2]"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Finite Field Arithmetic",
+        "tags": [
+          "polynomial"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "polynomial operations",
+      "name": "polynomial"
+    }
+  ]
+}

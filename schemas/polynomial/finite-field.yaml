@@ -311,7 +311,7 @@ examples:
         let mod2 = 11u128;  // second prime
 
         let combined = crt_combine_u128(coef1, mod1, coef2, mod2);
-        // combined is the unique value in [0, 77) that is 3 mod 7 and 5 mod 11
+        // combined is the unique value in range 0 to 77 satisfying both constraints
       python: |
         from mathhook.polynomial.algorithms.zippel_gcd.helpers import crt_combine
 
@@ -322,7 +322,7 @@ examples:
         mod2 = 11      # second prime
 
         combined = crt_combine(coef1, mod1, coef2, mod2)
-        # combined is the unique value in [0, 77) that is 3 mod 7 and 5 mod 11
+        # combined is the unique value in range 0 to 77 satisfying both constraints
       nodejs: |
         const { crtCombine } = require('mathhook/polynomial/algorithms/zippel_gcd/helpers');
 
@@ -333,7 +333,7 @@ examples:
         const mod2 = 11;      // second prime
 
         const combined = crtCombine(coef1, mod1, coef2, mod2);
-        // combined is the unique value in [0, 77) that is 3 mod 7 and 5 mod 11
+        // combined is the unique value in range 0 to 77 satisfying both constraints
 
 related_topics:
   - "polynomial.gcd"

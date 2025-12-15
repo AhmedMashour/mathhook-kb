@@ -1,0 +1,623 @@
+{
+  "generated_at": "2025-12-15T16:36:04Z",
+  "output_type": "LaTeX Documents",
+  "total_files": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.tex",
+        "title": "Symbolic Assumptions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-complex_numbers.tex",
+        "title": "Complex Number Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-differential_equations.tex",
+        "title": "Differential Equation Solving",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.tex",
+        "title": "Evaluation vs Simplification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-matrices.tex",
+        "title": "Matrix Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.tex",
+        "title": "Noncommutative Algebra",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.tex",
+        "title": "Noncommutative Algebra API Reference",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.tex",
+        "title": "Noncommutative Algebra Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.tex",
+        "title": "Boundary Conditions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-classification.tex",
+        "title": "PDE Classification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-examples.tex",
+        "title": "Complete PDE Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.tex",
+        "title": "Fourier Coefficients: Why They're Symbolic",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.tex",
+        "title": "Heat Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.tex",
+        "title": "Laplace Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.tex",
+        "title": "Method of Characteristics",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-overview.tex",
+        "title": "Partial Differential Equations (PDEs)",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-performance.tex",
+        "title": "PDE Module Performance Report",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.tex",
+        "title": "PDE Quick Reference Card",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_start.tex",
+        "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-registry.tex",
+        "title": "PDE Solver Registry System",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.tex",
+        "title": "Separation of Variables",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.tex",
+        "title": "SymPy Validation Workflow",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.tex",
+        "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-user_guide.tex",
+        "title": "PDE User Guide - MathHook CAS",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.tex",
+        "title": "Wave Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-piecewise.tex",
+        "title": "Piecewise Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-residue_calculus.tex",
+        "title": "Residue Calculus and Pole Finding",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-special_functions.tex",
+        "title": "Special Mathematical Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-system_solving.tex",
+        "title": "System of Equations Solving",
+        "category": "advanced"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.tex",
+        "title": "Symbolic Simplification",
+        "category": "api"
+      },
+      {
+        "filename": "api-calculus-operations.tex",
+        "title": "Symbolic Calculus: Differentiation and Integration",
+        "category": "api"
+      },
+      {
+        "filename": "api-core-expressions.tex",
+        "title": "Core Expression System",
+        "category": "api"
+      },
+      {
+        "filename": "api-matrix-operations.tex",
+        "title": "Matrix Operations and Noncommutative Algebra",
+        "category": "api"
+      },
+      {
+        "filename": "api-parser-latex.tex",
+        "title": "LaTeX Parsing and Mathematical Notation",
+        "category": "api"
+      },
+      {
+        "filename": "api-solver-equations.tex",
+        "title": "Symbolic and Numerical Equation Solving",
+        "category": "api"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.tex",
+        "title": "Changelog",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-errors.tex",
+        "title": "Error Messages",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-faq.tex",
+        "title": "Frequently Asked Questions",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-glossary.tex",
+        "title": "Glossary",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-notation.tex",
+        "title": "Mathematical Notation",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-risch_algorithm.tex",
+        "title": "The Risch Algorithm in MathHook",
+        "category": "appendix"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.tex",
+        "title": "Crate Structure",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-function-intelligence.tex",
+        "title": "Function Intelligence System",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-memory-layout.tex",
+        "title": "Memory Layout Optimization",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-principles.tex",
+        "title": "Design Principles",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-thread-safety.tex",
+        "title": "Thread Safety Guarantees",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-type-system.tex",
+        "title": "Type System",
+        "category": "architecture"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.tex",
+        "title": "Node.js/TypeScript API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-python.tex",
+        "title": "Python API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-wasm.tex",
+        "title": "WebAssembly Bindings",
+        "category": "bindings"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.tex",
+        "title": "Quick Reference for Core Math Functions",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-correctness.tex",
+        "title": "Mathematical Correctness",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-development.tex",
+        "title": "Development Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-documentation.tex",
+        "title": "Documentation Standards",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-style.tex",
+        "title": "Code Style Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-testing.tex",
+        "title": "Testing Strategy",
+        "category": "contributing"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.tex",
+        "title": "Mathematical Constants",
+        "category": "core"
+      },
+      {
+        "filename": "core-expressions.tex",
+        "title": "Expressions",
+        "category": "core"
+      },
+      {
+        "filename": "core-functions.tex",
+        "title": "Function System",
+        "category": "core"
+      },
+      {
+        "filename": "core-pattern-matching.tex",
+        "title": "Pattern Matching",
+        "category": "core"
+      },
+      {
+        "filename": "core-symbols-numbers.tex",
+        "title": "Symbols and Numbers",
+        "category": "core"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.tex",
+        "title": "Educational API",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-messages.tex",
+        "title": "Educational Message Registry",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-step_by_step.tex",
+        "title": "Step-by-Step Explanations",
+        "category": "educational"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.tex",
+        "title": "Function Evaluation",
+        "category": "evaluation"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.tex",
+        "title": "Introduction to MathHook",
+        "category": "getting"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.tex",
+        "title": "Basic Usage",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-common-patterns.tex",
+        "title": "Common Patterns",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-installation.tex",
+        "title": "Installation",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-learning-paths.tex",
+        "title": "Learning Paths",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-quick-start.tex",
+        "title": "Quick Start",
+        "category": "getting-started"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.tex",
+        "title": "Code Complexity Findings - Educational Integration Plan Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.tex",
+        "title": "Educational Integration Plan - Effort Estimation Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-plan.tex",
+        "title": "MathHook CAS - Educational Integration Implementation Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-error-handling.tex",
+        "title": "Error Handling & Fallback Architecture",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-feature-gap-tests.tex",
+        "title": "Feature Gap Tests Archive",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-investigation.tex",
+        "title": "MathHook CAS - Consolidated Investigation Report",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-overview.tex",
+        "title": "MathHook Complete Status",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.tex",
+        "title": "Calculus Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.tex",
+        "title": "Polynomial Performance Architecture Analysis",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.tex",
+        "title": "Simplification Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-solving-operations.tex",
+        "title": "Solving Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.tex",
+        "title": "Strategic Performance Roadmap: Path to Beating Symbolica",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.tex",
+        "title": "Fast Path Opportunities Assessment",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.tex",
+        "title": "Matrix Solver Integration Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.tex",
+        "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-type-dispatch-review.tex",
+        "title": "Comprehensive Type Dispatch & Educational Integration Review",
+        "category": "internal"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.tex",
+        "title": "Separable ODEs",
+        "category": "ode"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.tex",
+        "title": "Symbolic Differentiation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-evaluation.tex",
+        "title": "Expression Evaluation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-expansion-factoring.tex",
+        "title": "Expansion and Factoring",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-integration.tex",
+        "title": "Symbolic Integration",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-limits.tex",
+        "title": "Limits",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-series.tex",
+        "title": "Series Expansions",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-simplification.tex",
+        "title": "Symbolic Simplification",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-solving.tex",
+        "title": "Solving Equations",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-substitution.tex",
+        "title": "Substitution",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-summation.tex",
+        "title": "Summation and Products",
+        "category": "operations"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.tex",
+        "title": "Custom Parsers and Extensions",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-formatting.tex",
+        "title": "Expression Formatting",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-latex.tex",
+        "title": "LaTeX Notation",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-noncommutative_design.tex",
+        "title": "Parser Design for Noncommutative Algebra",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-wolfram.tex",
+        "title": "Wolfram Language Notation",
+        "category": "parser"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.tex",
+        "title": "Separation of Variables for PDEs",
+        "category": "pde"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.tex",
+        "title": "Performance Architecture",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-benchmarking.tex",
+        "title": "Benchmarking Guide",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-caching.tex",
+        "title": "Caching Strategies",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-comparison.tex",
+        "title": "Performance Comparison",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-parallel.tex",
+        "title": "Parallel Processing",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-simd.tex",
+        "title": "SIMD Operations",
+        "category": "performance"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.tex",
+        "title": "Polynomial Division and Factorization",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-finite-field.tex",
+        "title": "Finite Field Arithmetic",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-gcd.tex",
+        "title": "GCD Algorithms",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-groebner.tex",
+        "title": "Groebner Bases",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-overview.tex",
+        "title": "Polynomial Module Overview",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-special-families.tex",
+        "title": "Special Polynomial Families",
+        "category": "polynomial"
+      }
+    ]
+  }
+}

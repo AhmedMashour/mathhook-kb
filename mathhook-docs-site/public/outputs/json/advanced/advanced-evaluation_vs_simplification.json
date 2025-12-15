@@ -1,0 +1,70 @@
+{
+  "topic": "advanced.evaluation_vs_simplification",
+  "title": "Evaluation vs Simplification",
+  "description": "Understand the critical differences between evaluation (computing numerical results\nwith domain checking) and simplification (algebraic transformation) in MathHook's\nsymbolic engine. Knowing when to use each operation is essential for correct\nmathematical computation.\n",
+  "mathematical_definition": "**Evaluation** maps expressions to numerical values:\n$$\\text{eval}: E \\times \\sigma \\to \\mathbb{R} \\cup \\mathbb{C} \\cup \\{\\text{Error}\\}$$\nwhere $E$ is the set of expressions and $\\sigma$ is a variable substitution.\n\n**Simplification** maps expressions to equivalent canonical forms:\n$$\\text{simplify}: E \\to E \\quad \\text{such that } \\forall e \\in E: e \\equiv \\text{simplify}(e)$$\n",
+  "code_refs": {
+    "rust": "mathhook_core::core::expression::eval_numeric",
+    "python": "mathhook.evaluation",
+    "nodejs": "mathhook.evaluation"
+  },
+  "examples": [
+    {
+      "title": "Basic Evaluation vs Simplification",
+      "explanation": "Shows the fundamental difference between the two operations",
+      "code": {
+        "rust": "use mathhook_core::{expr, symbol};\n\n// Simplify: algebraic reduction\nlet x = symbol!(x);\nlet simplified = expr!(x + x + x).simplify();\nassert_eq!(simplified, expr!(3 * x));  // Still symbolic\n\n// Evaluate: numerical computation\nlet result = expr!(2 + 3).evaluate().unwrap();\nassert_eq!(result, expr!(5));  // Numerical value\n",
+        "python": "from mathhook import symbol, expr\n\n# Simplify: algebraic reduction\nx = symbol('x')\nsimplified = (x + x + x).simplify()\n# Result: 3*x (still symbolic)\n\n# Evaluate: numerical computation\nresult = expr('2 + 3').evaluate()\n# Result: 5 (numerical value)\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\n// Simplify: algebraic reduction\nconst x = symbol('x');\nconst simplified = expr(x.add(x).add(x)).simplify();\n// Result: 3*x (still symbolic)\n\n// Evaluate: numerical computation\nconst result = expr('2 + 3').evaluate();\n// Result: 5 (numerical value)\n"
+      }
+    },
+    {
+      "title": "Evaluation with Variable Substitution",
+      "explanation": "Using evaluate_with_context for variable substitution",
+      "code": {
+        "rust": "use mathhook_core::core::expression::eval_numeric::EvalContext;\nuse mathhook_core::{expr, symbol};\nuse std::collections::HashMap;\n\nlet x = symbol!(x);\nlet y = symbol!(y);\n\n// Create context with variable values\nlet mut vars = HashMap::new();\nvars.insert(\"x\".to_string(), expr!(3));\nvars.insert(\"y\".to_string(), expr!(4));\nlet ctx = EvalContext::numeric(vars);\n\n// Evaluate x² + 2xy + y² at (x=3, y=4)\nlet formula = expr!(x^2 + 2*x*y + y^2);\nlet result = formula.evaluate_with_context(&ctx).unwrap();\nassert_eq!(result, expr!(49)); // (3 + 4)² = 49\n",
+        "python": "from mathhook import symbol, expr, EvalContext\n\nx = symbol('x')\ny = symbol('y')\n\n# Create context with variable values\nctx = EvalContext({'x': 3, 'y': 4})\n\n# Evaluate x² + 2xy + y² at (x=3, y=4)\nformula = x**2 + 2*x*y + y**2\nresult = formula.evaluate_with_context(ctx)\n# Result: 49  (which is (3+4)²)\n",
+        "nodejs": "const { symbol, expr, EvalContext } = require('mathhook');\n\nconst x = symbol('x');\nconst y = symbol('y');\n\n// Create context with variable values\nconst ctx = new EvalContext({x: 3, y: 4});\n\n// Evaluate x² + 2xy + y² at (x=3, y=4)\nconst formula = x.pow(2).add(x.mul(y).mul(2)).add(y.pow(2));\nconst result = formula.evaluateWithContext(ctx);\n// Result: 49  (which is (3+4)²)\n"
+      }
+    },
+    {
+      "title": "Domain Error Handling",
+      "explanation": "Evaluation catches mathematical domain errors",
+      "code": {
+        "rust": "use mathhook_core::{expr, MathError};\n\n// sqrt(-1) triggers domain error\nmatch expr!(sqrt(-1)).evaluate() {\n    Ok(result) => println!(\"Result: {}\", result),\n    Err(MathError::DomainError { operation, value, reason }) => {\n        eprintln!(\"Domain error in {}: {} ({})\", operation, value, reason);\n    }\n    Err(e) => eprintln!(\"Error: {:?}\", e),\n}\n\n// log(0) triggers domain error\nassert!(expr!(log(0)).evaluate().is_err());\n\n// Division by zero\nassert!(expr!(1 / 0).evaluate().is_err());\n",
+        "python": "from mathhook import expr, MathError\n\n# sqrt(-1) triggers domain error\ntry:\n    result = expr('sqrt(-1)').evaluate()\nexcept MathError as e:\n    print(f\"Domain error: {e}\")\n\n# log(0) triggers domain error\ntry:\n    result = expr('log(0)').evaluate()\nexcept MathError as e:\n    print(f\"Domain error: {e}\")\n",
+        "nodejs": "const { expr, MathError } = require('mathhook');\n\n// sqrt(-1) triggers domain error\ntry {\n    const result = expr('sqrt(-1)').evaluate();\n} catch (e) {\n    if (e instanceof MathError) {\n        console.error(`Domain error: ${e.message}`);\n    }\n}\n\n// log(0) triggers domain error - also throws\n// Division by zero - also throws\n"
+      }
+    },
+    {
+      "title": "Simplification for Algebraic Manipulation",
+      "explanation": "Simplification applies algebraic identities without domain checking",
+      "code": {
+        "rust": "use mathhook_core::{expr, symbol};\n\nlet x = symbol!(x);\n\n// Combine like terms\nassert_eq!(expr!(x + x + x).simplify(), expr!(3 * x));\n\n// Remove identity elements\nassert_eq!(expr!(x * 1).simplify(), expr!(x));\nassert_eq!(expr!(x + 0).simplify(), expr!(x));\n\n// Zero propagation\nassert_eq!(expr!(0 * x).simplify(), expr!(0));\n\n// Trigonometric identities\nassert_eq!(expr!(sin(x)^2 + cos(x)^2).simplify(), expr!(1));\n\n// Simplify doesn't check domain (stays symbolic)\nlet result = expr!(sqrt(x)).simplify(); // OK, stays sqrt(x)\n",
+        "python": "from mathhook import symbol, expr, simplify\n\nx = symbol('x')\n\n# Combine like terms\nassert simplify(x + x + x) == 3*x\n\n# Remove identity elements\nassert simplify(x * 1) == x\nassert simplify(x + 0) == x\n\n# Zero propagation\nassert simplify(0 * x) == 0\n\n# Trigonometric identities\nfrom mathhook import sin, cos\nassert simplify(sin(x)**2 + cos(x)**2) == 1\n",
+        "nodejs": "const { symbol, expr, simplify, sin, cos } = require('mathhook');\n\nconst x = symbol('x');\n\n// Combine like terms\nconsole.log(simplify(x.add(x).add(x)));  // 3*x\n\n// Remove identity elements\nconsole.log(simplify(x.mul(1)));  // x\nconsole.log(simplify(x.add(0)));  // x\n\n// Zero propagation\nconsole.log(simplify(x.mul(0)));  // 0\n\n// Trigonometric identities\nconsole.log(simplify(sin(x).pow(2).add(cos(x).pow(2))));  // 1\n"
+      }
+    }
+  ],
+  "article": {
+    "content": "# Evaluation vs Simplification\n\nMathHook provides two fundamental operations for working with expressions:\n\n1. **Evaluation** (`evaluate()`, `evaluate_with_context()`) - Compute numerical values\n2. **Simplification** (`simplify()`) - Algebraic reduction\n\n## The Key Principle\n\n> **`evaluate()` ≠ `simplify()`** - They serve different purposes and should not be used interchangeably.\n\n| Aspect | Evaluation | Simplification |\n|--------|-----------|----------------|\n| **Purpose** | Compute numerical values | Reduce algebraic complexity |\n| **Input** | Expression (+ optional variables) | Expression only |\n| **Output** | Numerical result or error | Simpler symbolic form |\n| **Domain Checking** | ✅ Yes (catches mathematical errors) | ❌ No |\n| **Substitution** | ✅ Yes (with context) | ❌ No |\n| **Error Handling** | `Result<Expression, MathError>` | `Expression` |\n\n## Core Concepts\n\n### Evaluation: Numerical Computation\n\nEvaluation converts symbolic expressions into concrete numerical values with\ndomain checking:\n\n- **Domain Checking**: Catches mathematical errors (sqrt(-1), log(0), division by zero)\n- **Recursive Evaluation**: Evaluates entire expression tree\n- **Error Propagation**: Errors bubble up from nested expressions\n\n### Simplification: Algebraic Reduction\n\nSimplification transforms expressions into equivalent but simpler symbolic forms:\n\n- **Algebraic Equivalence**: Output is mathematically equivalent to input\n- **No Domain Checking**: Operates purely symbolically\n- **Idempotency**: Simplifying twice yields the same result\n\n## Decision Guide\n\n### Use `evaluate()` when:\n- You need a numerical result\n- You want domain validation\n- Expression contains only constants\n\n### Use `evaluate_with_context()` when:\n- Expression contains variables you need to substitute\n- You want control over evaluation behavior\n- You're solving equations or evaluating formulas\n\n### Use `simplify()` when:\n- You need algebraic reduction\n- You want to reduce expression complexity\n- You're preparing for symbolic operations\n\n## Common Pitfalls\n\n### ❌ Expecting Numbers from `simplify()`\n```rust\nlet x = symbol!(x);\nlet result = expr!(x + x).simplify();\n// Returns: 2*x (still symbolic, NOT a number!)\n```\n\n### ❌ Using `evaluate()` Without Substitution\n```rust\nlet x = symbol!(x);\nlet result = expr!(x + 1).evaluate().unwrap();\n// Returns: x + 1 (symbolic, can't substitute without context)\n```\n\n### ❌ Ignoring Domain Errors\n```rust\nlet result = expr!(sqrt(-1)).evaluate().unwrap(); // PANIC!\n// Always handle Result properly\n```\n"
+  },
+  "use_cases": [
+    "Quadratic formula solver: simplify expression, then evaluate at specific values",
+    "Function evaluation tables: simplify once, evaluate many times with different inputs",
+    "Derivative computation: take derivative symbolically, evaluate at specific points",
+    "Physics formulas: symbolic manipulation followed by numerical computation",
+    "Optimization: solve symbolically, then evaluate candidates numerically"
+  ],
+  "related_topics": [
+    "operations.simplification",
+    "operations.evaluation",
+    "operations.substitution",
+    "core.expressions",
+    "appendix.errors"
+  ],
+  "performance": {},
+  "metadata": {
+    "schema_version": "1.0"
+  }
+}

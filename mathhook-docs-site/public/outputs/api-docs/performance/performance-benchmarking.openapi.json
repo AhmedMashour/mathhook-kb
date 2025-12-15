@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Comprehensive guide to MathHook's performance benchmarking infrastructure across all supported\nplatforms (Rust, Python, Node.js), including benchmark usage, development workflow, and\ncontributing new benchmarks.\n",
+    "title": "Benchmarking Guide",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/performance/benchmarking": {
+      "post": {
+        "description": "Comprehensive guide to MathHook's performance benchmarking infrastructure across all supported\nplatforms (Rust, Python, Node.js), including benchmark usage, development workflow, and\ncontributing new benchmarks.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "node.js_benchmark_example": {
+                  "description": "Adding benchmark to Node.js binding benchmarks",
+                  "summary": "Node.js Benchmark Example",
+                  "value": {
+                    "expression": "x**2"
+                  }
+                },
+                "python_benchmark_example": {
+                  "description": "Adding benchmark to Python binding benchmarks",
+                  "summary": "Python Benchmark Example",
+                  "value": {
+                    "expression": "mathhook.parse(\"x^3 - 1\")"
+                  }
+                },
+                "rust_criterion_benchmark_template": {
+                  "description": "Template for adding new benchmarks in Rust",
+                  "summary": "Rust Criterion Benchmark Template",
+                  "value": {
+                    "expression": "x**2"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Benchmarking Guide",
+        "tags": [
+          "performance"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "performance operations",
+      "name": "performance"
+    }
+  ]
+}

@@ -1,0 +1,623 @@
+{
+  "generated_at": "2025-12-15T16:36:04Z",
+  "output_type": "OpenAPI Documentation",
+  "total_files": 116,
+  "categories": {
+    "advanced": [
+      {
+        "filename": "advanced-assumptions.openapi.json",
+        "title": "Symbolic Assumptions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-complex_numbers.openapi.json",
+        "title": "Complex Number Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-differential_equations.openapi.json",
+        "title": "Differential Equation Solving",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-evaluation_vs_simplification.openapi.json",
+        "title": "Evaluation vs Simplification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-matrices.openapi.json",
+        "title": "Matrix Operations",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_algebra.openapi.json",
+        "title": "Noncommutative Algebra",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_api_reference.openapi.json",
+        "title": "Noncommutative Algebra API Reference",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-noncommutative_examples.openapi.json",
+        "title": "Noncommutative Algebra Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-boundary_conditions.openapi.json",
+        "title": "Boundary Conditions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-classification.openapi.json",
+        "title": "PDE Classification",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-examples.openapi.json",
+        "title": "Complete PDE Examples",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-fourier_coefficients.openapi.json",
+        "title": "Fourier Coefficients: Why They're Symbolic",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-heat_equation.openapi.json",
+        "title": "Heat Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-laplace_equation.openapi.json",
+        "title": "Laplace Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-method_of_characteristics.openapi.json",
+        "title": "Method of Characteristics",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-overview.openapi.json",
+        "title": "Partial Differential Equations (PDEs)",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-performance.openapi.json",
+        "title": "PDE Module Performance Report",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_reference.openapi.json",
+        "title": "PDE Quick Reference Card",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-quick_start.openapi.json",
+        "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-registry.openapi.json",
+        "title": "PDE Solver Registry System",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-separation_of_variables.openapi.json",
+        "title": "Separation of Variables",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-sympy_validation.openapi.json",
+        "title": "SymPy Validation Workflow",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-technical_guide.openapi.json",
+        "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-user_guide.openapi.json",
+        "title": "PDE User Guide - MathHook CAS",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-pde-wave_equation.openapi.json",
+        "title": "Wave Equation Solver",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-piecewise.openapi.json",
+        "title": "Piecewise Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-residue_calculus.openapi.json",
+        "title": "Residue Calculus and Pole Finding",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-special_functions.openapi.json",
+        "title": "Special Mathematical Functions",
+        "category": "advanced"
+      },
+      {
+        "filename": "advanced-system_solving.openapi.json",
+        "title": "System of Equations Solving",
+        "category": "advanced"
+      }
+    ],
+    "api": [
+      {
+        "filename": "api-algebra-simplification.openapi.json",
+        "title": "Symbolic Simplification",
+        "category": "api"
+      },
+      {
+        "filename": "api-calculus-operations.openapi.json",
+        "title": "Symbolic Calculus: Differentiation and Integration",
+        "category": "api"
+      },
+      {
+        "filename": "api-core-expressions.openapi.json",
+        "title": "Core Expression System",
+        "category": "api"
+      },
+      {
+        "filename": "api-matrix-operations.openapi.json",
+        "title": "Matrix Operations and Noncommutative Algebra",
+        "category": "api"
+      },
+      {
+        "filename": "api-parser-latex.openapi.json",
+        "title": "LaTeX Parsing and Mathematical Notation",
+        "category": "api"
+      },
+      {
+        "filename": "api-solver-equations.openapi.json",
+        "title": "Symbolic and Numerical Equation Solving",
+        "category": "api"
+      }
+    ],
+    "appendix": [
+      {
+        "filename": "appendix-changelog.openapi.json",
+        "title": "Changelog",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-errors.openapi.json",
+        "title": "Error Messages",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-faq.openapi.json",
+        "title": "Frequently Asked Questions",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-glossary.openapi.json",
+        "title": "Glossary",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-notation.openapi.json",
+        "title": "Mathematical Notation",
+        "category": "appendix"
+      },
+      {
+        "filename": "appendix-risch_algorithm.openapi.json",
+        "title": "The Risch Algorithm in MathHook",
+        "category": "appendix"
+      }
+    ],
+    "architecture": [
+      {
+        "filename": "architecture-crate-structure.openapi.json",
+        "title": "Crate Structure",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-function-intelligence.openapi.json",
+        "title": "Function Intelligence System",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-memory-layout.openapi.json",
+        "title": "Memory Layout Optimization",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-principles.openapi.json",
+        "title": "Design Principles",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-thread-safety.openapi.json",
+        "title": "Thread Safety Guarantees",
+        "category": "architecture"
+      },
+      {
+        "filename": "architecture-type-system.openapi.json",
+        "title": "Type System",
+        "category": "architecture"
+      }
+    ],
+    "bindings": [
+      {
+        "filename": "bindings-nodejs.openapi.json",
+        "title": "Node.js/TypeScript API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-python.openapi.json",
+        "title": "Python API Guide",
+        "category": "bindings"
+      },
+      {
+        "filename": "bindings-wasm.openapi.json",
+        "title": "WebAssembly Bindings",
+        "category": "bindings"
+      }
+    ],
+    "contributing": [
+      {
+        "filename": "contributing-architecture-reference.openapi.json",
+        "title": "Quick Reference for Core Math Functions",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-correctness.openapi.json",
+        "title": "Mathematical Correctness",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-development.openapi.json",
+        "title": "Development Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-documentation.openapi.json",
+        "title": "Documentation Standards",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-style.openapi.json",
+        "title": "Code Style Guide",
+        "category": "contributing"
+      },
+      {
+        "filename": "contributing-testing.openapi.json",
+        "title": "Testing Strategy",
+        "category": "contributing"
+      }
+    ],
+    "core": [
+      {
+        "filename": "core-constants.openapi.json",
+        "title": "Mathematical Constants",
+        "category": "core"
+      },
+      {
+        "filename": "core-expressions.openapi.json",
+        "title": "Expressions",
+        "category": "core"
+      },
+      {
+        "filename": "core-functions.openapi.json",
+        "title": "Function System",
+        "category": "core"
+      },
+      {
+        "filename": "core-pattern-matching.openapi.json",
+        "title": "Pattern Matching",
+        "category": "core"
+      },
+      {
+        "filename": "core-symbols-numbers.openapi.json",
+        "title": "Symbols and Numbers",
+        "category": "core"
+      }
+    ],
+    "educational": [
+      {
+        "filename": "educational-api.openapi.json",
+        "title": "Educational API",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-messages.openapi.json",
+        "title": "Educational Message Registry",
+        "category": "educational"
+      },
+      {
+        "filename": "educational-step_by_step.openapi.json",
+        "title": "Step-by-Step Explanations",
+        "category": "educational"
+      }
+    ],
+    "evaluation": [
+      {
+        "filename": "evaluation-function-evaluation.openapi.json",
+        "title": "Function Evaluation",
+        "category": "evaluation"
+      }
+    ],
+    "getting": [
+      {
+        "filename": "getting-started-introduction.openapi.json",
+        "title": "Introduction to MathHook",
+        "category": "getting"
+      }
+    ],
+    "getting-started": [
+      {
+        "filename": "getting-started-basic-usage.openapi.json",
+        "title": "Basic Usage",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-common-patterns.openapi.json",
+        "title": "Common Patterns",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-installation.openapi.json",
+        "title": "Installation",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-learning-paths.openapi.json",
+        "title": "Learning Paths",
+        "category": "getting-started"
+      },
+      {
+        "filename": "getting-started-quick-start.openapi.json",
+        "title": "Quick Start",
+        "category": "getting-started"
+      }
+    ],
+    "internal": [
+      {
+        "filename": "internal-complexity-findings.openapi.json",
+        "title": "Code Complexity Findings - Educational Integration Plan Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-effort-estimation.openapi.json",
+        "title": "Educational Integration Plan - Effort Estimation Review",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-educational-plan.openapi.json",
+        "title": "MathHook CAS - Educational Integration Implementation Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-error-handling.openapi.json",
+        "title": "Error Handling & Fallback Architecture",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-feature-gap-tests.openapi.json",
+        "title": "Feature Gap Tests Archive",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-investigation.openapi.json",
+        "title": "MathHook CAS - Consolidated Investigation Report",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-overview.openapi.json",
+        "title": "MathHook Complete Status",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-calculus-operations.openapi.json",
+        "title": "Calculus Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-polynomial-architecture.openapi.json",
+        "title": "Polynomial Performance Architecture Analysis",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-simplification-operations.openapi.json",
+        "title": "Simplification Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-solving-operations.openapi.json",
+        "title": "Solving Operations Performance Profiling",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-performance-strategic-roadmap.openapi.json",
+        "title": "Strategic Performance Roadmap: Path to Beating Symbolica",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-fast-path-opportunities.openapi.json",
+        "title": "Fast Path Opportunities Assessment",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-matrix-solver-integration.openapi.json",
+        "title": "Matrix Solver Integration Plan",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-planning-phase3-and-phase5-summary.openapi.json",
+        "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "category": "internal"
+      },
+      {
+        "filename": "internal-type-dispatch-review.openapi.json",
+        "title": "Comprehensive Type Dispatch & Educational Integration Review",
+        "category": "internal"
+      }
+    ],
+    "ode": [
+      {
+        "filename": "ode-separable.openapi.json",
+        "title": "Separable ODEs",
+        "category": "ode"
+      }
+    ],
+    "operations": [
+      {
+        "filename": "operations-differentiation.openapi.json",
+        "title": "Symbolic Differentiation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-evaluation.openapi.json",
+        "title": "Expression Evaluation",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-expansion-factoring.openapi.json",
+        "title": "Expansion and Factoring",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-integration.openapi.json",
+        "title": "Symbolic Integration",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-limits.openapi.json",
+        "title": "Limits",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-series.openapi.json",
+        "title": "Series Expansions",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-simplification.openapi.json",
+        "title": "Symbolic Simplification",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-solving.openapi.json",
+        "title": "Solving Equations",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-substitution.openapi.json",
+        "title": "Substitution",
+        "category": "operations"
+      },
+      {
+        "filename": "operations-summation.openapi.json",
+        "title": "Summation and Products",
+        "category": "operations"
+      }
+    ],
+    "parser": [
+      {
+        "filename": "parser-custom.openapi.json",
+        "title": "Custom Parsers and Extensions",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-formatting.openapi.json",
+        "title": "Expression Formatting",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-latex.openapi.json",
+        "title": "LaTeX Notation",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-noncommutative_design.openapi.json",
+        "title": "Parser Design for Noncommutative Algebra",
+        "category": "parser"
+      },
+      {
+        "filename": "parser-wolfram.openapi.json",
+        "title": "Wolfram Language Notation",
+        "category": "parser"
+      }
+    ],
+    "pde": [
+      {
+        "filename": "pde-separation-of-variables.openapi.json",
+        "title": "Separation of Variables for PDEs",
+        "category": "pde"
+      }
+    ],
+    "performance": [
+      {
+        "filename": "performance-architecture.openapi.json",
+        "title": "Performance Architecture",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-benchmarking.openapi.json",
+        "title": "Benchmarking Guide",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-caching.openapi.json",
+        "title": "Caching Strategies",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-comparison.openapi.json",
+        "title": "Performance Comparison",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-parallel.openapi.json",
+        "title": "Parallel Processing",
+        "category": "performance"
+      },
+      {
+        "filename": "performance-simd.openapi.json",
+        "title": "SIMD Operations",
+        "category": "performance"
+      }
+    ],
+    "polynomial": [
+      {
+        "filename": "polynomial-division.openapi.json",
+        "title": "Polynomial Division and Factorization",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-finite-field.openapi.json",
+        "title": "Finite Field Arithmetic",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-gcd.openapi.json",
+        "title": "GCD Algorithms",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-groebner.openapi.json",
+        "title": "Groebner Bases",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-overview.openapi.json",
+        "title": "Polynomial Module Overview",
+        "category": "polynomial"
+      },
+      {
+        "filename": "polynomial-special-families.openapi.json",
+        "title": "Special Polynomial Families",
+        "category": "polynomial"
+      }
+    ]
+  }
+}

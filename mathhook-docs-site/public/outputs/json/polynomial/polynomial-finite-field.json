@@ -1,0 +1,88 @@
+{
+  "topic": "polynomial.finite-field",
+  "title": "Finite Field Arithmetic",
+  "description": "Arithmetic in Z_p (integers modulo a prime p) essential for modular GCD algorithms. Provides\nfield elements, polynomial operations over finite fields, and Chinese Remainder Theorem reconstruction.\n",
+  "mathematical_definition": "**Finite Field $\\mathbb{Z}_p$**: For prime $p$, the integers modulo $p$ form a field:\n\n$$\\mathbb{Z}_p = \\{0, 1, 2, \\ldots, p-1\\}$$\n\nwith operations:\n- Addition: $(a + b) \\bmod p$\n- Multiplication: $(a \\cdot b) \\bmod p$\n- Inverse: $a^{-1} \\bmod p$ exists for $a \\neq 0$ (Fermat's Little Theorem: $a^{p-1} \\equiv 1 \\pmod{p}$)\n\n**Polynomial Ring $\\mathbb{Z}_p[x]$**: Polynomials with coefficients in $\\mathbb{Z}_p$:\n\n$$f(x) = a_n x^n + \\cdots + a_1 x + a_0, \\quad a_i \\in \\mathbb{Z}_p$$\n\nProperties:\n- $\\mathbb{Z}_p[x]$ is a Euclidean domain\n- GCD computable via Euclidean algorithm\n- Unique factorization (up to units)\n\n**Chinese Remainder Theorem (CRT)**: For coprime moduli $m_1, m_2$:\n\n$$\\mathbb{Z}/(m_1 m_2) \\cong \\mathbb{Z}/m_1 \\times \\mathbb{Z}/m_2$$\n\nReconstruction formula:\n\n$$x \\equiv a_1 m_2 (m_2^{-1} \\bmod m_1) + a_2 m_1 (m_1^{-1} \\bmod m_2) \\pmod{m_1 m_2}$$\n\n**Modular Representations**:\n- **Positive**: $a \\in [0, p)$\n- **Symmetric**: $a \\in (-p/2, p/2]$\n",
+  "code_refs": {
+    "rust": "mathhook_core::polynomial::finite_field",
+    "python": "mathhook.polynomial.finite_field",
+    "nodejs": "mathhook.polynomial.finite_field"
+  },
+  "examples": [
+    {
+      "title": "Field Element Arithmetic",
+      "explanation": "Basic operations in Z_p with automatic modular reduction",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::finite_field::FieldElement;\n\n// Create elements in Z_7\nlet a = FieldElement::new(3, 7);  // 3 mod 7\nlet b = FieldElement::new(5, 7);  // 5 mod 7\n\n// Arithmetic\nlet sum = a + b;       // 8 mod 7 = 1\nlet diff = a - b;      // -2 mod 7 = 5\nlet prod = a * b;      // 15 mod 7 = 1\nlet quot = a / b;      // 3 * 5^(-1) mod 7 = 3 * 3 = 9 mod 7 = 2\n\n// Inverse\nlet inv = b.inverse(); // 5^(-1) mod 7 = 3 (since 5*3 = 15 = 1 mod 7)\n",
+        "python": "from mathhook.polynomial.finite_field import FieldElement\n\n# Create elements in Z_7\na = FieldElement(3, 7)  # 3 mod 7\nb = FieldElement(5, 7)  # 5 mod 7\n\n# Arithmetic\nsum_val = a + b       # 8 mod 7 = 1\ndiff = a - b          # -2 mod 7 = 5\nprod = a * b          # 15 mod 7 = 1\nquot = a / b          # 3 * 5^(-1) mod 7 = 3 * 3 = 9 mod 7 = 2\n\n# Inverse\ninv = b.inverse()     # 5^(-1) mod 7 = 3\n",
+        "nodejs": "const { FieldElement } = require('mathhook/polynomial/finite_field');\n\n// Create elements in Z_7\nconst a = new FieldElement(3, 7);  // 3 mod 7\nconst b = new FieldElement(5, 7);  // 5 mod 7\n\n// Arithmetic\nconst sum = a.add(b);      // 8 mod 7 = 1\nconst diff = a.sub(b);     // -2 mod 7 = 5\nconst prod = a.mul(b);     // 15 mod 7 = 1\nconst quot = a.div(b);     // 3 * 5^(-1) mod 7 = 2\n\n// Inverse\nconst inv = b.inverse();   // 5^(-1) mod 7 = 3\n"
+      }
+    },
+    {
+      "title": "Polynomial Operations in Z_p[x]",
+      "explanation": "Create and manipulate polynomials over finite fields",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::finite_field::PolyZp;\n\n// Create polynomial x^2 + 2x + 1 in Z_5[x]\nlet p = PolyZp::from_coeffs(vec![1, 2, 1], 5);  // [a_0, a_1, a_2]\n\n// Polynomial properties\nlet deg = p.degree();           // Some(2)\nlet coeffs = p.coefficients();  // [1, 2, 1]\n\n// Create from integer coefficients (auto-reduce mod p)\nlet q = PolyZp::from_coeffs(vec![7, -3, 6], 5);  // becomes [2, 2, 1]\n",
+        "python": "from mathhook.polynomial.finite_field import PolyZp\n\n# Create polynomial x^2 + 2x + 1 in Z_5[x]\np = PolyZp.from_coeffs([1, 2, 1], 5)  # [a_0, a_1, a_2]\n\n# Polynomial properties\ndeg = p.degree()           # 2\ncoeffs = p.coefficients()  # [1, 2, 1]\n\n# Create from integer coefficients (auto-reduce mod p)\nq = PolyZp.from_coeffs([7, -3, 6], 5)  # becomes [2, 2, 1]\n",
+        "nodejs": "const { PolyZp } = require('mathhook/polynomial/finite_field');\n\n// Create polynomial x^2 + 2x + 1 in Z_5[x]\nconst p = PolyZp.fromCoeffs([1, 2, 1], 5);  // [a_0, a_1, a_2]\n\n// Polynomial properties\nconst deg = p.degree();           // 2\nconst coeffs = p.coefficients();  // [1, 2, 1]\n\n// Create from integer coefficients (auto-reduce mod p)\nconst q = PolyZp.fromCoeffs([7, -3, 6], 5);  // becomes [2, 2, 1]\n"
+      }
+    },
+    {
+      "title": "Polynomial Arithmetic in Z_p[x]",
+      "explanation": "Add, multiply, divide polynomials over finite fields",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::finite_field::PolyZp;\n\nlet f = PolyZp::from_coeffs(vec![1, 0, 1], 5);  // x^2 + 1\nlet g = PolyZp::from_coeffs(vec![1, 1], 5);     // x + 1\n\n// Addition\nlet sum = f.add(&g);\n\n// Multiplication\nlet prod = f.mul(&g);\n\n// Division (quotient and remainder)\nlet (quotient, remainder) = f.div_rem(&g);\n\n// Scalar multiplication\nlet scaled = f.scalar_mul(3);  // 3(x^2 + 1) = 3x^2 + 3\n",
+        "python": "from mathhook.polynomial.finite_field import PolyZp\n\nf = PolyZp.from_coeffs([1, 0, 1], 5)  # x^2 + 1\ng = PolyZp.from_coeffs([1, 1], 5)     # x + 1\n\n# Addition\nsum_poly = f.add(g)\n\n# Multiplication\nprod = f.mul(g)\n\n# Division (quotient and remainder)\nquotient, remainder = f.div_rem(g)\n\n# Scalar multiplication\nscaled = f.scalar_mul(3)  # 3(x^2 + 1) = 3x^2 + 3\n",
+        "nodejs": "const { PolyZp } = require('mathhook/polynomial/finite_field');\n\nconst f = PolyZp.fromCoeffs([1, 0, 1], 5);  // x^2 + 1\nconst g = PolyZp.fromCoeffs([1, 1], 5);     // x + 1\n\n// Addition\nconst sum = f.add(g);\n\n// Multiplication\nconst prod = f.mul(g);\n\n// Division (quotient and remainder)\nconst [quotient, remainder] = f.divRem(g);\n\n// Scalar multiplication\nconst scaled = f.scalarMul(3);  // 3(x^2 + 1) = 3x^2 + 3\n"
+      }
+    },
+    {
+      "title": "GCD in Z_p[x]",
+      "explanation": "Compute GCD using Euclidean algorithm in finite field polynomial ring",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::finite_field::PolyZp;\n\nlet f = PolyZp::from_coeffs(vec![4, 0, 0, 1], 5);  // x^3 + 4 in Z_5[x]\nlet g = PolyZp::from_coeffs(vec![1, 1], 5);         // x + 1 in Z_5[x]\n\n// Compute GCD\nlet gcd = f.gcd(&g).unwrap();\n",
+        "python": "from mathhook.polynomial.finite_field import PolyZp\n\nf = PolyZp.from_coeffs([4, 0, 0, 1], 5)  # x^3 + 4 in Z_5[x]\ng = PolyZp.from_coeffs([1, 1], 5)         # x + 1 in Z_5[x]\n\n# Compute GCD\ngcd = f.gcd(g)\n",
+        "nodejs": "const { PolyZp } = require('mathhook/polynomial/finite_field');\n\nconst f = PolyZp.fromCoeffs([4, 0, 0, 1], 5);  // x^3 + 4 in Z_5[x]\nconst g = PolyZp.fromCoeffs([1, 1], 5);         // x + 1 in Z_5[x]\n\n// Compute GCD\nconst gcd = f.gcd(g);\n"
+      }
+    },
+    {
+      "title": "Extended GCD with Bezout Coefficients",
+      "explanation": "Get GCD along with coefficients satisfying gcd = s*f + t*g",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::finite_field::PolyZp;\n\nlet f = PolyZp::from_coeffs(vec![1, 0, 1], 5);  // x^2 + 1\nlet g = PolyZp::from_coeffs(vec![1, 1], 5);     // x + 1\n\n// Extended GCD: gcd = s*f + t*g\nlet (gcd, s, t) = f.extended_gcd(&g);\n",
+        "python": "from mathhook.polynomial.finite_field import PolyZp\n\nf = PolyZp.from_coeffs([1, 0, 1], 5)  # x^2 + 1\ng = PolyZp.from_coeffs([1, 1], 5)     # x + 1\n\n# Extended GCD: gcd = s*f + t*g\ngcd, s, t = f.extended_gcd(g)\n",
+        "nodejs": "const { PolyZp } = require('mathhook/polynomial/finite_field');\n\nconst f = PolyZp.fromCoeffs([1, 0, 1], 5);  // x^2 + 1\nconst g = PolyZp.fromCoeffs([1, 1], 5);     // x + 1\n\n// Extended GCD: gcd = s*f + t*g\nconst [gcd, s, t] = f.extendedGcd(g);\n"
+      }
+    },
+    {
+      "title": "CRT Reconstruction",
+      "explanation": "Combine results from multiple primes using Chinese Remainder Theorem",
+      "code": {
+        "rust": "use mathhook_core::core::polynomial::algorithms::zippel_gcd::helpers::crt_combine_u128;\n\n// Combine results from two primes\nlet coef1 = 3;      // result mod p1\nlet mod1 = 7u128;   // first prime\nlet coef2 = 5;      // result mod p2\nlet mod2 = 11u128;  // second prime\n\nlet combined = crt_combine_u128(coef1, mod1, coef2, mod2);\n// combined is the unique value in range 0 to 77 satisfying both constraints\n",
+        "python": "from mathhook.polynomial.algorithms.zippel_gcd.helpers import crt_combine\n\n# Combine results from two primes\ncoef1 = 3      # result mod p1\nmod1 = 7       # first prime\ncoef2 = 5      # result mod p2\nmod2 = 11      # second prime\n\ncombined = crt_combine(coef1, mod1, coef2, mod2)\n# combined is the unique value in range 0 to 77 satisfying both constraints\n",
+        "nodejs": "const { crtCombine } = require('mathhook/polynomial/algorithms/zippel_gcd/helpers');\n\n// Combine results from two primes\nconst coef1 = 3;      // result mod p1\nconst mod1 = 7;       // first prime\nconst coef2 = 5;      // result mod p2\nconst mod2 = 11;      // second prime\n\nconst combined = crtCombine(coef1, mod1, coef2, mod2);\n// combined is the unique value in range 0 to 77 satisfying both constraints\n"
+      }
+    }
+  ],
+  "article": {
+    "content": "The finite field module provides arithmetic in Z_p (integers modulo a prime p), essential for modular GCD algorithms.\n\n## Overview\n\nFinite field arithmetic is the backbone of Zippel's modular GCD algorithm:\n\n1. Reduce polynomials to Z_p[x]\n2. Compute GCD in Z_p[x] (efficient)\n3. Reconstruct integer coefficients via CRT\n\n## Field Elements (Z_p)\n\nField elements support all arithmetic operations with automatic modular reduction.\n\n### Properties\n\n- All non-zero elements have multiplicative inverses\n- Division is well-defined for non-zero divisors\n- Modulus must be prime for a field\n\n## Polynomials over Z_p\n\nPolynomial operations in Z_p[x] including addition, multiplication, division with remainder,\nand GCD computation.\n\n## CRT Reconstruction\n\nCombine results from multiple primes using the Chinese Remainder Theorem.\n\n### CRT Formula\n\nFor coprime moduli m1, m2:\n```\nx = a1 * m2 * (m2^(-1) mod m1) + a2 * m1 * (m1^(-1) mod m2) (mod m1*m2)\n```\n\n## Mathematical Background\n\n### Finite Field Properties\n\nZ_p is a field when p is prime:\n- Every non-zero element has a multiplicative inverse\n- Fermat's little theorem: a^(p-1) = 1 for a != 0\n- Inverse via extended Euclidean algorithm or a^(p-2) mod p\n\n### Polynomial Rings\n\nZ_p[x] is a Euclidean domain:\n- Division algorithm holds\n- GCD can be computed via Euclidean algorithm\n- Unique factorization (up to units)\n"
+  },
+  "use_cases": [
+    "Modular GCD computation for large integer polynomials",
+    "Efficient polynomial arithmetic in cryptographic applications",
+    "Chinese Remainder Theorem reconstruction for coefficient recovery",
+    "Prime field arithmetic for algebraic number theory"
+  ],
+  "related_topics": [
+    "polynomial.gcd",
+    "polynomial.overview"
+  ],
+  "performance": {
+    "complexity": "O(d) to O(d^2) depending on operation",
+    "typical_time": "Microseconds for degree 100 polynomials"
+  },
+  "metadata": {
+    "schema_version": "1.0",
+    "last_updated": "2025-12-15T14:30:00Z"
+  }
+}

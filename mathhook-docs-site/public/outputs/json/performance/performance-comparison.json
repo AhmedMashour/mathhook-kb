@@ -1,0 +1,43 @@
+{
+  "topic": "performance.comparison",
+  "title": "Performance Comparison",
+  "description": "MathHook is designed for high performance while maintaining mathematical correctness.\nThis page shows how MathHook compares to other computer algebra systems, particularly SymPy.\n",
+  "code_refs": {
+    "rust": "mathhook_core",
+    "python": "mathhook",
+    "nodejs": "mathhook-node"
+  },
+  "examples": [
+    {
+      "title": "Simple Performance Test",
+      "explanation": "Benchmark derivative computation performance",
+      "code": {
+        "rust": "use mathhook::prelude::*;\nuse std::time::Instant;\n\nlet x = symbol!(x);\nlet expr = expr!(x ^ 2);\n\nlet start = Instant::now();\nfor _ in 0..1000 {\n    let _ = expr.derivative(&x, 1);\n}\nlet duration = start.elapsed();\nprintln!(\"1000 derivatives: {:?}\", duration);\n",
+        "python": "import mathhook\nimport time\n\nx = mathhook.symbol('x')\nexpr = mathhook.expr('x^2')\n\nstart = time.time()\nfor _ in range(1000):\n    expr.derivative(x)\nduration = time.time() - start\nprint(f\"1000 derivatives: {duration:.3f}s\")\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\nconst expression = expr('x^2');\n\nconst start = Date.now();\nfor (let i = 0; i < 1000; i++) {\n    expression.derivative(x);\n}\nconst duration = Date.now() - start;\nconsole.log(`1000 derivatives: ${duration}ms`);\n"
+      }
+    },
+    {
+      "title": "Compare Operations",
+      "explanation": "Compare different calculus operation speeds",
+      "code": {
+        "rust": "use mathhook::prelude::*;\nuse std::time::Instant;\n\nlet x = symbol!(x);\nlet expr = expr!((x ^ 2) * sin(x));\n\n// Time derivative\nlet start = Instant::now();\nlet deriv = expr.derivative(&x, 1);\nprintln!(\"Derivative time: {:?}\", start.elapsed());\n\n// Time simplification\nlet start = Instant::now();\nlet simplified = deriv.simplify();\nprintln!(\"Simplify time: {:?}\", start.elapsed());\n",
+        "python": "import mathhook\nimport time\n\nx = mathhook.symbol('x')\nexpr = mathhook.expr('x^2 * sin(x)')\n\n# Time derivative\nstart = time.time()\nderiv = expr.derivative(x)\nprint(f\"Derivative time: {(time.time() - start)*1000:.3f}ms\")\n\n# Time simplification\nstart = time.time()\nsimplified = deriv.simplify()\nprint(f\"Simplify time: {(time.time() - start)*1000:.3f}ms\")\n",
+        "nodejs": "const { symbol, expr } = require('mathhook');\n\nconst x = symbol('x');\nconst expression = expr('x^2 * sin(x)');\n\n// Time derivative\nlet start = Date.now();\nconst deriv = expression.derivative(x);\nconsole.log(`Derivative time: ${Date.now() - start}ms`);\n\n// Time simplification\nstart = Date.now();\nconst simplified = deriv.simplify();\nconsole.log(`Simplify time: ${Date.now() - start}ms`);\n"
+      }
+    }
+  ],
+  "article": {
+    "content": "# Performance Comparison\n\nMathHook is designed for high performance while maintaining mathematical correctness. This page shows how MathHook compares to other computer algebra systems.\n\n## MathHook vs SymPy\n\nSymPy is the most widely used Python computer algebra system. MathHook, written in Rust, provides significant performance improvements while maintaining compatibility.\n\n### Derivative Performance\n\n| Operation | SymPy | MathHook | Speedup |\n|-----------|-------|----------|---------|\n| d/dx(x^2) | 54.9ms | 0.035ms | **1580x** |\n| d/dx(x^3) | 2.5ms | 0.019ms | **131x** |\n| d/dx(x^4) | 3.3ms | 0.017ms | **189x** |\n| d/dx(sin(x)) | 1.6ms | 0.048ms | **34x** |\n| d/dx(cos(x)) | 1.6ms | 0.038ms | **42x** |\n| d/dx(tan(x)) | 3.5ms | 0.035ms | **101x** |\n| d/dx(exp(x)) | 1.8ms | 0.049ms | **36x** |\n| d/dx(x*sin(x)) | 2.6ms | 0.079ms | **34x** |\n| d/dx(sin(x)/x) | 7.3ms | 0.129ms | **56x** |\n| d/dx(sin(x^2)) | 2.4ms | 0.042ms | **57x** |\n| d/dx(x^2+2x+1) | 2.7ms | 0.014ms | **190x** |\n| d/dx(x^2*exp(x)) | 3.3ms | 0.106ms | **31x** |\n| d/dx(1/x) | 1.0ms | 0.006ms | **167x** |\n\n### Summary Statistics\n\n| Metric | Value |\n|--------|-------|\n| Minimum Speedup | 17x |\n| Maximum Speedup | 1580x |\n| Average Speedup | **179x** |\n| Correctness Rate | 86.7% |\n\n### Why MathHook is Faster\n\n1. **Compiled Language**: Rust compiles to native machine code, eliminating interpreter overhead\n2. **Zero-Cost Abstractions**: Rust's ownership system enables efficient memory management without garbage collection\n3. **Cache-Optimized Structures**: Expression type is exactly 32 bytes, fitting two expressions per CPU cache line\n4. **SIMD Operations**: Vectorized operations for numerical evaluation\n5. **Lazy Evaluation**: Computations are deferred until results are needed\n\n## Core Operation Performance\n\nBased on Criterion benchmarks:\n\n| Operation | Time | Target |\n|-----------|------|--------|\n| Expression Creation | ~159 ns | < 200 ns |\n| Basic Simplification | ~8 ns | < 50 ns |\n| Expression with Parsing | ~441 us | < 1 ms |\n\n## Running Benchmarks\n\n### Quick Benchmark\n\n```bash\n./scripts/bench.sh quick\n```\n\n### Full Benchmark Suite\n\n```bash\n./scripts/bench.sh run\n```\n\n### Specific Benchmark Groups\n\n```bash\n./scripts/bench.sh rust core_performance\n./scripts/bench.sh rust calculus_benchmarks\n./scripts/bench.sh rust polynomial_benchmarks\n./scripts/bench.sh rust simplification_benchmarks\n```\n\n### Compare Against Baseline\n\n```bash\n# Save current as baseline\n./scripts/bench.sh save my-baseline\n\n# Run and compare\n./scripts/bench.sh compare my-baseline\n```\n\n## Validation Against SymPy\n\nMathHook includes validation scripts to verify mathematical correctness against SymPy:\n\n```bash\n./scripts/validate.sh           # Run all validations\n./scripts/validate.sh simplify  # Simplification only\n./scripts/validate.sh ode       # ODE solver only\n```\n\n## Continuous Integration\n\nPerformance is monitored in CI:\n- Benchmarks run on every PR\n- Regressions > 10% fail the build\n- Results are posted as PR comments\n- Baselines are updated on merge to main\n\nSee the [benchmarking guide](./benchmarking.md) for detailed information.\n"
+  },
+  "related_topics": [
+    "performance.benchmarking",
+    "performance.architecture",
+    "performance.simd",
+    "performance.caching"
+  ],
+  "performance": {},
+  "metadata": {
+    "schema_version": "1.0"
+  }
+}
