@@ -1,9 +1,11 @@
 # Nixpacks configuration for Railway deployment
 [variables]
-NIXPACKS_NODE_VERSION = "22"
+# Use Node.js 20 LTS - Nuxt 4 requires ^20.19.0 || >=22.12.0
+# Nixpkgs nodejs_22 is only v22.11.0 which doesn't meet the requirement
+NIXPACKS_NODE_VERSION = "20"
 
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm ci"]

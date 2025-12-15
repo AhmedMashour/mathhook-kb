@@ -113,7 +113,6 @@ mathhook-kb/
 
 ## Documentation
 
-- [CLAUDE.md](./CLAUDE.md) - AI agent development guide
 - [Architecture](./docs/architecture.md) - System design
 - [Schema Reference](./docs/schema-reference.md) - Schema format specification
 - [Generator Guide](./docs/generator-guide.md) - Writing new generators

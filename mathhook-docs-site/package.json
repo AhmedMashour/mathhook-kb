@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "dependencies": {
     "katex": "^0.16.25",
