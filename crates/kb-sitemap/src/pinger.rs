@@ -300,6 +300,181 @@ pub fn submit_sitemap_with_output(sitemap_url: &str, verbose: bool) -> Result<()
     }
 }
 
+/// IndexNow API submitter for instant indexing
+///
+/// IndexNow is supported by Bing, Yandex, Seznam, and Naver.
+/// When you submit a URL to one engine, it's shared with all IndexNow participants.
+pub struct IndexNowSubmitter {
+    /// API key (must match a file at your-domain.com/{key}.txt)
+    api_key: String,
+
+    /// Host URL (e.g., "https://mathhook.org")
+    host: String,
+
+    /// Key location (defaults to root)
+    key_location: Option<String>,
+
+    /// Timeout in seconds
+    timeout_secs: u64,
+}
+
+impl IndexNowSubmitter {
+    /// Create a new IndexNow submitter
+    ///
+    /// # Arguments
+    ///
+    /// * `api_key` - Your IndexNow API key (alphanumeric, 8-128 chars)
+    /// * `host` - Your website host (e.g., "https://mathhook.org")
+    pub fn new(api_key: impl Into<String>, host: impl Into<String>) -> Self {
+        Self {
+            api_key: api_key.into(),
+            host: host.into(),
+            key_location: None,
+            timeout_secs: 30,
+        }
+    }
+
+    /// Set custom key location
+    pub fn with_key_location(mut self, location: impl Into<String>) -> Self {
+        self.key_location = Some(location.into());
+        self
+    }
+
+    /// Submit a single URL for instant indexing
+    pub fn submit_url(&self, url: &str) -> Result<()> {
+        let endpoint = "https://api.indexnow.org/indexnow";
+
+        let key_location = self.key_location.clone().unwrap_or_else(|| {
+            format!("{}/{}.txt", self.host.trim_end_matches('/'), self.api_key)
+        });
+
+        let payload = serde_json::json!({
+            "host": self.host,
+            "key": self.api_key,
+            "keyLocation": key_location,
+            "urlList": [url]
+        });
+
+        let agent = ureq::AgentBuilder::new()
+            .timeout(std::time::Duration::from_secs(self.timeout_secs))
+            .build();
+
+        match agent.post(endpoint)
+            .set("Content-Type", "application/json")
+            .send_string(&payload.to_string())
+        {
+            Ok(response) => {
+                let status = response.status();
+                if status >= 200 && status < 300 {
+                    Ok(())
+                } else {
+                    Err(SitemapError::HttpError(format!(
+                        "IndexNow returned status {}", status
+                    )))
+                }
+            }
+            Err(ureq::Error::Status(code, _)) => {
+                Err(SitemapError::HttpError(format!(
+                    "IndexNow returned status {}", code
+                )))
+            }
+            Err(ureq::Error::Transport(transport)) => {
+                Err(SitemapError::HttpError(format!(
+                    "IndexNow transport error: {}", transport
+                )))
+            }
+        }
+    }
+
+    /// Submit multiple URLs for instant indexing (max 10,000 per request)
+    pub fn submit_urls(&self, urls: &[String]) -> Result<()> {
+        if urls.is_empty() {
+            return Ok(());
+        }
+
+        if urls.len() > 10_000 {
+            return Err(SitemapError::InvalidUrl(
+                "IndexNow accepts max 10,000 URLs per request".to_string()
+            ));
+        }
+
+        let endpoint = "https://api.indexnow.org/indexnow";
+
+        let key_location = self.key_location.clone().unwrap_or_else(|| {
+            format!("{}/{}.txt", self.host.trim_end_matches('/'), self.api_key)
+        });
+
+        let payload = serde_json::json!({
+            "host": self.host,
+            "key": self.api_key,
+            "keyLocation": key_location,
+            "urlList": urls
+        });
+
+        let agent = ureq::AgentBuilder::new()
+            .timeout(std::time::Duration::from_secs(self.timeout_secs))
+            .build();
+
+        match agent.post(endpoint)
+            .set("Content-Type", "application/json")
+            .send_string(&payload.to_string())
+        {
+            Ok(response) => {
+                let status = response.status();
+                if status >= 200 && status < 300 {
+                    Ok(())
+                } else {
+                    Err(SitemapError::HttpError(format!(
+                        "IndexNow returned status {}", status
+                    )))
+                }
+            }
+            Err(ureq::Error::Status(code, _)) => {
+                Err(SitemapError::HttpError(format!(
+                    "IndexNow returned status {}", code
+                )))
+            }
+            Err(ureq::Error::Transport(transport)) => {
+                Err(SitemapError::HttpError(format!(
+                    "IndexNow transport error: {}", transport
+                )))
+            }
+        }
+    }
+}
+
+/// Verify that robots.txt contains the sitemap directive
+pub fn verify_robots_txt(base_url: &str, sitemap_url: &str) -> Result<bool> {
+    let robots_url = format!("{}/robots.txt", base_url.trim_end_matches('/'));
+
+    let agent = ureq::AgentBuilder::new()
+        .timeout(std::time::Duration::from_secs(30))
+        .build();
+
+    match agent.get(&robots_url).call() {
+        Ok(response) => {
+            let body = response.into_string().unwrap_or_default();
+            let sitemap_directive = format!("Sitemap: {}", sitemap_url);
+            Ok(body.to_lowercase().contains(&sitemap_directive.to_lowercase()))
+        }
+        Err(_) => Ok(false),
+    }
+}
+
+/// Generate robots.txt content with sitemap directive
+pub fn generate_robots_txt_snippet(sitemap_url: &str) -> String {
+    format!(
+        r#"# MathHook Knowledge Base
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: {}
+"#,
+        sitemap_url
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

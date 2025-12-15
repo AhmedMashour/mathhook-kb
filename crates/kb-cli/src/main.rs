@@ -12,7 +12,10 @@ use kb_jupyter::JupyterGenerator;
 use kb_latex::LatexGenerator;
 use kb_llm_rag::LlmRagGenerator;
 use kb_mdbook::MdBookGenerator;
-use kb_sitemap::{PingerConfig, SearchEnginePinger, SitemapConfig, SitemapGenerator};
+use kb_sitemap::{
+    generate_robots_txt_snippet, verify_robots_txt, IndexNowSubmitter, SitemapConfig,
+    SitemapGenerator,
+};
 use kb_vue::VueGenerator;
 use std::path::PathBuf;
 
@@ -94,23 +97,42 @@ enum SitemapCommands {
         #[arg(long, default_value = "/docs")]
         docs_prefix: String,
 
-        /// Also submit sitemap to search engines after generation
+        /// Also generate robots.txt snippet
         #[arg(long)]
-        submit: bool,
+        robots_txt: bool,
     },
 
-    /// Submit existing sitemap to search engines (Google, Bing)
-    Submit {
-        /// Full URL to the sitemap (e.g., https://mathhook.org/sitemap.xml)
-        #[arg(value_name = "SITEMAP_URL")]
+    /// Submit URLs to IndexNow (Bing, Yandex, Seznam, Naver)
+    IndexNow {
+        /// IndexNow API key (get one at https://www.bing.com/indexnow)
+        #[arg(short, long, env = "INDEXNOW_API_KEY")]
+        api_key: String,
+
+        /// Host URL (e.g., https://mathhook.org)
+        #[arg(short = 'H', long, default_value = "https://mathhook.org")]
+        host: String,
+
+        /// URLs to submit (or use --from-sitemap)
+        #[arg(value_name = "URL")]
+        urls: Vec<String>,
+
+        /// Read URLs from generated sitemap
+        #[arg(long)]
+        from_sitemap: Option<PathBuf>,
+    },
+
+    /// Check if robots.txt contains sitemap directive
+    Verify {
+        /// Base URL for the site
+        #[arg(short, long, default_value = "https://mathhook.org")]
+        base_url: String,
+
+        /// Sitemap URL to verify
+        #[arg(short, long, default_value = "https://mathhook.org/sitemap.xml")]
         sitemap_url: String,
-
-        /// Verbose output
-        #[arg(short, long)]
-        verbose: bool,
     },
 
-    /// Show sitemap configuration
+    /// Show sitemap configuration and setup instructions
     Config {
         /// Base URL for the site
         #[arg(short, long, default_value = "https://mathhook.org")]
@@ -510,10 +532,12 @@ fn list_command() {
     println!("   kb colab info     Show info about generated notebooks");
     println!("\n🗺️  Sitemap Commands:\n");
     println!("   kb sitemap generate <SCHEMA>  Generate sitemap.xml from schemas");
-    println!("   kb sitemap submit <URL>       Submit sitemap to Google/Bing");
-    println!("   kb sitemap config             Show sitemap configuration");
-    println!("\n   Generate and submit in one step:");
-    println!("     kb sitemap generate schemas/ --submit");
+    println!("   kb sitemap indexnow           Submit URLs via IndexNow (Bing, Yandex)");
+    println!("   kb sitemap verify             Verify robots.txt contains sitemap");
+    println!("   kb sitemap config             Show setup guide and configuration");
+    println!("\n   Full workflow:");
+    println!("     kb sitemap generate schemas/ --robots-txt");
+    println!("     kb sitemap indexnow --from-sitemap sitemap.xml -a YOUR_KEY");
 }
 
 fn handle_colab_command(cmd: ColabCommands) -> Result<()> {
@@ -582,7 +606,7 @@ fn handle_sitemap_command(cmd: SitemapCommands) -> Result<()> {
             output,
             base_url,
             docs_prefix,
-            submit,
+            robots_txt,
         } => {
             println!("🗺️  Generating sitemap...\n");
 
@@ -617,71 +641,158 @@ fn handle_sitemap_command(cmd: SitemapCommands) -> Result<()> {
                 loaded_schemas.len()
             );
 
-            // Submit to search engines if requested
-            if submit {
-                println!("\n📡 Submitting sitemap to search engines...\n");
+            // Generate robots.txt snippet if requested
+            if robots_txt {
                 let sitemap_url = format!("{}/sitemap.xml", base_url.trim_end_matches('/'));
-                submit_sitemap(&sitemap_url, false)?;
+                let robots_content = generate_robots_txt_snippet(&sitemap_url);
+                let robots_path = output.join("robots.txt");
+                std::fs::write(&robots_path, &robots_content)?;
+                println!("\n📄 Generated robots.txt:");
+                println!("   ✅ {}", robots_path.display());
+            }
+
+            println!("\n📋 Next steps to notify search engines:");
+            println!("   1. Deploy sitemap.xml to your site root");
+            println!("   2. Add to robots.txt: Sitemap: {}/sitemap.xml", base_url);
+            println!("   3. Submit to Google Search Console: https://search.google.com/search-console");
+            println!("   4. (Optional) Use IndexNow for instant indexing: kb sitemap indexnow");
+
+            Ok(())
+        }
+
+        SitemapCommands::IndexNow {
+            api_key,
+            host,
+            urls,
+            from_sitemap,
+        } => {
+            println!("🚀 Submitting to IndexNow...\n");
+
+            let urls_to_submit = if let Some(sitemap_path) = from_sitemap {
+                // Parse URLs from sitemap
+                let content = std::fs::read_to_string(&sitemap_path)
+                    .context("Failed to read sitemap file")?;
+                extract_urls_from_sitemap(&content)
+            } else if !urls.is_empty() {
+                urls
+            } else {
+                anyhow::bail!("Please provide URLs or use --from-sitemap");
+            };
+
+            if urls_to_submit.is_empty() {
+                println!("   No URLs to submit.");
+                return Ok(());
+            }
+
+            println!("   Host: {}", host);
+            println!("   API Key: {}...", &api_key[..8.min(api_key.len())]);
+            println!("   URLs to submit: {}\n", urls_to_submit.len());
+
+            let submitter = IndexNowSubmitter::new(&api_key, &host);
+            match submitter.submit_urls(&urls_to_submit) {
+                Ok(_) => {
+                    println!("   ✅ Successfully submitted {} URLs to IndexNow!", urls_to_submit.len());
+                    println!("\n   IndexNow shares submissions with: Bing, Yandex, Seznam, Naver");
+                }
+                Err(e) => {
+                    println!("   ❌ Failed to submit: {}", e);
+                    println!("\n   Make sure you have:");
+                    println!("   1. Created verification file: {}/{}.txt", host, api_key);
+                    println!("   2. The file contains only: {}", api_key);
+                }
             }
 
             Ok(())
         }
 
-        SitemapCommands::Submit { sitemap_url, verbose } => {
-            println!("📡 Submitting sitemap to search engines...\n");
-            println!("   Sitemap URL: {}\n", sitemap_url);
-            submit_sitemap(&sitemap_url, verbose)?;
-            println!("\n✅ Sitemap submission complete!");
+        SitemapCommands::Verify { base_url, sitemap_url } => {
+            println!("🔍 Verifying sitemap configuration...\n");
+
+            match verify_robots_txt(&base_url, &sitemap_url) {
+                Ok(true) => {
+                    println!("   ✅ robots.txt contains sitemap directive");
+                    println!("   Sitemap URL: {}", sitemap_url);
+                }
+                Ok(false) => {
+                    println!("   ❌ robots.txt does NOT contain sitemap directive");
+                    println!("\n   Add this to your robots.txt:");
+                    println!("   Sitemap: {}", sitemap_url);
+                }
+                Err(e) => {
+                    println!("   ❌ Could not fetch robots.txt: {}", e);
+                }
+            }
+
             Ok(())
         }
 
         SitemapCommands::Config { base_url } => {
-            println!("🗺️  Sitemap Configuration\n");
-            println!("Base URL:     {}", base_url);
-            println!("Docs Prefix:  /docs");
+            println!("🗺️  Sitemap Configuration & Setup Guide\n");
+            println!("═══════════════════════════════════════════════════════════════\n");
+
+            println!("📍 Site Configuration:");
+            println!("   Base URL:     {}", base_url);
+            println!("   Docs Prefix:  /docs");
+            println!("   Sitemap URL:  {}/sitemap.xml", base_url);
             println!();
-            println!("Generated sitemap will include:");
-            println!("  • Homepage:   {} (priority: 1.0, weekly)", base_url);
-            println!("  • Docs index: {}/docs (priority: 0.9, weekly)", base_url);
-            println!("  • Doc pages:  {}/docs/{{topic}} (from schema SEO settings)", base_url);
+
+            println!("📄 Generated sitemap includes:");
+            println!("   • Homepage:   {} (priority: 1.0, weekly)", base_url);
+            println!("   • Docs index: {}/docs (priority: 0.9, weekly)", base_url);
+            println!("   • Doc pages:  {}/docs/{{topic}} (from schema SEO)", base_url);
             println!();
-            println!("Search Engine Ping URLs:");
-            println!("  • Google: https://www.google.com/ping?sitemap=...");
-            println!("  • Bing:   https://www.bing.com/ping?sitemap=...");
+
+            println!("═══════════════════════════════════════════════════════════════\n");
+            println!("🔧 SETUP STEPS:\n");
+
+            println!("1️⃣  GENERATE SITEMAP:");
+            println!("    kb sitemap generate schemas/ --robots-txt\n");
+
+            println!("2️⃣  DEPLOY FILES:");
+            println!("    • sitemap.xml → {}/sitemap.xml", base_url);
+            println!("    • robots.txt  → {}/robots.txt", base_url);
             println!();
-            println!("Usage:");
-            println!("  kb sitemap generate schemas/ --submit");
-            println!("  kb sitemap submit https://mathhook.org/sitemap.xml");
+
+            println!("3️⃣  GOOGLE (manual submission required since June 2023):");
+            println!("    • Go to: https://search.google.com/search-console");
+            println!("    • Add property for {}", base_url);
+            println!("    • Go to Sitemaps → Add sitemap: sitemap.xml");
+            println!();
+
+            println!("4️⃣  INDEXNOW (instant indexing for Bing, Yandex, Seznam):");
+            println!("    a) Generate an API key (any random 8-128 char string):");
+            println!("       Example: mathhook2024xyz123");
+            println!();
+            println!("    b) Create verification file at:");
+            println!("       {}/{{your-key}}.txt", base_url);
+            println!("       (file should contain only the key itself)");
+            println!();
+            println!("    c) Submit URLs:");
+            println!("       export INDEXNOW_API_KEY=your-key");
+            println!("       kb sitemap indexnow --from-sitemap sitemap.xml");
+            println!();
+
+            println!("═══════════════════════════════════════════════════════════════\n");
+            println!("💡 TIP: Run 'kb sitemap verify' to check your robots.txt setup");
+
             Ok(())
         }
     }
 }
 
-fn submit_sitemap(sitemap_url: &str, verbose: bool) -> Result<()> {
-    let config = if verbose {
-        PingerConfig::default().verbose()
-    } else {
-        PingerConfig::default()
-    };
-
-    let pinger = SearchEnginePinger::with_config(config);
-    let results = pinger.ping_all(sitemap_url);
-
-    let mut any_success = false;
-    for result in &results {
-        if result.success {
-            println!("   ✅ {}: {}", result.engine.name(), result.message);
-            any_success = true;
-        } else {
-            println!("   ❌ {}: {}", result.engine.name(), result.message);
+/// Extract URLs from sitemap XML
+fn extract_urls_from_sitemap(content: &str) -> Vec<String> {
+    let mut urls = Vec::new();
+    // Simple regex-free extraction
+    for line in content.lines() {
+        if let Some(start) = line.find("<loc>") {
+            if let Some(end) = line.find("</loc>") {
+                let url = &line[start + 5..end];
+                urls.push(url.to_string());
+            }
         }
     }
-
-    if any_success {
-        Ok(())
-    } else {
-        anyhow::bail!("All search engine pings failed")
-    }
+    urls
 }
 
 #[cfg(test)]
