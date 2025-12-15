@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "MathHook provides two fundamental operations for working with expressions:\n\n1. **Evaluation** - Compute numerical values with domain checking\n2. **Simplification** - Algebraic reduction while staying symbolic\n\nUnderstanding when to use each operation is critical for correct mathematical computation.\n",
+    "title": "Expression Evaluation",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/operations/evaluation": {
+      "post": {
+        "description": "MathHook provides two fundamental operations for working with expressions:\n\n1. **Evaluation** - Compute numerical values with domain checking\n2. **Simplification** - Algebraic reduction while staying symbolic\n\nUnderstanding when to use each operation is critical for correct mathematical computation.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "constants_evaluate_to_numbers": {
+                  "description": "Direct evaluation of constant expressions",
+                  "summary": "Constants Evaluate to Numbers",
+                  "value": {
+                    "expression": "expr('2 + 3')"
+                  }
+                },
+                "evaluation_with_context_(substitution)": {
+                  "description": "Substitute variable values and evaluate",
+                  "summary": "Evaluation with Context (Substitution)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "simplification_without_domain_checking": {
+                  "description": "Simplify operates purely symbolically without domain validation",
+                  "summary": "Simplification Without Domain Checking",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Expression Evaluation",
+        "tags": [
+          "operations"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "operations operations",
+      "name": "operations"
+    }
+  ]
+}

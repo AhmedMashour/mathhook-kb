@@ -17,6 +17,7 @@ kb-vue = { path = "../kb-vue" }
 kb-apidocs = { path = "../kb-apidocs" }
 kb-colab = { path = "../kb-colab" }
 kb-latex = { path = "../kb-latex" }
+kb-json = { path = "../kb-json" }
 clap.workspace = true
 serde.workspace = true
 serde_json.workspace = true

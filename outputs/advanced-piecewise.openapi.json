@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Define functions with different formulas in different regions, essential for\nmodeling discontinuous behavior, conditional logic, step functions, and\nthreshold-based systems.\n",
+    "title": "Piecewise Functions",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/piecewise": {
+      "post": {
+        "description": "Define functions with different formulas in different regions, essential for\nmodeling discontinuous behavior, conditional logic, step functions, and\nthreshold-based systems.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "absolute_value_function": {
+                  "description": "|x| = { x if x ≥ 0, -x if x < 0 }",
+                  "summary": "Absolute Value Function",
+                  "value": {
+                    "expression": "symbols('x')"
+                  }
+                },
+                "heaviside_step_function": {
+                  "description": "H(x) = { 0 if x < 0, 1 if x ≥ 0 }",
+                  "summary": "Heaviside Step Function",
+                  "value": {
+                    "expression": "symbols('x')"
+                  }
+                },
+                "tax_bracket_example": {
+                  "description": "Progressive tax with income thresholds",
+                  "summary": "Tax Bracket Example",
+                  "value": {
+                    "expression": "symbols('income')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Piecewise Functions",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

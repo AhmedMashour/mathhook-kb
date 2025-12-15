@@ -1,11 +1,27 @@
 <template>
-  <div class="min-h-screen bg-logic-navy-900 text-chalk">
+  <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 pointer-events-none">
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+      <div
+        class="absolute w-[500px] h-[500px] bg-rust-core/5 rounded-full blur-[100px] transition-transform duration-1000"
+        :style="{ transform: `translate(${parallax.x * 0.02}px, ${parallax.y * 0.02}px)`, top: '10%', left: '-10%' }"
+      ></div>
+      <div
+        class="absolute w-[400px] h-[400px] bg-solve-cyan/5 rounded-full blur-[80px] transition-transform duration-1000"
+        :style="{ transform: `translate(${parallax.x * -0.02}px, ${parallax.y * -0.02}px)`, bottom: '10%', right: '-5%' }"
+      ></div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-logic-navy-900/80 backdrop-blur-lg border-b border-logic-navy-700/50">
+    <nav
+      class="sticky top-0 z-50 transition-all duration-500"
+      :class="scrollY > 20 ? 'bg-logic-navy-900/95 backdrop-blur-xl border-b border-logic-navy-700/50 shadow-lg shadow-black/10' : 'bg-logic-navy-900/80 backdrop-blur-lg border-b border-logic-navy-700/50'"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <svg class="w-7 h-7" viewBox="0 0 48 48" fill="none">
+          <NuxtLink to="/" class="flex items-center gap-2 group">
+            <svg class="w-7 h-7 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none">
               <defs>
                 <linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#E64524"/>
@@ -20,8 +36,8 @@
           </NuxtLink>
           <div class="flex items-center gap-6">
             <NuxtLink to="/docs" class="text-solve-cyan font-medium">Docs</NuxtLink>
-            <NuxtLink to="/outputs" class="nav-link">Outputs</NuxtLink>
-            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="nav-link flex items-center gap-1">
+            <NuxtLink to="/outputs" class="text-chalk-500 hover:text-chalk transition-all duration-300 hover:-translate-y-0.5">Outputs</NuxtLink>
+            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
@@ -33,392 +49,318 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="max-w-5xl mx-auto px-4 py-12">
+    <div class="max-w-5xl mx-auto px-4 py-12 relative z-10">
+      <!-- Header with Animation -->
       <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-rust-core to-solve-cyan">
+        <div
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-6': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.1s"
+        >
+          <span class="inline-block px-4 py-1.5 bg-solve-cyan/10 border border-solve-cyan/20 rounded-full text-xs text-solve-cyan font-medium mb-4">DOCUMENTATION</span>
+        </div>
+        <h1
+          class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-rust-core to-solve-cyan"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-6': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.2s"
+        >
           Documentation
         </h1>
-        <p class="text-xl text-chalk-500">
+        <p
+          class="text-xl text-chalk-400"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.3s"
+        >
           Explore comprehensive mathematical documentation with interactive examples
+        </p>
+        <p
+          class="text-sm text-chalk-600 mt-2"
+          :class="{ 'opacity-100': mounted, 'opacity-0': !mounted }"
+          style="transition: opacity 0.5s; transition-delay: 0.5s"
+        >
+          {{ Object.values(categories).flat().length }} topics available
         </p>
       </div>
 
-      <div class="space-y-8">
-        <!-- Getting Started Section -->
-        <section class="bg-gradient-to-r from-rust-core to-solve-cyan rounded-2xl p-1">
-          <div class="bg-logic-navy-800 rounded-xl p-6">
-            <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-rust-core/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-rust-core" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
+      <!-- Search with Animation -->
+      <div
+        class="mb-10"
+        :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+        style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.4s"
+      >
+        <div class="relative group">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-rust-core/20 to-solve-cyan/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div class="relative">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-chalk-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search documentation..."
+              class="w-full pl-12 pr-4 py-4 bg-logic-navy-800/80 border border-logic-navy-700 rounded-xl text-chalk placeholder-chalk-500 focus:outline-none focus:border-solve-cyan/50 focus:ring-2 focus:ring-solve-cyan/20 transition-all duration-300 backdrop-blur-sm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div v-if="loading" class="space-y-6">
+        <div v-for="i in 3" :key="i" class="animate-pulse">
+          <div class="h-8 bg-logic-navy-700/50 rounded-lg w-48 mb-4"></div>
+          <div class="space-y-3">
+            <div class="h-20 bg-logic-navy-800/50 rounded-xl"></div>
+            <div class="h-20 bg-logic-navy-800/50 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div v-else class="space-y-10">
+        <section
+          v-for="(items, category, categoryIndex) in filteredCategories"
+          :key="category"
+          class="relative"
+          v-scroll-animate="{ animation: 'fade-up', delay: categoryIndex * 100 }"
+        >
+          <!-- Category Card -->
+          <div class="bg-logic-navy-800/30 border border-logic-navy-700/50 rounded-2xl p-6 backdrop-blur-sm hover:bg-logic-navy-800/50 transition-all duration-500">
+            <!-- Category Header -->
+            <div class="flex items-center gap-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 hover:scale-110 hover:rotate-3"
+                :class="getCategoryStyle(category).bg"
+              >
+                <span class="text-2xl">{{ getCategoryStyle(category).icon }}</span>
               </div>
-              Getting Started
-            </h2>
+              <div>
+                <h2 class="text-xl font-semibold text-chalk">{{ getCategoryStyle(category).title }}</h2>
+                <p class="text-sm text-chalk-500">{{ items.length }} topics</p>
+              </div>
+            </div>
+
+            <!-- Topic Items -->
             <div class="space-y-3">
               <NuxtLink
-                to="/docs/getting-started-quick-start"
-                class="block p-4 bg-logic-navy-700/50 rounded-lg hover:bg-logic-navy-700 transition-colors group"
+                v-for="(item, itemIndex) in items"
+                :key="item.topic"
+                :to="`/docs/${item.topic}`"
+                class="block p-4 rounded-xl transition-all duration-300 group border hover:-translate-y-1 hover:shadow-lg"
+                :class="getCategoryStyle(category).itemClass"
+                :style="{ transitionDelay: `${itemIndex * 50}ms` }"
               >
-                <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                  Quick Start Guide
-                </h3>
-                <p class="text-chalk-500 mt-1">
-                  Get started with MathHook in Python, Rust, or JavaScript - installation, basic usage, and key features
-                </p>
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex-1">
+                    <h3
+                      class="font-semibold text-lg transition-colors flex items-center gap-2"
+                      :class="getCategoryStyle(category).titleClass"
+                    >
+                      {{ item.title }}
+                      <svg class="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </h3>
+                    <p class="text-chalk-500 mt-1 text-sm leading-relaxed group-hover:text-chalk-400 transition-colors">
+                      {{ item.description }}
+                    </p>
+                  </div>
+                </div>
               </NuxtLink>
             </div>
           </div>
         </section>
 
-        <!-- ODE Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-solve-cyan/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-solve-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-              </svg>
-            </div>
-            Ordinary Differential Equations
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/ode-first_order-separable"
-              class="block p-4 bg-solve-cyan/5 rounded-lg hover:bg-solve-cyan/10 transition-colors group border border-solve-cyan/10 hover:border-solve-cyan/30"
-            >
-              <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                Separable Differential Equations
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Solve first-order ODEs using separation of variables
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/ode-first_order-linear"
-              class="block p-4 bg-solve-cyan/5 rounded-lg hover:bg-solve-cyan/10 transition-colors group border border-solve-cyan/10 hover:border-solve-cyan/30"
-            >
-              <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                Linear First-Order Differential Equations
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Solve linear ODEs using the integrating factor method
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/ode-first_order-bernoulli"
-              class="block p-4 bg-solve-cyan/5 rounded-lg hover:bg-solve-cyan/10 transition-colors group border border-solve-cyan/10 hover:border-solve-cyan/30"
-            >
-              <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                Bernoulli Differential Equations
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Solve nonlinear ODEs using substitution methods
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/ode-first_order-exact"
-              class="block p-4 bg-solve-cyan/5 rounded-lg hover:bg-solve-cyan/10 transition-colors group border border-solve-cyan/10 hover:border-solve-cyan/30"
-            >
-              <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                Exact Differential Equations
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Solve exact equations using potential function methods
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/ode-first_order-homogeneous"
-              class="block p-4 bg-solve-cyan/5 rounded-lg hover:bg-solve-cyan/10 transition-colors group border border-solve-cyan/10 hover:border-solve-cyan/30"
-            >
-              <h3 class="font-semibold text-lg text-solve-cyan group-hover:text-solve-cyan-300 transition-colors">
-                Homogeneous Differential Equations
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Solve homogeneous ODEs using v = y/x substitution
-              </p>
-            </NuxtLink>
+        <!-- No results -->
+        <div
+          v-if="Object.keys(filteredCategories).length === 0"
+          class="text-center py-16"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-logic-navy-800 flex items-center justify-center">
+            <svg class="w-8 h-8 text-chalk-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
           </div>
-        </section>
-
-        <!-- Calculus Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-rust-core/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-rust-core" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            Calculus
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/calculus-derivatives"
-              class="block p-4 bg-rust-core/5 rounded-lg hover:bg-rust-core/10 transition-colors group border border-rust-core/10 hover:border-rust-core/30"
-            >
-              <h3 class="font-semibold text-lg text-rust-core group-hover:text-rust-core-300 transition-colors">
-                Symbolic Differentiation
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Compute derivatives using power rule, chain rule, product rule, and more
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/calculus-integration"
-              class="block p-4 bg-rust-core/5 rounded-lg hover:bg-rust-core/10 transition-colors group border border-rust-core/10 hover:border-rust-core/30"
-            >
-              <h3 class="font-semibold text-lg text-rust-core group-hover:text-rust-core-300 transition-colors">
-                Symbolic Integration
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Compute integrals using substitution, integration by parts, and more
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/calculus-limits"
-              class="block p-4 bg-rust-core/5 rounded-lg hover:bg-rust-core/10 transition-colors group border border-rust-core/10 hover:border-rust-core/30"
-            >
-              <h3 class="font-semibold text-lg text-rust-core group-hover:text-rust-core-300 transition-colors">
-                Limits and Continuity
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Fundamental limit concepts, L'Hopital's rule, and continuity
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/calculus-series"
-              class="block p-4 bg-rust-core/5 rounded-lg hover:bg-rust-core/10 transition-colors group border border-rust-core/10 hover:border-rust-core/30"
-            >
-              <h3 class="font-semibold text-lg text-rust-core group-hover:text-rust-core-300 transition-colors">
-                Series and Sequences
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Taylor series, Fourier series, convergence tests, and power series
-              </p>
-            </NuxtLink>
-          </div>
-        </section>
-
-        <!-- Algebra Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-              </svg>
-            </div>
-            Algebra
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/algebra-simplify"
-              class="block p-4 bg-amber-500/5 rounded-lg hover:bg-amber-500/10 transition-colors group border border-amber-500/10 hover:border-amber-500/30"
-            >
-              <h3 class="font-semibold text-lg text-amber-500 group-hover:text-amber-400 transition-colors">
-                Expression Simplification
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Simplify algebraic expressions - combine like terms, factor, expand, rationalize
-              </p>
-            </NuxtLink>
-          </div>
-        </section>
-
-        <!-- PDE Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-step-green/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-step-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-              </svg>
-            </div>
-            Partial Differential Equations
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/pde-heat-equation"
-              class="block p-4 bg-step-green/5 rounded-lg hover:bg-step-green/10 transition-colors group border border-step-green/10 hover:border-step-green/30"
-            >
-              <h3 class="font-semibold text-lg text-step-green group-hover:text-step-green-300 transition-colors">
-                The Heat Equation
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Parabolic PDE modeling heat diffusion and other diffusion processes
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/pde-wave-equation"
-              class="block p-4 bg-step-green/5 rounded-lg hover:bg-step-green/10 transition-colors group border border-step-green/10 hover:border-step-green/30"
-            >
-              <h3 class="font-semibold text-lg text-step-green group-hover:text-step-green-300 transition-colors">
-                The Wave Equation
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Hyperbolic PDE describing wave propagation in vibrating strings, sound, and light
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/pde-laplace-equation"
-              class="block p-4 bg-step-green/5 rounded-lg hover:bg-step-green/10 transition-colors group border border-step-green/10 hover:border-step-green/30"
-            >
-              <h3 class="font-semibold text-lg text-step-green group-hover:text-step-green-300 transition-colors">
-                The Laplace Equation
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Elliptic PDE describing steady-state potential fields and equilibrium
-              </p>
-            </NuxtLink>
-          </div>
-        </section>
-
-        <!-- Special Functions Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-              </svg>
-            </div>
-            Special Functions
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/special_functions-gamma"
-              class="block p-4 bg-violet-500/5 rounded-lg hover:bg-violet-500/10 transition-colors group border border-violet-500/10 hover:border-violet-500/30"
-            >
-              <h3 class="font-semibold text-lg text-violet-500 group-hover:text-violet-400 transition-colors">
-                The Gamma Function
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Generalization of factorial to complex numbers
-              </p>
-            </NuxtLink>
-          </div>
-        </section>
-
-        <!-- Developer Documentation Section -->
-        <section class="card p-6">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center">
-              <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-              </svg>
-            </div>
-            Developer Documentation
-          </h2>
-          <div class="space-y-3">
-            <NuxtLink
-              to="/docs/dev-claude-md"
-              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
-            >
-              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
-                CLAUDE.md - AI Agent Guide
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Critical guidance for AI agents working on the MathHook Knowledge Base Engine
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/dev-architecture"
-              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
-            >
-              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
-                System Architecture
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Deep dive into the multi-format documentation generation system design
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/dev-schema-reference"
-              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
-            >
-              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
-                Schema Reference
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Complete specification of the schema format for documentation generation
-              </p>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/docs/dev-generator-guide"
-              class="block p-4 bg-pink-500/5 rounded-lg hover:bg-pink-500/10 transition-colors group border border-pink-500/10 hover:border-pink-500/30"
-            >
-              <h3 class="font-semibold text-lg text-pink-500 group-hover:text-pink-400 transition-colors">
-                Generator Guide
-              </h3>
-              <p class="text-chalk-500 mt-1">
-                Step-by-step guide for implementing new output format generators
-              </p>
-            </NuxtLink>
-          </div>
-        </section>
-
-        <!-- Coming Soon Section -->
-        <section class="card p-6 border-dashed border-logic-navy-600">
-          <h2 class="text-2xl font-semibold mb-4 text-chalk-500 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-logic-navy-700 flex items-center justify-center">
-              <svg class="w-5 h-5 text-chalk-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-              </svg>
-            </div>
-            Additional Topics Coming Soon
-          </h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="p-4 bg-logic-navy-800/50 rounded-lg">
-              <h3 class="font-semibold text-chalk-400 mb-2">
-                More Special Functions
-              </h3>
-              <ul class="text-sm text-chalk-600 space-y-1">
-                <li>Beta Function</li>
-                <li>Bessel Functions</li>
-                <li>Error Functions</li>
-              </ul>
-            </div>
-
-            <div class="p-4 bg-logic-navy-800/50 rounded-lg">
-              <h3 class="font-semibold text-chalk-400 mb-2">
-                More Calculus
-              </h3>
-              <ul class="text-sm text-chalk-600 space-y-1">
-                <li>Limits and Continuity</li>
-                <li>Series and Sequences</li>
-                <li>Multivariable Calculus</li>
-              </ul>
-            </div>
-
-            <div class="p-4 bg-logic-navy-800/50 rounded-lg">
-              <h3 class="font-semibold text-chalk-400 mb-2">
-                More Algebra
-              </h3>
-              <ul class="text-sm text-chalk-600 space-y-1">
-                <li>Equation Solving</li>
-                <li>Polynomial Operations</li>
-                <li>Matrix Algebra</li>
-              </ul>
-            </div>
-          </div>
-          <p class="text-center text-chalk-600 mt-6 text-sm">
-            These topics are being actively developed. Check back regularly for updates!
-          </p>
-        </section>
+          <p class="text-chalk-400 text-lg mb-2">No documentation found</p>
+          <p class="text-chalk-600">Try a different search term for "{{ searchQuery }}"</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+const searchQuery = ref('')
+const categories = ref({})
+const loading = ref(true)
+const mounted = ref(false)
+const scrollY = ref(0)
+const parallax = ref({ x: 0, y: 0 })
+
+// Category configuration
+const categoryConfig = {
+  'getting-started': { title: 'Getting Started', icon: '🚀', color: 'rust-core', order: 1 },
+  'introduction': { title: 'Introduction', icon: '📖', color: 'solve-cyan', order: 2 },
+  'core': { title: 'Core Concepts', icon: '⚙️', color: 'amber-500', order: 3 },
+  'operations': { title: 'Operations', icon: '🔧', color: 'solve-cyan', order: 4 },
+  'calculus': { title: 'Calculus', icon: '📈', color: 'rust-core', order: 5 },
+  'algebra': { title: 'Algebra', icon: '🎨', color: 'amber-500', order: 6 },
+  'ode': { title: 'Ordinary Differential Equations', icon: '📐', color: 'solve-cyan', order: 7 },
+  'pde': { title: 'Partial Differential Equations', icon: '🌊', color: 'step-green', order: 8 },
+  'polynomial': { title: 'Polynomials', icon: '📊', color: 'violet-500', order: 9 },
+  'special_functions': { title: 'Special Functions', icon: '⭐', color: 'violet-500', order: 10 },
+  'parser': { title: 'Parsing & Formatting', icon: '📝', color: 'amber-500', order: 11 },
+  'educational': { title: 'Educational Features', icon: '🎓', color: 'step-green', order: 12 },
+  'evaluation': { title: 'Evaluation', icon: '⚡', color: 'rust-core', order: 13 },
+  'api': { title: 'API Reference', icon: '📚', color: 'solve-cyan', order: 14 },
+  'bindings': { title: 'Language Bindings', icon: '🔗', color: 'step-green', order: 15 },
+  'architecture': { title: 'Architecture', icon: '🏗️', color: 'violet-500', order: 16 },
+  'performance': { title: 'Performance', icon: '⚡', color: 'rust-core', order: 17 },
+  'advanced': { title: 'Advanced Topics', icon: '🔬', color: 'violet-500', order: 18 },
+  'advanced-pde': { title: 'Advanced PDEs', icon: '🌊', color: 'step-green', order: 18.5 },
+  'contributing': { title: 'Contributing', icon: '🤝', color: 'step-green', order: 19 },
+  'examples': { title: 'Examples', icon: '💡', color: 'amber-500', order: 20 },
+  'dev': { title: 'Developer Guide', icon: '💻', color: 'pink-500', order: 21 },
+  'internal': { title: 'Internal Documentation', icon: '🔒', color: 'chalk-500', order: 22 },
+  'appendix': { title: 'Appendix', icon: '📎', color: 'chalk-500', order: 23 },
+}
+
+const getCategoryStyle = (category) => {
+  const config = categoryConfig[category] || { title: category, icon: '📄', color: 'chalk-500' }
+  return {
+    title: config.title,
+    icon: config.icon,
+    bg: `bg-${config.color}/10`,
+    itemClass: `bg-${config.color}/5 hover:bg-${config.color}/10 border-${config.color}/10 hover:border-${config.color}/30 hover:shadow-${config.color}/5`,
+    titleClass: `text-${config.color} group-hover:text-white`
+  }
+}
+
+// Scroll animation directive
+const vScrollAnimate = {
+  mounted(el, binding) {
+    const options = binding.value || {}
+    const animation = options.animation || 'fade-up'
+    const delay = options.delay || 0
+
+    el.style.opacity = '0'
+    el.style.transform = animation === 'fade-up' ? 'translateY(30px)' :
+                         animation === 'fade-left' ? 'translateX(30px)' :
+                         animation === 'fade-right' ? 'translateX(-30px)' : 'translateY(30px)'
+    el.style.transition = `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            el.style.opacity = '1'
+            el.style.transform = 'translateY(0) translateX(0)'
+          }, 50)
+          observer.unobserve(el)
+        }
+      })
+    }, { threshold: 0.1, rootMargin: '50px' })
+
+    observer.observe(el)
+  }
+}
+
+// Scroll handler
+const handleScroll = () => {
+  scrollY.value = window.scrollY
+}
+
+// Mouse move for parallax
+const handleMouseMove = (e) => {
+  parallax.value = {
+    x: (e.clientX - window.innerWidth / 2) / 100,
+    y: (e.clientY - window.innerHeight / 2) / 100
+  }
+}
+
+// Load all documentation metadata
+onMounted(async () => {
+  mounted.value = true
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('mousemove', handleMouseMove, { passive: true })
+
+  try {
+    const topicsResponse = await fetch('/data/_topics.json')
+    if (!topicsResponse.ok) {
+      throw new Error('Failed to load topics index')
+    }
+    const topics = await topicsResponse.json()
+
+    const grouped = {}
+
+    const getCategory = (topicName) => {
+      if (topicName.startsWith('getting-started-')) return 'getting-started'
+      if (topicName.startsWith('advanced-pde-')) return 'advanced-pde'
+      return topicName.split('-')[0]
+    }
+
+    for (const topic of topics) {
+      try {
+        const response = await fetch(`/data/${topic}.json`)
+        if (response.ok) {
+          const data = await response.json()
+          const category = getCategory(topic)
+
+          if (!grouped[category]) {
+            grouped[category] = []
+          }
+
+          grouped[category].push({
+            topic,
+            title: data.title || topic,
+            description: data.description ? data.description.substring(0, 150) + (data.description.length > 150 ? '...' : '') : ''
+          })
+        }
+      } catch (e) {
+        // Skip topics that fail to load
+      }
+    }
+
+    const sortedCategories = {}
+    Object.keys(grouped)
+      .sort((a, b) => (categoryConfig[a]?.order || 99) - (categoryConfig[b]?.order || 99))
+      .forEach(key => {
+        sortedCategories[key] = grouped[key]
+      })
+
+    categories.value = sortedCategories
+  } catch (err) {
+    console.error('Failed to load documentation:', err)
+  } finally {
+    loading.value = false
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('mousemove', handleMouseMove)
+})
+
+// Filter categories based on search
+const filteredCategories = computed(() => {
+  if (!searchQuery.value) return categories.value
+
+  const query = searchQuery.value.toLowerCase()
+  const filtered = {}
+
+  for (const [category, items] of Object.entries(categories.value)) {
+    const matchingItems = items.filter(item =>
+      item.title.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query) ||
+      item.topic.toLowerCase().includes(query)
+    )
+    if (matchingItems.length > 0) {
+      filtered[category] = matchingItems
+    }
+  }
+
+  return filtered
+})
+
 useHead({
   title: 'Documentation - MathHook Knowledge Base',
   meta: [
@@ -429,3 +371,7 @@ useHead({
   ]
 })
 </script>
+
+<style scoped>
+/* Ensure smooth transitions for all interactive elements */
+</style>

@@ -1,20 +1,37 @@
 <template>
   <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden">
-    <!-- Mathematical Grid Background -->
-    <div class="fixed inset-0 pointer-events-none">
+    <!-- Mathematical Grid Background with Parallax -->
+    <div class="fixed inset-0 pointer-events-none" ref="backgroundRef">
       <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
       <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-transparent to-logic-navy-900"></div>
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-rust-core/5 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-solve-cyan/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
-      <div class="absolute top-3/4 left-1/2 w-64 h-64 bg-step-green/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s"></div>
+      <!-- Animated gradient orbs with parallax -->
+      <div
+        class="absolute w-[600px] h-[600px] bg-rust-core/8 rounded-full blur-[120px] transition-transform duration-1000 ease-out"
+        :style="{ transform: `translate(${parallax.x * 0.02}px, ${parallax.y * 0.02}px)`, top: '10%', left: '10%' }"
+      ></div>
+      <div
+        class="absolute w-[500px] h-[500px] bg-solve-cyan/8 rounded-full blur-[100px] transition-transform duration-1000 ease-out"
+        :style="{ transform: `translate(${parallax.x * -0.03}px, ${parallax.y * -0.03}px)`, bottom: '20%', right: '10%' }"
+      ></div>
+      <div
+        class="absolute w-[400px] h-[400px] bg-step-green/6 rounded-full blur-[80px] transition-transform duration-1000 ease-out"
+        :style="{ transform: `translate(${parallax.x * 0.015}px, ${parallax.y * 0.015}px)`, top: '60%', left: '50%' }"
+      ></div>
+      <div
+        class="absolute w-[300px] h-[300px] bg-violet-500/5 rounded-full blur-[60px] transition-transform duration-1000 ease-out"
+        :style="{ transform: `translate(${parallax.x * -0.025}px, ${parallax.y * -0.025}px)`, top: '30%', right: '30%' }"
+      ></div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-logic-navy-900/90 backdrop-blur-md border-b border-logic-navy-700/50">
+    <!-- Navigation with blur on scroll -->
+    <nav
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      :class="scrollY > 50 ? 'bg-logic-navy-900/95 backdrop-blur-xl border-b border-logic-navy-700/50 shadow-lg shadow-black/10' : 'bg-transparent'"
+    >
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="flex items-center justify-between h-14">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <svg class="w-7 h-7" viewBox="0 0 48 48" fill="none">
+        <div class="flex items-center justify-between h-16">
+          <NuxtLink to="/" class="flex items-center gap-2 group">
+            <svg class="w-8 h-8 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none">
               <defs>
                 <linearGradient id="nav-logo" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#E64524"/>
@@ -27,10 +44,10 @@
               <span class="text-rust-core">Math</span><span class="text-solve-cyan">Hook</span>
             </span>
           </NuxtLink>
-          <div class="flex items-center gap-5 text-sm">
-            <NuxtLink to="/docs" class="text-chalk-500 hover:text-chalk transition-colors">Docs</NuxtLink>
-            <NuxtLink to="/outputs" class="text-chalk-500 hover:text-chalk transition-colors">Outputs</NuxtLink>
-            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors flex items-center gap-1.5">
+          <div class="flex items-center gap-6 text-sm">
+            <NuxtLink to="/docs" class="text-chalk-400 hover:text-chalk transition-all duration-300 hover:translate-y-[-2px]">Docs</NuxtLink>
+            <NuxtLink to="/outputs" class="text-chalk-400 hover:text-chalk transition-all duration-300 hover:translate-y-[-2px]">Outputs</NuxtLink>
+            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-400 hover:text-chalk transition-all duration-300 flex items-center gap-1.5 hover:translate-y-[-2px]">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
               GitHub
             </a>
@@ -39,21 +56,32 @@
       </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative pt-28 pb-16 px-4">
-      <div class="max-w-5xl mx-auto text-center relative z-10">
-        <!-- Announcement Badge -->
-        <div class="mb-6">
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-rust-core/20 to-solve-cyan/20 border border-logic-navy-600 rounded-full text-xs text-chalk-300">
-            <span class="w-2 h-2 bg-step-green rounded-full animate-pulse"></span>
+    <!-- Hero Section with Reveal Animations -->
+    <header class="relative pt-32 pb-20 px-4 min-h-screen flex items-center">
+      <div class="max-w-5xl mx-auto text-center relative z-10 w-full">
+        <!-- Announcement Badge with Glow -->
+        <div
+          class="mb-8 animate-fade-in-up"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.1s"
+        >
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rust-core/20 to-solve-cyan/20 border border-logic-navy-600/50 rounded-full text-xs text-chalk-300 backdrop-blur-sm shadow-lg shadow-rust-core/5">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-step-green opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-step-green"></span>
+            </span>
             Now with ODE & PDE support
           </span>
         </div>
 
-        <!-- Logo + Title -->
-        <div class="mb-8">
-          <div class="flex items-center justify-center gap-4 mb-5">
-            <svg class="w-14 h-14 md:w-16 md:h-16" viewBox="0 0 48 48" fill="none">
+        <!-- Logo + Title with Text Reveal -->
+        <div class="mb-10">
+          <div
+            class="flex items-center justify-center gap-5 mb-6"
+            :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-6': !mounted }"
+            style="transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.2s"
+          >
+            <svg class="w-16 h-16 md:w-20 md:h-20 animate-float" viewBox="0 0 48 48" fill="none">
               <defs>
                 <linearGradient id="hero-logo" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#E64524"/>
@@ -62,431 +90,453 @@
               </defs>
               <path d="M12 40 C12 40 12 12 12 10 C12 6 16 4 20 8 L24 16 L28 8 C32 4 36 6 36 10 C36 12 36 40 36 40" stroke="url(#hero-logo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <h1 class="text-5xl md:text-6xl font-bold tracking-tight">
-              <span class="text-rust-core">Math</span><span class="text-solve-cyan">Hook</span>
+            <h1 class="text-6xl md:text-7xl font-bold tracking-tight">
+              <span class="bg-gradient-to-r from-rust-core to-rust-core-400 bg-clip-text text-transparent">Math</span><span class="bg-gradient-to-r from-solve-cyan to-cyan-300 bg-clip-text text-transparent">Hook</span>
             </h1>
           </div>
-          <p class="text-2xl md:text-3xl text-chalk font-medium mb-3 tracking-tight">
-            Symbolic Power. Educational Clarity. Native Speed.
-          </p>
-          <p class="text-lg text-chalk-400 max-w-2xl mx-auto leading-relaxed">
+
+          <!-- Animated Tagline -->
+          <div
+            class="overflow-hidden mb-4"
+            :class="{ 'opacity-100': mounted, 'opacity-0': !mounted }"
+            style="transition: opacity 0.5s; transition-delay: 0.4s"
+          >
+            <p class="text-2xl md:text-4xl text-chalk font-semibold tracking-tight leading-tight">
+              <span
+                v-for="(word, index) in taglineWords"
+                :key="index"
+                class="inline-block mx-1"
+                :class="{ 'translate-y-0 opacity-100': mounted, 'translate-y-full opacity-0': !mounted }"
+                :style="{ transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)', transitionDelay: `${0.5 + index * 0.08}s` }"
+              >
+                <span :class="word.color">{{ word.text }}</span>
+              </span>
+            </p>
+          </div>
+
+          <p
+            class="text-lg md:text-xl text-chalk-400 max-w-2xl mx-auto leading-relaxed"
+            :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+            style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 0.9s"
+          >
             A Rust computer algebra system with native Python and Node.js bindings. No GC, no compromises.
           </p>
         </div>
 
-        <!-- Stats Row -->
-        <div class="flex items-center justify-center gap-8 mb-10 text-sm">
-          <div class="text-center">
-            <div class="text-2xl font-bold text-rust-core">10-100x</div>
-            <div class="text-chalk-500">Faster than SymPy</div>
+        <!-- Stats Row with Count Animation -->
+        <div
+          class="flex items-center justify-center gap-8 md:gap-12 mb-12"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 1.1s"
+        >
+          <div class="text-center group cursor-default">
+            <div class="text-3xl md:text-4xl font-bold text-rust-core transition-transform duration-300 group-hover:scale-110">&lt;300ns</div>
+            <div class="text-chalk-500 text-sm mt-1">Integration</div>
           </div>
-          <div class="w-px h-10 bg-logic-navy-700"></div>
-          <div class="text-center">
-            <div class="text-2xl font-bold text-solve-cyan">&lt;300ns</div>
-            <div class="text-chalk-500">Per operation</div>
+          <div class="w-px h-12 bg-gradient-to-b from-transparent via-logic-navy-600 to-transparent"></div>
+          <div class="text-center group cursor-default">
+            <div class="text-3xl md:text-4xl font-bold text-solve-cyan transition-transform duration-300 group-hover:scale-110">&lt;2μs</div>
+            <div class="text-chalk-500 text-sm mt-1">Derivatives</div>
           </div>
-          <div class="w-px h-10 bg-logic-navy-700"></div>
-          <div class="text-center">
-            <div class="text-2xl font-bold text-step-green">0</div>
-            <div class="text-chalk-500">Dependencies</div>
+          <div class="w-px h-12 bg-gradient-to-b from-transparent via-logic-navy-600 to-transparent"></div>
+          <div class="text-center group cursor-default">
+            <div class="text-3xl md:text-4xl font-bold text-step-green transition-transform duration-300 group-hover:scale-110">32B</div>
+            <div class="text-chalk-500 text-sm mt-1">Expression size</div>
           </div>
         </div>
 
-        <!-- CTA Buttons -->
-        <div class="flex items-center justify-center gap-4 mb-12">
-          <NuxtLink to="/docs" class="group px-6 py-3 bg-gradient-to-r from-rust-core to-rust-core-400 text-white font-medium rounded-lg hover:opacity-90 transition-all hover:scale-105 flex items-center gap-2">
-            Get Started
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        <!-- CTA Buttons with Glow Effect -->
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-4': !mounted }"
+          style="transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 1.3s"
+        >
+          <NuxtLink to="/docs" class="group relative px-8 py-4 bg-gradient-to-r from-rust-core to-rust-core-400 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-rust-core/25 flex items-center gap-2 overflow-hidden">
+            <span class="relative z-10">Get Started</span>
+            <svg class="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <div class="absolute inset-0 bg-gradient-to-r from-rust-core-400 to-rust-core opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </NuxtLink>
-          <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="px-6 py-3 bg-logic-navy-800 border border-logic-navy-600 text-chalk font-medium rounded-lg hover:bg-logic-navy-700 transition-colors flex items-center gap-2">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="group px-8 py-4 bg-logic-navy-800/80 border border-logic-navy-600 text-chalk font-semibold rounded-xl hover:bg-logic-navy-700 hover:border-logic-navy-500 transition-all duration-300 hover:scale-105 flex items-center gap-2 backdrop-blur-sm">
+            <svg class="w-5 h-5 transition-transform duration-300 group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             Star on GitHub
           </a>
         </div>
 
-        <!-- Interactive Code Demo -->
-        <div class="max-w-3xl mx-auto">
-          <div class="bg-logic-navy-800/80 backdrop-blur border border-logic-navy-700 rounded-xl overflow-hidden shadow-2xl">
-            <!-- Language Tabs -->
-            <div class="flex border-b border-logic-navy-700">
-              <button
-                v-for="lang in ['rust', 'python', 'javascript']"
-                :key="lang"
-                @click="activeLanguage = lang"
-                :class="[
-                  'flex-1 px-4 py-3 text-sm font-medium transition-all relative',
-                  activeLanguage === lang
-                    ? lang === 'rust' ? 'text-rust-core bg-logic-navy-800' : lang === 'python' ? 'text-amber-400 bg-logic-navy-800' : 'text-step-green bg-logic-navy-800'
-                    : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50'
-                ]"
-              >
-                <span class="flex items-center justify-center gap-2">
-                  <span>{{ lang === 'rust' ? '🦀' : lang === 'python' ? '🐍' : '📜' }}</span>
-                  <span class="capitalize">{{ lang }}</span>
-                </span>
-                <div v-if="activeLanguage === lang" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan"></div>
-              </button>
-            </div>
+        <!-- Interactive Code Demo with Enhanced Animation -->
+        <div
+          class="max-w-3xl mx-auto"
+          :class="{ 'opacity-100 translate-y-0': mounted, 'opacity-0 translate-y-8': !mounted }"
+          style="transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: 1.5s"
+        >
+          <div class="relative group">
+            <!-- Glow effect behind card -->
+            <div class="absolute -inset-1 bg-gradient-to-r from-rust-core/20 via-solve-cyan/20 to-step-green/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500"></div>
 
-            <!-- Code Content -->
-            <div class="p-5 text-left font-mono text-sm leading-relaxed min-h-[180px]">
-              <!-- Rust -->
-              <div v-if="activeLanguage === 'rust'">
-                <div><span class="text-rust-core">use</span> <span class="text-solve-cyan">mathhook</span>::{symbol, expr};</div>
-                <div class="mt-3 text-chalk-600">// Symbolic differentiation</div>
-                <div><span class="text-rust-core">let</span> x = <span class="text-solve-cyan">symbol!</span>(x);</div>
-                <div><span class="text-rust-core">let</span> f = <span class="text-solve-cyan">expr!</span>(x^<span class="text-step-green">3</span> + <span class="text-step-green">2</span>*x^<span class="text-step-green">2</span> - <span class="text-step-green">5</span>*x);</div>
-                <div><span class="text-rust-core">let</span> df = f.<span class="text-solve-cyan">derivative</span>(&x);</div>
-                <div class="mt-3 text-chalk-600">// Result: 3x² + 4x - 5</div>
-                <div class="mt-1"><span class="text-rust-core">let</span> steps = f.<span class="text-solve-cyan">derivative_steps</span>(&x);</div>
-                <div class="text-chalk-600">// Get detailed derivation steps!</div>
+            <div class="relative bg-logic-navy-800/90 backdrop-blur-xl border border-logic-navy-700/50 rounded-2xl overflow-hidden shadow-2xl">
+              <!-- Language Tabs -->
+              <div class="flex border-b border-logic-navy-700/50">
+                <button
+                  v-for="lang in ['rust', 'python', 'javascript']"
+                  :key="lang"
+                  @click="activeLanguage = lang"
+                  :class="[
+                    'flex-1 px-4 py-4 text-sm font-medium transition-all duration-300 relative overflow-hidden',
+                    activeLanguage === lang
+                      ? lang === 'rust' ? 'text-rust-core bg-logic-navy-800/50' : lang === 'python' ? 'text-amber-400 bg-logic-navy-800/50' : 'text-step-green bg-logic-navy-800/50'
+                      : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/30'
+                  ]"
+                >
+                  <span class="flex items-center justify-center gap-2 relative z-10">
+                    <span class="text-lg">{{ lang === 'rust' ? '🦀' : lang === 'python' ? '🐍' : '📜' }}</span>
+                    <span class="capitalize">{{ lang }}</span>
+                  </span>
+                  <div
+                    v-if="activeLanguage === lang"
+                    class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core via-solve-cyan to-step-green animate-gradient-x"
+                  ></div>
+                </button>
               </div>
 
-              <!-- Python -->
-              <div v-if="activeLanguage === 'python'">
-                <div><span class="text-rust-core">from</span> <span class="text-solve-cyan">mathhook</span> <span class="text-rust-core">import</span> symbol, expr</div>
-                <div class="mt-3 text-chalk-600"># Symbolic differentiation</div>
-                <div>x = <span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>)</div>
-                <div>f = <span class="text-solve-cyan">expr</span>(<span class="text-amber-400">'x^3 + 2*x^2 - 5*x'</span>)</div>
-                <div>df = f.<span class="text-solve-cyan">derivative</span>(x)</div>
-                <div class="mt-3 text-chalk-600"># Result: 3x² + 4x - 5</div>
-                <div class="mt-1">steps = f.<span class="text-solve-cyan">derivative_steps</span>(x)</div>
-                <div class="text-chalk-600"># Get detailed derivation steps!</div>
-              </div>
+              <!-- Code Content with Transition -->
+              <div class="p-6 text-left font-mono text-sm leading-relaxed min-h-[240px]">
+                <Transition name="code-fade" mode="out-in">
+                  <!-- Rust -->
+                  <div v-if="activeLanguage === 'rust'" key="rust">
+                    <div><span class="text-rust-core">use</span> <span class="text-solve-cyan">mathhook_core</span>::prelude::*;</div>
+                    <div class="mt-4 text-chalk-600">// Create expressions using ergonomic macros</div>
+                    <div><span class="text-rust-core">let</span> x = <span class="text-solve-cyan">symbol!</span>(x);</div>
+                    <div><span class="text-rust-core">let</span> expr = <span class="text-solve-cyan">expr!</span>((x ^ <span class="text-step-green">2</span>) + (<span class="text-step-green">2</span> * x) + <span class="text-step-green">1</span>);</div>
+                    <div class="mt-4 text-chalk-600">// Simplify and solve</div>
+                    <div><span class="text-rust-core">let</span> simplified = expr.<span class="text-solve-cyan">simplify</span>();</div>
+                    <div><span class="text-rust-core">let</span> solutions = solver.<span class="text-solve-cyan">solve</span>(&equation, &x);</div>
+                    <div class="mt-4 text-chalk-600">// Parse LaTeX: \frac{'{'}x{'}'}{'{'}2{'}'} + y²</div>
+                    <div><span class="text-rust-core">let</span> parsed = parser.<span class="text-solve-cyan">parse</span>(r<span class="text-amber-400">"\frac{'{'}x{'}'}{'{'}2{'}'}"</span>);</div>
+                  </div>
 
-              <!-- JavaScript -->
-              <div v-if="activeLanguage === 'javascript'">
-                <div><span class="text-rust-core">import</span> { symbol, expr } <span class="text-rust-core">from</span> <span class="text-amber-400">'mathhook'</span>;</div>
-                <div class="mt-3 text-chalk-600">// Symbolic differentiation</div>
-                <div><span class="text-rust-core">const</span> x = <span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>);</div>
-                <div><span class="text-rust-core">const</span> f = <span class="text-solve-cyan">expr</span>(<span class="text-amber-400">'x^3 + 2*x^2 - 5*x'</span>);</div>
-                <div><span class="text-rust-core">const</span> df = f.<span class="text-solve-cyan">derivative</span>(x);</div>
-                <div class="mt-3 text-chalk-600">// Result: 3x² + 4x - 5</div>
-                <div class="mt-1"><span class="text-rust-core">const</span> steps = f.<span class="text-solve-cyan">derivativeSteps</span>(x);</div>
-                <div class="text-chalk-600">// Get detailed derivation steps!</div>
+                  <!-- Python -->
+                  <div v-else-if="activeLanguage === 'python'" key="python">
+                    <div><span class="text-rust-core">from</span> <span class="text-solve-cyan">mathhook</span> <span class="text-rust-core">import</span> Expression, MathSolver</div>
+                    <div class="mt-4 text-chalk-600"># Create expressions</div>
+                    <div>x = Expression.<span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>)</div>
+                    <div>expr = x.<span class="text-solve-cyan">pow</span>(<span class="text-step-green">2</span>).<span class="text-solve-cyan">add</span>(x.<span class="text-solve-cyan">multiply</span>(<span class="text-step-green">2</span>)).<span class="text-solve-cyan">add</span>(<span class="text-step-green">1</span>)</div>
+                    <div class="mt-4 text-chalk-600"># Simplify and solve equations</div>
+                    <div>simplified = expr.<span class="text-solve-cyan">simplify</span>()</div>
+                    <div>solutions = solver.<span class="text-solve-cyan">solve</span>(equation, <span class="text-amber-400">'x'</span>)</div>
+                    <div class="mt-4 text-chalk-600"># Parse LaTeX and get LaTeX output</div>
+                    <div>parsed = Expression.<span class="text-solve-cyan">parse</span>(r<span class="text-amber-400">"\frac{'{'}x{'}'}{'{'}2{'}'}"</span>)</div>
+                  </div>
+
+                  <!-- JavaScript -->
+                  <div v-else key="javascript">
+                    <div><span class="text-rust-core">import</span> { JsExpression, JsMathSolver } <span class="text-rust-core">from</span> <span class="text-amber-400">'mathhook-node'</span>;</div>
+                    <div class="mt-4 text-chalk-600">// Create expressions</div>
+                    <div><span class="text-rust-core">const</span> x = JsExpression.<span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>);</div>
+                    <div><span class="text-rust-core">const</span> expr = x.<span class="text-solve-cyan">pow</span>(<span class="text-step-green">2</span>).<span class="text-solve-cyan">add</span>(x.<span class="text-solve-cyan">multiply</span>(<span class="text-step-green">2</span>)).<span class="text-solve-cyan">add</span>(<span class="text-step-green">1</span>);</div>
+                    <div class="mt-4 text-chalk-600">// Simplify and solve equations</div>
+                    <div><span class="text-rust-core">const</span> simplified = expr.<span class="text-solve-cyan">simplify</span>();</div>
+                    <div><span class="text-rust-core">const</span> solutions = solver.<span class="text-solve-cyan">solve</span>(equation, <span class="text-amber-400">'x'</span>);</div>
+                    <div class="mt-4 text-chalk-600">// Parse LaTeX</div>
+                    <div><span class="text-rust-core">const</span> parsed = JsExpression.<span class="text-solve-cyan">parse</span>(String.raw<span class="text-amber-400">`\frac{'{'}x{'}'}{'{'}2{'}'}`</span>);</div>
+                  </div>
+                </Transition>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
+          :class="{ 'opacity-100': mounted && scrollY < 100, 'opacity-0': !mounted || scrollY >= 100 }"
+          style="transition: opacity 0.5s"
+        >
+          <svg class="w-6 h-6 text-chalk-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+          </svg>
         </div>
       </div>
     </header>
 
-    <!-- Ecosystem Badges -->
-    <section class="py-8 px-4 relative z-10">
+    <!-- Ecosystem Badges with Scroll Animation -->
+    <section
+      class="py-12 px-4 relative z-10"
+      v-scroll-animate="{ animation: 'fade-up', delay: 0 }"
+    >
       <div class="max-w-4xl mx-auto">
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="https://crates.io/crates/mathhook" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-logic-navy-800/50 border border-logic-navy-700 rounded-lg text-sm text-chalk-300 hover:border-rust-core/50 transition-colors">
-            <svg class="w-5 h-5 text-rust-core" viewBox="0 0 512 512" fill="currentColor"><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zm0 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208-93.31 208-208 208z"/><path d="M256 128c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 208c-44.11 0-80-35.89-80-80s35.89-80 80-80 80 35.89 80 80-35.89 80-80 80z"/></svg>
-            Crates.io
-          </a>
-          <a href="https://pypi.org/project/mathhook" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-logic-navy-800/50 border border-logic-navy-700 rounded-lg text-sm text-chalk-300 hover:border-amber-500/50 transition-colors">
-            <svg class="w-5 h-5 text-amber-400" viewBox="0 0 256 255" fill="currentColor"><path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z"/><path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z"/></svg>
-            PyPI
-          </a>
-          <a href="https://www.npmjs.com/package/mathhook" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-logic-navy-800/50 border border-logic-navy-700 rounded-lg text-sm text-chalk-300 hover:border-red-500/50 transition-colors">
-            <svg class="w-5 h-5 text-red-400" viewBox="0 0 576 512" fill="currentColor"><path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576z"/></svg>
-            npm
-          </a>
-          <a href="https://github.com/AhmedMashour/mathhook/blob/main/LICENSE" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-logic-navy-800/50 border border-logic-navy-700 rounded-lg text-sm text-chalk-300 hover:border-step-green/50 transition-colors">
-            <svg class="w-5 h-5 text-step-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            MIT License
+          <a
+            v-for="(badge, index) in ecosystemBadges"
+            :key="badge.name"
+            :href="badge.url"
+            target="_blank"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl text-sm text-chalk-300 hover:border-opacity-100 transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-sm"
+            :class="`hover:border-${badge.color}/50 hover:shadow-lg hover:shadow-${badge.color}/10`"
+            :style="{ transitionDelay: `${index * 50}ms` }"
+          >
+            <component :is="badge.icon" class="w-5 h-5" :class="`text-${badge.color}`" />
+            {{ badge.name }}
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Why MathHook Section -->
-    <section class="py-20 px-4 relative z-10">
+    <!-- Key Features Section with Staggered Cards -->
+    <section class="py-24 px-4 relative z-10" ref="featuresSection">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-14">
-          <h2 class="text-3xl font-bold text-chalk mb-3">Why MathHook?</h2>
-          <p class="text-chalk-400 max-w-2xl mx-auto">Built for developers who need mathematical computing without the performance penalty</p>
+        <div
+          class="text-center mb-16"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <span class="inline-block px-4 py-1.5 bg-rust-core/10 border border-rust-core/20 rounded-full text-xs text-rust-core font-medium mb-4">FEATURES</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-chalk mb-4">Key Features</h2>
+          <p class="text-chalk-400 max-w-2xl mx-auto text-lg">A high-performance educational computer algebra system</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
-          <!-- Performance -->
-          <div class="group bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-rust-core/50 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-rust-core/20 to-rust-core/5 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-rust-core" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-              </svg>
+        <div class="grid md:grid-cols-4 gap-5">
+          <div
+            v-for="(feature, index) in features"
+            :key="feature.title"
+            class="group bg-logic-navy-800/30 border border-logic-navy-700/50 rounded-2xl p-6 transition-all duration-500 hover:bg-logic-navy-800/50 hover:-translate-y-2 hover:shadow-xl cursor-default"
+            :class="`hover:border-${feature.color}/50 hover:shadow-${feature.color}/10`"
+            v-scroll-animate="{ animation: 'fade-up', delay: index * 100 }"
+          >
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+              :class="`bg-gradient-to-br from-${feature.color}/20 to-${feature.color}/5`"
+            >
+              <span class="text-xl">{{ feature.icon }}</span>
             </div>
-            <h3 class="text-lg font-semibold text-chalk mb-2">Blazing Fast</h3>
-            <p class="text-chalk-400 text-sm leading-relaxed mb-4">
-              32-byte optimized expressions with SIMD vectorization. No GC pauses, no interpreter overhead.
+            <h3 class="text-lg font-semibold text-chalk mb-2 group-hover:text-white transition-colors">{{ feature.title }}</h3>
+            <p class="text-chalk-500 text-sm leading-relaxed group-hover:text-chalk-400 transition-colors">
+              {{ feature.description }}
             </p>
-            <div class="flex items-center gap-2 text-xs">
-              <span class="px-2 py-1 bg-rust-core/10 text-rust-core rounded">Zero-copy</span>
-              <span class="px-2 py-1 bg-rust-core/10 text-rust-core rounded">SIMD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance Benchmarks with Animated Bars -->
+    <section class="py-24 px-4 relative z-10">
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-logic-navy-800/50 to-logic-navy-900 pointer-events-none"></div>
+
+      <div class="max-w-5xl mx-auto relative">
+        <div
+          class="text-center mb-16"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <span class="inline-block px-4 py-1.5 bg-solve-cyan/10 border border-solve-cyan/20 rounded-full text-xs text-solve-cyan font-medium mb-4">PERFORMANCE</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-chalk mb-4">Blazing Fast</h2>
+          <p class="text-chalk-400 text-lg">Nanosecond-to-microsecond performance for symbolic operations</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10 items-start">
+          <!-- Benchmark Table with Animated Entries -->
+          <div
+            class="bg-logic-navy-800/50 border border-logic-navy-700/50 rounded-2xl overflow-hidden backdrop-blur-sm"
+            v-scroll-animate="{ animation: 'fade-right' }"
+          >
+            <div class="px-6 py-4 border-b border-logic-navy-700/50 bg-logic-navy-800/30">
+              <h3 class="font-semibold text-chalk text-lg">Operation Benchmarks</h3>
+            </div>
+            <div class="divide-y divide-logic-navy-700/30">
+              <div
+                v-for="(benchmark, index) in benchmarks"
+                :key="benchmark.name"
+                class="flex justify-between items-center px-6 py-4 hover:bg-logic-navy-700/20 transition-colors"
+                v-scroll-animate="{ animation: 'fade-up', delay: index * 100 }"
+              >
+                <span class="text-chalk-400 text-sm">{{ benchmark.name }}</span>
+                <span :class="`text-${benchmark.color} font-mono font-bold`">{{ benchmark.time }}</span>
+              </div>
+            </div>
+            <div class="px-6 py-3 bg-logic-navy-900/50 text-xs text-chalk-600 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Benchmarked with Criterion.rs
             </div>
           </div>
 
-          <!-- Educational -->
-          <div class="group bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-step-green/50 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-step-green/20 to-step-green/5 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-step-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-chalk mb-2">Step-by-Step</h3>
-            <p class="text-chalk-400 text-sm leading-relaxed mb-4">
-              Every computation includes detailed derivation steps. Perfect for learning and debugging.
-            </p>
-            <div class="flex items-center gap-2 text-xs">
-              <span class="px-2 py-1 bg-step-green/10 text-step-green rounded">LaTeX output</span>
-              <span class="px-2 py-1 bg-step-green/10 text-step-green rounded">Explainable</span>
-            </div>
-          </div>
-
-          <!-- Multi-language -->
-          <div class="group bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-solve-cyan/50 transition-all hover:-translate-y-1">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-solve-cyan/20 to-solve-cyan/5 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-solve-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            <h3 class="text-lg font-semibold text-chalk mb-2">Multi-Language</h3>
-            <p class="text-chalk-400 text-sm leading-relaxed mb-4">
-              Native Rust core with first-class Python and Node.js bindings. Same API, same performance.
-            </p>
-            <div class="flex items-center gap-2 text-xs">
-              <span class="px-2 py-1 bg-rust-core/10 text-rust-core rounded">Rust</span>
-              <span class="px-2 py-1 bg-amber-500/10 text-amber-400 rounded">Python</span>
-              <span class="px-2 py-1 bg-step-green/10 text-step-green rounded">Node</span>
+          <!-- Why So Fast -->
+          <div
+            class="space-y-5"
+            v-scroll-animate="{ animation: 'fade-left' }"
+          >
+            <h3 class="font-semibold text-chalk text-xl mb-6">Why So Fast?</h3>
+            <div
+              v-for="(reason, index) in performanceReasons"
+              :key="reason.title"
+              class="flex items-start gap-4 group"
+              v-scroll-animate="{ animation: 'fade-up', delay: index * 100 }"
+            >
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110"
+                :class="`bg-${reason.color}/10`"
+              >
+                <span :class="`text-${reason.color} text-sm font-bold`">{{ reason.icon }}</span>
+              </div>
+              <div>
+                <div class="text-chalk font-medium group-hover:text-white transition-colors">{{ reason.title }}</div>
+                <div class="text-chalk-500 text-sm group-hover:text-chalk-400 transition-colors">{{ reason.description }}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Performance Benchmarks -->
-    <section class="py-20 px-4 relative z-10 border-t border-logic-navy-800">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-14">
-          <h2 class="text-3xl font-bold text-chalk mb-3">Performance That Matters</h2>
-          <p class="text-chalk-400">Benchmarked against leading symbolic math libraries</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-          <!-- Benchmark Bars -->
-          <div class="space-y-6">
-            <div>
-              <div class="flex justify-between text-sm mb-2">
-                <span class="text-chalk font-medium">MathHook (Rust)</span>
-                <span class="text-step-green">0.3ms</span>
-              </div>
-              <div class="h-3 bg-logic-navy-800 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-rust-core to-solve-cyan rounded-full" style="width: 3%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm mb-2">
-                <span class="text-chalk-400">SymPy (Python)</span>
-                <span class="text-chalk-500">12ms</span>
-              </div>
-              <div class="h-3 bg-logic-navy-800 rounded-full overflow-hidden">
-                <div class="h-full bg-amber-500/50 rounded-full" style="width: 40%"></div>
-              </div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm mb-2">
-                <span class="text-chalk-400">Mathjs (Node.js)</span>
-                <span class="text-chalk-500">28ms</span>
-              </div>
-              <div class="h-3 bg-logic-navy-800 rounded-full overflow-hidden">
-                <div class="h-full bg-step-green/50 rounded-full" style="width: 95%"></div>
-              </div>
-            </div>
-            <p class="text-xs text-chalk-600 mt-4">* Benchmark: 1000x derivative of x³ + 2x² - 5x</p>
-          </div>
-
-          <!-- Performance Stats -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-5 text-center">
-              <div class="text-3xl font-bold text-rust-core mb-1">40x</div>
-              <div class="text-sm text-chalk-400">Faster than SymPy</div>
-            </div>
-            <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-5 text-center">
-              <div class="text-3xl font-bold text-solve-cyan mb-1">93x</div>
-              <div class="text-sm text-chalk-400">Faster than Mathjs</div>
-            </div>
-            <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-5 text-center">
-              <div class="text-3xl font-bold text-step-green mb-1">32B</div>
-              <div class="text-sm text-chalk-400">Expression size</div>
-            </div>
-            <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-5 text-center">
-              <div class="text-3xl font-bold text-violet-400 mb-1">0</div>
-              <div class="text-sm text-chalk-400">GC pauses</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Topics Coverage -->
-    <section class="py-20 px-4 relative z-10 border-t border-logic-navy-800">
+    <!-- Topics Coverage with Interactive Cards -->
+    <section class="py-24 px-4 relative z-10">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-14">
-          <h2 class="text-3xl font-bold text-chalk mb-3">Comprehensive Math Coverage</h2>
-          <p class="text-chalk-400">From basic algebra to advanced differential equations</p>
+        <div
+          class="text-center mb-16"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <span class="inline-block px-4 py-1.5 bg-step-green/10 border border-step-green/20 rounded-full text-xs text-step-green font-medium mb-4">DOCUMENTATION</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-chalk mb-4">Comprehensive Math Coverage</h2>
+          <p class="text-chalk-400 text-lg">From basic algebra to advanced differential equations</p>
+          <p v-if="categoryTopics.length > 0" class="text-xs text-chalk-600 mt-3">
+            {{ totalTopicCount }} topics across {{ categoryTopics.length }} categories
+          </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-rust-core/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">∫</div>
-            <div class="text-rust-core font-semibold mb-1 group-hover:text-rust-core-300">Calculus</div>
-            <div class="text-xs text-chalk-500">Derivatives, Integrals, Limits, Series</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-solve-cyan/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">dy/dx</div>
-            <div class="text-solve-cyan font-semibold mb-1 group-hover:text-solve-cyan-300">ODEs</div>
-            <div class="text-xs text-chalk-500">Separable, Linear, Bernoulli, Exact</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-step-green/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">∂²u</div>
-            <div class="text-step-green font-semibold mb-1 group-hover:text-step-green-300">PDEs</div>
-            <div class="text-xs text-chalk-500">Heat, Wave, Laplace, Poisson</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-amber-500/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">Σ</div>
-            <div class="text-amber-400 font-semibold mb-1 group-hover:text-amber-300">Algebra</div>
-            <div class="text-xs text-chalk-500">Simplify, Factor, Expand, Solve</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-violet-500/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">[ ]</div>
-            <div class="text-violet-400 font-semibold mb-1 group-hover:text-violet-300">Linear Algebra</div>
-            <div class="text-xs text-chalk-500">Matrices, Eigenvalues, SVD</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-pink-500/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">sin</div>
-            <div class="text-pink-400 font-semibold mb-1 group-hover:text-pink-300">Trigonometry</div>
-            <div class="text-xs text-chalk-500">Identities, Equations, Inverses</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-cyan-500/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">ℤ</div>
-            <div class="text-cyan-400 font-semibold mb-1 group-hover:text-cyan-300">Number Theory</div>
-            <div class="text-xs text-chalk-500">Primes, GCD, Modular Arithmetic</div>
-          </NuxtLink>
-          <NuxtLink to="/docs" class="group p-5 bg-logic-navy-800/30 border border-logic-navy-700 rounded-xl hover:border-orange-500/50 transition-all hover:-translate-y-1">
-            <div class="text-2xl mb-2">∇</div>
-            <div class="text-orange-400 font-semibold mb-1 group-hover:text-orange-300">Vector Calculus</div>
-            <div class="text-xs text-chalk-500">Gradient, Divergence, Curl</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+          <NuxtLink
+            v-for="(cat, index) in categoryTopics"
+            :key="cat.id"
+            :to="cat.firstTopic ? `/docs/${cat.firstTopic}` : '/docs'"
+            class="group relative p-6 bg-logic-navy-800/30 border border-logic-navy-700/50 rounded-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden"
+            :class="`hover:border-${cat.color}/50`"
+            v-scroll-animate="{ animation: 'fade-up', delay: index * 75 }"
+          >
+            <!-- Gradient overlay on hover -->
+            <div
+              class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              :class="`bg-gradient-to-br from-${cat.color}/10 to-transparent`"
+            ></div>
+
+            <div class="relative z-10">
+              <div class="text-3xl mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">{{ cat.icon }}</div>
+              <div class="font-semibold mb-1 transition-colors" :class="`text-${cat.color} group-hover:text-white`">{{ cat.title }}</div>
+              <div class="text-xs text-chalk-500 group-hover:text-chalk-400 transition-colors">{{ cat.description }}</div>
+              <div class="text-xs text-chalk-600 mt-3 flex items-center gap-1">
+                <span>{{ cat.count }} topics</span>
+                <svg class="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </div>
           </NuxtLink>
         </div>
 
-        <div class="mt-10 text-center">
-          <NuxtLink to="/docs" class="inline-flex items-center gap-2 px-5 py-2.5 bg-logic-navy-800 border border-logic-navy-600 rounded-lg text-chalk hover:bg-logic-navy-700 transition-colors">
+        <div
+          class="mt-12 text-center"
+          v-scroll-animate="{ animation: 'fade-up', delay: 400 }"
+        >
+          <NuxtLink to="/docs" class="group inline-flex items-center gap-2 px-6 py-3 bg-logic-navy-800/50 border border-logic-navy-600 rounded-xl text-chalk hover:bg-logic-navy-700 hover:border-logic-navy-500 transition-all duration-300 hover:scale-105">
             Explore all topics
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
           </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- Use Cases -->
-    <section class="py-20 px-4 relative z-10 border-t border-logic-navy-800">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-14">
-          <h2 class="text-3xl font-bold text-chalk mb-3">Built For</h2>
-          <p class="text-chalk-400">From research to production</p>
+    <!-- Use Cases with Hover Effects -->
+    <section class="py-24 px-4 relative z-10">
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-logic-navy-800/30 to-logic-navy-900 pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto relative">
+        <div
+          class="text-center mb-16"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <span class="inline-block px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full text-xs text-violet-400 font-medium mb-4">USE CASES</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-chalk mb-4">Built For</h2>
+          <p class="text-chalk-400 text-lg">From research to production</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-6">
-          <div class="text-center p-6">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-rust-core/10 flex items-center justify-center">
-              <svg class="w-7 h-7 text-rust-core" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        <div class="grid md:grid-cols-4 gap-8">
+          <div
+            v-for="(useCase, index) in useCases"
+            :key="useCase.title"
+            class="text-center group cursor-default"
+            v-scroll-animate="{ animation: 'fade-up', delay: index * 100 }"
+          >
+            <div
+              class="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-xl"
+              :class="`bg-${useCase.color}/10 group-hover:bg-${useCase.color}/20 group-hover:shadow-${useCase.color}/20`"
+            >
+              <svg :class="`w-8 h-8 text-${useCase.color}`" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="useCase.iconPath"/>
               </svg>
             </div>
-            <h3 class="font-semibold text-chalk mb-2">Machine Learning</h3>
-            <p class="text-sm text-chalk-500">Symbolic gradients for neural networks and optimization</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-step-green/10 flex items-center justify-center">
-              <svg class="w-7 h-7 text-step-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
-            <h3 class="font-semibold text-chalk mb-2">Education</h3>
-            <p class="text-sm text-chalk-500">Step-by-step solutions for teaching and learning</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-solve-cyan/10 flex items-center justify-center">
-              <svg class="w-7 h-7 text-solve-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-              </svg>
-            </div>
-            <h3 class="font-semibold text-chalk mb-2">Research</h3>
-            <p class="text-sm text-chalk-500">High-performance symbolic computation for science</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-violet-500/10 flex items-center justify-center">
-              <svg class="w-7 h-7 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-              </svg>
-            </div>
-            <h3 class="font-semibold text-chalk mb-2">Development</h3>
-            <p class="text-sm text-chalk-500">Embed math in your applications with native speed</p>
+            <h3 class="font-semibold text-chalk mb-2 group-hover:text-white transition-colors">{{ useCase.title }}</h3>
+            <p class="text-sm text-chalk-500 group-hover:text-chalk-400 transition-colors">{{ useCase.description }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Quick Install -->
-    <section class="py-20 px-4 relative z-10 border-t border-logic-navy-800">
+    <!-- Quick Install with Copy Animation -->
+    <section class="py-24 px-4 relative z-10">
       <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-chalk mb-3">Get Started in Seconds</h2>
-          <p class="text-chalk-400">Choose your language and start computing</p>
+        <div
+          class="text-center mb-14"
+          v-scroll-animate="{ animation: 'fade-up' }"
+        >
+          <span class="inline-block px-4 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-full text-xs text-amber-400 font-medium mb-4">INSTALLATION</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-chalk mb-4">Get Started in Seconds</h2>
+          <p class="text-chalk-400 text-lg">Choose your language and start computing</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
-          <!-- Rust -->
-          <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-rust-core/50 transition-colors">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="text-2xl">🦀</span>
-              <span class="text-rust-core font-semibold">Rust</span>
+          <div
+            v-for="(install, index) in installCommands"
+            :key="install.lang"
+            class="group bg-logic-navy-800/50 border border-logic-navy-700/50 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+            :class="`hover:border-${install.color}/50 hover:shadow-${install.color}/10`"
+            v-scroll-animate="{ animation: 'fade-up', delay: index * 100 }"
+          >
+            <div class="flex items-center gap-3 mb-5">
+              <span class="text-3xl transition-transform duration-300 group-hover:scale-110">{{ install.emoji }}</span>
+              <span :class="`text-${install.color} font-semibold text-lg`">{{ install.lang }}</span>
             </div>
-            <code class="text-sm text-chalk-300 font-mono block bg-logic-navy-900 rounded-lg p-3">
-              cargo add mathhook
-            </code>
-          </div>
-
-          <!-- Python -->
-          <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-amber-500/50 transition-colors">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="text-2xl">🐍</span>
-              <span class="text-amber-400 font-semibold">Python</span>
+            <div
+              class="relative bg-logic-navy-900/80 rounded-xl p-4 font-mono text-sm cursor-pointer group/code"
+              @click="copyCommand(install.command)"
+            >
+              <code class="text-chalk-300">{{ install.command }}</code>
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover/code:opacity-100 transition-opacity">
+                <svg v-if="!copiedCommand || copiedCommand !== install.command" class="w-5 h-5 text-chalk-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                <svg v-else class="w-5 h-5 text-step-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
             </div>
-            <code class="text-sm text-chalk-300 font-mono block bg-logic-navy-900 rounded-lg p-3">
-              pip install mathhook
-            </code>
-          </div>
-
-          <!-- Node.js -->
-          <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-6 hover:border-step-green/50 transition-colors">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="text-2xl">📜</span>
-              <span class="text-step-green font-semibold">Node.js</span>
-            </div>
-            <code class="text-sm text-chalk-300 font-mono block bg-logic-navy-900 rounded-lg p-3">
-              npm install mathhook
-            </code>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-20 px-4 relative z-10 border-t border-logic-navy-800">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-chalk mb-4">Ready to Solve?</h2>
-        <p class="text-chalk-400 mb-8 text-lg">Join developers using MathHook for high-performance symbolic math</p>
-        <div class="flex items-center justify-center gap-4">
-          <NuxtLink to="/docs" class="px-8 py-3 bg-gradient-to-r from-rust-core to-solve-cyan text-white font-medium rounded-lg hover:opacity-90 transition-opacity">
-            Read the Docs
+    <!-- CTA Section with Gradient Animation -->
+    <section class="py-32 px-4 relative z-10 overflow-hidden">
+      <!-- Animated background -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-conic from-rust-core/20 via-solve-cyan/20 to-step-green/20 rounded-full blur-[100px] animate-spin-slow"></div>
+      </div>
+
+      <div
+        class="max-w-3xl mx-auto text-center relative"
+        v-scroll-animate="{ animation: 'fade-up' }"
+      >
+        <h2 class="text-4xl md:text-6xl font-bold text-chalk mb-6">Ready to Solve?</h2>
+        <p class="text-chalk-400 mb-10 text-xl">Join developers using MathHook for high-performance symbolic math</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <NuxtLink to="/docs" class="group relative px-10 py-4 bg-gradient-to-r from-rust-core via-solve-cyan to-step-green text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-solve-cyan/25 overflow-hidden">
+            <span class="relative z-10">Read the Docs</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-step-green via-solve-cyan to-rust-core opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </NuxtLink>
-          <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="px-8 py-3 bg-logic-navy-800 border border-logic-navy-600 text-chalk font-medium rounded-lg hover:bg-logic-navy-700 transition-colors">
+          <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="group px-10 py-4 bg-logic-navy-800/80 border border-logic-navy-600 text-chalk font-semibold rounded-xl hover:bg-logic-navy-700 hover:border-logic-navy-500 transition-all duration-300 hover:scale-105 backdrop-blur-sm">
             View on GitHub
           </a>
         </div>
@@ -494,11 +544,11 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-logic-navy-800 relative z-10">
+    <footer class="py-16 px-4 border-t border-logic-navy-800/50 relative z-10">
       <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
           <div class="flex items-center gap-3">
-            <svg class="w-6 h-6" viewBox="0 0 48 48" fill="none">
+            <svg class="w-8 h-8" viewBox="0 0 48 48" fill="none">
               <defs>
                 <linearGradient id="footer-logo" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#E64524"/>
@@ -507,20 +557,22 @@
               </defs>
               <path d="M12 40 C12 40 12 12 12 10 C12 6 16 4 20 8 L24 16 L28 8 C32 4 36 6 36 10 C36 12 36 40 36 40" stroke="url(#footer-logo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
-            <span class="text-chalk-400 text-sm">
-              <span class="text-rust-core">Math</span><span class="text-solve-cyan">Hook</span>
-              <span class="text-chalk-600 ml-2">Symbolic Power. Educational Clarity. Native Speed.</span>
-            </span>
+            <div>
+              <span class="text-chalk-400 text-sm">
+                <span class="text-rust-core font-semibold">Math</span><span class="text-solve-cyan font-semibold">Hook</span>
+              </span>
+              <p class="text-chalk-600 text-xs mt-0.5">Symbolic Power. Educational Clarity. Native Speed.</p>
+            </div>
           </div>
-          <div class="flex items-center gap-6 text-sm">
-            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors">GitHub</a>
-            <a href="https://crates.io/crates/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors">Crates.io</a>
-            <a href="https://pypi.org/project/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors">PyPI</a>
-            <a href="https://www.npmjs.com/package/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors">npm</a>
+          <div class="flex items-center gap-8 text-sm">
+            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors hover:-translate-y-0.5 duration-300">GitHub</a>
+            <a href="https://crates.io/crates/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors hover:-translate-y-0.5 duration-300">Crates.io</a>
+            <a href="https://pypi.org/project/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors hover:-translate-y-0.5 duration-300">PyPI</a>
+            <a href="https://www.npmjs.com/package/mathhook-node" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors hover:-translate-y-0.5 duration-300">npm</a>
           </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-logic-navy-800 text-center text-xs text-chalk-600">
-          Built with Rust. Open source under MIT License.
+        <div class="mt-10 pt-8 border-t border-logic-navy-800/50 text-center text-xs text-chalk-600">
+          Built with Rust. Open source under MIT OR Apache-2.0.
         </div>
       </div>
     </footer>
@@ -529,6 +581,173 @@
 
 <script setup>
 const activeLanguage = ref('rust')
+const categoryTopics = ref([])
+const totalTopicCount = ref(0)
+const mounted = ref(false)
+const scrollY = ref(0)
+const parallax = ref({ x: 0, y: 0 })
+const copiedCommand = ref(null)
+
+// Animated tagline words
+const taglineWords = [
+  { text: 'Symbolic', color: 'text-rust-core' },
+  { text: 'Power.', color: 'text-chalk' },
+  { text: 'Educational', color: 'text-solve-cyan' },
+  { text: 'Clarity.', color: 'text-chalk' },
+  { text: 'Native', color: 'text-step-green' },
+  { text: 'Speed.', color: 'text-chalk' }
+]
+
+// Features data
+const features = [
+  { title: 'Symbolic Mathematics', description: 'Expressions, algebra, calculus, and matrix operations', icon: '∫', color: 'rust-core' },
+  { title: 'Multiple Input Formats', description: 'Parse LaTeX, Wolfram Language, and standard notation', icon: '📝', color: 'solve-cyan' },
+  { title: 'Equation Solving', description: 'Linear, quadratic, polynomial, and systems of equations', icon: '⚖️', color: 'amber-400' },
+  { title: 'Educational Focus', description: 'Step-by-step explanations for all operations', icon: '🎓', color: 'step-green' },
+  { title: 'High Performance', description: 'Rust-based core with SIMD optimizations', icon: '⚡', color: 'rust-core' },
+  { title: 'Language Bindings', description: 'Native support for Python and Node.js', icon: '🔗', color: 'violet-400' },
+  { title: 'Memory Efficient', description: '32-byte expressions for optimal cache performance', icon: '💾', color: 'solve-cyan' },
+  { title: 'Production Ready', description: 'Zero-copy parsing, arena allocation, thread-safe', icon: '🚀', color: 'step-green' }
+]
+
+// Benchmarks data
+const benchmarks = [
+  { name: 'Elementary integration (cos, exp)', time: '< 300 ns', color: 'step-green' },
+  { name: 'Simple derivatives', time: '< 2 μs', color: 'solve-cyan' },
+  { name: 'Polynomial simplification (deg 50)', time: '< 10 μs', color: 'amber-400' },
+  { name: 'Complex calculus (chain + product)', time: '< 500 μs', color: 'rust-core' }
+]
+
+// Performance reasons
+const performanceReasons = [
+  { title: '32-byte expressions', description: 'Two fit per CPU cache line', icon: '32B', color: 'rust-core' },
+  { title: 'Zero-copy parsing', description: 'Direct AST construction without allocations', icon: '0', color: 'solve-cyan' },
+  { title: 'SIMD operations', description: 'Vectorized arithmetic for bulk operations', icon: '⚡', color: 'step-green' },
+  { title: 'No interpreter overhead', description: 'Native Rust, no garbage collector', icon: '🦀', color: 'amber-400' },
+  { title: 'Thread-safe', description: 'Immutable expressions, lock-free operations', icon: '🔒', color: 'violet-400' }
+]
+
+// Use cases
+const useCases = [
+  { title: 'Machine Learning', description: 'Symbolic gradients for neural networks and optimization', color: 'rust-core', iconPath: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+  { title: 'Education', description: 'Step-by-step solutions for teaching and learning', color: 'step-green', iconPath: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+  { title: 'Research', description: 'High-performance symbolic computation for science', color: 'solve-cyan', iconPath: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z' },
+  { title: 'Development', description: 'Embed math in your applications with native speed', color: 'violet-400', iconPath: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4' }
+]
+
+// Install commands
+const installCommands = [
+  { lang: 'Rust', emoji: '🦀', command: 'cargo add mathhook', color: 'rust-core' },
+  { lang: 'Python', emoji: '🐍', command: 'pip install mathhook', color: 'amber-400' },
+  { lang: 'Node.js', emoji: '📜', command: 'npm install mathhook-node', color: 'step-green' }
+]
+
+// Category configuration
+const categoryConfig = {
+  'calculus': { title: 'Calculus', icon: '∫', color: 'rust-core', description: 'Derivatives, Integrals, Limits, Series', order: 1, prefixes: ['operations-differentiation', 'operations-integration', 'operations-limits', 'operations-series'] },
+  'ode': { title: 'ODEs', icon: 'dy/dx', color: 'solve-cyan', description: 'Separable, Linear, Bernoulli, Exact', order: 2, prefixes: ['ode-'] },
+  'pde': { title: 'PDEs', icon: '∂²u', color: 'step-green', description: 'Heat, Wave, Laplace, Poisson', order: 3, prefixes: ['pde-', 'advanced-pde-'] },
+  'algebra': { title: 'Algebra', icon: 'Σ', color: 'amber-400', description: 'Simplify, Factor, Expand, Solve', order: 4, prefixes: ['operations-simplification', 'operations-expansion', 'operations-solving', 'operations-substitution'] },
+  'polynomial': { title: 'Polynomials', icon: 'xⁿ', color: 'violet-400', description: 'GCD, Division, Gröbner Bases', order: 5, prefixes: ['polynomial-'] },
+  'advanced': { title: 'Advanced Topics', icon: '🔬', color: 'pink-400', description: 'Complex Numbers, Matrices, Special Functions', order: 6, prefixes: ['advanced-'] },
+  'educational': { title: 'Educational', icon: '🎓', color: 'cyan-400', description: 'Step-by-Step, Messages, API', order: 7, prefixes: ['educational-'] },
+  'getting-started': { title: 'Getting Started', icon: '🚀', color: 'orange-400', description: 'Installation, Quick Start, Patterns', order: 0, prefixes: ['getting-started-'] }
+}
+
+// Copy command to clipboard
+const copyCommand = async (command) => {
+  await navigator.clipboard.writeText(command)
+  copiedCommand.value = command
+  setTimeout(() => {
+    copiedCommand.value = null
+  }, 2000)
+}
+
+// Scroll handler for parallax and nav
+const handleScroll = () => {
+  scrollY.value = window.scrollY
+}
+
+// Mouse move for parallax
+const handleMouseMove = (e) => {
+  parallax.value = {
+    x: (e.clientX - window.innerWidth / 2) / 50,
+    y: (e.clientY - window.innerHeight / 2) / 50
+  }
+}
+
+// Scroll animation directive
+const vScrollAnimate = {
+  mounted(el, binding) {
+    const options = binding.value || {}
+    const animation = options.animation || 'fade-up'
+    const delay = options.delay || 0
+
+    el.style.opacity = '0'
+    el.style.transform = animation === 'fade-up' ? 'translateY(30px)' :
+                         animation === 'fade-left' ? 'translateX(30px)' :
+                         animation === 'fade-right' ? 'translateX(-30px)' : 'translateY(30px)'
+    el.style.transition = `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            el.style.opacity = '1'
+            el.style.transform = 'translateY(0) translateX(0)'
+          }, 50)
+          observer.unobserve(el)
+        }
+      })
+    }, { threshold: 0.1, rootMargin: '50px' })
+
+    observer.observe(el)
+  }
+}
+
+// Load topics from schemas
+onMounted(async () => {
+  mounted.value = true
+
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('mousemove', handleMouseMove, { passive: true })
+
+  try {
+    const response = await fetch('/data/_topics.json')
+    if (!response.ok) return
+
+    const topics = await response.json()
+    totalTopicCount.value = topics.length
+
+    const grouped = {}
+
+    for (const topic of topics) {
+      for (const [catId, catConfig] of Object.entries(categoryConfig)) {
+        const matches = catConfig.prefixes.some(prefix => topic.startsWith(prefix))
+        if (matches) {
+          if (!grouped[catId]) {
+            grouped[catId] = { id: catId, ...catConfig, topics: [], firstTopic: null, count: 0 }
+          }
+          grouped[catId].topics.push(topic)
+          grouped[catId].count++
+          if (!grouped[catId].firstTopic) {
+            grouped[catId].firstTopic = topic
+          }
+          break
+        }
+      }
+    }
+
+    categoryTopics.value = Object.values(grouped).sort((a, b) => a.order - b.order).slice(0, 8)
+  } catch (e) {
+    console.error('Failed to load topics:', e)
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('mousemove', handleMouseMove)
+})
 
 useHead({
   title: 'MathHook - High-Performance Computer Algebra System',
@@ -539,8 +758,55 @@ useHead({
 </script>
 
 <style scoped>
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Gradient animation */
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Slow spin for CTA background */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 30s linear infinite;
+}
+
+/* Code transition */
+.code-fade-enter-active,
+.code-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.code-fade-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.code-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+/* Conic gradient */
+.bg-gradient-conic {
+  background: conic-gradient(from 0deg, var(--tw-gradient-stops));
 }
 </style>

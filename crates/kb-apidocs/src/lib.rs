@@ -1,6 +1,6 @@
-/// API documentation generator
-///
-/// Generates OpenAPI/Swagger-style API documentation with interactive playground.
+//! API documentation generator
+//!
+//! Generates OpenAPI/Swagger-style API documentation with interactive playground.
 
 pub mod generator;
 

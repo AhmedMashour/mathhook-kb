@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Expand functions as infinite series for numerical approximation and analysis.\n",
+    "title": "Series Expansions",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/operations/series": {
+      "post": {
+        "description": "Expand functions as infinite series for numerical approximation and analysis.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "laurent_series_(negative_powers)": {
+                  "description": "For functions with singularities",
+                  "summary": "Laurent Series (Negative Powers)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "maclaurin_series_(expansion_at_x=0)": {
+                  "description": "Standard functions at x = 0",
+                  "summary": "Maclaurin Series (Expansion at x=0)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "taylor_series_at_arbitrary_points": {
+                  "description": "Expand around any point a",
+                  "summary": "Taylor Series at Arbitrary Points",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Series Expansions",
+        "tags": [
+          "operations"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "operations operations",
+      "name": "operations"
+    }
+  ]
+}

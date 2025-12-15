@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "MathHook provides a comprehensive mathematical function system with intelligent evaluation,\nsymbolic manipulation, and educational explanations. Functions are first-class expressions\nsupporting exact symbolic computation and high-performance numerical evaluation through\na modular intelligence architecture.\n",
+    "title": "Function System",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/core/functions": {
+      "post": {
+        "description": "MathHook provides a comprehensive mathematical function system with intelligent evaluation,\nsymbolic manipulation, and educational explanations. Functions are first-class expressions\nsupporting exact symbolic computation and high-performance numerical evaluation through\na modular intelligence architecture.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "creating_functions_with_macros": {
+                  "description": "Using function! and expr! macros for ergonomic function creation",
+                  "summary": "Creating Functions with Macros",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "logarithm_and_exponential_identities": {
+                  "description": "Automatic application of logarithm laws and exponential identities",
+                  "summary": "Logarithm and Exponential Identities",
+                  "value": {
+                    "expression": "symbol('a')"
+                  }
+                },
+                "trigonometric_functions_with_exact_values": {
+                  "description": "Automatic recognition of exact trigonometric values at special angles",
+                  "summary": "Trigonometric Functions with Exact Values",
+                  "value": {
+                    "expression": ""
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Function System",
+        "tags": [
+          "core"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "core operations",
+      "name": "core"
+    }
+  ]
+}

@@ -1,78 +1,88 @@
 {
-  "topic": "getting-started",
-  "title": "Quick Start Guide",
-  "description": "Get started with MathHook - a high-performance computer algebra system for Python, Rust, and JavaScript",
-  "mathematical_definition": "\\text{MathHook: Symbolic Mathematics for Modern Applications}",
+  "topic": "getting-started.quick-start",
+  "title": "Quick Start",
+  "description": "Get up and running with MathHook in 5 minutes. Learn basic expression creation,\nparsing, differentiation, and common operations across Rust, Python, and Node.js.\n",
+  "code_refs": {
+    "rust": "mathhook::prelude",
+    "python": "mathhook.Expression",
+    "nodejs": "mathhook-node.Expression"
+  },
   "examples": [
     {
-      "title": "Installation and Basic Usage",
-      "explanation": "Install MathHook in your preferred language and start solving mathematical problems instantly.\n\n**Python**: Install via pip\n**Rust**: Add to Cargo.toml\n**JavaScript**: Install via npm\n",
+      "title": "First Expression - Quadratic",
+      "explanation": "Build and simplify x^2 + 2x + 1",
       "code": {
-        "python": "# Installation: pip install mathhook\nfrom mathhook import symbol, expr, solve\n\n# Create symbols\nx = symbol('x')\n\n# Build expressions\nequation = expr(x**2 - 4)\n\n# Solve\nsolutions = solve(equation, x)\nprint(f\"Solutions: {solutions}\")  # [-2, 2]\n",
-        "rust": "// Cargo.toml: mathhook-core = \"0.1.0\"\nuse mathhook_core::{symbol, expr, solve};\n\n// Create symbols\nlet x = symbol!(x);\n\n// Build expressions\nlet equation = expr!(x^2 - 4);\n\n// Solve\nlet solutions = solve(&equation, &x);\nprintln!(\"Solutions: {:?}\", solutions);  // [-2, 2]\n",
-        "nodejs": "// Installation: npm install mathhook-node\nconst { symbol, expr, solve } = require('mathhook-node');\n\n// Create symbols\nconst x = symbol('x');\n\n// Build expressions\nconst equation = expr(x.pow(2).sub(4));\n\n// Solve\nconst solutions = solve(equation, x);\nconsole.log(`Solutions: ${solutions}`);  // [-2, 2]\n"
-      },
-      "expected_output": "Solutions: [-2, 2]"
+        "rust": "use mathhook::prelude::*;\n\nfn main() {\n    let x = symbol!(x);\n    let expr = expr!(add: (x ^ 2), (2 * x), 1);\n    let simplified = expr.simplify();\n\n    println!(\"Original: {}\", expr);\n    println!(\"Simplified: {}\", simplified);\n}\n",
+        "python": "from mathhook import Expression\n\nx = Expression.symbol('x')\nexpr = x.pow(2).add(x.multiply(2)).add(1)\nsimplified = expr.simplify()\n\nprint(f\"Original: {expr}\")\nprint(f\"Simplified: {simplified}\")\n",
+        "nodejs": "import { Expression } from 'mathhook-node';\n\nconst x = Expression.symbol('x');\nconst expr = x.pow(2).add(x.multiply(2)).add(1);\nconst simplified = expr.simplify();\n\nconsole.log(`Original: ${expr.toString()}`);\nconsole.log(`Simplified: ${simplified.toString()}`);\n"
+      }
     },
     {
-      "title": "Symbolic Differentiation",
-      "explanation": "Compute derivatives symbolically with automatic simplification.\nMathHook handles polynomial, trigonometric, exponential, and logarithmic functions.\n",
+      "title": "Parsing LaTeX",
+      "explanation": "Parse LaTeX notation into symbolic expression",
       "code": {
-        "python": "from mathhook import symbol, derivative\n\nx = symbol('x')\nf = x**3 + 2*x**2 - 5*x + 1\n\n# First derivative\ndf = derivative(f, x)\nprint(f\"f'(x) = {df}\")\n\n# Second derivative\nd2f = derivative(df, x)\nprint(f\"f''(x) = {d2f}\")\n",
-        "rust": "use mathhook_core::{symbol, expr};\n\nlet x = symbol!(x);\nlet f = expr!((x^3) + (2*(x^2)) - (5*x) + 1);\n\n// First derivative\nlet df = f.derivative(&x, 1);\nprintln!(\"f'(x) = {}\", df);\n\n// Second derivative\nlet d2f = f.derivative(&x, 2);\nprintln!(\"f''(x) = {}\", d2f);\n",
-        "nodejs": "const { symbol, derivative } = require('mathhook-node');\n\nconst x = symbol('x');\nconst f = x.pow(3).add(x.pow(2).mul(2)).sub(x.mul(5)).add(1);\n\n// First derivative\nconst df = derivative(f, x);\nconsole.log(`f'(x) = ${df}`);\n\n// Second derivative\nconst d2f = derivative(df, x);\nconsole.log(`f''(x) = ${d2f}`);\n"
-      },
-      "expected_output": "f'(x) = 3*x^2 + 4*x - 5\nf''(x) = 6*x + 4\n"
+        "rust": "let parser = Parser::new(ParserConfig::default());\nlet expr = parser.parse(r\"\\frac{x^2 + 1}{2}\").unwrap();\nprintln!(\"{}\", expr);\n",
+        "python": "from mathhook import Parser, ParserConfig\n\nparser = Parser(ParserConfig.default())\nexpr = parser.parse(r\"\\frac{x^2 + 1}{2}\")\nprint(expr)\n",
+        "nodejs": "import { Parser, ParserConfig } from 'mathhook-node';\n\nconst parser = new Parser(ParserConfig.default());\nconst expr = parser.parse(String.raw`\\frac{x^2 + 1}{2}`);\nconsole.log(expr.toString());\n"
+      }
     },
     {
-      "title": "Solving Differential Equations",
-      "explanation": "MathHook automatically classifies and solves ordinary differential equations.\nSupports separable, linear, exact, Bernoulli, and homogeneous equations.\n",
+      "title": "Computing Derivatives",
+      "explanation": "Compute first and second derivatives of x^3",
       "code": {
-        "python": "from mathhook import symbol, Function, solve_ode\n\nx = symbol('x')\ny = Function('y')\n\n# dy/dx = x/y (separable)\nequation = y.diff(x) - x/y\n\nsolution = solve_ode(equation, y, x)\nprint(f\"Solution: {solution}\")\n",
-        "rust": "use mathhook_core::ode::{ODESolver, ODEClassifier};\nuse mathhook_core::{symbol, expr};\n\nlet x = symbol!(x);\nlet y = symbol!(y);\n\n// dy/dx = x/y (separable)\nlet classifier = ODEClassifier::new();\nlet solver = ODESolver::new();\n\nlet equation = expr!((dy/dx) - (x/y));\nlet solution = solver.solve(&equation, &y, &x);\nprintln!(\"Solution: {}\", solution);\n",
-        "nodejs": "const { symbol, Function, solveODE } = require('mathhook-node');\n\nconst x = symbol('x');\nconst y = Function('y');\n\n// dy/dx = x/y (separable)\nconst equation = y.diff(x).sub(x.div(y));\n\nconst solution = solveODE(equation, y, x);\nconsole.log(`Solution: ${solution}`);\n"
-      },
-      "expected_output": "Solution: y^2 = x^2 + C"
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet expr = expr!(x ^ 3);\n\nlet derivative = expr.derivative(x.clone());\nlet second_derivative = expr.nth_derivative(x, 2);\n\nprintln!(\"f(x) = {}\", expr);\nprintln!(\"f'(x) = {}\", derivative);\nprintln!(\"f''(x) = {}\", second_derivative);\n",
+        "python": "from mathhook import Expression\n\nx = Expression.symbol('x')\nexpr = x.pow(3)\n\nderivative = expr.derivative(x)\nsecond_derivative = expr.nth_derivative(x, 2)\n\nprint(f\"f(x) = {expr}\")\nprint(f\"f'(x) = {derivative}\")\nprint(f\"f''(x) = {second_derivative}\")\n",
+        "nodejs": "import { Expression } from 'mathhook-node';\n\nconst x = Expression.symbol('x');\nconst expr = x.pow(3);\n\nconst derivative = expr.derivative(x);\nconst secondDerivative = expr.nthDerivative(x, 2);\n\nconsole.log(`f(x) = ${expr.toString()}`);\nconsole.log(`f'(x) = ${derivative.toString()}`);\nconsole.log(`f''(x) = ${secondDerivative.toString()}`);\n"
+      }
+    },
+    {
+      "title": "Solving Equations",
+      "explanation": "Solve x^2 = 4 symbolically",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\nlet mut solver = MathSolver::new();\nlet equation = Expression::equation(expr!(x ^ 2), expr!(4));\nlet solutions = solver.solve(&equation, &x);\n\nprintln!(\"Solutions: {:?}\", solutions);\n// Output: [x = 2, x = -2]\n",
+        "python": "from mathhook import Expression, MathSolver\n\nx = Expression.symbol('x')\nsolver = MathSolver()\nequation = Expression.equation(x.pow(2), Expression.integer(4))\nsolutions = solver.solve(equation, x)\n\nprint(f\"Solutions: {solutions}\")\n",
+        "nodejs": "import { Expression, MathSolver } from 'mathhook-node';\n\nconst x = Expression.symbol('x');\nconst solver = new MathSolver();\nconst equation = Expression.equation(x.pow(2), Expression.integer(4));\nconst solutions = solver.solve(equation, x);\n\nconsole.log(`Solutions: ${solutions}`);\n"
+      }
+    },
+    {
+      "title": "Substitution",
+      "explanation": "Substitute x = 3 into x^2 + 2x + 1",
+      "code": {
+        "rust": "use mathhook::prelude::*;\nuse std::collections::HashMap;\n\nlet x = symbol!(x);\nlet expr = expr!(add: (x ^ 2), (2 * x), 1);\n\nlet mut vars = HashMap::new();\nvars.insert(\"x\".to_string(), Expression::integer(3));\nlet result = expr.substitute(&vars);\nprintln!(\"Result: {}\", result);\n// Output: 16\n",
+        "python": "from mathhook import Expression\n\nx = Expression.symbol('x')\nexpr = x.pow(2).add(x.multiply(2)).add(1)\n\nvars = {'x': Expression.integer(3)}\nresult = expr.substitute(vars)\nprint(f\"Result: {result}\")\n",
+        "nodejs": "import { Expression } from 'mathhook-node';\n\nconst x = Expression.symbol('x');\nconst expr = x.pow(2).add(x.multiply(2)).add(1);\n\nconst vars = new Map([['x', Expression.integer(3)]]);\nconst result = expr.substitute(vars);\nconsole.log(`Result: ${result.toString()}`);\n"
+      }
+    },
+    {
+      "title": "Creating Expressions Programmatically",
+      "explanation": "Use macros for compile-time values, explicit API for runtime",
+      "code": {
+        "rust": "use mathhook::prelude::*;\n\nlet x = symbol!(x);\n\n// Compile-time - use macros\nlet expr = expr!((x ^ 2) + 3);\n\n// Runtime - use explicit API\nlet mut terms = Vec::new();\nfor i in 0..5 {\n    terms.push(Expression::mul(vec![\n        Expression::integer(i as i64),\n        Expression::pow(x.clone().into(), Expression::integer(i as i64))\n    ]));\n}\nlet polynomial = Expression::add(terms);\n",
+        "python": "from mathhook import Expression\n\nx = Expression.symbol('x')\n\n# Direct creation\nexpr = x.pow(2).add(3)\n\n# Runtime creation\nterms = []\nfor i in range(5):\n    terms.append(\n        Expression.mul([\n            Expression.integer(i),\n            x.pow(Expression.integer(i))\n        ])\n    )\npolynomial = Expression.add(terms)\n",
+        "nodejs": "import { Expression } from 'mathhook-node';\n\nconst x = Expression.symbol('x');\n\n// Direct creation\nconst expr = x.pow(2).add(3);\n\n// Runtime creation\nconst terms = [];\nfor (let i = 0; i < 5; i++) {\n    terms.push(\n        Expression.mul([\n            Expression.integer(i),\n            x.pow(Expression.integer(i))\n        ])\n    );\n}\nconst polynomial = Expression.add(terms);\n"
+      }
     }
   ],
   "article": {
-    "introduction": {
-      "hook": "**MathHook** is a high-performance computer algebra system designed for modern applications. Written in Rust with bindings for Python and JavaScript, it combines the speed of compiled code with the convenience of scripting languages.\n\nWhether you're solving differential equations, performing symbolic calculus, or manipulating algebraic expressions, MathHook provides a consistent API across all supported languages.\n"
-    },
-    "sections": [
-      {
-        "title": "Core Capabilities",
-        "content": "MathHook offers comprehensive symbolic mathematics features:\n\n### Symbolic Computation ###\n- **Expression Building**: Create and manipulate symbolic expressions\n- **Simplification**: Automatic and manual simplification strategies\n- **Substitution**: Replace symbols with values or other expressions\n- **Pattern Matching**: Advanced pattern recognition and transformation\n\n### Calculus ###\n- **Derivatives**: Symbolic differentiation with chain, product, and quotient rules\n- **Integrals**: Indefinite and definite integration\n- **Limits**: Symbolic limit computation\n- **Series Expansion**: Taylor and Maclaurin series\n\n### Differential Equations ###\n- **ODE Solver**: Automatic classification and solving of ordinary differential equations\n- **PDE Solver**: Partial differential equation solving with separation of variables\n- **Numerical Methods**: Runge-Kutta, Euler, and other numerical ODE solvers\n\n### Linear Algebra ###\n- **Matrix Operations**: Addition, multiplication, inversion, determinants\n- **Eigenvalues/Eigenvectors**: Symbolic and numerical computation\n- **Decomposition**: LU, QR, SVD decomposition\n\n### Special Functions ###\n- **Gamma Function**: $\\\\Gamma(z)$ for complex arguments\n- **Beta Function**: $B(x, y)$ with series expansions\n- **Bessel Functions**: $J_n(x)$, $Y_n(x)$, $I_n(x)$, $K_n(x)$\n- **Error Functions**: $\\\\text{erf}(x)$, $\\\\text{erfc}(x)$\n"
-      },
-      {
-        "title": "Performance and Architecture",
-        "content": "MathHook is built with performance as a first-class concern:\n\n### Rust Core ###\n- **Zero-Cost Abstractions**: No runtime overhead for symbolic operations\n- **Memory Efficiency**: 32-byte expression representation fits in CPU cache lines\n- **SIMD Acceleration**: Vectorized operations for numerical computation\n- **Thread-Safe**: All core types are `Send + Sync` for parallel processing\n\n### Bindings ###\n- **Python (PyO3)**: Native Python extension with minimal overhead\n- **JavaScript (NAPI)**: Native Node.js addon for server-side computation\n- **WebAssembly**: Browser-compatible for client-side mathematics (coming soon)\n\n### Parser ###\n- **LaTeX Support**: Parse LaTeX mathematical notation directly\n- **Standard Notation**: Intuitive mathematical syntax\n- **Implicit Multiplication**: Handles $2x$, $(a)(b)$, $\\\\sin(x)\\\\cos(x)$ automatically\n"
-      },
-      {
-        "title": "Language-Specific Features",
-        "content": "Each language binding provides idiomatic APIs:\n\n### Python ###\n- **Operator Overloading**: Natural syntax with `+`, `-`, `*`, `/`, `**`\n- **NumPy Integration**: Convert to/from NumPy arrays\n- **Jupyter Support**: Rich display in notebooks with LaTeX rendering\n- **Type Hints**: Full type annotation for IDE support\n\n### Rust ###\n- **Macros**: Ergonomic `symbol!()`, `expr!()`, `function!()` macros\n- **Type Safety**: Compile-time guarantees for expression validity\n- **Zero-Copy**: Efficient memory sharing with `Arc<Expression>`\n- **Async Support**: Non-blocking numerical integration and ODE solving\n\n### JavaScript/TypeScript ###\n- **Promise API**: Async operations return native Promises\n- **TypeScript Definitions**: Full type definitions included\n- **Stream API**: Process large computations incrementally\n- **Browser Compatibility**: Works in Node.js and browsers (via WASM)\n"
-      },
-      {
-        "title": "Next Steps",
-        "content": "Ready to dive deeper? Explore these topics:\n\n**Ordinary Differential Equations**:\n- [Separable Equations](/docs/ode-first_order-separable)\n- [Linear First Order](/docs/ode-first_order-linear)\n- [Bernoulli Equations](/docs/ode-first_order-bernoulli)\n\n**Calculus**:\n- [Symbolic Differentiation](/docs/calculus-derivatives)\n- [Symbolic Integration](/docs/calculus-integrals)\n\n**Algebra**:\n- [Expression Simplification](/docs/algebra-simplify)\n- [Equation Solving](/docs/algebra-solve)\n\n**Special Functions**:\n- [Gamma Function](/docs/functions-gamma)\n- [Bessel Functions](/docs/functions-bessel)\n"
-      }
-    ],
-    "sidebars": [
-      {
-        "type": "info",
-        "title": "Installation Requirements",
-        "content": "**Python**: Python 3.8 or later\n**Rust**: Rust 1.70 or later\n**Node.js**: Node.js 16 or later\n\nAll platforms support Windows, macOS, and Linux.\n"
-      },
-      {
-        "type": "performance",
-        "title": "Performance Comparison",
-        "content": "Benchmark results (simple polynomial differentiation, 100,000 iterations):\n\n- **MathHook (Rust)**: 15ms\n- **MathHook (Python)**: 45ms\n- **SymPy (Python)**: 2,400ms\n- **Mathematica**: 180ms\n\nMathHook is **10-100x faster** than SymPy for most operations while maintaining correctness.\n"
-      },
-      {
-        "type": "note",
-        "title": "Educational Focus",
-        "content": "MathHook is designed for both computational performance and educational use:\n\n- **Step-by-step solutions** for ODEs and integration\n- **Explanatory messages** describing solution methods\n- **LaTeX output** for easy inclusion in documents and presentations\n"
-      }
-    ]
+    "content": "# Quick Start\n\nThis guide will get you up and running with MathHook in 5 minutes.\n\n## Your First Expression\n\nCreate symbolic expressions using the high-level API with ergonomic macros (Rust)\nor method chaining (Python/Node.js).\n\n## Common Operations\n\n- **Parsing LaTeX**: Transform LaTeX notation into symbolic expressions\n- **Computing Derivatives**: Automatic symbolic differentiation\n- **Solving Equations**: Symbolic equation solving\n- **Matrix Operations**: Symbolic linear algebra\n- **Step-by-Step Explanations**: Educational features for learning\n\n## Expression Operators\n\nThe `expr!` macro (Rust) supports mathematical operators:\n- Comparison: `==`, `<`, `>`, `<=`, `>=`\n- Method calls: `.abs()`, `.sqrt()`, `.simplify()`\n- Power operations: `^`, `**`, `.pow()`\n\n## Common Patterns\n\n- **Creating Expressions Programmatically**: Use macros for compile-time values,\n  explicit API for runtime values\n- **Substitution**: Replace symbols with values using HashMap\n- **Formatting Output**: Standard, LaTeX, and Wolfram notation\n\n## Common Mistakes\n\n- **Runtime Variables in Macros**: Use explicit API for loop variables\n- **Precedence Without Parentheses**: Always use explicit grouping\n- **Floating Point Comparison**: Use epsilon comparison for numerical values\n"
+  },
+  "use_cases": [
+    "Quick onboarding for new MathHook users",
+    "5-minute demonstration of core capabilities",
+    "Reference for common operations across languages",
+    "Teaching symbolic computation basics"
+  ],
+  "related_topics": [
+    "getting-started.installation",
+    "getting-started.basic-usage",
+    "getting-started.common-patterns",
+    "core.expressions",
+    "operations.differentiation"
+  ],
+  "performance": {
+    "typical_time": "5 minutes to productivity"
+  },
+  "metadata": {
+    "schema_version": "1.0"
   }
 }

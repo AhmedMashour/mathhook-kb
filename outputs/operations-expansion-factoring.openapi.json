@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Transform expressions between expanded and factored forms for easier manipulation and analysis.\n",
+    "title": "Expansion and Factoring",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/operations/expansion-factoring": {
+      "post": {
+        "description": "Transform expressions between expanded and factored forms for easier manipulation and analysis.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "noncommutative_matrix_expansion": {
+                  "description": "For matrices, order matters - (A+B)² has 4 terms",
+                  "summary": "Noncommutative Matrix Expansion",
+                  "value": {
+                    "expression": "symbol('A', matrix"
+                  }
+                },
+                "power_expansion": {
+                  "description": "Expand expressions raised to integer powers",
+                  "summary": "Power Expansion",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "simple_products": {
+                  "description": "Expand products of sums",
+                  "summary": "Simple Products",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Expansion and Factoring",
+        "tags": [
+          "operations"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "operations operations",
+      "name": "operations"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Comprehensive guide to using MathHook including expression creation with macros\nand constructors, simplification, pattern matching, symbol manipulation, number\ntypes, constants, and function expressions.\n",
+    "title": "Basic Usage",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/getting-started/basic-usage": {
+      "post": {
+        "description": "Comprehensive guide to using MathHook including expression creation with macros\nand constructors, simplification, pattern matching, symbol manipulation, number\ntypes, constants, and function expressions.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "expression_creation_-_constructors": {
+                  "description": "Programmatic construction with explicit API",
+                  "summary": "Expression Creation - Constructors",
+                  "value": {
+                    "expression": "Expression.integer(42)"
+                  }
+                },
+                "expression_creation_-_macros": {
+                  "description": "Create expressions using ergonomic macros",
+                  "summary": "Expression Creation - Macros",
+                  "value": {
+                    "expression": "Expression.symbol('x')"
+                  }
+                },
+                "simplification": {
+                  "description": "Transform expressions to canonical form",
+                  "summary": "Simplification",
+                  "value": {
+                    "expression": "Expression.symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Basic Usage",
+        "tags": [
+          "getting-started"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "getting-started operations",
+      "name": "getting-started"
+    }
+  ]
+}

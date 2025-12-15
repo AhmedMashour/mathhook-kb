@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Comprehensive support for special mathematical functions including the Gamma\nfunction family (Gamma, Digamma, Polygamma), Beta function, and other\nadvanced special functions used in mathematics, physics, and statistics.\n",
+    "title": "Special Mathematical Functions",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/special_functions": {
+      "post": {
+        "description": "Comprehensive support for special mathematical functions including the Gamma\nfunction family (Gamma, Digamma, Polygamma), Beta function, and other\nadvanced special functions used in mathematics, physics, and statistics.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "digamma_function": {
+                  "description": "Logarithmic derivative of Gamma: ψ(z) = Γ'(z)/Γ(z)",
+                  "summary": "Digamma Function",
+                  "value": {
+                    "expression": "digamma(1)"
+                  }
+                },
+                "gamma_function": {
+                  "description": "Factorial extension: Γ(n) = (n-1)! for positive integers",
+                  "summary": "Gamma Function",
+                  "value": {
+                    "expression": "gamma(5)"
+                  }
+                },
+                "polygamma_function": {
+                  "description": "Higher derivatives: ψ^(n)(z) = d^n/dz^n ψ(z)",
+                  "summary": "Polygamma Function",
+                  "value": {
+                    "expression": "polygamma(1, 1)"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Special Mathematical Functions",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

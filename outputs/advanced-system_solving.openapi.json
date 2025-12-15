@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Solve systems of equations (linear and nonlinear) with multiple unknowns\nusing substitution, elimination, matrix methods, and Newton's method for\nnonlinear systems.\n",
+    "title": "System of Equations Solving",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/system_solving": {
+      "post": {
+        "description": "Solve systems of equations (linear and nonlinear) with multiple unknowns\nusing substitution, elimination, matrix methods, and Newton's method for\nnonlinear systems.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "linear_system_(2×2)": {
+                  "description": "Solve { 2x + y = 5, x - y = 1 }",
+                  "summary": "Linear System (2×2)",
+                  "value": {
+                    "expression": "symbols('x y')"
+                  }
+                },
+                "nonlinear_system": {
+                  "description": "Solve { x^2 + y^2 = 25, x + y = 5 }",
+                  "summary": "Nonlinear System",
+                  "value": {
+                    "expression": "symbols('x y')"
+                  }
+                },
+                "three_variables": {
+                  "description": "Solve { x + y + z = 6, 2x - y + z = 3, x + 2y - z = 2 }",
+                  "summary": "Three Variables",
+                  "value": {
+                    "expression": "symbols('x y z')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "System of Equations Solving",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

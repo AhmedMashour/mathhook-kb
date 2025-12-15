@@ -10,8 +10,8 @@ use serde::{Deserialize, Serialize};
 pub enum Article {
     /// Simple markdown content (most common)
     Simple(SimpleArticle),
-    /// Structured article with introduction, sections, conclusion
-    Structured(StructuredArticle),
+    /// Structured article with introduction, sections, conclusion (boxed to reduce enum size)
+    Structured(Box<StructuredArticle>),
 }
 
 /// Simple article with just markdown content
@@ -49,7 +49,8 @@ impl Article {
     pub fn to_markdown(&self) -> String {
         match self {
             Article::Simple(s) => s.content.clone(),
-            Article::Structured(s) => {
+            Article::Structured(boxed_s) => {
+                let s = boxed_s.as_ref();
                 let mut md = String::new();
                 md.push_str(&s.introduction.hook);
                 md.push_str("\n\n");
@@ -61,6 +62,22 @@ impl Article {
                 }
                 md
             }
+        }
+    }
+
+    /// Get the structured article if this is the Structured variant
+    pub fn as_structured(&self) -> Option<&StructuredArticle> {
+        match self {
+            Article::Structured(s) => Some(s),
+            Article::Simple(_) => None,
+        }
+    }
+
+    /// Get the simple article if this is the Simple variant
+    pub fn as_simple(&self) -> Option<&SimpleArticle> {
+        match self {
+            Article::Simple(s) => Some(s),
+            Article::Structured(_) => None,
         }
     }
 }
@@ -330,11 +347,12 @@ sidebars:
 "#;
 
         let article: Article = serde_yaml::from_str(yaml).expect("Failed to deserialize");
+        let structured = article.as_structured().expect("Expected structured article");
         assert_eq!(
-            article.introduction.hook,
+            structured.introduction.hook,
             "Let's explore symbolic differentiation!"
         );
-        assert_eq!(article.sections.len(), 1);
-        assert_eq!(article.sidebars.len(), 1);
+        assert_eq!(structured.sections.len(), 1);
+        assert_eq!(structured.sidebars.len(), 1);
     }
 }

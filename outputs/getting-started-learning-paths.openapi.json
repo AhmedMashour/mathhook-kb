@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Choose your journey based on background and goals. Structured learning paths for\nPython data scientists, Node.js developers, Rust programmers, mathematics educators,\nand computational scientists with time estimates and outcomes.\n",
+    "title": "Learning Paths",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/getting-started/learning-paths": {
+      "post": {
+        "description": "Choose your journey based on background and goals. Structured learning paths for\nPython data scientists, Node.js developers, Rust programmers, mathematics educators,\nand computational scientists with time estimates and outcomes.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "node.js_developer_-_web_form_parsing": {
+                  "description": "Parse user input LaTeX from web forms",
+                  "summary": "Node.js Developer - Web Form Parsing",
+                  "value": {
+                    "expression": "x**2"
+                  }
+                },
+                "python_data_scientist_-_sympy_migration": {
+                  "description": "Quick comparison of SymPy vs MathHook syntax",
+                  "summary": "Python Data Scientist - SymPy Migration",
+                  "value": {
+                    "expression": "Expression.symbol('x')"
+                  }
+                },
+                "rust_programmer_-_custom_extension": {
+                  "description": "Extend Universal Function Registry with custom function",
+                  "summary": "Rust Programmer - Custom Extension",
+                  "value": {
+                    "expression": "x**2"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Learning Paths",
+        "tags": [
+          "getting-started"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "getting-started operations",
+      "name": "getting-started"
+    }
+  ]
+}

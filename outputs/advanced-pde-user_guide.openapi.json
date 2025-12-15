@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Comprehensive user guide for solving partial differential equations with MathHook. Covers\nfundamental PDE concepts, classification systems, the method of characteristics for first-order\nPDEs, and practical examples including transport equations, Burgers' equation, and heat equations.\nIncludes educational features, troubleshooting, and performance considerations.\n",
+    "title": "PDE User Guide - MathHook CAS",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/user_guide": {
+      "post": {
+        "description": "Comprehensive user guide for solving partial differential equations with MathHook. Covers\nfundamental PDE concepts, classification systems, the method of characteristics for first-order\nPDEs, and practical examples including transport equations, Burgers' equation, and heat equations.\nIncludes educational features, troubleshooting, and performance considerations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "burgers'_equation_(nonlinear)": {
+                  "description": "Analyze Burgers' equation ∂u/∂t + u·∂u/∂x = 0 showing nonlinear characteristics",
+                  "summary": "Burgers' Equation (Nonlinear)",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "transport_equation_(step-by-step)": {
+                  "description": "Solve transport equation ∂u/∂t + 2·∂u/∂x = 0 with initial condition u(x,0) = sin(x)",
+                  "summary": "Transport Equation (Step-by-Step)",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "verifying_pde_solution": {
+                  "description": "Check that solution satisfies the PDE and initial condition",
+                  "summary": "Verifying PDE Solution",
+                  "value": {
+                    "expression": "expr('sin(x + (-2) * t)')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "PDE User Guide - MathHook CAS",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

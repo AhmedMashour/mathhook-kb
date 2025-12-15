@@ -7,6 +7,7 @@ use clap::{Parser, Subcommand};
 use kb_apidocs::ApiDocsGenerator;
 use kb_colab::ColabGenerator;
 use kb_core::{generator::OutputGenerator, Schema};
+use kb_json::JsonGenerator;
 use kb_jupyter::JupyterGenerator;
 use kb_latex::LatexGenerator;
 use kb_llm_rag::LlmRagGenerator;
@@ -35,7 +36,7 @@ enum Commands {
         #[arg(short, long, default_value = "output")]
         output: PathBuf,
 
-        /// Generators to run (comma-separated: jupyter,mdbook,llm-rag,vue,api-docs,colab,latex,all)
+        /// Generators to run (comma-separated: jupyter,mdbook,llm-rag,vue,api-docs,colab,latex,json,all)
         #[arg(short, long, default_value = "all")]
         generators: String,
     },
@@ -192,6 +193,21 @@ fn build_command(schema_path: PathBuf, output_dir: PathBuf, generators_str: Stri
         generated_count += 1;
     }
 
+    // Run JSON schema data generator
+    if run_all || generators_list.contains(&"json") {
+        println!("📋 Generating JSON schema data...");
+        let generator = JsonGenerator::new();
+        let filename = generator.get_output_filename(&schema);
+        let output_path = output_dir.join(&filename);
+
+        generator
+            .generate_to_file(&schema, &output_path)
+            .context("Failed to generate JSON schema data")?;
+
+        println!("   ✅ {}", output_path.display());
+        generated_count += 1;
+    }
+
     println!(
         "\n🎉 Successfully generated {} output file(s) in {}",
         generated_count,
@@ -240,9 +256,10 @@ fn list_command() {
     println!("   mdbook     - mdBook markdown documentation (.md)");
     println!("   llm-rag    - LLM-optimized RAG markdown (.rag.md)");
     println!("   vue        - Vue SSR site components (.vue)");
-    println!("   api-docs   - OpenAPI 3.0 specifications (.json)");
+    println!("   api-docs   - OpenAPI 3.0 specifications (.openapi.json)");
     println!("   colab      - Google Colab notebooks (.ipynb)");
     println!("   latex      - LaTeX documentation (.tex)");
+    println!("   json       - Schema data for Vue site (.json)");
     println!("\nUse 'all' to run all available generators.");
 }
 

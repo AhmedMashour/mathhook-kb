@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Comprehensive performance benchmarks for the MathHook PDE module, establishing baseline metrics\nfor regression detection and optimization efforts. Includes 8 benchmarks covering critical\noperations from coefficient extraction to numerical integration, with detailed scalability\nanalysis and optimization recommendations.\n",
+    "title": "PDE Module Performance Report",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/performance": {
+      "post": {
+        "description": "Comprehensive performance benchmarks for the MathHook PDE module, establishing baseline metrics\nfor regression detection and optimization efforts. Includes 8 benchmarks covering critical\noperations from coefficient extraction to numerical integration, with detailed scalability\nanalysis and optimization recommendations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "benchmark_execution": {
+                  "description": "Run comprehensive benchmark suite",
+                  "summary": "Benchmark Execution",
+                  "value": {
+                    "expression": "main"
+                  }
+                },
+                "memory_profiling": {
+                  "description": "Profile memory allocations during PDE solving",
+                  "summary": "Memory Profiling",
+                  "value": {
+                    "expression": "Pde(equation, u, [x, t])"
+                  }
+                },
+                "performance_comparison": {
+                  "description": "Compare MathHook performance against SymPy",
+                  "summary": "Performance Comparison",
+                  "value": {
+                    "expression": "time.perf_counter()"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "PDE Module Performance Report",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

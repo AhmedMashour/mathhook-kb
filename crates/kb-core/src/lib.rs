@@ -8,4 +8,4 @@ pub mod generator;
 pub mod error;
 
 pub use schema::Schema;
-pub use error::{KbError, Result};
+pub use error::{CrossLanguageInconsistencyError, KbError, Result};

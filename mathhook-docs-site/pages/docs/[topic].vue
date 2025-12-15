@@ -1,11 +1,40 @@
 <template>
-  <div class="min-h-screen bg-logic-navy-900 text-chalk">
+  <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden relative">
+    <!-- Subtle Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <!-- Base gradient -->
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-logic-navy-900/98 to-logic-navy-900"></div>
+
+      <!-- Subtle ambient orbs -->
+      <div
+        class="absolute w-[600px] h-[600px] rounded-full blur-[180px] opacity-15"
+        :style="{
+          background: 'radial-gradient(circle, rgba(230, 69, 36, 0.4) 0%, transparent 70%)',
+          top: '-300px',
+          right: '-200px',
+          transform: `translate(${-mouseX * 0.01}px, ${mouseY * 0.01}px)`
+        }"
+      ></div>
+      <div
+        class="absolute w-[500px] h-[500px] rounded-full blur-[150px] opacity-10"
+        :style="{
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%)',
+          bottom: '-200px',
+          left: '-100px',
+          transform: `translate(${mouseX * 0.008}px, ${-mouseY * 0.008}px)`
+        }"
+      ></div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-logic-navy-900/90 backdrop-blur-md border-b border-logic-navy-700/50">
+    <nav
+      class="sticky top-0 z-50 transition-all duration-500"
+      :class="scrolled ? 'bg-logic-navy-900/95 backdrop-blur-xl border-b border-logic-navy-700/50 shadow-lg shadow-black/10' : 'bg-logic-navy-900/90 backdrop-blur-md border-b border-logic-navy-700/50'"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-14">
-          <NuxtLink to="/" class="flex items-center gap-2">
-            <svg class="w-7 h-7" viewBox="0 0 48 48" fill="none">
+          <NuxtLink to="/" class="flex items-center gap-2 group">
+            <svg class="w-7 h-7 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 48 48" fill="none">
               <defs>
                 <linearGradient id="nav-logo" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#E64524"/>
@@ -19,9 +48,9 @@
             </span>
           </NuxtLink>
           <div class="flex items-center gap-5 text-sm">
-            <NuxtLink to="/docs" class="text-solve-cyan font-medium">Docs</NuxtLink>
-            <NuxtLink to="/outputs" class="text-chalk-500 hover:text-chalk transition-colors">Outputs</NuxtLink>
-            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-colors flex items-center gap-1.5">
+            <NuxtLink to="/docs" class="text-solve-cyan font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-solve-cyan after:rounded-full">Docs</NuxtLink>
+            <NuxtLink to="/outputs" class="text-chalk-500 hover:text-chalk transition-colors duration-300">Outputs</NuxtLink>
+            <a href="https://github.com/AhmedMashour/mathhook" target="_blank" class="text-chalk-500 hover:text-chalk transition-all duration-300 flex items-center gap-1.5">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
               GitHub
             </a>
@@ -31,23 +60,23 @@
     </nav>
 
     <!-- Loading State -->
-    <div v-if="loading" class="max-w-4xl mx-auto px-4 py-12">
+    <div v-if="loading" class="max-w-4xl mx-auto px-4 py-12 relative z-10">
       <div class="animate-pulse space-y-4">
-        <div class="h-10 bg-logic-navy-700 rounded w-3/4"></div>
-        <div class="h-4 bg-logic-navy-700 rounded w-full"></div>
-        <div class="h-4 bg-logic-navy-700 rounded w-5/6"></div>
+        <div class="h-10 bg-logic-navy-700/50 rounded-xl w-3/4"></div>
+        <div class="h-4 bg-logic-navy-700/50 rounded w-full"></div>
+        <div class="h-4 bg-logic-navy-700/50 rounded w-5/6"></div>
       </div>
     </div>
 
     <!-- Error State -->
-    <div v-else-if="error" class="max-w-4xl mx-auto px-4 py-12">
-      <div class="bg-rust-core/10 border-l-4 border-rust-core p-6 rounded-r-lg">
+    <div v-else-if="error" class="max-w-4xl mx-auto px-4 py-12 relative z-10">
+      <div class="bg-rust-core/10 border-l-4 border-rust-core p-6 rounded-r-xl animate-fade-in">
         <div class="flex items-start">
           <span class="text-3xl mr-3">❌</span>
           <div>
             <h2 class="text-xl font-semibold text-rust-core mb-2">Document Not Found</h2>
             <p class="text-chalk-400 mb-4">{{ error }}</p>
-            <NuxtLink to="/docs" class="text-solve-cyan hover:text-solve-cyan-300 font-medium">
+            <NuxtLink to="/docs" class="text-solve-cyan hover:text-solve-cyan-300 font-medium transition-colors">
               ← Back to documentation
             </NuxtLink>
           </div>
@@ -56,24 +85,35 @@
     </div>
 
     <!-- Content -->
-    <div v-else-if="schema" class="max-w-7xl mx-auto px-4 py-8">
+    <div v-else-if="schema" class="max-w-7xl mx-auto px-4 py-8 relative z-10">
       <div class="flex gap-8">
         <!-- Table of Contents Sidebar -->
-        <aside class="hidden lg:block w-64 sticky top-20 self-start">
-          <div class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl p-5">
+        <aside class="hidden lg:block w-64 sticky top-20 self-start animate-fade-in-left">
+          <div class="bg-logic-navy-800/40 backdrop-blur-sm border border-logic-navy-700/50 rounded-2xl p-5 transition-all duration-300 hover:border-logic-navy-600/50">
             <h3 class="text-xs font-medium text-chalk-500 mb-4 uppercase tracking-wide">On This Page</h3>
             <nav class="space-y-1.5">
-              <a href="#definition" class="block text-sm text-chalk-500 hover:text-solve-cyan transition-colors py-1">Definition</a>
-              <a href="#introduction" class="block text-sm text-chalk-500 hover:text-solve-cyan transition-colors py-1">Introduction</a>
-              <a href="#examples" class="block text-sm text-chalk-500 hover:text-solve-cyan transition-colors py-1">Code Examples</a>
-              <a v-for="(section, idx) in schema.article?.sections" :key="idx" :href="`#section-${idx}`" class="block text-sm text-chalk-500 hover:text-solve-cyan transition-colors py-1">
+              <a href="#definition"
+                 class="block text-sm text-chalk-500 hover:text-solve-cyan transition-all duration-300 py-1.5 px-2 rounded-lg hover:bg-logic-navy-700/30">
+                Definition
+              </a>
+              <a href="#introduction"
+                 class="block text-sm text-chalk-500 hover:text-solve-cyan transition-all duration-300 py-1.5 px-2 rounded-lg hover:bg-logic-navy-700/30">
+                Introduction
+              </a>
+              <a href="#examples"
+                 class="block text-sm text-chalk-500 hover:text-solve-cyan transition-all duration-300 py-1.5 px-2 rounded-lg hover:bg-logic-navy-700/30">
+                Code Examples
+              </a>
+              <a v-for="(section, idx) in schema.article?.sections" :key="idx"
+                 :href="`#section-${idx}`"
+                 class="block text-sm text-chalk-500 hover:text-solve-cyan transition-all duration-300 py-1.5 px-2 rounded-lg hover:bg-logic-navy-700/30">
                 {{ section.title }}
               </a>
             </nav>
           </div>
 
           <!-- Quick Reference Card -->
-          <div class="mt-4 bg-gradient-to-br from-rust-core/10 to-solve-cyan/10 border border-logic-navy-700 rounded-xl p-5">
+          <div class="mt-4 bg-gradient-to-br from-rust-core/10 to-solve-cyan/10 border border-logic-navy-700/50 rounded-2xl p-5 animate-fade-in-left" style="animation-delay: 0.1s;">
             <h3 class="text-xs font-medium text-chalk-500 mb-3 uppercase tracking-wide flex items-center gap-2">
               <span class="text-solve-cyan">⚡</span> Quick Reference
             </h3>
@@ -85,7 +125,10 @@
               <div v-if="schema.article?.complexity">
                 <div class="font-medium text-chalk-400 mb-1">Complexity</div>
                 <div class="flex items-center gap-1">
-                  <span v-for="i in 5" :key="i" :class="i <= (schema.article.complexity === 'beginner' ? 1 : schema.article.complexity === 'intermediate' ? 3 : 5) ? 'text-solve-cyan' : 'text-logic-navy-600'">●</span>
+                  <span v-for="i in 5" :key="i"
+                        :class="['transition-all duration-300', i <= (schema.article.complexity === 'beginner' ? 1 : schema.article.complexity === 'intermediate' ? 3 : 5) ? 'text-solve-cyan' : 'text-logic-navy-600']">
+                    ●
+                  </span>
                 </div>
               </div>
             </div>
@@ -95,16 +138,16 @@
         <!-- Main Content -->
         <article class="flex-1 max-w-4xl">
           <!-- Breadcrumb -->
-          <nav class="mb-6 flex items-center gap-2 text-sm text-chalk-500">
-            <NuxtLink to="/" class="hover:text-solve-cyan transition-colors">Home</NuxtLink>
+          <nav class="mb-6 flex items-center gap-2 text-sm text-chalk-500 animate-fade-in">
+            <NuxtLink to="/" class="hover:text-solve-cyan transition-colors duration-300">Home</NuxtLink>
             <span class="text-chalk-600">/</span>
-            <NuxtLink to="/docs" class="hover:text-solve-cyan transition-colors">Docs</NuxtLink>
+            <NuxtLink to="/docs" class="hover:text-solve-cyan transition-colors duration-300">Docs</NuxtLink>
             <span class="text-chalk-600">/</span>
             <span class="text-chalk">{{ schema.title }}</span>
           </nav>
 
           <!-- Title Section -->
-          <header class="mb-10">
+          <header class="mb-10 animate-fade-in" style="animation-delay: 0.1s;">
             <h1 class="text-3xl md:text-4xl font-semibold text-chalk mb-3 leading-tight">
               {{ schema.title }}
             </h1>
@@ -114,22 +157,18 @@
           </header>
 
           <!-- Mathematical Definition Callout -->
-          <div id="definition" v-if="schema.mathematical_definition" class="mb-10 scroll-mt-24">
-            <div class="bg-gradient-to-r from-rust-core to-solve-cyan p-[1px] rounded-xl">
-              <div class="bg-logic-navy-900 rounded-xl p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="w-9 h-9 bg-gradient-to-br from-rust-core to-solve-cyan rounded-lg flex items-center justify-center text-white text-lg">📐</div>
-                  <h2 class="text-lg font-semibold text-chalk">Mathematical Definition</h2>
-                </div>
-                <div class="flex justify-center">
-                  <div class="math-display" v-html="renderMath(schema.mathematical_definition, true)"></div>
-                </div>
+          <div id="definition" v-if="schema.mathematical_definition" class="mb-10 scroll-mt-24 animate-fade-in" style="animation-delay: 0.15s;">
+            <div class="bg-logic-navy-800/50 backdrop-blur-sm border border-logic-navy-600/50 rounded-2xl p-6 transition-all duration-300 hover:border-logic-navy-500/50">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-9 h-9 bg-logic-navy-700/80 rounded-xl flex items-center justify-center text-solve-cyan text-lg">📐</div>
+                <h2 class="text-lg font-semibold text-chalk">Mathematical Definition</h2>
               </div>
+              <div class="math-content text-chalk-300" v-html="renderContent(schema.mathematical_definition)"></div>
             </div>
           </div>
 
           <!-- Introduction -->
-          <section id="introduction" v-if="schema.article?.introduction" class="mb-10 scroll-mt-24">
+          <section id="introduction" v-if="schema.article?.introduction" class="mb-10 scroll-mt-24 animate-fade-in" style="animation-delay: 0.2s;">
             <h2 class="text-xl font-semibold text-chalk mb-4 flex items-center gap-3">
               <span class="w-8 h-1 bg-gradient-to-r from-rust-core to-solve-cyan rounded-full"></span>
               Introduction
@@ -138,62 +177,69 @@
           </section>
 
           <!-- Code Examples -->
-          <section id="examples" class="mb-10 scroll-mt-24">
+          <section id="examples" class="mb-10 scroll-mt-24 animate-fade-in" style="animation-delay: 0.25s;">
             <h2 class="text-xl font-semibold text-chalk mb-6 flex items-center gap-3">
               <span class="w-8 h-1 bg-gradient-to-r from-rust-core to-solve-cyan rounded-full"></span>
               Code Examples
             </h2>
             <div class="space-y-6">
-              <div v-for="(example, idx) in schema.examples" :key="idx" class="bg-logic-navy-800/50 border border-logic-navy-700 rounded-xl overflow-hidden">
+              <div v-for="(example, idx) in schema.examples" :key="idx"
+                   class="bg-logic-navy-800/40 backdrop-blur-sm border border-logic-navy-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:border-logic-navy-600/50 hover:shadow-lg hover:shadow-black/5">
                 <!-- Example Header -->
-                <div class="p-5 border-b border-logic-navy-700">
+                <div class="p-5 border-b border-logic-navy-700/50">
                   <h3 class="text-lg font-medium text-chalk mb-2">{{ example.title }}</h3>
                   <div class="text-chalk-400 text-sm leading-relaxed rendered-content whitespace-pre-wrap" v-html="renderContent(example.explanation)"></div>
                 </div>
 
-                <!-- Language Tabs -->
-                <div class="bg-logic-navy-900 border-b border-logic-navy-700">
+                <!-- Language Tabs with Animation -->
+                <div class="bg-logic-navy-900/80 border-b border-logic-navy-700/50">
                   <div class="flex">
-                    <button @click="activeTab[idx] = 'python'" :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all relative', activeTab[idx] === 'python' ? 'text-solve-cyan bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
+                    <button @click="activeTab[idx] = 'python'"
+                            :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'python' ? 'text-solve-cyan bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
                       <span class="flex items-center justify-center gap-2">
                         <span>🐍</span><span>Python</span>
                       </span>
-                      <div v-if="activeTab[idx] === 'python'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan"></div>
+                      <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'python' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
                     </button>
-                    <button @click="activeTab[idx] = 'rust'" :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all relative', activeTab[idx] === 'rust' ? 'text-rust-core bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
+                    <button @click="activeTab[idx] = 'rust'"
+                            :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'rust' ? 'text-rust-core bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
                       <span class="flex items-center justify-center gap-2">
                         <span>🦀</span><span>Rust</span>
                       </span>
-                      <div v-if="activeTab[idx] === 'rust'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan"></div>
+                      <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'rust' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
                     </button>
-                    <button @click="activeTab[idx] = 'nodejs'" :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all relative', activeTab[idx] === 'nodejs' ? 'text-step-green bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
+                    <button @click="activeTab[idx] = 'nodejs'"
+                            :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'nodejs' ? 'text-step-green bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
                       <span class="flex items-center justify-center gap-2">
                         <span>📜</span><span>JavaScript</span>
                       </span>
-                      <div v-if="activeTab[idx] === 'nodejs'" class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan"></div>
+                      <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'nodejs' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
                     </button>
                   </div>
                 </div>
 
                 <!-- Code Content with Copy Button -->
                 <div class="relative group/code">
-                  <button @click="copyCode(example.code[activeTab[idx]], idx)" class="absolute top-3 right-3 px-2.5 py-1 bg-logic-navy-700 hover:bg-logic-navy-600 text-chalk-400 text-xs font-medium rounded opacity-0 group-hover/code:opacity-100 transition-opacity z-10 flex items-center gap-1.5">
+                  <button @click="copyCode(example.code[activeTab[idx]], idx)"
+                          class="absolute top-3 right-3 px-3 py-1.5 bg-logic-navy-700/80 hover:bg-logic-navy-600 text-chalk-400 text-xs font-medium rounded-lg opacity-0 group-hover/code:opacity-100 transition-all duration-300 z-10 flex items-center gap-1.5 backdrop-blur-sm">
                     <span v-if="!copied[idx]">📋 Copy</span>
                     <span v-else class="text-step-green">✓ Copied!</span>
                   </button>
-                  <pre v-if="activeTab[idx] === 'python'" class="language-python !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.python, 'python')"></code></pre>
-                  <pre v-if="activeTab[idx] === 'rust'" class="language-rust !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.rust, 'rust')"></code></pre>
-                  <pre v-if="activeTab[idx] === 'nodejs'" class="language-javascript !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.nodejs, 'javascript')"></code></pre>
+                  <Transition name="fade-code" mode="out-in">
+                    <pre v-if="activeTab[idx] === 'python'" :key="'python-'+idx" class="language-python !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.python, 'python')"></code></pre>
+                    <pre v-else-if="activeTab[idx] === 'rust'" :key="'rust-'+idx" class="language-rust !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.rust, 'rust')"></code></pre>
+                    <pre v-else-if="activeTab[idx] === 'nodejs'" :key="'nodejs-'+idx" class="language-javascript !m-0 !p-5 overflow-x-auto !bg-logic-navy-900"><code v-html="highlightCode(example.code.nodejs, 'javascript')"></code></pre>
+                  </Transition>
                 </div>
 
                 <!-- Output Section -->
-                <div v-if="example.expected_output" class="border-t border-logic-navy-700">
+                <div v-if="example.expected_output" class="border-t border-logic-navy-700/50">
                   <div class="bg-step-green/5 p-5">
                     <div class="flex items-center gap-2 mb-3">
                       <div class="w-5 h-5 bg-step-green rounded flex items-center justify-center text-white text-xs">▶</div>
                       <strong class="text-chalk font-medium text-sm">Output</strong>
                     </div>
-                    <pre class="text-chalk-200 font-mono text-sm bg-logic-navy-900 p-4 rounded-lg border border-step-green/20">{{ example.expected_output }}</pre>
+                    <pre class="text-chalk-200 font-mono text-sm bg-logic-navy-900/80 p-4 rounded-xl border border-step-green/20">{{ example.expected_output }}</pre>
                   </div>
                 </div>
               </div>
@@ -202,7 +248,10 @@
 
           <!-- Article Sections with Callouts -->
           <section v-if="schema.article?.sections" class="mb-10 space-y-10">
-            <div v-for="(section, idx) in schema.article.sections" :key="idx" :id="`section-${idx}`" class="scroll-mt-24">
+            <div v-for="(section, idx) in schema.article.sections" :key="idx"
+                 :id="`section-${idx}`"
+                 class="scroll-mt-24 animate-fade-in"
+                 :style="{ animationDelay: `${0.3 + idx * 0.05}s` }">
               <h2 class="text-xl font-semibold text-chalk mb-4 flex items-center gap-3">
                 <span class="w-8 h-1 bg-gradient-to-r from-rust-core to-solve-cyan rounded-full"></span>
                 {{ section.title }}
@@ -213,8 +262,14 @@
 
           <!-- Sidebars as Callouts -->
           <section v-if="schema.article?.sidebars" class="mb-10 space-y-4">
-            <div v-for="(sidebar, idx) in schema.article.sidebars" :key="idx">
-              <div :class="['border-l-4 rounded-r-xl p-5', sidebar.type === 'note' ? 'bg-solve-cyan/10 border-solve-cyan' : '', sidebar.type === 'warning' ? 'bg-amber-500/10 border-amber-500' : '', sidebar.type === 'info' ? 'bg-violet-500/10 border-violet-500' : '', sidebar.type === 'performance' ? 'bg-step-green/10 border-step-green' : '']">
+            <div v-for="(sidebar, idx) in schema.article.sidebars" :key="idx"
+                 class="animate-fade-in"
+                 :style="{ animationDelay: `${0.4 + idx * 0.05}s` }">
+              <div :class="['border-l-4 rounded-r-2xl p-5 transition-all duration-300 hover:translate-x-1',
+                           sidebar.type === 'note' ? 'bg-solve-cyan/10 border-solve-cyan' : '',
+                           sidebar.type === 'warning' ? 'bg-amber-500/10 border-amber-500' : '',
+                           sidebar.type === 'info' ? 'bg-violet-500/10 border-violet-500' : '',
+                           sidebar.type === 'performance' ? 'bg-step-green/10 border-step-green' : '']">
                 <div class="flex items-start gap-3">
                   <span class="text-xl">{{ sidebar.type === 'note' ? '📝' : sidebar.type === 'warning' ? '⚠️' : sidebar.type === 'info' ? 'ℹ️' : '⚡' }}</span>
                   <div class="flex-1">
@@ -227,13 +282,14 @@
           </section>
 
           <!-- Related Topics -->
-          <section class="mt-12 pt-8 border-t border-logic-navy-700">
+          <section class="mt-12 pt-8 border-t border-logic-navy-700/50 animate-fade-in" style="animation-delay: 0.5s;">
             <h2 class="text-lg font-semibold text-chalk mb-4 flex items-center gap-2">
               <span class="text-solve-cyan">🔗</span> Related Topics
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <NuxtLink to="/docs" class="group p-4 bg-logic-navy-800/50 rounded-lg border border-logic-navy-700 hover:border-solve-cyan/50 transition-all">
-                <div class="font-semibold text-chalk group-hover:text-solve-cyan transition-colors">Browse All Topics</div>
+              <NuxtLink to="/docs"
+                        class="group p-4 bg-logic-navy-800/40 backdrop-blur-sm rounded-xl border border-logic-navy-700/50 hover:border-solve-cyan/50 transition-all duration-300 hover:shadow-lg hover:shadow-solve-cyan/5">
+                <div class="font-semibold text-chalk group-hover:text-solve-cyan transition-colors duration-300">Browse All Topics</div>
                 <div class="text-sm text-chalk-500 mt-1">Explore the full documentation library</div>
               </NuxtLink>
             </div>
@@ -241,10 +297,24 @@
         </article>
       </div>
     </div>
+
+    <!-- Back to top button -->
+    <Transition name="fade">
+      <button
+        v-if="showBackToTop"
+        @click="scrollToTop"
+        class="fixed bottom-6 right-6 w-12 h-12 bg-logic-navy-800/90 backdrop-blur-sm border border-logic-navy-700/50 rounded-xl text-chalk-400 hover:text-solve-cyan hover:border-solve-cyan/50 transition-all duration-300 flex items-center justify-center shadow-lg z-50"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+      </button>
+    </Transition>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-python'
 import 'prismjs/components/prism-rust'
@@ -260,9 +330,33 @@ const loading = ref(true)
 const error = ref(null)
 const activeTab = ref({})
 const copied = ref({})
+const scrolled = ref(false)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const showBackToTop = ref(false)
+
+// Scroll handler
+const handleScroll = () => {
+  scrolled.value = window.scrollY > 20
+  showBackToTop.value = window.scrollY > 400
+}
+
+// Mouse move handler for parallax
+const handleMouseMove = (e) => {
+  mouseX.value = (e.clientX - window.innerWidth / 2) / 100
+  mouseY.value = (e.clientY - window.innerHeight / 2) / 100
+}
+
+// Scroll to top
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 // Load schema data
 onMounted(async () => {
+  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('mousemove', handleMouseMove)
+
   try {
     const response = await fetch(`/data/${topic}.json`)
     if (!response.ok) {
@@ -282,6 +376,11 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('mousemove', handleMouseMove)
 })
 
 // Copy code to clipboard
@@ -425,9 +524,67 @@ useHead(() => {
 </script>
 
 <style scoped>
+/* Fade in animation */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Fade in from left */
+@keyframes fade-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-left {
+  animation: fade-in-left 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Code transition */
+.fade-code-enter-active,
+.fade-code-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-code-enter-from,
+.fade-code-leave-to {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+/* Back to top button transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
 /* Code block styling */
 pre {
-  @apply rounded-lg;
+  @apply rounded-xl;
 }
 
 code {
@@ -435,33 +592,50 @@ code {
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
 }
 
-/* Math display */
-.math-display {
-  font-size: 1.4em;
+/* Math content styling */
+.math-content {
+  @apply text-chalk-300 leading-relaxed;
+}
+
+.math-content :deep(.katex) {
+  @apply text-chalk-200;
+  font-size: 1.05em;
+}
+
+.math-content :deep(.katex-display) {
+  @apply my-4 text-chalk-100;
+  font-size: 1.15em;
+}
+
+.math-content :deep(strong) {
+  @apply font-semibold text-chalk-200;
+}
+
+.math-content :deep(p) {
+  @apply mb-3;
 }
 
 /* Rendered content */
 .rendered-content :deep(.katex) {
-  font-size: 1.1em;
+  @apply text-chalk-200;
+  font-size: 1.05em;
 }
 
 .rendered-content :deep(.katex-display) {
-  margin: 1.5em 0;
-  font-size: 1.2em;
+  @apply my-4 text-chalk-100;
+  font-size: 1.15em;
 }
 
 .rendered-content :deep(h3) {
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+  @apply mt-6 mb-3 text-chalk font-semibold;
 }
 
 .rendered-content :deep(p) {
-  margin-bottom: 0.75rem;
-  line-height: 1.7;
+  @apply mb-3 leading-relaxed text-chalk-300;
 }
 
 .rendered-content :deep(strong) {
-  font-weight: 600;
+  @apply font-semibold text-chalk-200;
 }
 
 /* Prose */
@@ -475,5 +649,20 @@ code {
 
 .prose :deep(li) {
   @apply text-chalk-300;
+}
+
+/* KaTeX color overrides for consistency */
+:deep(.katex) {
+  color: inherit;
+}
+
+:deep(.katex .mord),
+:deep(.katex .mop),
+:deep(.katex .mbin),
+:deep(.katex .mrel),
+:deep(.katex .mpunct),
+:deep(.katex .mopen),
+:deep(.katex .mclose) {
+  color: inherit;
 }
 </style>

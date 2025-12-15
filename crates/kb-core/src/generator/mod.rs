@@ -182,11 +182,11 @@ mod tests {
             title: "Test".to_string(),
             description: "Test".to_string(),
             mathematical_definition: None,
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::func".to_string(),
                 python: "test.func".to_string(),
                 nodejs: "test.func".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Example".to_string(),
                 explanation: "Test".to_string(),

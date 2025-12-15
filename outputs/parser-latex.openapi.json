@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Parse and generate beautiful LaTeX notation for mathematical expressions.\nMathHook provides full bidirectional support: Parse LaTeX → Expression, Expression → LaTeX.\nIncludes automatic type inference, implicit multiplication, and comprehensive coverage of 150+ LaTeX commands.\n",
+    "title": "LaTeX Notation",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/parser/latex": {
+      "post": {
+        "description": "Parse and generate beautiful LaTeX notation for mathematical expressions.\nMathHook provides full bidirectional support: Parse LaTeX → Expression, Expression → LaTeX.\nIncludes automatic type inference, implicit multiplication, and comprehensive coverage of 150+ LaTeX commands.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_latex_parsing": {
+                  "description": "Parse common LaTeX expressions",
+                  "summary": "Basic LaTeX Parsing",
+                  "value": {
+                    "expression": "Parser(ParserConfig.default())"
+                  }
+                },
+                "expression_to_latex": {
+                  "description": "Format expressions as LaTeX",
+                  "summary": "Expression to LaTeX",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "noncommutative_type_inference": {
+                  "description": "Automatic symbol type inference from LaTeX notation",
+                  "summary": "Noncommutative Type Inference",
+                  "value": {
+                    "expression": "parse_latex(r\"\\mathbf{A}\\mathbf{X}"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "LaTeX Notation",
+        "tags": [
+          "parser"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "parser operations",
+      "name": "parser"
+    }
+  ]
+}

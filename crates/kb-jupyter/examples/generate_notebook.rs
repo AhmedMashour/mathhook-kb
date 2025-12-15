@@ -22,10 +22,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  Topic: {}", schema.topic);
     println!("  Title: {}", schema.title);
     if let Some(article) = &schema.article {
-        println!("  Article sections: {}", article.sections.len());
-        println!("  Sidebars: {}", article.sidebars.len());
-        if let Some(conclusion) = &article.conclusion {
-            println!("  Exercises: {}", conclusion.exercises.len());
+        if let Some(structured) = article.as_structured() {
+            println!("  Article sections: {}", structured.sections.len());
+            println!("  Sidebars: {}", structured.sidebars.len());
+            if let Some(conclusion) = &structured.conclusion {
+                println!("  Exercises: {}", conclusion.exercises.len());
+            }
         }
     }
 

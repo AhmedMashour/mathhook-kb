@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Extend MathHook's parser for domain-specific mathematical notation.\nAdd custom functions, operators, preprocessors, and grammar modifications.\n",
+    "title": "Custom Parsers and Extensions",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/parser/custom": {
+      "post": {
+        "description": "Extend MathHook's parser for domain-specific mathematical notation.\nAdd custom functions, operators, preprocessors, and grammar modifications.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "adding_custom_functions": {
+                  "description": "Register domain-specific functions",
+                  "summary": "Adding Custom Functions",
+                  "value": {
+                    "expression": "(ParserBuilder()"
+                  }
+                },
+                "adding_custom_operators": {
+                  "description": "Define new infix operators with precedence",
+                  "summary": "Adding Custom Operators",
+                  "value": {
+                    "expression": "(ParserBuilder()"
+                  }
+                },
+                "preprocessor_transformations": {
+                  "description": "Transform input before parsing",
+                  "summary": "Preprocessor Transformations",
+                  "value": {
+                    "expression": "(ParserBuilder()"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Custom Parsers and Extensions",
+        "tags": [
+          "parser"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "parser operations",
+      "name": "parser"
+    }
+  ]
+}

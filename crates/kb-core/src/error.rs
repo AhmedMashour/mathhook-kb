@@ -1,7 +1,31 @@
+use std::fmt;
 use thiserror::Error;
 
 /// Custom result type for KB operations
 pub type Result<T> = std::result::Result<T, KbError>;
+
+/// Cross-language consistency error (boxed to reduce enum size)
+#[derive(Debug)]
+pub struct CrossLanguageInconsistencyError {
+    pub file: String,
+    pub example: String,
+    pub message: String,
+    pub rust_output: String,
+    pub python_output: String,
+    pub js_output: String,
+}
+
+impl fmt::Display for CrossLanguageInconsistencyError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Cross-language consistency error in '{}' example '{}':\n  {}\n\n  Rust output: {}\n  Python output: {}\n  JavaScript output: {}",
+            self.file, self.example, self.message, self.rust_output, self.python_output, self.js_output
+        )
+    }
+}
+
+impl std::error::Error for CrossLanguageInconsistencyError {}
 
 /// Errors that can occur in the Knowledge Base engine
 #[derive(Error, Debug)]
@@ -39,15 +63,8 @@ pub enum KbError {
         code: String,
     },
 
-    #[error("Cross-language consistency error in '{file}' example '{example}':\n  {message}\n\n  Rust output: {rust_output}\n  Python output: {python_output}\n  JavaScript output: {js_output}")]
-    CrossLanguageInconsistency {
-        file: String,
-        example: String,
-        message: String,
-        rust_output: String,
-        python_output: String,
-        js_output: String,
-    },
+    #[error("{0}")]
+    CrossLanguageInconsistency(#[from] Box<CrossLanguageInconsistencyError>),
 
     #[error("Generated {format} output is invalid:\n  {error}\n\n  Output file: {file}")]
     InvalidOutput {

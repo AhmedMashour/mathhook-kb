@@ -9,6 +9,7 @@ members = [
     "crates/kb-llm-rag",
     "crates/kb-colab",
     "crates/kb-latex",
+    "crates/kb-json",
 ]
 resolver = "2"
 

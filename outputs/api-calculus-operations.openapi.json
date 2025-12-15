@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Symbolic differentiation and integration using automatic differentiation rules,\nintegration strategies, and the Risch algorithm. Supports chain rule, product rule,\nquotient rule, and comprehensive integration techniques from table lookup to complete\nRisch algorithm for elementary functions.\n",
+    "title": "Symbolic Calculus: Differentiation and Integration",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/calculus/operations": {
+      "post": {
+        "description": "Symbolic differentiation and integration using automatic differentiation rules,\nintegration strategies, and the Risch algorithm. Supports chain rule, product rule,\nquotient rule, and comprehensive integration techniques from table lookup to complete\nRisch algorithm for elementary functions.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_differentiation": {
+                  "description": "Compute derivatives using power rule and chain rule",
+                  "summary": "Basic Differentiation",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "partial_derivatives_(multivariable)": {
+                  "description": "Compute partial derivatives with respect to each variable",
+                  "summary": "Partial Derivatives (Multivariable)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "product_and_quotient_rules": {
+                  "description": "Differentiate products and quotients",
+                  "summary": "Product and Quotient Rules",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Symbolic Calculus: Differentiation and Integration",
+        "tags": [
+          "api"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "api operations",
+      "name": "api"
+    }
+  ]
+}

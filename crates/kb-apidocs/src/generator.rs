@@ -220,7 +220,7 @@ impl OutputGenerator for ApiDocsGenerator {
     }
 
     fn file_extension(&self) -> &str {
-        "json"
+        "openapi.json"
     }
 
     fn generate(&self, schema: &Schema) -> Result<String> {

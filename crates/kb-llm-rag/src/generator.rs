@@ -176,7 +176,7 @@ impl LlmRagGenerator {
         .with_priority("high".to_string());
 
         let mut chunk_content = String::new();
-        chunk_content.push_str(&format!("## Overview\n\n"));
+        chunk_content.push_str("## Overview\n\n");
         chunk_content.push_str(&format!("{}\n\n", schema.description));
 
         // Add mathematical definition if present
@@ -191,7 +191,7 @@ impl LlmRagGenerator {
             for use_case in &schema.use_cases {
                 chunk_content.push_str(&format!("- {}\n", use_case));
             }
-            chunk_content.push_str("\n");
+            chunk_content.push('\n');
         }
 
         // Add related topics if present
@@ -200,7 +200,7 @@ impl LlmRagGenerator {
             for topic in &schema.related_topics {
                 chunk_content.push_str(&format!("- {}\n", topic));
             }
-            chunk_content.push_str("\n");
+            chunk_content.push('\n');
         }
 
         // Add code references if present
@@ -209,7 +209,7 @@ impl LlmRagGenerator {
             chunk_content.push_str(&format!("- **Rust**: `{}`\n", code_refs.rust));
             chunk_content.push_str(&format!("- **Python**: `{}`\n", code_refs.python));
             chunk_content.push_str(&format!("- **JavaScript**: `{}`\n", code_refs.nodejs));
-            chunk_content.push_str("\n");
+            chunk_content.push('\n');
         }
 
         output.push_str(&self.generate_chunk(&metadata, chunk_content, schema));
