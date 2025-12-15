@@ -343,18 +343,19 @@ const handleMouseMove = (e) => {
   }
 }
 
-// Load all documentation metadata
+// Load all documentation metadata from pre-generated index (single request)
 onMounted(async () => {
   mounted.value = true
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
   try {
-    const topicsResponse = await fetch('/data/_topics.json')
-    if (!topicsResponse.ok) {
-      throw new Error('Failed to load topics index')
+    // Single request instead of N+1 requests
+    const response = await fetch('/data/_index.json')
+    if (!response.ok) {
+      throw new Error('Failed to load documentation index')
     }
-    const topics = await topicsResponse.json()
+    const index = await response.json()
 
     const grouped = {}
 
@@ -364,26 +365,19 @@ onMounted(async () => {
       return topicName.split('-')[0]
     }
 
-    for (const topic of topics) {
-      try {
-        const response = await fetch(`/data/${topic}.json`)
-        if (response.ok) {
-          const data = await response.json()
-          const category = getCategory(topic)
+    // Process pre-loaded topics (no additional requests needed)
+    for (const item of index.topics) {
+      const category = getCategory(item.topic)
 
-          if (!grouped[category]) {
-            grouped[category] = []
-          }
-
-          grouped[category].push({
-            topic,
-            title: data.title || topic,
-            description: data.description ? data.description.substring(0, 150) + (data.description.length > 150 ? '...' : '') : ''
-          })
-        }
-      } catch (e) {
-        // Skip topics that fail to load
+      if (!grouped[category]) {
+        grouped[category] = []
       }
+
+      grouped[category].push({
+        topic: item.topic,
+        title: item.title,
+        description: item.description
+      })
     }
 
     const sortedCategories = {}

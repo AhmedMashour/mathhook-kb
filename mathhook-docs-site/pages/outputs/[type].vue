@@ -104,26 +104,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useFileData } from '~/composables/useFileData'
+import { useOutputFiles } from '~/composables/useFileData'
 
 const route = useRoute()
-const {
-  colabFiles,
-  jupyterFiles,
-  ragFiles,
-  latexFiles,
-  mdbookFiles,
-  apiDocsFiles,
-  jsonFiles,
-  vueFiles,
-  loading,
-  error,
-  fetchAllFiles,
-  refresh,
-  categories: allCategories
-} = useFileData()
+
+// Valid output types
+type OutputTypeKey = 'colab' | 'jupyter' | 'llm-rag' | 'latex' | 'mdbook' | 'api-docs' | 'json' | 'vue'
 
 interface PlatformConfig {
   title: string
@@ -230,48 +218,33 @@ const platformConfigs: Record<string, PlatformConfig> = {
 }
 
 // Get current platform type from route
-const platformType = computed(() => String(route.params.type || 'jupyter'))
+const platformType = computed(() => String(route.params.type || 'jupyter') as OutputTypeKey)
 
 // Get platform config
 const platformConfig = computed(() => {
   return platformConfigs[platformType.value] || platformConfigs.jupyter
 })
 
-// Get files for current platform
-const files = computed(() => {
-  const typeMap = {
-    'colab': colabFiles.value,
-    'jupyter': jupyterFiles.value,
-    'llm-rag': ragFiles.value,
-    'latex': latexFiles.value,
-    'mdbook': mdbookFiles.value,
-    'api-docs': apiDocsFiles.value,
-    'json': jsonFiles.value,
-    'vue': vueFiles.value
-  }
-  return typeMap[platformType.value] || []
-})
+// Use lazy loading composable - only loads ONE manifest
+const { files, loading, error, load, refresh, categories } = useOutputFiles(platformType.value)
 
-// Get categories for current platform
-const categories = computed(() => {
-  const uniqueCategories = new Set(files.value.map(f => f.category))
-  return Array.from(uniqueCategories).sort()
-})
-
-// Fetch files on mount
+// Load files on mount
 onMounted(() => {
-  if (files.value.length === 0) {
-    fetchAllFiles()
-  }
+  load()
+})
+
+// Reload when route changes (for client-side navigation)
+watch(() => route.params.type, () => {
+  load()
 })
 
 // Handle downloads
-function handleDownload(file) {
+function handleDownload(file: any) {
   console.log('Download:', file.name)
 }
 
-function handleMultipleDownload(files) {
-  console.log('Download multiple:', files.length, 'files')
+function handleMultipleDownload(selectedFiles: any[]) {
+  console.log('Download multiple:', selectedFiles.length, 'files')
 }
 
 // SEO
