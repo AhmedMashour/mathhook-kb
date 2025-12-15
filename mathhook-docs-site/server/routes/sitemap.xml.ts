@@ -8,7 +8,7 @@ import fs from "fs";
 import path from "path";
 
 export default defineEventHandler(async (event) => {
-  const baseUrl = "https://mathhook.dev";
+  const baseUrl = "https://mathook.org";
 
   // Get all JSON files from public/data directory
   const dataDir = path.join(process.cwd(), "public/data");

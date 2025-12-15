@@ -119,7 +119,7 @@ script: [
 link: [
   {
     rel: 'canonical',
-    href: `https://mathhook.dev/docs/${topic}`
+    href: `https://mathook.org/docs/${topic}`
   }
 ]
 ```
@@ -127,7 +127,7 @@ link: [
 **Why important**:
 - Prevents duplicate content issues
 - Tells Google this is the authoritative version
-- Important if you have multiple domains (e.g., mathhook.dev and www.mathhook.dev)
+- Important if you have multiple domains (e.g., mathook.org and www.mathook.org)
 
 ### 5. Sitemap Generation 🟡 (Partially Complete)
 **File**: `server/routes/sitemap.xml.ts`
@@ -138,11 +138,11 @@ Auto-generates sitemap with all documentation URLs:
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mathhook.dev/</loc>
+    <loc>https://mathook.org/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mathhook.dev/docs/ode-first_order-linear</loc>
+    <loc>https://mathook.org/docs/ode-first_order-linear</loc>
     <priority>0.8</priority>
   </url>
   <!-- All other docs pages... -->
@@ -201,7 +201,7 @@ Tailwind CSS ensures responsive design:
 ```
 User-agent: *
 Allow: /
-Sitemap: https://mathhook.dev/sitemap.xml
+Sitemap: https://mathook.org/sitemap.xml
 ```
 
 ### 🔲 Open Graph Images
@@ -216,8 +216,8 @@ Add breadcrumb navigation for Google:
 {
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mathhook.dev"},
-    {"@type": "ListItem", "position": 2, "name": "Docs", "item": "https://mathhook.dev/docs"},
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mathook.org"},
+    {"@type": "ListItem", "position": 2, "name": "Docs", "item": "https://mathook.org/docs"},
     {"@type": "ListItem", "position": 3, "name": "Linear ODEs"}
   ]
 }
@@ -296,7 +296,7 @@ export default defineNuxtConfig({
 
 ### View Rendered HTML (What Google Sees)
 ```bash
-curl https://mathhook.dev/docs/ode-first_order-linear
+curl https://mathook.org/docs/ode-first_order-linear
 ```
 
 Should return complete HTML with all content.

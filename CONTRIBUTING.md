@@ -504,7 +504,7 @@ Include:
 
 ### Security Issues
 
-For security vulnerabilities, please email security@mathhook.dev directly instead of opening a public issue.
+For security vulnerabilities, please email security@mathook.org directly instead of opening a public issue.
 
 ---
 

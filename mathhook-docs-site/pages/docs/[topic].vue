@@ -371,8 +371,8 @@ const renderContentWithCallouts = (text) => {
 useHead(() => {
   if (!schema.value) return { title: 'Loading...' }
 
-  const url = `https://mathhook.dev/docs/${topic}`
-  const imageUrl = `https://mathhook.dev/og-images/${topic}.png`
+  const url = `https://mathook.org/docs/${topic}`
+  const imageUrl = `https://mathook.org/og-images/${topic}.png`
 
   return {
     title: `${schema.value.title} - MathHook`,
@@ -409,7 +409,7 @@ useHead(() => {
           publisher: {
             '@type': 'Organization',
             name: 'MathHook',
-            logo: { '@type': 'ImageObject', url: 'https://mathhook.dev/logo.png' }
+            logo: { '@type': 'ImageObject', url: 'https://mathook.org/logo.png' }
           },
           datePublished: '2024-01-01',
           dateModified: new Date().toISOString().split('T')[0],

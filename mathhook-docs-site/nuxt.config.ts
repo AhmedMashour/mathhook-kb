@@ -94,7 +94,7 @@ export default defineNuxtConfig({
   // Runtime config for environment variables
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://mathhook.dev',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://mathook.org',
     }
   },
 })
