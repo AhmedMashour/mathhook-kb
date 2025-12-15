@@ -220,9 +220,12 @@ const platformConfigs: Record<string, PlatformConfig> = {
 // Get current platform type from route
 const platformType = computed(() => String(route.params.type || 'jupyter') as OutputTypeKey)
 
-// Get platform config
-const platformConfig = computed(() => {
-  return platformConfigs[platformType.value] || platformConfigs.jupyter
+// Get platform config (always returns a valid config with fallback to jupyter)
+const platformConfig = computed((): PlatformConfig => {
+  const config = platformConfigs[platformType.value]
+  if (config) return config
+  // Fallback - jupyter config always exists
+  return platformConfigs.jupyter!
 })
 
 // Use lazy loading composable - only loads ONE manifest

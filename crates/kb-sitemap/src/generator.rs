@@ -7,6 +7,9 @@ use chrono::{DateTime, Utc};
 use kb_core::Schema;
 use std::path::Path;
 
+/// Result type for split sitemaps: (sitemap_files, optional_sitemap_index)
+pub type SplitSitemapsResult = (Vec<(String, String)>, Option<String>);
+
 /// Configuration for sitemap generation
 #[derive(Debug, Clone)]
 pub struct SitemapConfig {
@@ -319,15 +322,15 @@ impl SitemapGenerator {
 
     /// Generate multiple sitemaps if needed (for large sites)
     /// Returns (sitemap_files, sitemap_index)
-    pub fn generate_split_sitemaps(
-        &self,
-        schemas: &[Schema],
-    ) -> Result<(Vec<(String, String)>, Option<String>)> {
+    pub fn generate_split_sitemaps(&self, schemas: &[Schema]) -> Result<SplitSitemapsResult> {
         let entries = self.schemas_to_entries(schemas);
 
         if entries.len() <= self.config.max_urls_per_sitemap {
             // Single sitemap is enough
-            return Ok((vec![("sitemap.xml".to_string(), self.entries_to_xml(&entries))], None));
+            return Ok((
+                vec![("sitemap.xml".to_string(), self.entries_to_xml(&entries))],
+                None,
+            ));
         }
 
         // Split into multiple sitemaps
@@ -407,7 +410,10 @@ mod tests {
     #[test]
     fn test_xml_escaping() {
         let escaped = escape_xml("<test & \"quoted\" 'single'>");
-        assert_eq!(escaped, "&lt;test &amp; &quot;quoted&quot; &apos;single&apos;&gt;");
+        assert_eq!(
+            escaped,
+            "&lt;test &amp; &quot;quoted&quot; &apos;single&apos;&gt;"
+        );
     }
 
     #[test]

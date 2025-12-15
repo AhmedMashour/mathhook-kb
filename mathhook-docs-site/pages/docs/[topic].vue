@@ -266,7 +266,7 @@
 
                 <!-- Code Content with Copy Button -->
                 <div class="relative group/code">
-                  <button @click="copyCode(getCode(example, activeTab[idx]), idx)"
+                  <button @click="copyCode(getCode(example, activeTab[idx] || 'python'), idx)"
                           class="absolute top-3 right-3 px-3 py-1.5 bg-logic-navy-700/80 hover:bg-logic-navy-600 text-chalk-400 text-xs font-medium rounded-lg opacity-0 group-hover/code:opacity-100 transition-all duration-300 z-10 flex items-center gap-1.5 backdrop-blur-sm">
                     <span v-if="!copied[idx]">📋 Copy</span>
                     <span v-else class="text-step-green">✓ Copied!</span>
@@ -368,6 +368,51 @@ import 'prismjs/components/prism-javascript'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 
+// Type definitions for the schema
+interface CodeExample {
+  title: string
+  explanation: string
+  code: Record<string, string>
+  expected_output?: string
+}
+
+interface ArticleSection {
+  title: string
+  content: string
+}
+
+interface ArticleSidebar {
+  type: 'note' | 'warning' | 'info' | 'performance'
+  title: string
+  content: string
+}
+
+interface ArticleIntroduction {
+  hook: string
+}
+
+interface Article {
+  introduction?: ArticleIntroduction
+  sections?: ArticleSection[]
+  sidebars?: ArticleSidebar[]
+  complexity?: 'beginner' | 'intermediate' | 'advanced'
+}
+
+interface SeoMetadata {
+  priority: number
+  change_frequency: string
+}
+
+interface Schema {
+  topic: string
+  title: string
+  description: string
+  mathematical_definition?: string
+  examples: CodeExample[]
+  article?: Article
+  seo?: SeoMetadata
+}
+
 const route = useRoute()
 const topic = computed(() => route.params.topic as string)
 
@@ -379,7 +424,7 @@ const isValidTopic = (t: string): boolean => {
 }
 
 // SSR-compatible data fetching - renders full HTML for SEO crawlers
-const { data: schema, pending: loading, error: fetchError, refresh } = await useAsyncData(
+const { data: schema, pending: loading, error: fetchError, refresh } = await useAsyncData<Schema | null>(
   `topic-${topic.value}`,
   async () => {
     const t = topic.value
@@ -390,7 +435,7 @@ const { data: schema, pending: loading, error: fetchError, refresh } = await use
       })
     }
     // Fetch from server API route (works during SSR)
-    const data = await $fetch(`/api/docs/${t}`)
+    const data = await $fetch<Schema>(`/api/docs/${t}`)
     return data
   },
   {
@@ -413,8 +458,8 @@ const retryLoad = async () => {
   await refresh()
 }
 
-const activeTab = ref({})
-const copied = ref({})
+const activeTab = ref<Record<number, string>>({})
+const copied = ref<Record<number, boolean>>({})
 const scrolled = ref(false)
 const mouseX = ref(0)
 const mouseY = ref(0)
@@ -423,7 +468,7 @@ const showBackToTop = ref(false)
 // Initialize active tabs when schema loads
 watch(schema, (newSchema) => {
   if (newSchema?.examples) {
-    newSchema.examples.forEach((_, idx) => {
+    newSchema.examples.forEach((_: CodeExample, idx: number) => {
       activeTab.value[idx] = 'python'
       copied.value[idx] = false
     })
@@ -437,7 +482,7 @@ const handleScroll = () => {
 }
 
 // Mouse move handler for parallax
-const handleMouseMove = (e) => {
+const handleMouseMove = (e: MouseEvent) => {
   mouseX.value = (e.clientX - window.innerWidth / 2) / 100
   mouseY.value = (e.clientY - window.innerHeight / 2) / 100
 }
@@ -459,7 +504,7 @@ onUnmounted(() => {
 })
 
 // Safely get code for a specific language from an example
-const getCode = (example: any, lang: string): string => {
+const getCode = (example: CodeExample, lang: string): string => {
   if (!example?.code) return ''
   return example.code[lang] || ''
 }
@@ -531,22 +576,8 @@ const highlightCode = (code: string | undefined | null, language: string): strin
   }
 }
 
-// Render math using KaTeX
-const renderMath = (latex, displayMode = true) => {
-  try {
-    const cleanLatex = latex.replace(/\\\\/g, '\\')
-    return katex.renderToString(cleanLatex, {
-      throwOnError: false,
-      displayMode: displayMode
-    })
-  } catch (e) {
-    console.error('KaTeX render error:', e)
-    return latex
-  }
-}
-
 // Render content with inline and display LaTeX support
-const renderContent = (text) => {
+const renderContent = (text: string | undefined | null): string => {
   if (!text) return ''
   let rendered = text
 
@@ -591,7 +622,7 @@ const renderContent = (text) => {
 }
 
 // Render content with callouts and special formatting
-const renderContentWithCallouts = (text) => {
+const renderContentWithCallouts = (text: string | undefined | null): string => {
   return renderContent(text)
 }
 

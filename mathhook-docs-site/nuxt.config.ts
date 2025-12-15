@@ -3,6 +3,16 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Exclude generated example files from TypeScript checking
+  // These files in public/files/ are downloadable examples with intentional
+  // syntax that doesn't pass TS validation (multi-line strings for readability)
+  // Path is relative to .nuxt directory, hence the ../
+  typescript: {
+    tsConfig: {
+      exclude: ['../public/files/**/*']
+    }
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',

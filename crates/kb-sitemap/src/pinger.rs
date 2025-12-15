@@ -206,7 +206,7 @@ impl SearchEnginePinger {
         match agent.get(&ping_url).call() {
             Ok(response) => {
                 let status = response.status();
-                if status >= 200 && status < 300 {
+                if (200..300).contains(&status) {
                     PingResult::success(engine, status, format!("Successfully pinged {}", engine.name()))
                 } else {
                     PingResult::failure(
@@ -270,6 +270,7 @@ impl Default for SearchEnginePinger {
 }
 
 /// Submit a sitemap and print results
+#[allow(dead_code)]
 pub fn submit_sitemap_with_output(sitemap_url: &str, verbose: bool) -> Result<()> {
     let config = PingerConfig::default();
     let config = if verbose {
@@ -284,10 +285,10 @@ pub fn submit_sitemap_with_output(sitemap_url: &str, verbose: bool) -> Result<()
     let mut any_success = false;
     for result in &results {
         if result.success {
-            println!("  {} {}: {}", "✓", result.engine.name(), result.message);
+            println!("  ✓ {}: {}", result.engine.name(), result.message);
             any_success = true;
         } else {
-            println!("  {} {}: {}", "✗", result.engine.name(), result.message);
+            println!("  ✗ {}: {}", result.engine.name(), result.message);
         }
     }
 
@@ -365,7 +366,7 @@ impl IndexNowSubmitter {
         {
             Ok(response) => {
                 let status = response.status();
-                if status >= 200 && status < 300 {
+                if (200..300).contains(&status) {
                     Ok(())
                 } else {
                     Err(SitemapError::HttpError(format!(
@@ -421,7 +422,7 @@ impl IndexNowSubmitter {
         {
             Ok(response) => {
                 let status = response.status();
-                if status >= 200 && status < 300 {
+                if (200..300).contains(&status) {
                     Ok(())
                 } else {
                     Err(SitemapError::HttpError(format!(
@@ -554,7 +555,7 @@ impl BingSubmitter {
         {
             Ok(response) => {
                 let status = response.status();
-                if status >= 200 && status < 300 {
+                if (200..300).contains(&status) {
                     // Try to parse response for details
                     let body = response.into_string().unwrap_or_default();
                     if body.contains("\"d\":null") || body.is_empty() || status == 200 {
@@ -606,7 +607,7 @@ impl BingSubmitter {
         match agent.get(&endpoint).call() {
             Ok(response) => {
                 let status = response.status();
-                if status >= 200 && status < 300 {
+                if (200..300).contains(&status) {
                     Ok(())
                 } else {
                     Err(SitemapError::HttpError(format!(
