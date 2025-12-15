@@ -19,6 +19,7 @@ Thumbs.db
 /output/
 /docs-generated/
 *.ipynb
+!colab-notebooks/**/*.ipynb
 *.pdf
 
 # Node.js (for Vue SSR generator)

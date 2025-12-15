@@ -38,17 +38,17 @@ impl ColabConfig {
     /// Create config from environment variables
     ///
     /// - `COLAB_GITHUB_USER` (default: "AhmedMashour")
-    /// - `COLAB_GITHUB_REPO` (default: "mathhook")
-    /// - `COLAB_GITHUB_BRANCH` (default: "main")
+    /// - `COLAB_GITHUB_REPO` (default: "mathhook-kb")
+    /// - `COLAB_GITHUB_BRANCH` (default: "master")
     /// - `COLAB_NOTEBOOKS_PATH` (default: "colab-notebooks")
     pub fn from_env() -> Self {
         Self {
             github_user: std::env::var("COLAB_GITHUB_USER")
                 .unwrap_or_else(|_| "AhmedMashour".to_string()),
             github_repo: std::env::var("COLAB_GITHUB_REPO")
-                .unwrap_or_else(|_| "mathhook".to_string()),
+                .unwrap_or_else(|_| "mathhook-kb".to_string()),
             github_branch: std::env::var("COLAB_GITHUB_BRANCH")
-                .unwrap_or_else(|_| "main".to_string()),
+                .unwrap_or_else(|_| "master".to_string()),
             notebooks_path: std::env::var("COLAB_NOTEBOOKS_PATH")
                 .unwrap_or_else(|_| "colab-notebooks".to_string()),
         }

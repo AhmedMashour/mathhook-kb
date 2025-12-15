@@ -1,0 +1,21 @@
+{
+  "config": {
+    "github_user": "AhmedMashour",
+    "github_repo": "mathhook-kb",
+    "github_branch": "master",
+    "notebooks_path": "colab-notebooks"
+  },
+  "total_notebooks": 1,
+  "categories": {
+    "getting": [
+      {
+        "filename": "getting-started-introduction.colab.ipynb",
+        "topic": "getting.started-introduction",
+        "title": "Introduction to MathHook",
+        "category": "getting",
+        "colab_url": "https://colab.research.google.com/github/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting/getting-started-introduction.colab.ipynb",
+        "github_url": "https://github.com/AhmedMashour/mathhook-kb/blob/master/colab-notebooks/getting/getting-started-introduction.colab.ipynb"
+      }
+    ]
+  }
+}

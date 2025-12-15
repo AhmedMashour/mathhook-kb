@@ -108,9 +108,10 @@ fn build_command(
     let mut total_generated = 0;
 
     // Setup Colab manifest if we're generating Colab notebooks
+    // Colab notebooks go to root colab-notebooks/ folder (not inside output/)
     let colab_config = ColabConfig::default();
     let mut colab_manifest = ColabManifest::new(colab_config.clone());
-    let colab_base_dir = output_dir.join("colab-notebooks");
+    let colab_base_dir = PathBuf::from("colab-notebooks");
 
     for schema_path in &schemas {
         println!("📄 Loading schema: {}", schema_path.display());
