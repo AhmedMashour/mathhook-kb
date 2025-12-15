@@ -475,6 +475,209 @@ Sitemap: {}
     )
 }
 
+/// Bing Webmaster URL Submission API
+///
+/// This is separate from IndexNow and works for sites verified in Bing Webmaster Tools.
+/// Allows up to 10,000 URLs per day with no monthly quotas.
+///
+/// # Usage
+///
+/// 1. Go to Bing Webmaster Tools → Settings → API Access
+/// 2. Generate your API key
+/// 3. Use this submitter to submit URLs
+pub struct BingSubmitter {
+    /// API key from Bing Webmaster Tools
+    api_key: String,
+
+    /// Site URL (must be verified in Bing Webmaster)
+    site_url: String,
+
+    /// Timeout in seconds
+    timeout_secs: u64,
+}
+
+impl BingSubmitter {
+    /// Create a new Bing Webmaster URL submitter
+    ///
+    /// # Arguments
+    ///
+    /// * `api_key` - API key from Bing Webmaster Tools → Settings → API Access
+    /// * `site_url` - Your verified site URL (e.g., "https://mathhook.org")
+    pub fn new(api_key: impl Into<String>, site_url: impl Into<String>) -> Self {
+        Self {
+            api_key: api_key.into(),
+            site_url: site_url.into(),
+            timeout_secs: 30,
+        }
+    }
+
+    /// Set timeout
+    pub fn with_timeout(mut self, secs: u64) -> Self {
+        self.timeout_secs = secs;
+        self
+    }
+
+    /// Submit a single URL for indexing
+    pub fn submit_url(&self, url: &str) -> Result<()> {
+        self.submit_urls(&[url.to_string()])
+    }
+
+    /// Submit multiple URLs for indexing (max 10,000 per day)
+    pub fn submit_urls(&self, urls: &[String]) -> Result<()> {
+        if urls.is_empty() {
+            return Ok(());
+        }
+
+        if urls.len() > 10_000 {
+            return Err(SitemapError::InvalidUrl(
+                "Bing accepts max 10,000 URLs per day".to_string()
+            ));
+        }
+
+        let endpoint = format!(
+            "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey={}",
+            self.api_key
+        );
+
+        let payload = serde_json::json!({
+            "siteUrl": self.site_url,
+            "urlList": urls
+        });
+
+        let agent = ureq::AgentBuilder::new()
+            .timeout(std::time::Duration::from_secs(self.timeout_secs))
+            .build();
+
+        match agent.post(&endpoint)
+            .set("Content-Type", "application/json; charset=utf-8")
+            .send_string(&payload.to_string())
+        {
+            Ok(response) => {
+                let status = response.status();
+                if status >= 200 && status < 300 {
+                    // Try to parse response for details
+                    let body = response.into_string().unwrap_or_default();
+                    if body.contains("\"d\":null") || body.is_empty() || status == 200 {
+                        Ok(())
+                    } else {
+                        // Check for error in response
+                        if let Ok(json) = serde_json::from_str::<serde_json::Value>(&body) {
+                            if let Some(error) = json.get("ErrorCode") {
+                                return Err(SitemapError::HttpError(format!(
+                                    "Bing API error: {:?}", error
+                                )));
+                            }
+                        }
+                        Ok(())
+                    }
+                } else {
+                    Err(SitemapError::HttpError(format!(
+                        "Bing API returned status {}", status
+                    )))
+                }
+            }
+            Err(ureq::Error::Status(code, response)) => {
+                let body = response.into_string().unwrap_or_default();
+                Err(SitemapError::HttpError(format!(
+                    "Bing API error {}: {}", code, body
+                )))
+            }
+            Err(ureq::Error::Transport(transport)) => {
+                Err(SitemapError::HttpError(format!(
+                    "Bing API transport error: {}", transport
+                )))
+            }
+        }
+    }
+
+    /// Submit a sitemap URL for processing
+    pub fn submit_sitemap(&self, sitemap_url: &str) -> Result<()> {
+        let endpoint = format!(
+            "https://ssl.bing.com/webmaster/api.svc/json/SubmitSitemap?apikey={}&siteUrl={}&feedUrl={}",
+            self.api_key,
+            urlencoding::encode(&self.site_url),
+            urlencoding::encode(sitemap_url)
+        );
+
+        let agent = ureq::AgentBuilder::new()
+            .timeout(std::time::Duration::from_secs(self.timeout_secs))
+            .build();
+
+        match agent.get(&endpoint).call() {
+            Ok(response) => {
+                let status = response.status();
+                if status >= 200 && status < 300 {
+                    Ok(())
+                } else {
+                    Err(SitemapError::HttpError(format!(
+                        "Bing sitemap submission returned status {}", status
+                    )))
+                }
+            }
+            Err(ureq::Error::Status(code, response)) => {
+                let body = response.into_string().unwrap_or_default();
+                Err(SitemapError::HttpError(format!(
+                    "Bing sitemap submission error {}: {}", code, body
+                )))
+            }
+            Err(ureq::Error::Transport(transport)) => {
+                Err(SitemapError::HttpError(format!(
+                    "Bing sitemap submission transport error: {}", transport
+                )))
+            }
+        }
+    }
+
+    /// Get quota information (how many URLs you can still submit today)
+    pub fn get_quota(&self) -> Result<BingQuota> {
+        let endpoint = format!(
+            "https://ssl.bing.com/webmaster/api.svc/json/GetUrlSubmissionQuota?apikey={}&siteUrl={}",
+            self.api_key,
+            urlencoding::encode(&self.site_url)
+        );
+
+        let agent = ureq::AgentBuilder::new()
+            .timeout(std::time::Duration::from_secs(self.timeout_secs))
+            .build();
+
+        match agent.get(&endpoint).call() {
+            Ok(response) => {
+                let body = response.into_string().unwrap_or_default();
+                // Parse the response - Bing returns { "d": { "DailyQuota": N, "MonthlyQuota": N } }
+                if let Ok(json) = serde_json::from_str::<serde_json::Value>(&body) {
+                    if let Some(d) = json.get("d") {
+                        let daily = d.get("DailyQuota").and_then(|v| v.as_u64()).unwrap_or(0);
+                        let monthly = d.get("MonthlyQuota").and_then(|v| v.as_u64()).unwrap_or(0);
+                        return Ok(BingQuota { daily_remaining: daily, monthly_remaining: monthly });
+                    }
+                }
+                // Default if parsing fails
+                Ok(BingQuota { daily_remaining: 10_000, monthly_remaining: 0 })
+            }
+            Err(ureq::Error::Status(code, response)) => {
+                let body = response.into_string().unwrap_or_default();
+                Err(SitemapError::HttpError(format!(
+                    "Bing quota check error {}: {}", code, body
+                )))
+            }
+            Err(ureq::Error::Transport(transport)) => {
+                Err(SitemapError::HttpError(format!(
+                    "Bing quota check transport error: {}", transport
+                )))
+            }
+        }
+    }
+}
+
+/// Bing URL submission quota
+#[derive(Debug, Clone)]
+pub struct BingQuota {
+    /// Remaining URLs you can submit today
+    pub daily_remaining: u64,
+    /// Remaining URLs you can submit this month (0 means unlimited)
+    pub monthly_remaining: u64,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

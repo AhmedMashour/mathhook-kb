@@ -33,8 +33,8 @@ mod pinger;
 
 pub use generator::{SitemapConfig, SitemapEntry, SitemapGenerator, SitemapIndex};
 pub use pinger::{
-    generate_robots_txt_snippet, verify_robots_txt, IndexNowSubmitter, PingResult, PingerConfig,
-    SearchEngine, SearchEnginePinger,
+    generate_robots_txt_snippet, verify_robots_txt, BingQuota, BingSubmitter, IndexNowSubmitter,
+    PingResult, PingerConfig, SearchEngine, SearchEnginePinger,
 };
 
 use thiserror::Error;

@@ -13,8 +13,8 @@ use kb_latex::LatexGenerator;
 use kb_llm_rag::LlmRagGenerator;
 use kb_mdbook::MdBookGenerator;
 use kb_sitemap::{
-    generate_robots_txt_snippet, verify_robots_txt, IndexNowSubmitter, SitemapConfig,
-    SitemapGenerator,
+    generate_robots_txt_snippet, verify_robots_txt, BingSubmitter, IndexNowSubmitter,
+    SitemapConfig, SitemapGenerator,
 };
 use kb_vue::VueGenerator;
 use std::path::PathBuf;
@@ -137,6 +137,33 @@ enum SitemapCommands {
         /// Base URL for the site
         #[arg(short, long, default_value = "https://mathhook.org")]
         base_url: String,
+    },
+
+    /// Submit URLs via Bing Webmaster API (verified sites only)
+    Bing {
+        /// Bing Webmaster API key (from Settings → API Access)
+        #[arg(short, long, env = "BING_WEBMASTER_API_KEY")]
+        api_key: String,
+
+        /// Site URL (must be verified in Bing Webmaster Tools)
+        #[arg(short, long, default_value = "https://mathhook.org")]
+        site_url: String,
+
+        /// Submit URLs from sitemap file
+        #[arg(long)]
+        from_sitemap: Option<PathBuf>,
+
+        /// Submit sitemap URL directly
+        #[arg(long)]
+        submit_sitemap: Option<String>,
+
+        /// Individual URLs to submit
+        #[arg(value_name = "URL")]
+        urls: Vec<String>,
+
+        /// Check remaining quota
+        #[arg(long)]
+        quota: bool,
     },
 }
 
@@ -759,21 +786,108 @@ fn handle_sitemap_command(cmd: SitemapCommands) -> Result<()> {
             println!("    • Go to Sitemaps → Add sitemap: sitemap.xml");
             println!();
 
-            println!("4️⃣  INDEXNOW (instant indexing for Bing, Yandex, Seznam):");
-            println!("    a) Generate an API key (any random 8-128 char string):");
-            println!("       Example: mathhook2024xyz123");
+            println!("4️⃣  BING WEBMASTER (recommended for verified sites):");
+            println!("    • Go to: https://www.bing.com/webmasters");
+            println!("    • Verify site ownership");
+            println!("    • Go to Settings → API Access → Generate API key");
+            println!("    • Submit via: kb sitemap bing --submit-sitemap {}/sitemap.xml -a YOUR_KEY", base_url);
             println!();
-            println!("    b) Create verification file at:");
-            println!("       {}/{{your-key}}.txt", base_url);
-            println!("       (file should contain only the key itself)");
-            println!();
-            println!("    c) Submit URLs:");
-            println!("       export INDEXNOW_API_KEY=your-key");
-            println!("       kb sitemap indexnow --from-sitemap sitemap.xml");
+
+            println!("5️⃣  INDEXNOW (instant indexing, requires verification):");
+            println!("    • After Bing Webmaster verification, use:");
+            println!("       kb sitemap bing --from-sitemap sitemap.xml -a YOUR_KEY");
             println!();
 
             println!("═══════════════════════════════════════════════════════════════\n");
             println!("💡 TIP: Run 'kb sitemap verify' to check your robots.txt setup");
+
+            Ok(())
+        }
+
+        SitemapCommands::Bing {
+            api_key,
+            site_url,
+            from_sitemap,
+            submit_sitemap,
+            urls,
+            quota,
+        } => {
+            println!("🔵 Bing Webmaster API\n");
+
+            let submitter = BingSubmitter::new(&api_key, &site_url);
+
+            // Check quota if requested
+            if quota {
+                println!("📊 Checking submission quota...\n");
+                match submitter.get_quota() {
+                    Ok(q) => {
+                        println!("   Daily remaining:   {} URLs", q.daily_remaining);
+                        if q.monthly_remaining > 0 {
+                            println!("   Monthly remaining: {} URLs", q.monthly_remaining);
+                        } else {
+                            println!("   Monthly remaining: Unlimited");
+                        }
+                    }
+                    Err(e) => {
+                        println!("   ❌ Failed to check quota: {}", e);
+                        println!("   Make sure your API key is correct.");
+                    }
+                }
+                println!();
+            }
+
+            // Submit sitemap directly
+            if let Some(sitemap_url) = submit_sitemap {
+                println!("📤 Submitting sitemap: {}\n", sitemap_url);
+                match submitter.submit_sitemap(&sitemap_url) {
+                    Ok(_) => {
+                        println!("   ✅ Sitemap submitted successfully!");
+                        println!("   Bing will process and index your URLs.");
+                    }
+                    Err(e) => {
+                        println!("   ❌ Failed to submit sitemap: {}", e);
+                    }
+                }
+                return Ok(());
+            }
+
+            // Collect URLs to submit
+            let urls_to_submit = if let Some(sitemap_path) = from_sitemap {
+                let content = std::fs::read_to_string(&sitemap_path)
+                    .context("Failed to read sitemap file")?;
+                extract_urls_from_sitemap(&content)
+            } else if !urls.is_empty() {
+                urls
+            } else if !quota {
+                anyhow::bail!("Please provide URLs, --from-sitemap, --submit-sitemap, or --quota");
+            } else {
+                return Ok(());
+            };
+
+            if urls_to_submit.is_empty() {
+                println!("   No URLs to submit.");
+                return Ok(());
+            }
+
+            println!("📤 Submitting {} URLs to Bing...\n", urls_to_submit.len());
+            println!("   Site: {}", site_url);
+            println!("   API Key: {}...", &api_key[..8.min(api_key.len())]);
+            println!();
+
+            match submitter.submit_urls(&urls_to_submit) {
+                Ok(_) => {
+                    println!("   ✅ Successfully submitted {} URLs to Bing!", urls_to_submit.len());
+                    println!("\n   URLs will be crawled and indexed by Bing.");
+                    println!("   Check status at: https://www.bing.com/webmasters");
+                }
+                Err(e) => {
+                    println!("   ❌ Failed to submit URLs: {}", e);
+                    println!("\n   Troubleshooting:");
+                    println!("   1. Verify your API key in Bing Webmaster → Settings → API Access");
+                    println!("   2. Make sure {} is verified in Bing Webmaster", site_url);
+                    println!("   3. Check your daily quota: kb sitemap bing --quota -a YOUR_KEY");
+                }
+            }
 
             Ok(())
         }
