@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaTeX Documents - MathHook</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'logic-navy': { 700: '#1e3a5f', 800: '#152a45', 900: '#0d1b2a' },
+            'rust-core': '#E64524',
+            'solve-cyan': '#06B6D4',
+            'step-green': '#22C55E',
+            'chalk': { DEFAULT: '#F5F5F5', 400: '#A3A3A3', 500: '#737373', 600: '#525252' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fade-up 0.6s ease-out forwards; }
+    .file-card { animation: fade-up 0.4s ease-out forwards; opacity: 0; }
+  </style>
+</head>
+<body class="min-h-screen bg-logic-navy-900 text-chalk">
+  <!-- Background gradient -->
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-br from-logic-navy-900 via-logic-navy-800 to-logic-navy-900"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-solve-cyan/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 bg-logic-navy-900/95 backdrop-blur-xl border-b border-logic-navy-700/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <a href="/" class="flex items-center gap-2 group">
+          <svg class="w-7 h-7" viewBox="0 0 48 48" fill="none">
+            <defs>
+              <linearGradient id="nav-logo" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#E64524"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 40 C12 40 12 12 12 10 C12 6 16 4 20 8 L24 16 L28 8 C32 4 36 6 36 10 C36 12 36 40 36 40" stroke="url(#nav-logo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="text-lg font-semibold">
+            <span class="text-rust-core">Math</span><span class="text-solve-cyan">Hook</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-5 text-sm">
+          <a href="/outputs" class="text-chalk-400 hover:text-chalk transition-colors">← Back to Outputs</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-10 relative z-10">
+    <div class="mb-10 animate-fade-up">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-14 h-14 rounded-xl bg-violet-500/10 flex items-center justify-center">
+          <svg class="w-7 h-7 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-chalk">LaTeX Documents</h1>
+          <p class="text-chalk-400" id="file-count"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search/Filter -->
+    <div class="mb-6 animate-fade-up" style="animation-delay: 0.1s">
+      <input
+        type="text"
+        id="search"
+        placeholder="Search files..."
+        class="w-full max-w-md px-4 py-2 rounded-xl bg-logic-navy-800/50 border border-logic-navy-700/50 text-chalk placeholder-chalk-500 focus:outline-none focus:border-violet-500/50 transition-colors"
+      >
+    </div>
+
+    <!-- Files Grid -->
+    <div id="files-grid" class="grid gap-3">
+      <a href="advanced-assumptions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 0ms"
+         data-filename="advanced-assumptions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced assumptions</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-assumptions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-complex_numbers.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 20ms"
+         data-filename="advanced-complex_numbers.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced complex numuers</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-complex_numbers.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-differential_equations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 40ms"
+         data-filename="advanced-differential_equations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced differential equations</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-differential_equations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-evaluation_vs_simplification.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 60ms"
+         data-filename="advanced-evaluation_vs_simplification.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced evaluation vs simplification</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-evaluation_vs_simplification.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-matrices.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 80ms"
+         data-filename="advanced-matrices.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced matrices</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-matrices.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-noncommutative_algebra.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 100ms"
+         data-filename="advanced-noncommutative_algebra.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced noncommutative algeura</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-noncommutative_algebra.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-noncommutative_api_reference.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 120ms"
+         data-filename="advanced-noncommutative_api_reference.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced noncommutative api reference</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-noncommutative_api_reference.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-noncommutative_examples.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 140ms"
+         data-filename="advanced-noncommutative_examples.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced noncommutative examples</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-noncommutative_examples.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-boundary_conditions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 160ms"
+         data-filename="advanced-pde-boundary_conditions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde uoundary conditions</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-boundary_conditions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-classification.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 180ms"
+         data-filename="advanced-pde-classification.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde classification</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-classification.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-examples.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 200ms"
+         data-filename="advanced-pde-examples.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde examples</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-examples.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-fourier_coefficients.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 220ms"
+         data-filename="advanced-pde-fourier_coefficients.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde fourier coefficients</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-fourier_coefficients.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-heat_equation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 240ms"
+         data-filename="advanced-pde-heat_equation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde heat equation</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-heat_equation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-laplace_equation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 260ms"
+         data-filename="advanced-pde-laplace_equation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde laplace equation</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-laplace_equation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-method_of_characteristics.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 280ms"
+         data-filename="advanced-pde-method_of_characteristics.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde method of characteristics</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-method_of_characteristics.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-overview.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 300ms"
+         data-filename="advanced-pde-overview.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde overview</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-overview.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-performance.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 320ms"
+         data-filename="advanced-pde-performance.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde performance</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-performance.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-quick_reference.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 340ms"
+         data-filename="advanced-pde-quick_reference.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde quick reference</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-quick_reference.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-quick_start.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 360ms"
+         data-filename="advanced-pde-quick_start.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde quick start</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-quick_start.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-registry.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 380ms"
+         data-filename="advanced-pde-registry.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde registry</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-registry.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-separation_of_variables.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 400ms"
+         data-filename="advanced-pde-separation_of_variables.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde separation of variaules</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-separation_of_variables.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-sympy_validation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 420ms"
+         data-filename="advanced-pde-sympy_validation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde sympy validation</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-sympy_validation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-technical_guide.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 440ms"
+         data-filename="advanced-pde-technical_guide.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde technical guide</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-technical_guide.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-user_guide.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 460ms"
+         data-filename="advanced-pde-user_guide.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde user guide</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-user_guide.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-pde-wave_equation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 480ms"
+         data-filename="advanced-pde-wave_equation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced pde wave equation</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-pde-wave_equation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-piecewise.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="advanced-piecewise.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced piecewise</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-piecewise.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-residue_calculus.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="advanced-residue_calculus.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced residue calculus</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-residue_calculus.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-special_functions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="advanced-special_functions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced special functions</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-special_functions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="advanced-system_solving.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="advanced-system_solving.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">advanced system solving</h3>
+            <p class="text-sm text-chalk-500 truncate">advanced-system_solving.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-algebra-simplification.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-algebra-simplification.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api algeura simplification</h3>
+            <p class="text-sm text-chalk-500 truncate">api-algebra-simplification.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-calculus-operations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-calculus-operations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api calculus operations</h3>
+            <p class="text-sm text-chalk-500 truncate">api-calculus-operations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-core-expressions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-core-expressions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api core expressions</h3>
+            <p class="text-sm text-chalk-500 truncate">api-core-expressions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-matrix-operations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-matrix-operations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api matrix operations</h3>
+            <p class="text-sm text-chalk-500 truncate">api-matrix-operations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-parser-latex.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-parser-latex.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api parser latex</h3>
+            <p class="text-sm text-chalk-500 truncate">api-parser-latex.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="api-solver-equations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="api-solver-equations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">api solver equations</h3>
+            <p class="text-sm text-chalk-500 truncate">api-solver-equations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-changelog.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-changelog.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix changelog</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-changelog.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-errors.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-errors.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix errors</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-errors.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-faq.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-faq.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix faq</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-faq.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-glossary.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-glossary.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix glossary</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-glossary.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-notation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-notation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix notation</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-notation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="appendix-risch_algorithm.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="appendix-risch_algorithm.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">appendix risch algorithm</h3>
+            <p class="text-sm text-chalk-500 truncate">appendix-risch_algorithm.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-crate-structure.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-crate-structure.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture crate structure</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-crate-structure.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-function-intelligence.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-function-intelligence.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture function intelligence</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-function-intelligence.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-memory-layout.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-memory-layout.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture memory layout</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-memory-layout.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-principles.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-principles.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture principles</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-principles.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-thread-safety.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-thread-safety.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture thread safety</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-thread-safety.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="architecture-type-system.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="architecture-type-system.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">architecture type system</h3>
+            <p class="text-sm text-chalk-500 truncate">architecture-type-system.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="bindings-nodejs.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="bindings-nodejs.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">uindings nodejs</h3>
+            <p class="text-sm text-chalk-500 truncate">bindings-nodejs.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="bindings-python.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="bindings-python.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">uindings python</h3>
+            <p class="text-sm text-chalk-500 truncate">bindings-python.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="bindings-wasm.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="bindings-wasm.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">uindings wasm</h3>
+            <p class="text-sm text-chalk-500 truncate">bindings-wasm.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-architecture-reference.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-architecture-reference.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting architecture reference</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-architecture-reference.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-correctness.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-correctness.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting correctness</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-correctness.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-development.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-development.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting development</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-development.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-documentation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-documentation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting documentation</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-documentation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-style.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-style.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting style</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-style.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="contributing-testing.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="contributing-testing.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">contriuuting testing</h3>
+            <p class="text-sm text-chalk-500 truncate">contributing-testing.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="core-constants.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="core-constants.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">core constants</h3>
+            <p class="text-sm text-chalk-500 truncate">core-constants.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="core-expressions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="core-expressions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">core expressions</h3>
+            <p class="text-sm text-chalk-500 truncate">core-expressions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="core-functions.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="core-functions.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">core functions</h3>
+            <p class="text-sm text-chalk-500 truncate">core-functions.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="core-pattern-matching.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="core-pattern-matching.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">core pattern matching</h3>
+            <p class="text-sm text-chalk-500 truncate">core-pattern-matching.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="core-symbols-numbers.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="core-symbols-numbers.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">core symuols numuers</h3>
+            <p class="text-sm text-chalk-500 truncate">core-symbols-numbers.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="educational-api.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="educational-api.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">educational api</h3>
+            <p class="text-sm text-chalk-500 truncate">educational-api.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="educational-messages.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="educational-messages.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">educational messages</h3>
+            <p class="text-sm text-chalk-500 truncate">educational-messages.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="educational-step_by_step.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="educational-step_by_step.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">educational step uy step</h3>
+            <p class="text-sm text-chalk-500 truncate">educational-step_by_step.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="evaluation-function-evaluation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="evaluation-function-evaluation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">evaluation function evaluation</h3>
+            <p class="text-sm text-chalk-500 truncate">evaluation-function-evaluation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-basic-usage.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-basic-usage.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started uasic usage</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-basic-usage.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-common-patterns.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-common-patterns.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started common patterns</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-common-patterns.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-installation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-installation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started installation</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-installation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-introduction.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-introduction.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started introduction</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-introduction.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-learning-paths.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-learning-paths.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started learning paths</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-learning-paths.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="getting-started-quick-start.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="getting-started-quick-start.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">getting started quick start</h3>
+            <p class="text-sm text-chalk-500 truncate">getting-started-quick-start.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-complexity-findings.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-complexity-findings.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal complexity findings</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-complexity-findings.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-educational-effort-estimation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-educational-effort-estimation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal educational effort estimation</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-educational-effort-estimation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-educational-plan.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-educational-plan.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal educational plan</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-educational-plan.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-error-handling.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-error-handling.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal error handling</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-error-handling.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-feature-gap-tests.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-feature-gap-tests.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal feature gap tests</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-feature-gap-tests.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-investigation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-investigation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal investigation</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-investigation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-overview.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-overview.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal overview</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-overview.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-performance-calculus-operations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-performance-calculus-operations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal performance calculus operations</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-performance-calculus-operations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-performance-polynomial-architecture.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-performance-polynomial-architecture.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal performance polynomial architecture</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-performance-polynomial-architecture.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-performance-simplification-operations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-performance-simplification-operations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal performance simplification operations</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-performance-simplification-operations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-performance-solving-operations.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-performance-solving-operations.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal performance solving operations</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-performance-solving-operations.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-performance-strategic-roadmap.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-performance-strategic-roadmap.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal performance strategic roadmap</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-performance-strategic-roadmap.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-planning-fast-path-opportunities.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-planning-fast-path-opportunities.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal planning fast path opportunities</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-planning-fast-path-opportunities.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-planning-matrix-solver-integration.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-planning-matrix-solver-integration.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal planning matrix solver integration</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-planning-matrix-solver-integration.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-planning-phase3-and-phase5-summary.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-planning-phase3-and-phase5-summary.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal planning phase3 and phase5 summary</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-planning-phase3-and-phase5-summary.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="internal-type-dispatch-review.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="internal-type-dispatch-review.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">internal type dispatch review</h3>
+            <p class="text-sm text-chalk-500 truncate">internal-type-dispatch-review.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="ode-separable.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="ode-separable.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">ode separaule</h3>
+            <p class="text-sm text-chalk-500 truncate">ode-separable.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-differentiation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-differentiation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations differentiation</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-differentiation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-evaluation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-evaluation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations evaluation</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-evaluation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-expansion-factoring.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-expansion-factoring.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations expansion factoring</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-expansion-factoring.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-integration.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-integration.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations integration</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-integration.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-limits.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-limits.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations limits</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-limits.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-series.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-series.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations series</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-series.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-simplification.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-simplification.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations simplification</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-simplification.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-solving.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-solving.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations solving</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-solving.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-substitution.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-substitution.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations suustitution</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-substitution.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="operations-summation.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="operations-summation.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">operations summation</h3>
+            <p class="text-sm text-chalk-500 truncate">operations-summation.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="parser-custom.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="parser-custom.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">parser custom</h3>
+            <p class="text-sm text-chalk-500 truncate">parser-custom.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="parser-formatting.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="parser-formatting.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">parser formatting</h3>
+            <p class="text-sm text-chalk-500 truncate">parser-formatting.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="parser-latex.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="parser-latex.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">parser latex</h3>
+            <p class="text-sm text-chalk-500 truncate">parser-latex.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="parser-noncommutative_design.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="parser-noncommutative_design.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">parser noncommutative design</h3>
+            <p class="text-sm text-chalk-500 truncate">parser-noncommutative_design.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="parser-wolfram.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="parser-wolfram.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">parser wolfram</h3>
+            <p class="text-sm text-chalk-500 truncate">parser-wolfram.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="pde-separation-of-variables.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="pde-separation-of-variables.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">pde separation of variaules</h3>
+            <p class="text-sm text-chalk-500 truncate">pde-separation-of-variables.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="performance-architecture.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="performance-architecture.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">performance architecture</h3>
+            <p class="text-sm text-chalk-500 truncate">performance-architecture.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="performance-caching.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="performance-caching.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">performance caching</h3>
+            <p class="text-sm text-chalk-500 truncate">performance-caching.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="performance-parallel.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="performance-parallel.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">performance parallel</h3>
+            <p class="text-sm text-chalk-500 truncate">performance-parallel.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="performance-simd.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="performance-simd.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">performance simd</h3>
+            <p class="text-sm text-chalk-500 truncate">performance-simd.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="polynomial-division.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="polynomial-division.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">polynomial division</h3>
+            <p class="text-sm text-chalk-500 truncate">polynomial-division.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="polynomial-gcd.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="polynomial-gcd.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">polynomial gcd</h3>
+            <p class="text-sm text-chalk-500 truncate">polynomial-gcd.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="polynomial-groebner.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="polynomial-groebner.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">polynomial groeuner</h3>
+            <p class="text-sm text-chalk-500 truncate">polynomial-groebner.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="polynomial-overview.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="polynomial-overview.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">polynomial overview</h3>
+            <p class="text-sm text-chalk-500 truncate">polynomial-overview.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+      <a href="polynomial-special-families.tex"
+         class="file-card block p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-violet-500/30 transition-all duration-300 group"
+         style="animation-delay: 500ms"
+         data-filename="polynomial-special-families.tex">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <svg class="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-chalk truncate group-hover:text-violet-500 transition-colors">polynomial special families</h3>
+            <p class="text-sm text-chalk-500 truncate">polynomial-special-families.tex</p>
+          </div>
+          <svg class="w-5 h-5 text-chalk-500 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Count files and update display
+    const fileCards = document.querySelectorAll('.file-card');
+    document.getElementById('file-count').textContent = fileCards.length + ' files available';
+
+    // Search functionality
+    document.getElementById('search').addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase();
+      fileCards.forEach(card => {
+        const filename = card.dataset.filename.toLowerCase();
+        card.style.display = filename.includes(query) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Formatting - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/parser-formatting.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="expression-formatting"><a class="header" href="#expression-formatting">Expression Formatting</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>parser.formatting</code></p>
+</blockquote>
+<p>Format mathematical expressions for display in multiple notations.
+Supports LaTeX, Unicode, Wolfram, and custom formatters for different output targets.</p>
+<h1 id="expression-formatting-1"><a class="header" href="#expression-formatting-1">Expression Formatting</a></h1>
+<p>Format mathematical expressions for display in multiple notations.</p>
+<h2 id="understanding-expression-formatting"><a class="header" href="#understanding-expression-formatting">Understanding Expression Formatting</a></h2>
+<h3 id="what-is-expression-formatting"><a class="header" href="#what-is-expression-formatting">What is Expression Formatting?</a></h3>
+<p>Expression formatting converts internal <code>Expression</code> structures to human-readable or machine-parseable strings. MathHook provides multiple output formats:</p>
+<ul>
+<li><strong>LaTeX</strong>: Academic papers, presentations, web rendering (MathJax/KaTeX)</li>
+<li><strong>Unicode</strong>: Pretty terminal output, notebooks, readable display</li>
+<li><strong>Wolfram</strong>: Mathematica/Wolfram Language compatibility</li>
+<li><strong>String</strong>: Rust Debug format for debugging</li>
+</ul>
+<h3 id="how-it-works-architecture"><a class="header" href="#how-it-works-architecture">How It Works (Architecture)</a></h3>
+<p><strong>Formatter Trait</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Formatter {
+    fn format(&amp;self, expr: &amp;Expression) -&gt; String;
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Implementations</strong>:</p>
+<ul>
+<li><code>LaTeXFormatter</code> - Recursive descent with LaTeX command generation</li>
+<li><code>UnicodeFormatter</code> - Unicode mathematical symbols (superscripts, subscripts)</li>
+<li><code>WolframFormatter</code> - Wolfram Language bracket notation</li>
+<li>Type-aware formatting for noncommutative symbols</li>
+</ul>
+<h2 id="format-comparison"><a class="header" href="#format-comparison">Format Comparison</a></h2>
+<div class="table-wrapper"><table><thead><tr><th><strong>Expression</strong></th><th><strong>LaTeX</strong></th><th><strong>Unicode</strong></th><th><strong>Wolfram</strong></th></tr></thead><tbody>
+<tr><td>x² + 2x + 1</td><td><code>x^{2} + 2 \cdot x + 1</code></td><td><code>x² + 2·x + 1</code></td><td><code>x^2 + 2*x + 1</code></td></tr>
+<tr><td>sin(x)</td><td><code>\sin(x)</code></td><td><code>sin(x)</code></td><td><code>Sin[x]</code></td></tr>
+<tr><td>√2</td><td><code>\sqrt{2}</code></td><td><code>√2</code></td><td><code>Sqrt[2]</code></td></tr>
+<tr><td>π·r²</td><td><code>\pi \cdot r^{2}</code></td><td><code>π·r²</code></td><td><code>Pi*r^2</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="unicode-mathematical-symbols"><a class="header" href="#unicode-mathematical-symbols">Unicode Mathematical Symbols</a></h2>
+<p>Supported Unicode ranges:</p>
+<ul>
+<li><strong>Superscripts</strong>: ⁰¹²³⁴⁵⁶⁷⁸⁹</li>
+<li><strong>Subscripts</strong>: ₀₁₂₃₄₅₆₇₈₉</li>
+<li><strong>Greek</strong>: α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω</li>
+<li><strong>Operators</strong>: · × ÷ ± ∓ ≤ ≥ ≠ ≈ ∞</li>
+<li><strong>Roots</strong>: √ ∛ ∜</li>
+<li><strong>Set theory</strong>: ∈ ∉ ⊂ ⊃ ⊆ ⊇ ∪ ∩ ∅</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-formatting"><a class="header" href="#basic-formatting">Basic Formatting</a></h3>
+<p>Format expressions in different notations</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::{LatexFormatter, UnicodeFormatter, WolframFormatter};
+
+let x = symbol!(x);
+let expr = expr!(x^2 + 2*x + 1);
+
+// LaTeX
+let latex = LatexFormatter::new().format(&amp;expr);
+println!("{}", latex);   // x^{2} + 2 \cdot x + 1
+
+// Unicode (pretty-print)
+let unicode = UnicodeFormatter::new().format(&amp;expr);
+println!("{}", unicode); // x² + 2·x + 1
+
+// Wolfram
+let wolfram = WolframFormatter::new().format(&amp;expr);
+println!("{}", wolfram); // x^2 + 2*x + 1
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter, UnicodeFormatter, WolframFormatter
+
+x = symbol('x')
+expr_obj = expr('x^2 + 2*x + 1')
+
+# LaTeX
+latex = LatexFormatter().format(expr_obj)
+print(latex)   # x^{2} + 2 \cdot x + 1
+
+# Unicode (pretty-print)
+unicode = UnicodeFormatter().format(expr_obj)
+print(unicode) # x² + 2·x + 1
+
+# Wolfram
+wolfram = WolframFormatter().format(expr_obj)
+print(wolfram) # x^2 + 2*x + 1
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+const { LatexFormatter, UnicodeFormatter, WolframFormatter } = require('mathhook');
+
+const x = symbol('x');
+const exprObj = expr('x^2 + 2*x + 1');
+
+// LaTeX
+const latex = new LatexFormatter().format(exprObj);
+console.log(latex);   // x^{2} + 2 \cdot x + 1
+
+// Unicode (pretty-print)
+const unicode = new UnicodeFormatter().format(exprObj);
+console.log(unicode); // x² + 2·x + 1
+
+// Wolfram
+const wolfram = new WolframFormatter().format(exprObj);
+console.log(wolfram); // x^2 + 2*x + 1
+
+</code></pre>
+</details>
+<h3 id="type-aware-formatting"><a class="header" href="#type-aware-formatting">Type-Aware Formatting</a></h3>
+<p>Noncommutative symbols formatted correctly</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::latex::LatexFormatter;
+
+// Matrix symbols (bold)
+let A = symbol!(A; matrix);
+let B = symbol!(B; matrix);
+let matrix_expr = expr!(A * B);
+
+let formatter = LatexFormatter::new();
+println!("{}", formatter.format(&amp;matrix_expr));
+// Output: \mathbf{A}\mathbf{B}
+
+// Operator symbols (hat)
+let p = symbol!(p; operator);
+let x = symbol!(x; operator);
+let op_expr = expr!(p * x);
+
+println!("{}", formatter.format(&amp;op_expr));
+// Output: \hat{p}\hat{x}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+# Matrix symbols (bold)
+A = symbol('A', type='matrix')
+B = symbol('B', type='matrix')
+matrix_expr = expr('A * B')
+
+formatter = LatexFormatter()
+print(formatter.format(matrix_expr))
+# Output: \mathbf{A}\mathbf{B}
+
+# Operator symbols (hat)
+p = symbol('p', type='operator')
+x = symbol('x', type='operator')
+op_expr = expr('p * x')
+
+print(formatter.format(op_expr))
+# Output: \hat{p}\hat{x}
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+const { LatexFormatter } = require('mathhook');
+
+// Matrix symbols (bold)
+const A = symbol('A', { type: 'matrix' });
+const B = symbol('B', { type: 'matrix' });
+const matrixExpr = expr('A * B');
+
+const formatter = new LatexFormatter();
+console.log(formatter.format(matrixExpr));
+// Output: \mathbf{A}\mathbf{B}
+
+// Operator symbols (hat)
+const p = symbol('p', { type: 'operator' });
+const x = symbol('x', { type: 'operator' });
+const opExpr = expr('p * x');
+
+console.log(formatter.format(opExpr));
+// Output: \hat{p}\hat{x}
+
+</code></pre>
+</details>
+<h3 id="customized-latex-output"><a class="header" href="#customized-latex-output">Customized LaTeX Output</a></h3>
+<p>Configure formatter behavior</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::latex::LatexFormatter;
+
+// Configure formatter
+let formatter = LatexFormatter::new()
+    .with_precision(6)           // Float precision
+    .with_explicit_multiplication(true)  // Show all * as \cdot
+    .with_compact_fractions(false);      // Use \frac always
+
+let expr = expr!(2*x / 3);
+println!("{}", formatter.format(&amp;expr));
+// Output: \frac{2 \cdot x}{3}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+# Configure formatter
+formatter = LatexFormatter(
+    precision=6,
+    explicit_multiplication=True,
+    compact_fractions=False
+)
+
+expr_obj = expr('2*x / 3')
+print(formatter.format(expr_obj))
+# Output: \frac{2 \cdot x}{3}
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+const { LatexFormatter } = require('mathhook');
+
+// Configure formatter
+const formatter = new LatexFormatter({
+    precision: 6,
+    explicitMultiplication: true,
+    compactFractions: false
+});
+
+const exprObj = expr('2*x / 3');
+console.log(formatter.format(exprObj));
+// Output: \frac{2 \cdot x}{3}
+
+</code></pre>
+</details>
+<h3 id="educational-step-formatting"><a class="header" href="#educational-step-formatting">Educational Step Formatting</a></h3>
+<p>Format step-by-step explanations</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::latex::LatexFormatter;
+
+let x = symbol!(x);
+let expr = expr!(x^2 + 2*x + 1);
+
+// Generate step-by-step LaTeX
+let formatter = LatexFormatter::new();
+
+println!("Step 1: Start with {}", formatter.format(&amp;expr));
+let factored = expr.factor();  // (x+1)^2
+println!("Step 2: Factor as {}", formatter.format(&amp;factored));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+x = symbol('x')
+expr_obj = expr('x^2 + 2*x + 1')
+
+# Generate step-by-step LaTeX
+formatter = LatexFormatter()
+
+print(f"Step 1: Start with {formatter.format(expr_obj)}")
+factored = expr_obj.factor()  # (x+1)^2
+print(f"Step 2: Factor as {formatter.format(factored)}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+const { LatexFormatter } = require('mathhook');
+
+const x = symbol('x');
+const exprObj = expr('x^2 + 2*x + 1');
+
+// Generate step-by-step LaTeX
+const formatter = new LatexFormatter();
+
+console.log(`Step 1: Start with ${formatter.format(exprObj)}`);
+const factored = exprObj.factor();  // (x+1)^2
+console.log(`Step 2: Factor as ${formatter.format(factored)}`);
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(n) where n = expression tree size</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::formatter</code></li>
+<li><strong>Python</strong>: <code>mathhook.formatter</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.formatter</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../parser/latex.html">parser.latex</a></p>
+</li>
+<li>
+<p><a href="../parser/wolfram.html">parser.wolfram</a></p>
+</li>
+<li>
+<p><a href="../parser/custom.html">parser.custom</a></p>
+</li>
+<li>
+<p><a href="../core/expressions.html">core.expressions</a></p>
+</li>
+<li>
+<p><a href="../educational/step_by_step.html">educational.step_by_step</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="parser-custom.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="parser-latex.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="parser-custom.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="parser-latex.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

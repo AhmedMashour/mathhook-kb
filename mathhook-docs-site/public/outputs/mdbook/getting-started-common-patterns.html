@@ -1,0 +1,800 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Started Common Patterns - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/getting-started-common-patterns.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="common-patterns"><a class="header" href="#common-patterns">Common Patterns</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>getting-started.common-patterns</code></p>
+</blockquote>
+<p>Common patterns and best practices when using MathHook, including macro usage
+guidelines, polynomial construction, substitution patterns, function composition,
+matrix operations, error handling, performance patterns, and educational features.
+Includes detailed pitfalls to avoid.</p>
+<h1 id="common-patterns-1"><a class="header" href="#common-patterns-1">Common Patterns</a></h1>
+<p>This chapter covers common patterns and best practices when using MathHook.</p>
+<h2 id="macro-usage-guidelines"><a class="header" href="#macro-usage-guidelines">Macro Usage Guidelines</a></h2>
+<p><strong>ALWAYS use macros for:</strong></p>
+<ul>
+<li>Symbol creation: <code>symbol!(x)</code> not <code>Symbol::new("x")</code></li>
+<li>Simple expressions: <code>expr!(x + y)</code></li>
+<li>Function calls: <code>expr!(sin(x))</code></li>
+</ul>
+<p><strong>Use explicit API for:</strong></p>
+<ul>
+<li>Runtime/loop variables (macros see token 'i', not value)</li>
+<li>Programmatic construction with runtime data</li>
+<li>Dynamic polynomial building</li>
+</ul>
+<h2 id="building-polynomials"><a class="header" href="#building-polynomials">Building Polynomials</a></h2>
+<p><strong>Fixed Degree</strong>: Use macros with <code>add:</code> helper
+<strong>Dynamic Degree</strong>: Use explicit API with loops</p>
+<h2 id="substitution-patterns"><a class="header" href="#substitution-patterns">Substitution Patterns</a></h2>
+<p>Single or multiple variable substitution using HashMap.</p>
+<h2 id="working-with-functions"><a class="header" href="#working-with-functions">Working with Functions</a></h2>
+<p>Create with <code>expr!</code> macro, <code>function!</code> macro, or <code>Expression::function()</code> for
+runtime function names. Compose functions by nesting.</p>
+<h2 id="matrix-patterns"><a class="header" href="#matrix-patterns">Matrix Patterns</a></h2>
+<p>Create from vectors, identity matrices, zero matrices. Perform symbolic matrix
+operations.</p>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>Handle parsing errors with <code>match</code> on <code>Result</code>. Handle solver errors by checking
+result type.</p>
+<h2 id="performance-patterns"><a class="header" href="#performance-patterns">Performance Patterns</a></h2>
+<ul>
+<li>Bulk operations: Use iterators and collect</li>
+<li>Caching results: Store in HashMap keyed by string representation</li>
+<li>Reuse expressions (immutable, cheap to clone)</li>
+</ul>
+<h2 id="educational-patterns"><a class="header" href="#educational-patterns">Educational Patterns</a></h2>
+<p>Use step-by-step explanations and derivative explanations for teaching.</p>
+<h2 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h2>
+<ol>
+<li><strong>Runtime variables in macros</strong>: Use explicit API for loop variables</li>
+<li><strong>Nested macro calls</strong>: Use intermediate variables</li>
+<li><strong>Float equality</strong>: Use epsilon comparison, not ==</li>
+</ol>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="macro-usage---correct-patterns"><a class="header" href="#macro-usage---correct-patterns">Macro Usage - Correct Patterns</a></h3>
+<p>When to use macros vs explicit API</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// ALWAYS use macros for symbols
+let x = symbol!(x);  // NOT Symbol::new("x")
+
+// Simple expressions - use macros
+let expr = expr!(x + y);
+let expr = expr!(2 * x);
+let expr = expr!(x ^ 2);
+
+// Function calls - use macros
+let expr = expr!(sin(x));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+# Python uses method chaining
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+
+expr = x.add(y)
+expr = Expression.integer(2).mul(x)
+expr = x.pow(2)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+// Node.js uses method chaining
+const x = Expression.symbol('x');
+const y = Expression.symbol('y');
+
+const expr = x.add(y);
+const expr2 = Expression.integer(2).mul(x);
+const expr3 = x.pow(2);
+
+</code></pre>
+</details>
+<h3 id="runtime-variables---explicit-api-required"><a class="header" href="#runtime-variables---explicit-api-required">Runtime Variables - Explicit API Required</a></h3>
+<p>Why macros don't work with loop variables</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// WRONG - creates Symbol("i"), not integer value
+for i in 0..10 {
+    let expr = expr!(i);  // BAD!
+}
+
+// CORRECT - use explicit API for runtime variables
+for i in 0..10 {
+    let term = Expression::integer(i);  // GOOD!
+}
+
+// CORRECT - programmatic construction
+let x = symbol!(x);
+let coefficients = vec![1, 2, 3];
+let mut terms = Vec::new();
+for i in 0..coefficients.len() {
+    let coeff = Expression::integer(coefficients[i]);
+    let x_expr = Expression::from(x.clone());
+    let power = Expression::integer(i as i64);
+    terms.push(Expression::mul(vec![coeff, Expression::pow(x_expr, power)]));
+}
+let polynomial = Expression::add(terms);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+# Python doesn't have compile-time macros
+# Always use explicit API (which is fine)
+
+x = Expression.symbol('x')
+coefficients = [1, 2, 3]
+terms = []
+for i, coeff in enumerate(coefficients):
+    coeff_expr = Expression.integer(coeff)
+    power_expr = Expression.integer(i)
+    term = coeff_expr.mul(x.pow(power_expr))
+    terms.append(term)
+polynomial = Expression.add(terms)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+// Node.js doesn't have compile-time macros
+// Always use explicit API
+
+const x = Expression.symbol('x');
+const coefficients = [1, 2, 3];
+const terms = [];
+for (let i = 0; i &lt; coefficients.length; i++) {
+    const coeffExpr = Expression.integer(coefficients[i]);
+    const powerExpr = Expression.integer(i);
+    const term = coeffExpr.mul(x.pow(powerExpr));
+    terms.push(term);
+}
+const polynomial = Expression.add(terms);
+
+</code></pre>
+</details>
+<h3 id="building-polynomials---dynamic-degree"><a class="header" href="#building-polynomials---dynamic-degree">Building Polynomials - Dynamic Degree</a></h3>
+<p>Construct polynomials with runtime coefficients</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+fn build_polynomial(coefficients: &amp;[i64], x: &amp;Symbol) -&gt; Expression {
+    let mut terms = Vec::new();
+    for (i, &amp;coeff) in coefficients.iter().enumerate() {
+        let coeff_expr = Expression::integer(coeff);
+        let x_expr = Expression::from(x.clone());
+        let power = Expression::integer(i as i64);
+        let term = Expression::mul(vec![coeff_expr, Expression::pow(x_expr, power)]);
+        terms.push(term);
+    }
+    Expression::add(terms)
+}
+
+let x = symbol!(x);
+let poly = build_polynomial(&amp;[1, -5, 6], &amp;x);  // x^2 - 5x + 6
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+def build_polynomial(coefficients, x):
+    terms = []
+    for i, coeff in enumerate(coefficients):
+        coeff_expr = Expression.integer(coeff)
+        power = Expression.integer(i)
+        term = coeff_expr.mul(x.pow(power))
+        terms.append(term)
+    return Expression.add(terms)
+
+x = Expression.symbol('x')
+poly = build_polynomial([1, -5, 6], x)  # x^2 - 5x + 6
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+function buildPolynomial(coefficients: number[], x: Expression): Expression {
+    const terms = [];
+    for (let i = 0; i &lt; coefficients.length; i++) {
+        const coeffExpr = Expression.integer(coefficients[i]);
+        const power = Expression.integer(i);
+        const term = coeffExpr.mul(x.pow(power));
+        terms.push(term);
+    }
+    return Expression.add(terms);
+}
+
+const x = Expression.symbol('x');
+const poly = buildPolynomial([1, -5, 6], x);  // x^2 - 5x + 6
+
+</code></pre>
+</details>
+<h3 id="substitution---single-and-multiple"><a class="header" href="#substitution---single-and-multiple">Substitution - Single and Multiple</a></h3>
+<p>Replace symbols with values</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use std::collections::HashMap;
+
+let x = symbol!(x);
+let y = symbol!(y);
+let expr = expr!(add: (x * y), x, y);
+
+// Single substitution
+let mut vars = HashMap::new();
+vars.insert("x".to_string(), Expression::integer(3));
+let result = expr.substitute(&amp;vars);
+
+// Multiple substitutions
+let mut vars = HashMap::new();
+vars.insert("x".to_string(), Expression::integer(2));
+vars.insert("y".to_string(), Expression::integer(3));
+let result = expr.substitute(&amp;vars);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+expr = x.mul(y).add(x).add(y)
+
+# Single substitution
+vars = {'x': Expression.integer(3)}
+result = expr.substitute(vars)
+
+# Multiple substitutions
+vars = {'x': Expression.integer(2), 'y': Expression.integer(3)}
+result = expr.substitute(vars)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+const y = Expression.symbol('y');
+const expr = x.mul(y).add(x).add(y);
+
+// Single substitution
+const vars1 = new Map([['x', Expression.integer(3)]]);
+const result1 = expr.substitute(vars1);
+
+// Multiple substitutions
+const vars2 = new Map([
+    ['x', Expression.integer(2)],
+    ['y', Expression.integer(3)]
+]);
+const result2 = expr.substitute(vars2);
+
+</code></pre>
+</details>
+<h3 id="function-composition"><a class="header" href="#function-composition">Function Composition</a></h3>
+<p>Compose functions by nesting</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// sin(cos(x)) - direct nesting
+let composed = expr!(sin(cos(x)));
+
+// Or build step by step
+let inner = expr!(cos(x));
+let composed_alt = function!(sin, inner);
+
+println!("Composed function: {}", composed);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Build step by step
+inner = Expression.function('cos', [x])
+composed = Expression.function('sin', [inner])
+
+print(f"Composed function: {composed}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+
+// Build step by step
+const inner = Expression.function('cos', [x]);
+const composed = Expression.function('sin', [inner]);
+
+console.log(`Composed function: ${composed.toString()}`);
+
+</code></pre>
+</details>
+<h3 id="performance---bulk-operations"><a class="header" href="#performance---bulk-operations">Performance - Bulk Operations</a></h3>
+<p>Efficient batch processing</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Simplify many expressions efficiently
+let expressions = vec![
+    expr!(x + x),
+    expr!(x * 1),
+    expr!(add: (x ^ 2), (-(x ^ 2))),
+];
+
+let simplified: Vec&lt;_&gt; = expressions
+    .iter()
+    .map(|e| e.simplify())
+    .collect();
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Simplify many expressions
+expressions = [
+    x.add(x),
+    x.mul(Expression.integer(1)),
+    x.pow(2).add(x.pow(2).neg())
+]
+
+simplified = [e.simplify() for e in expressions]
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+
+// Simplify many expressions
+const expressions = [
+    x.add(x),
+    x.mul(Expression.integer(1)),
+    x.pow(2).add(x.pow(2).neg())
+];
+
+const simplified = expressions.map(e =&gt; e.simplify());
+
+</code></pre>
+</details>
+<h3 id="performance---caching-results"><a class="header" href="#performance---caching-results">Performance - Caching Results</a></h3>
+<p>Cache frequently computed expressions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use std::collections::HashMap;
+
+let x = symbol!(x);
+let mut cache: HashMap&lt;String, Expression&gt; = HashMap::new();
+
+let expr = expr!(x ^ 2);
+let key = format!("{}", expr);
+
+if let Some(cached) = cache.get(&amp;key) {
+    println!("Using cached result");
+} else {
+    let result = expr.simplify();
+    cache.insert(key, result.clone());
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+cache = {}
+
+expr = x.pow(2)
+key = str(expr)
+
+if key in cache:
+    print("Using cached result")
+else:
+    result = expr.simplify()
+    cache[key] = result
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+const cache = new Map&lt;string, Expression&gt;();
+
+const expr = x.pow(2);
+const key = expr.toString();
+
+if (cache.has(key)) {
+    console.log("Using cached result");
+} else {
+    const result = expr.simplify();
+    cache.set(key, result);
+}
+
+</code></pre>
+</details>
+<h3 id="common-pitfall---float-equality"><a class="header" href="#common-pitfall---float-equality">Common Pitfall - Float Equality</a></h3>
+<p>Never use == for approximate values</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// WRONG - comparing floats directly
+let val1: f64 = 3.14;
+let val2: f64 = 3.14000000001;
+// if val1 == val2 { }  // BAD!
+
+// CORRECT - use epsilon comparison
+let tolerance: f64 = 1e-10;
+if (val1 - val2).abs() &lt; tolerance {
+    println!("Values are approximately equal");
+}
+
+// OR use exact rationals for symbolic computation
+let exact = Expression::rational(314, 100);  // Exact 3.14
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+# WRONG - comparing floats directly
+val1 = 3.14
+val2 = 3.14000000001
+# if val1 == val2:  # BAD!
+
+# CORRECT - use epsilon comparison
+tolerance = 1e-10
+if abs(val1 - val2) &lt; tolerance:
+    print("Values are approximately equal")
+
+# OR use exact rationals
+exact = Expression.rational(314, 100)  # Exact 3.14
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+// WRONG - comparing floats directly
+const val1 = 3.14;
+const val2 = 3.14000000001;
+// if (val1 === val2) { }  // BAD!
+
+// CORRECT - use epsilon comparison
+const tolerance = 1e-10;
+if (Math.abs(val1 - val2) &lt; tolerance) {
+    console.log("Values are approximately equal");
+}
+
+// OR use exact rationals
+const exact = Expression.rational(314, 100);  // Exact 3.14
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook::prelude</code></li>
+<li><strong>Python</strong>: <code>mathhook.Expression</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook-node.Expression</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../getting-started/quick-start.html">getting-started.quick-start</a></p>
+</li>
+<li>
+<p><a href="../getting-started/basic-usage.html">getting-started.basic-usage</a></p>
+</li>
+<li>
+<p><a href="../core/expressions.html">core.expressions</a></p>
+</li>
+<li>
+<p><a href="../performance/architecture.html">performance.architecture</a></p>
+</li>
+<li>
+<p><a href="../educational/step-by-step.html">educational.step-by-step</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="getting-started-basic-usage.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="getting-started-installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="getting-started-basic-usage.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="getting-started-installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

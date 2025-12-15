@@ -1,0 +1,647 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Python - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/bindings-python.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="python-api-guide"><a class="header" href="#python-api-guide">Python API Guide</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>bindings.python</code></p>
+</blockquote>
+<p>Complete guide to using MathHook from Python via PyO3 bindings.
+Provides comprehensive documentation for the Python API including installation,
+quick start, API reference, performance comparisons with SymPy, and integration patterns.</p>
+<h1 id="python-api-guide-1"><a class="header" href="#python-api-guide-1">Python API Guide</a></h1>
+<p>Complete guide to using MathHook from Python via PyO3 bindings.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<pre><code class="language-bash">pip install mathhook
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li>Python 3.8 or higher</li>
+<li>pip 20.0 or higher (for binary wheel support)</li>
+</ul>
+<p><strong>Platform Support</strong>:</p>
+<ul>
+<li>Linux (x86_64, aarch64)</li>
+<li>macOS (Intel, Apple Silicon)</li>
+<li>Windows (x86_64)</li>
+</ul>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><code class="language-python">from mathhook import Symbol, parse, simplify
+
+# Create symbols
+x = Symbol('x')
+y = Symbol('y')
+
+# Build expressions
+expr = x**2 + 2*x + 1
+
+# Simplify
+simplified = simplify(expr)
+print(simplified)  # (x + 1)^2
+</code></pre>
+<h2 id="why-mathhook-for-python"><a class="header" href="#why-mathhook-for-python">Why MathHook for Python?</a></h2>
+<h3 id="performance-comparison"><a class="header" href="#performance-comparison">Performance Comparison</a></h3>
+<p><strong>100x Faster Than SymPy</strong> for large expressions:</p>
+<pre><code class="language-python">import time
+from mathhook import parse, simplify
+
+# Large polynomial expression
+expr_str = " + ".join([f"{i}*x**{i}" for i in range(100)])
+
+# MathHook
+start = time.time()
+expr = parse(expr_str)
+result = simplify(expr)
+mathhook_time = time.time() - start
+
+print(f"MathHook: {mathhook_time:.4f}s")
+# Typical: MathHook 0.001s vs SymPy 0.1s (100x faster)
+</code></pre>
+<h3 id="when-to-use-mathhook-vs-sympy"><a class="header" href="#when-to-use-mathhook-vs-sympy">When to Use MathHook vs SymPy</a></h3>
+<p><strong>Use MathHook when</strong>:</p>
+<ul>
+<li>Performance is critical (real-time applications, large expressions)</li>
+<li>You need symbolic preprocessing for numerical simulations</li>
+<li>Working with expressions with &gt;50 terms</li>
+<li>Building interactive applications (web, Jupyter with fast response)</li>
+</ul>
+<p><strong>Use SymPy when</strong>:</p>
+<ul>
+<li>Need advanced features: logic, sets, abstract algebra</li>
+<li>Educational prototyping (rich ecosystem)</li>
+<li>Assumption system is critical</li>
+<li>Working with small expressions where speed doesn't matter</li>
+</ul>
+<p><strong>Use Both</strong>:</p>
+<ul>
+<li>Prototype with SymPy, optimize with MathHook for production</li>
+<li>Use MathHook for hot loops, SymPy for one-time complex operations</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-symbol-creation-and-expression-building"><a class="header" href="#basic-symbol-creation-and-expression-building">Basic Symbol Creation and Expression Building</a></h3>
+<p>Create symbols and build expressions using operator overloading</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::symbol;
+use mathhook::expr;
+
+let x = symbol!(x);
+let y = symbol!(y);
+
+// Build expressions
+let expr = expr!(x^2 + 2*x + 1);
+let expr2 = expr!((x + 1) * (x - 1));
+let expr3 = expr!(x / (x + 1));
+let expr4 = expr!(-x);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Symbol
+
+x = Symbol('x')
+y = Symbol('y')
+
+# Arithmetic operators
+expr = x**2 + 2*x + 1
+expr2 = (x + 1) * (x - 1)
+expr3 = x / (x + 1)
+expr4 = -x
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { Symbol, parse } = require('mathhook');
+
+const x = new Symbol('x');
+const y = new Symbol('y');
+
+// Parse expressions
+const expr = parse('x^2 + 2*x + 1');
+const expr2 = parse('(x + 1) * (x - 1)');
+const expr3 = parse('x / (x + 1)');
+const expr4 = parse('-x');
+
+</code></pre>
+</details>
+<h3 id="expression-simplification"><a class="header" href="#expression-simplification">Expression Simplification</a></h3>
+<p>Simplify algebraic expressions using MathHook</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::{expr, symbol, simplify};
+
+let x = symbol!(x);
+let expr = expr!(x + x);
+let result = simplify(expr);  // 2*x
+
+let expr2 = expr!((x + 1) * (x - 1));
+let result2 = simplify(expr2);  // x^2 - 1
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import parse, simplify
+
+expr = parse("x + x")
+result = simplify(expr)  # 2*x
+
+expr = parse("(x + 1) * (x - 1)")
+result = simplify(expr)  # x^2 - 1
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { parse, simplify } = require('mathhook');
+
+const expr = parse('x + x');
+const result = simplify(expr);  // 2*x
+
+const expr2 = parse('(x + 1) * (x - 1)');
+const result2 = simplify(expr2);  // x^2 - 1
+
+</code></pre>
+</details>
+<h3 id="symbolic-differentiation"><a class="header" href="#symbolic-differentiation">Symbolic Differentiation</a></h3>
+<p>Compute derivatives symbolically</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::{expr, symbol, derivative};
+
+let x = symbol!(x);
+let expr = expr!(x^3);
+
+// First derivative
+let df = derivative(&amp;expr, &amp;x, 1);
+// Result: 3*x^2
+
+// Second derivative
+let d2f = derivative(&amp;expr, &amp;x, 2);
+// Result: 6*x
+
+// Partial derivatives
+let y = symbol!(y);
+let expr2 = expr!(x^2 * y);
+let df_dx = derivative(&amp;expr2, &amp;x, 1);  // 2*x*y
+let df_dy = derivative(&amp;expr2, &amp;y, 1);  // x^2
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Symbol, derivative
+
+x = Symbol('x')
+expr = x**3
+
+# First derivative
+df = derivative(expr, x)
+print(df)  # 3*x^2
+
+# Second derivative
+d2f = derivative(expr, x, order=2)
+print(d2f)  # 6*x
+
+# Partial derivatives
+y = Symbol('y')
+expr = x**2 * y
+df_dx = derivative(expr, x)  # 2*x*y
+df_dy = derivative(expr, y)  # x^2
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { Symbol, parse, derivative } = require('mathhook');
+
+const x = new Symbol('x');
+const expr = parse('x^3');
+
+// First derivative
+const df = derivative(expr, x);
+console.log(df.toString());  // 3*x^2
+
+// Second derivative
+const d2f = derivative(expr, x, { order: 2 });
+console.log(d2f.toString());  // 6*x
+
+</code></pre>
+</details>
+<h3 id="equation-solving"><a class="header" href="#equation-solving">Equation Solving</a></h3>
+<p>Solve algebraic equations symbolically</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::{expr, symbol, solve};
+
+let x = symbol!(x);
+
+// Linear equation: 2*x + 3 = 7
+let solutions = solve(expr!(2*x + 3), expr!(7), &amp;x);
+// Result: [x = 2]
+
+// Quadratic equation: x^2 - 5*x + 6 = 0
+let solutions = solve(expr!(x^2 - 5*x + 6), expr!(0), &amp;x);
+// Result: [x = 2, x = 3]
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Symbol, solve
+
+x = Symbol('x')
+
+# Linear equation: 2*x + 3 = 7
+solutions = solve(2*x + 3, 7, x)
+print(solutions)  # [x = 2]
+
+# Quadratic equation: x^2 - 5*x + 6 = 0
+solutions = solve(x**2 - 5*x + 6, 0, x)
+print(solutions)  # [x = 2, x = 3]
+
+# Multiple variables
+y = Symbol('y')
+solutions = solve([x + y - 5, x - y - 1], [x, y])
+print(solutions)  # {x: 3, y: 2}
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { Symbol, parse, solve } = require('mathhook');
+
+const x = new Symbol('x');
+
+// Quadratic equation: x^2 - 5*x + 6 = 0
+const expr = parse('x^2 - 5*x + 6');
+const solutions = solve(expr, x);
+
+solutions.forEach(sol =&gt; {
+    console.log(sol.toString());
+});
+// Output: x = 2, x = 3
+
+</code></pre>
+</details>
+<h3 id="integration-with-numpy"><a class="header" href="#integration-with-numpy">Integration with NumPy</a></h3>
+<p>Convert symbolic expressions to NumPy functions for numerical evaluation</p>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">import numpy as np
+from mathhook import Symbol, lambdify
+
+x = Symbol('x')
+expr = x**2 + 2*x + 1
+
+# Convert to NumPy-compatible function
+f = lambdify(expr, [x], 'numpy')
+
+# Evaluate on NumPy array
+x_values = np.linspace(-5, 5, 100)
+y_values = f(x_values)
+
+# Use with NumPy operations
+mean = np.mean(y_values)
+std = np.std(y_values)
+
+</code></pre>
+</details>
+<h3 id="evaluation-with-context"><a class="header" href="#evaluation-with-context">Evaluation with Context</a></h3>
+<p>Advanced evaluation with custom contexts and variable substitutions</p>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import PyExpression as Expression, EvalContext
+
+x = Expression.symbol("x")
+y = Expression.symbol("y")
+
+# Formula: x² + 2xy + y²
+expr = x.pow(Expression.integer(2)).add(
+    Expression.integer(2).multiply(x).multiply(y)
+).add(y.pow(Expression.integer(2)))
+
+# Create numerical context with variable substitutions
+ctx = EvalContext.numeric({
+    "x": Expression.integer(3),
+    "y": Expression.integer(4)
+})
+
+# Evaluate: (3)² + 2(3)(4) + (4)² = 9 + 24 + 16 = 49
+result = expr.evaluate_with_context(ctx)
+print(result)  # 49
+
+# Symbolic evaluation (no numerical conversion)
+ctx_symbolic = EvalContext.symbolic()
+result_symbolic = expr.evaluate_with_context(ctx_symbolic)
+print(result_symbolic)  # x^2 + 2*x*y + y^2 (still symbolic)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { JsExpression, EvalContext, symbols } = require('mathhook');
+
+function symbol(name) {
+    const [sym] = symbols(name);
+    return sym;
+}
+
+const x = symbol('x');
+const y = symbol('y');
+
+// Formula: x² + 2xy + y²
+const expr = x.pow(JsExpression.integer(2))
+    .add(JsExpression.integer(2).multiply(x).multiply(y))
+    .add(y.pow(JsExpression.integer(2)));
+
+// Create numerical context with variable substitutions
+const ctx = EvalContext.numeric([
+    ['x', JsExpression.integer(3)],
+    ['y', JsExpression.integer(4)]
+]);
+
+// Evaluate: (3)² + 2(3)(4) + (4)² = 9 + 24 + 16 = 49
+const result = expr.evaluateWithContext(ctx);
+console.log(result.toSimple());  // '49'
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook</code></li>
+<li><strong>Python</strong>: <code>mathhook</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook-node</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../bindings/nodejs.html">bindings.nodejs</a></p>
+</li>
+<li>
+<p><a href="../bindings/wasm.html">bindings.wasm</a></p>
+</li>
+<li>
+<p><a href="../getting-started/installation.html">getting-started.installation</a></p>
+</li>
+<li>
+<p><a href="../operations/simplification.html">operations.simplification</a></p>
+</li>
+<li>
+<p><a href="../operations/differentiation.html">operations.differentiation</a></p>
+</li>
+<li>
+<p><a href="../operations/integration.html">operations.integration</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="bindings-nodejs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="bindings-wasm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="bindings-nodejs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="bindings-wasm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

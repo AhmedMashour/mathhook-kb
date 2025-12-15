@@ -1,0 +1,965 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Planning Fast Path Opportunities - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/internal-planning-fast-path-opportunities.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="fast-path-opportunities-assessment"><a class="header" href="#fast-path-opportunities-assessment">Fast Path Opportunities Assessment</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>internal.planning.fast-path-opportunities</code></p>
+</blockquote>
+<p>Comprehensive analysis of 15+ high-priority opportunities for IntPoly and NumericMatrix
+fast-paths across MathHook's algebra, calculus, and matrix operations. Identifies concrete
+performance improvements through direct numeric computation instead of Expression tree operations.</p>
+<h1 id="fast-path-opportunities-assessment-1"><a class="header" href="#fast-path-opportunities-assessment-1">Fast Path Opportunities Assessment</a></h1>
+<p><strong>Date</strong>: 2025-12-06T21:53
+<strong>Context</strong>: Post-IntPoly implementation analysis
+<strong>Goal</strong>: Identify remaining opportunities for fast-path optimizations</p>
+<hr />
+<h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
+<p>This document catalogs <strong>15+ high-priority opportunities</strong> for IntPoly and NumericMatrix fast-paths across MathHook's algebra, calculus, and matrix operations.</p>
+<p><strong>Key Insight</strong>: Many operations currently use Expression trees when they could operate entirely on numeric types (IntPoly, RationalPoly, NumericMatrix).</p>
+<p><strong>Potential Impact</strong>: 10-100x speedups for common operations like:</p>
+<ul>
+<li>Polynomial GCD and factorization</li>
+<li>System of equations solving</li>
+<li>Matrix decompositions and solving</li>
+<li>Differentiation and integration</li>
+</ul>
+<hr />
+<h2 id="methodology"><a class="header" href="#methodology">Methodology</a></h2>
+<p>For each opportunity, we assess:</p>
+<ol>
+<li><strong>Current State</strong>: How the operation works today</li>
+<li><strong>Opportunity</strong>: What fast-path could be added</li>
+<li><strong>Impact</strong>: Expected performance improvement</li>
+<li><strong>Complexity</strong>: Implementation difficulty (Low/Medium/High)</li>
+<li><strong>Priority</strong>: P0 (critical) to P3 (nice-to-have)</li>
+</ol>
+<p><strong>Priority Levels</strong>:</p>
+<ul>
+<li><strong>P0</strong>: Critical bottlenecks, used in hot paths</li>
+<li><strong>P1</strong>: High-frequency operations, significant impact</li>
+<li><strong>P2</strong>: Moderate impact, less common operations</li>
+<li><strong>P3</strong>: Niche use cases, polish/completeness</li>
+</ul>
+<hr />
+<h2 id="category-1-polynomial-operations"><a class="header" href="#category-1-polynomial-operations">Category 1: Polynomial Operations</a></h2>
+<h3 id="1-polynomial-gcd"><a class="header" href="#1-polynomial-gcd">1. Polynomial GCD</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/gcd.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li><code>Expression::gcd()</code> has IntPoly fast-path for univariate integer polynomials</li>
+<li>Falls back to symbolic GCD for rational coefficients</li>
+<li>Symbolic GCD uses Euclidean algorithm on Expression trees</li>
+</ul>
+<p><strong>Opportunity</strong>: Add RationalPoly fast-path</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Current fallback
+if vars.len() == 1 {
+    // Try IntPoly
+    if IntPoly::can_convert(self, &amp;vars[0]) { /* ... */ }
+
+    // NEW: Try RationalPoly
+    if RationalPoly::can_convert(self, &amp;vars[0]) {
+        let p1 = RationalPoly::try_from_expression(self, &amp;vars[0])?;
+        let p2 = RationalPoly::try_from_expression(other, &amp;vars[0])?;
+        return Ok(p1.gcd(&amp;p2).to_expression(&amp;vars[0]));
+    }
+
+    // Fall back to symbolic
+    return symbolic_gcd_euclidean(self, other, &amp;vars[0]);
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 10-50x speedup for rational coefficient polynomials</p>
+<p><strong>Complexity</strong>: Low (reuse IntPoly pattern)</p>
+<p><strong>Priority</strong>: P1 (common in symbolic math)</p>
+<hr />
+<h3 id="2-polynomial-division"><a class="header" href="#2-polynomial-division">2. Polynomial Division</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/polynomial_division.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li><code>polynomial_division()</code> has IntPoly fast-path (lines 85-106)</li>
+<li>Falls back to symbolic division for rational coefficients</li>
+</ul>
+<p><strong>Opportunity</strong>: Add RationalPoly fast-path</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// After IntPoly check
+if RationalPoly::can_convert(&amp;dividend, var) &amp;&amp; RationalPoly::can_convert(&amp;divisor, var) {
+    let p_dividend = RationalPoly::try_from_expression(&amp;dividend, var)?;
+    let p_divisor = RationalPoly::try_from_expression(&amp;divisor, var)?;
+
+    let (quotient_poly, remainder_poly) = p_dividend.div_rem(&amp;p_divisor);
+
+    return Ok((
+        quotient_poly.to_expression(var),
+        remainder_poly.to_expression(var),
+    ));
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 10-50x speedup for rational polynomials</p>
+<p><strong>Complexity</strong>: Low</p>
+<p><strong>Priority</strong>: P1</p>
+<hr />
+<h3 id="3-polynomial-factorization"><a class="header" href="#3-polynomial-factorization">3. Polynomial Factorization</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/core/polynomial/algorithms/factorization.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Square-free factorization operates on Expression trees</li>
+<li>Calls GCD and division repeatedly (each call bridges Expression ↔ IntPoly)</li>
+</ul>
+<p><strong>Opportunity</strong>: Operate entirely in Poly<T></p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// NEW: Internal implementation
+fn square_free_factorization_poly&lt;T: Ring&gt;(poly: &amp;Poly&lt;T&gt;) -&gt; Vec&lt;(Poly&lt;T&gt;, usize)&gt; {
+    let derivative = poly.derivative();
+    let g = poly.gcd(&amp;derivative);
+    let (h, _) = poly.div_rem(&amp;g);
+
+    // Yun's algorithm - ALL in Poly&lt;T&gt;, no conversions
+    let mut factors = Vec::new();
+    let mut current_g = g;
+    let mut current_h = h;
+    let mut multiplicity = 1;
+
+    while !current_h.is_one() {
+        let s = current_g.gcd(&amp;current_h);
+        let (factor, _) = current_h.div_rem(&amp;s);
+
+        if !factor.is_one() {
+            factors.push((factor, multiplicity));
+        }
+
+        current_g = current_g.div_rem(&amp;s).0;
+        current_h = s;
+        multiplicity += 1;
+    }
+
+    factors
+}
+
+// Public wrapper converts once at entry/exit
+pub fn square_free_factorization(
+    poly: &amp;Expression,
+    var: &amp;Symbol,
+) -&gt; Result&lt;Vec&lt;(Expression, usize)&gt;&gt; {
+    if IntPoly::can_convert(poly, var) {
+        let p = IntPoly::try_from_expression(poly, var)?;
+        let factors = square_free_factorization_poly(&amp;p);
+        return Ok(factors.into_iter()
+            .map(|(f, m)| (f.to_expression(var), m))
+            .collect());
+    }
+    // ... RationalPoly, symbolic fallback
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 50-200x speedup (eliminates O(n) conversions for multiplicity n)</p>
+<p><strong>Complexity</strong>: Medium (refactor existing algorithm)</p>
+<p><strong>Priority</strong>: P0 (hot path in factorization)</p>
+<hr />
+<h3 id="4-polynomial-evaluation"><a class="header" href="#4-polynomial-evaluation">4. Polynomial Evaluation</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/core/expression/mod.rs</code> (eval methods)</p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li><code>Expression.eval()</code> walks entire Expression tree</li>
+<li>Polynomial evaluation is O(n) tree walk even for simple polynomials</li>
+</ul>
+<p><strong>Opportunity</strong>: Detect polynomial structure, evaluate with Horner's method</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Expression {
+    pub fn eval(&amp;self, var: &amp;Symbol, value: &amp;Expression) -&gt; Expression {
+        // NEW: Try polynomial fast-path
+        if self.is_polynomial_in(&amp;[var.clone()]) {
+            if let Some(poly) = IntPoly::try_from_expression(self, var) {
+                if let Ok(val_i64) = value.as_integer() {
+                    return Expression::integer(poly.evaluate_i64(val_i64));
+                }
+            }
+            // Try RationalPoly if IntPoly fails
+        }
+
+        // Fall back to tree walk
+        self.eval_tree(var, value)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 5-20x speedup for polynomial evaluation</p>
+<p><strong>Complexity</strong>: Low</p>
+<p><strong>Priority</strong>: P1 (common operation)</p>
+<hr />
+<h3 id="5-polynomial-derivative-symbolic"><a class="header" href="#5-polynomial-derivative-symbolic">5. Polynomial Derivative (Symbolic)</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/calculus/derivatives/symbolic.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li><code>derivative()</code> walks Expression tree applying rules</li>
+<li>For polynomials, this is inefficient (power rule on each term)</li>
+</ul>
+<p><strong>Opportunity</strong>: Polynomial fast-path using Poly<T>::derivative()</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn derivative(expr: &amp;Expression, var: &amp;Symbol) -&gt; Expression {
+    // NEW: Polynomial fast-path
+    if expr.is_polynomial_in(&amp;[var.clone()]) {
+        if let Some(poly) = IntPoly::try_from_expression(expr, var) {
+            return poly.derivative().to_expression(var);
+        }
+        if let Some(poly) = RationalPoly::try_from_expression(expr, var) {
+            return poly.derivative().to_expression(var);
+        }
+    }
+
+    // Fall back to symbolic rules
+    derivative_symbolic(expr, var)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 10-50x speedup for polynomial derivatives</p>
+<p><strong>Complexity</strong>: Low</p>
+<p><strong>Priority</strong>: P1</p>
+<hr />
+<h3 id="6-polynomial-integration-definite"><a class="header" href="#6-polynomial-integration-definite">6. Polynomial Integration (Definite)</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/calculus/integration/definite.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Definite integration uses symbolic integration + evaluation</li>
+<li>For polynomials, this is overkill</li>
+</ul>
+<p><strong>Opportunity</strong>: Direct polynomial antiderivative + numeric evaluation</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn definite_integral(
+    expr: &amp;Expression,
+    var: &amp;Symbol,
+    lower: &amp;Expression,
+    upper: &amp;Expression,
+) -&gt; Result&lt;Expression&gt; {
+    // NEW: Polynomial fast-path
+    if expr.is_polynomial_in(&amp;[var.clone()]) {
+        if let (Some(poly), Ok(a), Ok(b)) = (
+            IntPoly::try_from_expression(expr, var),
+            lower.as_integer(),
+            upper.as_integer(),
+        ) {
+            let antiderivative = poly.antiderivative();
+            let f_b = antiderivative.evaluate_i64(b);
+            let f_a = antiderivative.evaluate_i64(a);
+            return Ok(Expression::integer(f_b - f_a));
+        }
+    }
+
+    // Fall back to symbolic
+    definite_integral_symbolic(expr, var, lower, upper)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 20-100x speedup for definite polynomial integrals</p>
+<p><strong>Complexity</strong>: Low (add antiderivative() to Poly<T>)</p>
+<p><strong>Priority</strong>: P1</p>
+<hr />
+<h2 id="category-2-matrix-operations"><a class="header" href="#category-2-matrix-operations">Category 2: Matrix Operations</a></h2>
+<h3 id="7-matrix-vector-multiplication"><a class="header" href="#7-matrix-vector-multiplication">7. Matrix-Vector Multiplication</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/matrices/operations.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Matrix multiplication operates on Expression elements</li>
+<li>Each operation goes through Expression arithmetic</li>
+</ul>
+<p><strong>Opportunity</strong>: NumericMatrix fast-path for numeric matrices</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    pub fn multiply_vector(&amp;self, vec: &amp;[Expression]) -&gt; Vec&lt;Expression&gt; {
+        // NEW: Numeric fast-path
+        if self.is_numeric() &amp;&amp; vec.iter().all(|e| e.is_numeric()) {
+            let mat = NumericMatrix::from_expressions(self);
+            let vec_numeric: Vec&lt;f64&gt; = vec.iter()
+                .map(|e| e.as_numeric().unwrap())
+                .collect();
+
+            let result = mat.multiply_vector(&amp;vec_numeric);
+            return result.into_iter()
+                .map(Expression::from_float)
+                .collect();
+        }
+
+        // Symbolic multiplication
+        self.multiply_vector_symbolic(vec)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 50-500x speedup for numeric matrix-vector products</p>
+<p><strong>Complexity</strong>: Medium (create NumericMatrix type)</p>
+<p><strong>Priority</strong>: P0 (extremely common operation)</p>
+<hr />
+<h3 id="8-matrix-inversion"><a class="header" href="#8-matrix-inversion">8. Matrix Inversion</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/matrices/inverse.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Gauss-Jordan elimination on Expression matrices</li>
+<li>Each arithmetic operation is symbolic</li>
+</ul>
+<p><strong>Opportunity</strong>: NumericMatrix fast-path with LU decomposition</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    pub fn inverse(&amp;self) -&gt; Result&lt;Matrix&gt; {
+        // NEW: Numeric fast-path
+        if self.is_numeric() {
+            let mat = NumericMatrix::from_expressions(self);
+            let inv = mat.inverse_lu()?;
+            return Ok(Matrix::from_numeric(&amp;inv));
+        }
+
+        // Symbolic Gauss-Jordan
+        self.inverse_gauss_jordan()
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 100-1000x speedup for numeric matrices</p>
+<p><strong>Complexity</strong>: Medium (implement NumericMatrix with BLAS)</p>
+<p><strong>Priority</strong>: P0</p>
+<hr />
+<h3 id="9-matrix-determinant"><a class="header" href="#9-matrix-determinant">9. Matrix Determinant</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/matrices/determinant.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Determinant via cofactor expansion (O(n!)) or LU decomposition on Expression</li>
+</ul>
+<p><strong>Opportunity</strong>: NumericMatrix fast-path with LU decomposition</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    pub fn determinant(&amp;self) -&gt; Expression {
+        // NEW: Numeric fast-path
+        if self.is_numeric() {
+            let mat = NumericMatrix::from_expressions(self);
+            let det = mat.determinant_lu();
+            return Expression::from_float(det);
+        }
+
+        // Symbolic determinant
+        self.determinant_symbolic()
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 50-500x speedup for numeric determinants</p>
+<p><strong>Complexity</strong>: Low (reuse LU decomposition)</p>
+<p><strong>Priority</strong>: P1</p>
+<hr />
+<h3 id="10-system-of-linear-equations"><a class="header" href="#10-system-of-linear-equations">10. System of Linear Equations</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/solvers/systems.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li><code>solve_nxn_system()</code> uses Gaussian elimination on Expression matrices</li>
+<li>No numeric fast-path</li>
+</ul>
+<p><strong>Opportunity</strong>: NumericMatrix fast-path for numeric systems</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn solve_nxn_system(
+    &amp;self,
+    equations: &amp;[Expression],
+    variables: &amp;[Symbol],
+) -&gt; SolverResult {
+    let (a_matrix, b_vec) = self.build_system_matrix(equations, variables);
+
+    // NEW: Numeric fast-path
+    if a_matrix.is_numeric() &amp;&amp; b_vec.iter().all(|e| e.is_numeric()) {
+        let a_numeric = NumericMatrix::from_expressions(&amp;a_matrix);
+        let b_numeric: Vec&lt;f64&gt; = b_vec.iter()
+            .map(|e| e.as_numeric().unwrap())
+            .collect();
+
+        match a_numeric.solve_lu(&amp;b_numeric) {
+            Ok(solution) =&gt; {
+                let expr_solution: Vec&lt;Expression&gt; = solution.into_iter()
+                    .map(Expression::from_float)
+                    .collect();
+                return SolverResult::Multiple(expr_solution);
+            }
+            Err(_) =&gt; return SolverResult::NoSolution,
+        }
+    }
+
+    // Symbolic Gaussian elimination
+    self.solve_nxn_system_symbolic(&amp;a_matrix, &amp;b_vec)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 50-500x speedup for numeric systems</p>
+<p><strong>Complexity</strong>: Medium</p>
+<p><strong>Priority</strong>: P0</p>
+<hr />
+<h2 id="category-3-algebraic-operations"><a class="header" href="#category-3-algebraic-operations">Category 3: Algebraic Operations</a></h2>
+<h3 id="11-rational-function-simplification"><a class="header" href="#11-rational-function-simplification">11. Rational Function Simplification</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/rational.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Rational simplification uses Expression GCD</li>
+<li>For polynomial rationals, this is inefficient</li>
+</ul>
+<p><strong>Opportunity</strong>: Poly<T> fast-path for polynomial numerator/denominator</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn simplify_rational(
+    numerator: &amp;Expression,
+    denominator: &amp;Expression,
+) -&gt; (Expression, Expression) {
+    // NEW: Polynomial fast-path
+    if let Some(var) = common_variable(numerator, denominator) {
+        if let (Some(num_poly), Some(den_poly)) = (
+            IntPoly::try_from_expression(numerator, &amp;var),
+            IntPoly::try_from_expression(denominator, &amp;var),
+        ) {
+            let gcd = num_poly.gcd(&amp;den_poly);
+            let (simplified_num, _) = num_poly.div_rem(&amp;gcd);
+            let (simplified_den, _) = den_poly.div_rem(&amp;gcd);
+
+            return (
+                simplified_num.to_expression(&amp;var),
+                simplified_den.to_expression(&amp;var),
+            );
+        }
+    }
+
+    // Symbolic GCD
+    simplify_rational_symbolic(numerator, denominator)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 10-50x speedup for polynomial rationals</p>
+<p><strong>Complexity</strong>: Low</p>
+<p><strong>Priority</strong>: P1</p>
+<hr />
+<h3 id="12-partial-fraction-decomposition"><a class="header" href="#12-partial-fraction-decomposition">12. Partial Fraction Decomposition</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/partial_fractions.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Partial fractions uses symbolic operations throughout</li>
+<li>Factorization, polynomial division, solving for coefficients all symbolic</li>
+</ul>
+<p><strong>Opportunity</strong>: Multi-level fast-path strategy</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn partial_fraction_decomposition(
+    numerator: &amp;Expression,
+    denominator: &amp;Expression,
+    var: &amp;Symbol,
+) -&gt; Result&lt;Vec&lt;RationalTerm&gt;&gt; {
+    // Step 1: Factor denominator (uses square-free fast-path)
+    let factors = square_free_factorization(denominator, var)?;
+
+    // Step 2: For each factor, solve for coefficients
+    // NEW: Use Poly&lt;T&gt; operations instead of symbolic
+    if IntPoly::can_convert(numerator, var) {
+        let num_poly = IntPoly::try_from_expression(numerator, var)?;
+
+        let mut terms = Vec::new();
+        for (factor, multiplicity) in factors {
+            let factor_poly = IntPoly::try_from_expression(&amp;factor, var)?;
+
+            // Solve for coefficients using polynomial arithmetic
+            let coeffs = solve_coefficients_poly(&amp;num_poly, &amp;factor_poly, multiplicity);
+
+            terms.extend(coeffs);
+        }
+
+        return Ok(terms);
+    }
+
+    // Symbolic fallback
+    partial_fraction_symbolic(numerator, denominator, var)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 20-100x speedup for polynomial partial fractions</p>
+<p><strong>Complexity</strong>: Medium (refactor coefficient solving)</p>
+<p><strong>Priority</strong>: P2</p>
+<hr />
+<h3 id="13-polynomial-remainder-theorem"><a class="header" href="#13-polynomial-remainder-theorem">13. Polynomial Remainder Theorem</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/theorems.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Remainder theorem uses symbolic division</li>
+</ul>
+<p><strong>Opportunity</strong>: Direct polynomial evaluation (Horner's method)</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn remainder_theorem(
+    poly: &amp;Expression,
+    divisor_root: &amp;Expression,
+    var: &amp;Symbol,
+) -&gt; Expression {
+    // Remainder when dividing by (x - a) is just p(a)
+
+    // NEW: Polynomial fast-path
+    if let Some(p) = IntPoly::try_from_expression(poly, var) {
+        if let Ok(a) = divisor_root.as_integer() {
+            return Expression::integer(p.evaluate_i64(a));
+        }
+    }
+
+    // Symbolic evaluation
+    poly.eval(var, divisor_root)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 5-20x speedup</p>
+<p><strong>Complexity</strong>: Low</p>
+<p><strong>Priority</strong>: P2</p>
+<hr />
+<h2 id="category-4-higher-level-operations"><a class="header" href="#category-4-higher-level-operations">Category 4: Higher-Level Operations</a></h2>
+<h3 id="14-groebner-basis-computation"><a class="header" href="#14-groebner-basis-computation">14. Groebner Basis Computation</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/groebner/buchberger.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Buchberger's algorithm operates on multivariate Expression polynomials</li>
+<li>S-polynomial computation, reduction all symbolic</li>
+</ul>
+<p><strong>Opportunity</strong>: Multivariate Poly<T> representation</p>
+<p><strong>Complexity</strong>: High (requires multivariate polynomial type)</p>
+<p><strong>Priority</strong>: P3 (complex, lower frequency)</p>
+<p><strong>Note</strong>: This is a Phase 10+ optimization requiring architectural changes.</p>
+<hr />
+<h3 id="15-resultant-and-discriminant"><a class="header" href="#15-resultant-and-discriminant">15. Resultant and Discriminant</a></h3>
+<p><strong>File</strong>: <code>crates/mathhook-core/src/algebra/resultant.rs</code></p>
+<p><strong>Current State</strong>:</p>
+<ul>
+<li>Resultant computed via Sylvester matrix determinant (symbolic)</li>
+</ul>
+<p><strong>Opportunity</strong>: Polynomial coefficient extraction + numeric determinant</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn resultant(
+    poly1: &amp;Expression,
+    poly2: &amp;Expression,
+    var: &amp;Symbol,
+) -&gt; Expression {
+    // NEW: Polynomial fast-path
+    if let (Some(p1), Some(p2)) = (
+        IntPoly::try_from_expression(poly1, var),
+        IntPoly::try_from_expression(poly2, var),
+    ) {
+        let sylvester = build_sylvester_matrix_numeric(&amp;p1, &amp;p2);
+        let det = sylvester.determinant_lu();
+        return Expression::integer(det as i64);
+    }
+
+    // Symbolic resultant
+    resultant_symbolic(poly1, poly2, var)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 50-200x speedup for polynomial resultants</p>
+<p><strong>Complexity</strong>: Medium</p>
+<p><strong>Priority</strong>: P2</p>
+<hr />
+<h2 id="implementation-priorities"><a class="header" href="#implementation-priorities">Implementation Priorities</a></h2>
+<h3 id="phase-1-p0---critical"><a class="header" href="#phase-1-p0---critical">Phase 1 (P0 - Critical)</a></h3>
+<ol>
+<li><strong>Polynomial Square-Free Factorization</strong> (eliminate bridging)</li>
+<li><strong>NumericMatrix System Solver</strong> (50-500x speedup)</li>
+<li><strong>NumericMatrix Inverse</strong> (100-1000x speedup)</li>
+<li><strong>NumericMatrix-Vector Multiply</strong> (50-500x speedup)</li>
+</ol>
+<h3 id="phase-2-p1---high-impact"><a class="header" href="#phase-2-p1---high-impact">Phase 2 (P1 - High Impact)</a></h3>
+<ol>
+<li><strong>RationalPoly GCD</strong></li>
+<li><strong>RationalPoly Division</strong></li>
+<li><strong>Polynomial Evaluation Fast-Path</strong></li>
+<li><strong>Polynomial Derivative Fast-Path</strong></li>
+<li><strong>Polynomial Integration (Definite)</strong></li>
+<li><strong>Matrix Determinant (Numeric)</strong></li>
+<li><strong>Rational Function Simplification</strong></li>
+</ol>
+<h3 id="phase-3-p2---moderate-impact"><a class="header" href="#phase-3-p2---moderate-impact">Phase 3 (P2 - Moderate Impact)</a></h3>
+<ol>
+<li><strong>Partial Fraction Decomposition</strong></li>
+<li><strong>Polynomial Remainder Theorem</strong></li>
+<li><strong>Resultant/Discriminant</strong></li>
+</ol>
+<h3 id="phase-4-p3---polishcompleteness"><a class="header" href="#phase-4-p3---polishcompleteness">Phase 4 (P3 - Polish/Completeness)</a></h3>
+<ol>
+<li><strong>Groebner Basis</strong> (requires multivariate Poly<T>)</li>
+</ol>
+<hr />
+<h2 id="performance-impact-estimates"><a class="header" href="#performance-impact-estimates">Performance Impact Estimates</a></h2>
+<h3 id="by-operation-category"><a class="header" href="#by-operation-category">By Operation Category</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Category</th><th>Current Avg Time</th><th>With Fast-Paths</th><th>Speedup</th></tr></thead><tbody>
+<tr><td>Polynomial GCD</td><td>500μs</td><td>10μs</td><td>50x</td></tr>
+<tr><td>Polynomial Division</td><td>200μs</td><td>5μs</td><td>40x</td></tr>
+<tr><td>Square-Free Factorization</td><td>2ms</td><td>20μs</td><td>100x</td></tr>
+<tr><td>Matrix Inversion (10x10)</td><td>50ms</td><td>50μs</td><td>1000x</td></tr>
+<tr><td>System Solver (10x10)</td><td>30ms</td><td>60μs</td><td>500x</td></tr>
+<tr><td>Polynomial Evaluation</td><td>100μs</td><td>5μs</td><td>20x</td></tr>
+</tbody></table>
+</div>
+<h3 id="cumulative-impact"><a class="header" href="#cumulative-impact">Cumulative Impact</a></h3>
+<p><strong>Scenario</strong>: Symbolic algebra workflow (factor, simplify, solve)</p>
+<p><strong>Before Fast-Paths</strong>:</p>
+<ul>
+<li>Factor polynomial: 2ms</li>
+<li>Simplify rational: 1ms</li>
+<li>Solve system: 30ms</li>
+<li><strong>Total</strong>: 33ms</li>
+</ul>
+<p><strong>After Fast-Paths</strong>:</p>
+<ul>
+<li>Factor polynomial: 20μs</li>
+<li>Simplify rational: 20μs</li>
+<li>Solve system: 60μs</li>
+<li><strong>Total</strong>: 100μs</li>
+</ul>
+<p><strong>Overall Speedup</strong>: 330x</p>
+<hr />
+<h2 id="implementation-strategy"><a class="header" href="#implementation-strategy">Implementation Strategy</a></h2>
+<h3 id="pattern-poly-generic-operations"><a class="header" href="#pattern-poly-generic-operations">Pattern: Poly<T> Generic Operations</a></h3>
+<p>For each operation, follow this pattern:</p>
+<ol>
+<li>
+<p><strong>Internal Generic Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn operation_poly&lt;T: Ring&gt;(poly: &amp;Poly&lt;T&gt;, ...) -&gt; Result&lt;Poly&lt;T&gt;&gt; {
+    // Operate entirely in Poly&lt;T&gt;, no Expression
+}
+<span class="boring">}</span></code></pre></pre>
+</li>
+<li>
+<p><strong>Public Expression Wrapper</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn operation(expr: &amp;Expression, ...) -&gt; Result&lt;Expression&gt; {
+    // Try IntPoly
+    if IntPoly::can_convert(expr, var) {
+        let p = IntPoly::try_from_expression(expr, var)?;
+        let result = operation_poly(&amp;p, ...)?;
+        return Ok(result.to_expression(var));
+    }
+
+    // Try RationalPoly
+    if RationalPoly::can_convert(expr, var) {
+        let p = RationalPoly::try_from_expression(expr, var)?;
+        let result = operation_poly(&amp;p, ...)?;
+        return Ok(result.to_expression(var));
+    }
+
+    // Symbolic fallback
+    operation_symbolic(expr, ...)
+}
+<span class="boring">}</span></code></pre></pre>
+</li>
+<li>
+<p><strong>Test Cross-Language Consistency</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_operation_intpoly_matches_symbolic() {
+    let cases = vec![
+        (expr!(x^2 + 2*x + 1), ...),
+        (expr!(x^3 - 1), ...),
+    ];
+
+    for (input, ...) in cases {
+        let fast_result = operation_fast_path(&amp;input, ...);
+        let symbolic_result = operation_symbolic(&amp;input, ...);
+        assert_eq!(fast_result, symbolic_result);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+</li>
+</ol>
+<hr />
+<h2 id="validation-strategy"><a class="header" href="#validation-strategy">Validation Strategy</a></h2>
+<p>For each fast-path implementation:</p>
+<ol>
+<li><strong>Correctness</strong>: Compare fast-path result with symbolic result</li>
+<li><strong>Performance</strong>: Benchmark before/after with criterion</li>
+<li><strong>Cross-Language</strong>: Verify Rust/Python/JS equivalence</li>
+<li><strong>Edge Cases</strong>: Test zero, constant, high-degree polynomials</li>
+</ol>
+<hr />
+<h2 id="risk-assessment"><a class="header" href="#risk-assessment">Risk Assessment</a></h2>
+<h3 id="low-risk-should-implement-first"><a class="header" href="#low-risk-should-implement-first">Low Risk (Should Implement First)</a></h3>
+<ul>
+<li>RationalPoly GCD/division (proven pattern)</li>
+<li>Polynomial evaluation (simple conversion)</li>
+<li>Matrix determinant (reuse LU)</li>
+</ul>
+<h3 id="medium-risk-require-careful-testing"><a class="header" href="#medium-risk-require-careful-testing">Medium Risk (Require Careful Testing)</a></h3>
+<ul>
+<li>Square-free factorization refactor (complex algorithm)</li>
+<li>NumericMatrix implementation (numerical stability)</li>
+<li>Partial fraction decomposition (multi-step process)</li>
+</ul>
+<h3 id="high-risk-phase-10"><a class="header" href="#high-risk-phase-10">High Risk (Phase 10+)</a></h3>
+<ul>
+<li>Groebner basis (major architectural change)</li>
+<li>Multivariate polynomial type (new abstraction)</li>
+</ul>
+<hr />
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p><strong>Key Takeaway</strong>: There are 15+ concrete opportunities for 10-1000x speedups through systematic application of the fast-path pattern.</p>
+<p><strong>Immediate Actions</strong>:</p>
+<ol>
+<li>Implement P0 fast-paths (square-free, NumericMatrix)</li>
+<li>Add RationalPoly fast-paths (GCD, division)</li>
+<li>Benchmark improvements</li>
+<li>Document patterns for future contributors</li>
+</ol>
+<p><strong>Long-Term Vision</strong>: MathHook operates primarily on numeric types (Poly<T>, NumericMatrix) with Expression trees only at API boundaries.</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../internal/planning/intpoly-first-implementation.html">internal.planning.intpoly-first-implementation</a></p>
+</li>
+<li>
+<p><a href="../internal/planning/matrix-solver-integration.html">internal.planning.matrix-solver-integration</a></p>
+</li>
+<li>
+<p><a href="../internal/planning/bridging-elimination.html">internal.planning.bridging-elimination</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="internal-performance-strategic-roadmap.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="internal-planning-matrix-solver-integration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="internal-performance-strategic-roadmap.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="internal-planning-matrix-solver-integration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

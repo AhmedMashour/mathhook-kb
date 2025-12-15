@@ -1,0 +1,135 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Residue Calculus and Pole Finding }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Find poles of rational and transcendental functions for applications in
+control theory, signal processing, and complex analysis. SymPy-validated
+pole locations for trigonometric functions.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Pole of order $n$ at $z = z_0$:
+$$\lim_{z \to z_0} (z - z_0)^n f(z) = c \neq 0$$
+
+Residue theorem:
+$$\oint_C f(z) \, dz = 2\pi i \sum_k \text{Res}(f, z_k)$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Rational Function Poles }
+
+Find poles where denominator equals zero
+
+\begin{lstlisting}
+from sympy import symbols, singularities
+
+z = symbols('z')
+
+# Simple pole
+f1 = 1/z
+poles1 = singularities(f1, z)
+# Returns: {0}
+
+# Multiple poles
+f3 = 1/((z-1)*(z+2))
+poles3 = singularities(f3, z)
+# Returns: {1, -2}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Trigonometric Function Poles (SymPy Validated) }
+
+Poles of tan, cot, sec, csc functions
+
+\begin{lstlisting}
+from sympy import symbols, tan, cot, sec, csc, singularities, pi
+
+x = symbols('x', real=True)
+
+# tan(x) poles
+poles_tan = singularities(tan(x), x)
+# Principal: pi/2
+
+# cot(x) poles
+poles_cot = singularities(cot(x), x)
+# Principal: 0
+
+# sec(x) poles
+poles_sec = singularities(sec(x), x)
+# Principal: pi/2
+
+# csc(x) poles
+poles_csc = singularities(csc(x), x)
+# Principal: 0
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Control System Stability }
+
+Transfer function pole analysis for stability
+
+\begin{lstlisting}
+from sympy import symbols, sqrt
+
+s = symbols('s')
+zeta = 0.7
+omega_n = 10
+K = 100
+
+H = K / (s**2 + 2*zeta*omega_n*s + omega_n**2)
+poles = solve(denom(H), s)
+
+# Stability: all poles have Re(pole) < 0
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,259 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ LaTeX Parsing and Mathematical Notation }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Parse and generate LaTeX notation for mathematical expressions. Full bidirectional
+support: LaTeX → Expression and Expression → LaTeX. Automatic type inference for
+matrix symbols (\mathbf{A}), operator symbols (\hat{p}), and implicit multiplication.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# LaTeX Parsing and Notation
+
+## Overview
+
+MathHook provides comprehensive LaTeX support:
+- **Bidirectional**: Parse LaTeX → Expression, Expression → LaTeX
+- **Type Inference**: `\mathbf{A}` creates matrix symbols, `\hat{p}` creates operators
+- **Implicit Multiplication**: Handles `2x`, `\pi x`, `(a)(b)` correctly
+- **150+ Commands**: Functions, symbols, operators, calculus notation
+
+## Architecture
+
+### Two-Stage Processing
+
+**1. Lexer (Token Generation)**:
+- Inserts implicit multiplication tokens (`2x` → `2*x`)
+- Classifies tokens (number, identifier, function, operator)
+- O(1) HashMap lookups for LaTeX commands (`\sin`, `\pi`, `\alpha`)
+
+**2. Parser (LALRPOP Grammar)**:
+- LR(1) parser with operator precedence
+- Right-associative exponentiation: `2^3^4` → `2^(3^4)`
+- Context-aware function resolution
+
+### Performance
+- >100K simple expressions/second
+- Thread-local caching for common expressions
+- Zero-copy string processing where possible
+
+## Supported LaTeX
+
+### Greek Letters
+- Lowercase: `\alpha`, `\beta`, `\gamma`, ..., `\omega`
+- Uppercase: `\Gamma`, `\Delta`, `\Theta`, ..., `\Omega`
+
+### Mathematical Constants
+- `\pi`: π (pi)
+- `e`: Euler's number
+- `\phi`: Golden ratio
+- `i`: Imaginary unit
+
+### Fractions and Roots
+- `\frac{a}{b}`: Fractions
+- `\sqrt{x}`: Square root
+- `\sqrt[n]{x}`: nth root
+
+### Trigonometric Functions
+- `\sin`, `\cos`, `\tan`, `\cot`, `\sec`, `\csc`
+- `\arcsin`, `\arccos`, `\arctan`
+- `\sinh`, `\cosh`, `\tanh`
+
+### Calculus Notation
+- `\int`: Integral
+- `\frac{d}{dx}`: Derivative
+- `\lim`: Limit
+- `\sum`: Summation
+- `\prod`: Product
+
+### Matrix Notation
+- `\mathbf{A}`: Matrix symbol (bold, noncommutative)
+- `\hat{p}`: Operator symbol (quantum mechanics)
+- `\begin{matrix}...\end{matrix}`: Matrix construction
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic LaTeX Parsing }
+
+Parse standard mathematical expressions
+
+\begin{lstlisting}
+from mathhook.parser import parse_latex
+
+# Basic arithmetic
+expr = parse_latex(r"2 + 3 \cdot 4")  # 2 + 3*4
+
+# Fractions
+expr = parse_latex(r"\frac{x^2 + 1}{x - 1}")
+
+# Functions
+expr = parse_latex(r"\sin(x) + \cos(y)")
+
+# Square roots
+expr = parse_latex(r"\sqrt{x^2 + y^2}")
+
+# Exponents
+expr = parse_latex(r"e^{-x^2}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Greek Letters and Constants }
+
+Parse Greek symbols and mathematical constants
+
+\begin{lstlisting}
+from mathhook.parser import parse_latex
+
+# Greek symbols
+expr = parse_latex(r"\alpha + \beta + \gamma")
+
+# Gamma function
+expr = parse_latex(r"\Gamma(n)")
+
+# Constants
+expr = parse_latex(r"\pi r^2")
+expr = parse_latex(r"e^{i\pi} + 1")
+expr = parse_latex(r"\phi = \frac{1+\sqrt{5}}{2}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix and Operator Symbols }
+
+Automatic type inference from LaTeX notation
+
+\begin{lstlisting}
+from mathhook.parser import parse_latex
+
+# Matrix symbols (automatic inference)
+expr = parse_latex(r"\mathbf{A} \mathbf{B}")
+# Creates matrix symbols A, B
+
+# Operator symbols
+expr = parse_latex(r"\hat{p} \hat{x}")
+# Creates operator symbols p, x
+
+# Mixed
+expr = parse_latex(r"x \mathbf{A}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Generating LaTeX Output }
+
+Convert expressions back to LaTeX
+
+\begin{lstlisting}
+from mathhook import symbol
+from mathhook.formatter import to_latex
+
+x = symbol('x')
+
+# Simple expression
+expr = x**2 / 2
+latex = to_latex(expr)
+# Returns: "\frac{x^{2}}{2}"
+
+# Matrix expression
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+expr = A * B
+latex = to_latex(expr)
+# Returns: "\mathbf{A}\mathbf{B}"
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Implicit Multiplication }
+
+Automatic insertion of multiplication operators
+
+\begin{lstlisting}
+from mathhook.parser import parse_latex
+
+# Implicit multiplication handled automatically
+expr = parse_latex("2x")           # 2*x
+expr = parse_latex("(a)(b)")       # a*b
+expr = parse_latex(r"\sin(x)\cos(y)")  # sin(x)*cos(y)
+expr = parse_latex(r"2\pi r")      # 2*π*r
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Calculus Notation }
+
+Parse derivatives, integrals, limits
+
+\begin{lstlisting}
+from mathhook.parser import parse_latex
+
+# Derivative
+expr = parse_latex(r"\frac{d}{dx} x^2")
+
+# Integral
+expr = parse_latex(r"\int x^2 \, dx")
+
+# Definite integral
+expr = parse_latex(r"\int_0^1 x^2 \, dx")
+
+# Limit
+expr = parse_latex(r"\lim_{x \to 0} \frac{\sin(x)}{x}")
+
+# Summation
+expr = parse_latex(r"\sum_{i=1}^{n} i^2")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,769 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pattern Matching - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/core-pattern-matching.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="pattern-matching"><a class="header" href="#pattern-matching">Pattern Matching</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>core.pattern-matching</code></p>
+</blockquote>
+<p>Pattern matching is a powerful technique in MathHook for identifying, transforming,
+and simplifying mathematical expressions. MathHook combines Rust's native pattern
+matching with specialized mathematical pattern recognition to enable sophisticated
+symbolic manipulation including algebraic identities, calculus rules, and
+trigonometric transformations.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p><strong>Common Mathematical Patterns:</strong></p>
+<ul>
+<li><strong>Difference of Squares</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span></span></li>
+<li><strong>Perfect Square</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal">ab</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>Power Rule</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord mathnormal">n</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>Chain Rule</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0519em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></span></li>
+<li><strong>Pythagorean Identity</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1219em;vertical-align:-0.25em;"></span><span class="mop"><span class="mop">sin</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8719em;"><span style="top:-3.1208em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mop"><span class="mop">cos</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="rust-native-pattern-matching-on-expressions"><a class="header" href="#rust-native-pattern-matching-on-expressions">Rust Native Pattern Matching on Expressions</a></h3>
+<p>Using Rust's match statement to analyze expression structure</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+fn analyze_expression(expr: &amp;Expression) -&gt; String {
+    match expr {
+        Expression::Integer(n) =&gt; format!("Integer: {}", n),
+        Expression::Symbol(s) =&gt; format!("Variable: {}", s.name()),
+        Expression::Add(terms) =&gt; format!("Sum of {} terms", terms.len()),
+        Expression::Mul(factors) =&gt; format!("Product of {} factors", factors.len()),
+        Expression::Pow(base, exp) =&gt; format!("Power: ({})^({})", base, exp),
+        Expression::Function { name, args } =&gt; {
+            format!("Function {}: {} args", name, args.len())
+        }
+        _ =&gt; "Other expression type".to_string(),
+    }
+}
+
+let expr = expr!(x^2 + 2*x + 1);
+println!("{}", analyze_expression(&amp;expr));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression, expr
+
+def analyze_expression(e):
+    if e.is_integer():
+        return f"Integer: {e.value()}"
+    elif e.is_symbol():
+        return f"Variable: {e.name()}"
+    elif e.is_add():
+        return f"Sum of {len(e.terms())} terms"
+    elif e.is_mul():
+        return f"Product of {len(e.factors())} factors"
+    elif e.is_pow():
+        return f"Power: ({e.base()})^({e.exponent()})"
+    elif e.is_function():
+        return f"Function {e.name()}: {len(e.args())} args"
+    else:
+        return "Other expression type"
+
+expr_val = expr('x^2 + 2*x + 1')
+print(analyze_expression(expr_val))
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { Expression, expr } = require('mathhook-node');
+
+function analyzeExpression(e) {
+    if (e.isInteger()) {
+        return `Integer: ${e.value()}`;
+    } else if (e.isSymbol()) {
+        return `Variable: ${e.name()}`;
+    } else if (e.isAdd()) {
+        return `Sum of ${e.terms().length} terms`;
+    } else if (e.isMul()) {
+        return `Product of ${e.factors().length} factors`;
+    } else if (e.isPow()) {
+        return `Power: (${e.base()})^(${e.exponent()})`;
+    } else if (e.isFunction()) {
+        return `Function ${e.name()}: ${e.args().length} args`;
+    }
+    return 'Other expression type';
+}
+
+const exprVal = expr('x^2 + 2*x + 1');
+console.log(analyzeExpression(exprVal));
+
+</code></pre>
+</details>
+<h3 id="algebraic-pattern-difference-of-squares"><a class="header" href="#algebraic-pattern-difference-of-squares">Algebraic Pattern: Difference of Squares</a></h3>
+<p>Recognizing and factoring difference of squares pattern</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let a = symbol!(a);
+let b = symbol!(b);
+
+// Pattern: a² - b² = (a + b)(a - b)
+let diff_squares = expr!(a^2 - b^2);
+let factored = diff_squares.factor();
+assert_eq!(factored, expr!((a + b) * (a - b)));
+
+// Recognizes in complex forms
+let x = symbol!(x);
+let example = expr!(x^4 - 16);
+let factored_example = example.factor();
+// (x² + 4)(x² - 4)
+assert_eq!(factored_example, expr!((x^2 + 4) * (x^2 - 4)));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+a = symbol('a')
+b = symbol('b')
+
+# Pattern: a² - b² = (a + b)(a - b)
+diff_squares = expr('a^2 - b^2')
+factored = diff_squares.factor()
+assert factored == expr('(a + b) * (a - b)')
+
+# Complex forms
+x = symbol('x')
+example = expr('x^4 - 16')
+factored_example = example.factor()
+assert factored_example == expr('(x^2 + 4) * (x^2 - 4)')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook-node');
+
+const a = symbol('a');
+const b = symbol('b');
+
+// Pattern: a² - b² = (a + b)(a - b)
+const diffSquares = expr('a^2 - b^2');
+const factored = diffSquares.factor();
+console.assert(factored.equals(expr('(a + b) * (a - b)')));
+
+// Complex forms
+const x = symbol('x');
+const example = expr('x^4 - 16');
+const factoredExample = example.factor();
+console.assert(factoredExample.equals(expr('(x^2 + 4) * (x^2 - 4)')));
+
+</code></pre>
+</details>
+<h3 id="calculus-pattern-power-rule-derivative"><a class="header" href="#calculus-pattern-power-rule-derivative">Calculus Pattern: Power Rule Derivative</a></h3>
+<p>Automatic pattern recognition for power rule differentiation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Pattern: d/dx(x^n) = n*x^(n-1)
+let f = expr!(x^5);
+let df = f.derivative(&amp;x, 1);
+assert_eq!(df, expr!(5 * x^4));
+
+// Works for any power
+let sqrt_x = expr!(x^(1/2));
+let d_sqrt = sqrt_x.derivative(&amp;x, 1);
+assert_eq!(d_sqrt, expr!((1/2) * x^(-1/2)));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pattern: d/dx(x^n) = n*x^(n-1)
+f = expr('x^5')
+df = f.derivative(x)
+assert df == expr('5 * x^4')
+
+# Works for any power
+sqrt_x = expr('x^(1/2)')
+d_sqrt = sqrt_x.derivative(x)
+assert d_sqrt == expr('(1/2) * x^(-1/2)')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook-node');
+
+const x = symbol('x');
+
+// Pattern: d/dx(x^n) = n*x^(n-1)
+const f = expr('x^5');
+const df = f.derivative(x);
+console.assert(df.equals(expr('5 * x^4')));
+
+// Works for any power
+const sqrtX = expr('x^(1/2)');
+const dSqrt = sqrtX.derivative(x);
+console.assert(dSqrt.equals(expr('(1/2) * x^(-1/2)')));
+
+</code></pre>
+</details>
+<h3 id="calculus-pattern-chain-rule"><a class="header" href="#calculus-pattern-chain-rule">Calculus Pattern: Chain Rule</a></h3>
+<p>Automatic chain rule application for composite functions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Pattern: d/dx f(g(x)) = f'(g(x)) * g'(x)
+let f = expr!(sin(x^2));
+// sin(u) where u = x²
+// Derivative: cos(u) * du/dx = cos(x²) * 2x
+let df = f.derivative(&amp;x, 1);
+assert_eq!(df, expr!(2*x*cos(x^2)));
+
+// Nested composition
+let nested = expr!(sin(cos(x)));
+let d_nested = nested.derivative(&amp;x, 1);
+// cos(cos(x)) * (-sin(x))
+assert_eq!(d_nested, expr!(-sin(x)*cos(cos(x))));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pattern: chain rule
+f = expr('sin(x^2)')
+df = f.derivative(x)
+assert df == expr('2*x*cos(x^2)')
+
+# Nested composition
+nested = expr('sin(cos(x))')
+d_nested = nested.derivative(x)
+assert d_nested == expr('-sin(x)*cos(cos(x))')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook-node');
+
+const x = symbol('x');
+
+// Chain rule
+const f = expr('sin(x^2)');
+const df = f.derivative(x);
+console.assert(df.equals(expr('2*x*cos(x^2)')));
+
+// Nested composition
+const nested = expr('sin(cos(x))');
+const dNested = nested.derivative(x);
+console.assert(dNested.equals(expr('-sin(x)*cos(cos(x))')));
+
+</code></pre>
+</details>
+<h3 id="trigonometric-pattern-pythagorean-identity"><a class="header" href="#trigonometric-pattern-pythagorean-identity">Trigonometric Pattern: Pythagorean Identity</a></h3>
+<p>Automatic simplification using trigonometric identities</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Pattern: sin²(x) + cos²(x) = 1
+let identity = expr!(sin(x)^2 + cos(x)^2);
+assert_eq!(identity.simplify(), expr!(1));
+
+// Pattern: 1 + tan²(x) = sec²(x)
+let tan_identity = expr!(1 + tan(x)^2);
+assert_eq!(tan_identity.simplify(), expr!(sec(x)^2));
+
+// Pattern: 1 + cot²(x) = csc²(x)
+let cot_identity = expr!(1 + cot(x)^2);
+assert_eq!(cot_identity.simplify(), expr!(csc(x)^2));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pythagorean identities
+identity = expr('sin(x)^2 + cos(x)^2')
+assert identity.simplify() == 1
+
+tan_identity = expr('1 + tan(x)^2')
+assert tan_identity.simplify() == expr('sec(x)^2')
+
+cot_identity = expr('1 + cot(x)^2')
+assert cot_identity.simplify() == expr('csc(x)^2')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook-node');
+
+const x = symbol('x');
+
+// Pythagorean identities
+const identity = expr('sin(x)^2 + cos(x)^2');
+console.assert(identity.simplify().equals(1));
+
+const tanIdentity = expr('1 + tan(x)^2');
+console.assert(tanIdentity.simplify().equals(expr('sec(x)^2')));
+
+const cotIdentity = expr('1 + cot(x)^2');
+console.assert(cotIdentity.simplify().equals(expr('csc(x)^2')));
+
+</code></pre>
+</details>
+<h3 id="logarithm-pattern-log-laws"><a class="header" href="#logarithm-pattern-log-laws">Logarithm Pattern: Log Laws</a></h3>
+<p>Automatic application of logarithm expansion and combination rules</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let a = symbol!(a);
+let b = symbol!(b);
+let n = symbol!(n);
+
+// Pattern: ln(a*b) = ln(a) + ln(b)
+let log_product = expr!(ln(a*b));
+assert_eq!(log_product.expand(), expr!(ln(a) + ln(b)));
+
+// Pattern: ln(a/b) = ln(a) - ln(b)
+let log_quotient = expr!(ln(a/b));
+assert_eq!(log_quotient.expand(), expr!(ln(a) - ln(b)));
+
+// Pattern: ln(a^n) = n*ln(a)
+let log_power = expr!(ln(a^n));
+assert_eq!(log_power.expand(), expr!(n*ln(a)));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+a = symbol('a')
+b = symbol('b')
+n = symbol('n')
+
+# Log laws
+log_product = expr('ln(a*b)')
+assert log_product.expand() == expr('ln(a) + ln(b)')
+
+log_quotient = expr('ln(a/b)')
+assert log_quotient.expand() == expr('ln(a) - ln(b)')
+
+log_power = expr('ln(a^n)')
+assert log_power.expand() == expr('n*ln(a)')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook-node');
+
+const a = symbol('a');
+const b = symbol('b');
+const n = symbol('n');
+
+// Log laws
+const logProduct = expr('ln(a*b)');
+console.assert(logProduct.expand().equals(expr('ln(a) + ln(b)')));
+
+const logQuotient = expr('ln(a/b)');
+console.assert(logQuotient.expand().equals(expr('ln(a) - ln(b)')));
+
+const logPower = expr('ln(a^n)');
+console.assert(logPower.expand().equals(expr('n*ln(a)')));
+
+</code></pre>
+</details>
+<h3 id="custom-pattern-matcher-polynomial-detection"><a class="header" href="#custom-pattern-matcher-polynomial-detection">Custom Pattern Matcher: Polynomial Detection</a></h3>
+<p>Implementing custom pattern recognition for polynomial expressions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+/// Pattern matcher for polynomial expressions
+fn is_polynomial(expr: &amp;Expression, var: &amp;Symbol) -&gt; bool {
+    match expr {
+        // Constant term
+        Expression::Integer(_) | Expression::Rational(_) =&gt; true,
+
+        // Variable itself
+        Expression::Symbol(s) if s == var =&gt; true,
+
+        // Power of variable
+        Expression::Pow(base, exp) =&gt; {
+            matches!(**base, Expression::Symbol(ref s) if s == var) &amp;&amp;
+            matches!(**exp, Expression::Integer(n) if n &gt;= 0)
+        }
+
+        // Sum or product of polynomials
+        Expression::Add(terms) | Expression::Mul(factors) =&gt; {
+            terms.iter().all(|t| is_polynomial(t, var)) ||
+            factors.iter().all(|f| is_polynomial(f, var))
+        }
+
+        _ =&gt; false,
+    }
+}
+
+let x = symbol!(x);
+assert!(is_polynomial(&amp;expr!(x^2 + 3*x + 1), &amp;x));
+assert!(!is_polynomial(&amp;expr!(sin(x)), &amp;x));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression, symbol, expr
+
+def is_polynomial(e, var):
+    if e.is_integer() or e.is_rational():
+        return True
+    elif e.is_symbol():
+        return e == var
+    elif e.is_pow():
+        base = e.base()
+        exp = e.exponent()
+        return (base.is_symbol() and base == var and
+                exp.is_integer() and exp.value() &gt;= 0)
+    elif e.is_add() or e.is_mul():
+        terms = e.terms() if e.is_add() else e.factors()
+        return all(is_polynomial(t, var) for t in terms)
+    return False
+
+x = symbol('x')
+assert is_polynomial(expr('x^2 + 3*x + 1'), x)
+assert not is_polynomial(expr('sin(x)'), x)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { Expression, symbol, expr } = require('mathhook-node');
+
+function isPolynomial(e, varSym) {
+    if (e.isInteger() || e.isRational()) {
+        return true;
+    } else if (e.isSymbol()) {
+        return e.equals(varSym);
+    } else if (e.isPow()) {
+        const base = e.base();
+        const exp = e.exponent();
+        return base.isSymbol() &amp;&amp; base.equals(varSym) &amp;&amp;
+               exp.isInteger() &amp;&amp; exp.value() &gt;= 0;
+    } else if (e.isAdd() || e.isMul()) {
+        const terms = e.isAdd() ? e.terms() : e.factors();
+        return terms.every(t =&gt; isPolynomial(t, varSym));
+    }
+    return false;
+}
+
+const x = symbol('x');
+console.assert(isPolynomial(expr('x^2 + 3*x + 1'), x));
+console.assert(!isPolynomial(expr('sin(x)'), x));
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(n) for pattern matching on expression tree of size n</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::pattern</code></li>
+<li><strong>Python</strong>: <code>mathhook.pattern</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook-node.pattern</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../core/expressions.html">core.expressions</a></p>
+</li>
+<li>
+<p><a href="../operations/simplification.html">operations.simplification</a></p>
+</li>
+<li>
+<p><a href="../operations/differentiation.html">operations.differentiation</a></p>
+</li>
+<li>
+<p><a href="../operations/integration.html">operations.integration</a></p>
+</li>
+<li>
+<p><a href="../operations/expansion-factoring.html">operations.expansion-factoring</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="core-functions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="core-symbols-numbers.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="core-functions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="core-symbols-numbers.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

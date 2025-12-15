@@ -1,0 +1,31 @@
+:root {
+  --rust-core: #E64524;
+  --solve-cyan: #06B6D4;
+}
+
+.sidebar .sidebar-scrollbox {
+  background: #0d1b2a;
+}
+
+.menu-title {
+  color: var(--rust-core) !important;
+}
+
+h1, h2, h3 {
+  color: #F5F5F5;
+}
+
+a {
+  color: var(--solve-cyan);
+}
+
+code {
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 4px;
+}
+
+.ayu {
+  --bg: #0d1b2a;
+  --sidebar-bg: #152a45;
+  --sidebar-active: var(--rust-core);
+}

@@ -1,0 +1,571 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pde Sympy Validation - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/advanced-pde-sympy_validation.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="sympy-validation-workflow"><a class="header" href="#sympy-validation-workflow">SymPy Validation Workflow</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>advanced.pde.sympy_validation</code></p>
+</blockquote>
+<p>SymPy serves as the authoritative reference for validating MathHook PDE solvers. With 15+ years
+of development, extensive test coverage, and academic validation, SymPy provides a reliable
+baseline for comparing solution structures, eigenvalues, and boundary condition satisfaction.
+This workflow is used internally for validation only; public documentation cites textbooks.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p>Validation criteria for PDE solutions:</p>
+<ol>
+<li><strong>Solution Structure Match</strong>: Both implementations produce equivalent forms</li>
+<li><strong>Eigenvalue Formula</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.04em;vertical-align:-0.686em;"></span><span class="minner"><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">L</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">nπ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.354em;"><span style="top:-3.6029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> matches numerically</li>
+<li><strong>Boundary Conditions</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">u</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mopen">(</span><span class="mord mathnormal">L</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span> satisfied</li>
+<li><strong>Temporal Behavior</strong>: <span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord">−</span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></span> matches across implementations</li>
+</ol>
+<h1 id="sympy-validation-workflow-1"><a class="header" href="#sympy-validation-workflow-1">SymPy Validation Workflow</a></h1>
+<h2 id="why-sympy-is-the-reference-implementation"><a class="header" href="#why-sympy-is-the-reference-implementation">Why SymPy is the Reference Implementation</a></h2>
+<p><strong>SymPy</strong> (<code>~/Documents/work/math/sympy/</code>) is the <strong>authoritative reference</strong> for validating MathHook PDE solvers for the following reasons:</p>
+<ol>
+<li><strong>Mature and Battle-Tested</strong>: SymPy's PDE solving has been developed and refined over 15+ years</li>
+<li><strong>Extensive Test Suite</strong>: Thousands of test cases covering edge cases</li>
+<li><strong>Academic Validation</strong>: Used in research and education worldwide</li>
+<li><strong>Well-Documented</strong>: Clear mathematical foundations and algorithms</li>
+<li><strong>Python MCP Available</strong>: Can be queried programmatically for validation</li>
+</ol>
+<p><strong>Important</strong>: SymPy is used <strong>internally</strong> for validation only. Public documentation cites textbooks and papers, NOT SymPy.</p>
+<h2 id="validation-workflow"><a class="header" href="#validation-workflow">Validation Workflow</a></h2>
+<h3 id="step-1-define-problem-in-both-systems"><a class="header" href="#step-1-define-problem-in-both-systems">Step 1: Define Problem in Both Systems</a></h3>
+<p>Define the same PDE problem in both MathHook (Rust) and SymPy (Python) to enable comparison.</p>
+<h3 id="step-2-compare-solution-structure"><a class="header" href="#step-2-compare-solution-structure">Step 2: Compare Solution Structure</a></h3>
+<p><strong>Validation criteria</strong>:</p>
+<ul>
+<li>✅ Structure matches (sine modes, exponential decay)</li>
+<li>✅ Eigenvalue formula matches: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">nπ</span><span class="mord">/</span><span class="mord mathnormal">L</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></li>
+<li>✅ Both use symbolic coefficients</li>
+<li>✅ Temporal behavior matches: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord">−</span><span class="mord"><span class="mord mathnormal">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<h3 id="step-3-verify-eigenvalues-numerically"><a class="header" href="#step-3-verify-eigenvalues-numerically">Step 3: Verify Eigenvalues Numerically</a></h3>
+<p>Compare computed eigenvalues with high precision (typically &lt; 1e-4 relative error).</p>
+<h3 id="step-4-validate-boundary-condition-satisfaction"><a class="header" href="#step-4-validate-boundary-condition-satisfaction">Step 4: Validate Boundary Condition Satisfaction</a></h3>
+<p>SymPy can verify BC satisfaction through symbolic substitution. MathHook returns symbolic
+solutions that can be validated manually or programmatically.</p>
+<h2 id="validation-test-cases"><a class="header" href="#validation-test-cases">Validation Test Cases</a></h2>
+<h3 id="heat-equation"><a class="header" href="#heat-equation">Heat Equation</a></h3>
+<p><strong>Test 1: Dirichlet BCs, constant IC</strong></p>
+<ul>
+<li>Verify eigenvalue: λ₁ = π² ≈ 9.8696</li>
+<li>Check solution structure matches SymPy</li>
+</ul>
+<p><strong>Test 2: Different domain lengths</strong></p>
+<ul>
+<li>L = 1: λ₁ = π²</li>
+<li>L = 2: λ₁ = (π/2)² = π²/4</li>
+<li>L = 0.5: λ₁ = (π/0.5)² = 4π²</li>
+</ul>
+<h3 id="wave-equation"><a class="header" href="#wave-equation">Wave Equation</a></h3>
+<p><strong>Test 1: Standing wave frequencies</strong></p>
+<ul>
+<li>Compare angular frequencies: ω_n = n<em>π</em>c/L</li>
+<li>Verify relationship: ω_n = c*√λ_n</li>
+</ul>
+<h3 id="laplace-equation"><a class="header" href="#laplace-equation">Laplace Equation</a></h3>
+<p><strong>Test 1: Rectangular domain eigenvalues</strong></p>
+<ul>
+<li>Verify 2D eigenvalue formula: λₙ = (nπ/a)²</li>
+</ul>
+<h2 id="known-differences-acceptable"><a class="header" href="#known-differences-acceptable">Known Differences (Acceptable)</a></h2>
+<h3 id="1-coefficient-representation"><a class="header" href="#1-coefficient-representation">1. Coefficient Representation</a></h3>
+<p><strong>SymPy</strong>: Uses <code>Sum()</code> with index notation</p>
+<pre><code class="language-python">Sum(C_n * sin(n*pi*x/L) * exp(-n²*pi²*alpha*t/L²), (n, 1, oo))
+</code></pre>
+<p><strong>MathHook</strong>: Expands finite sum explicitly</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>A_1*sin(π*x)*exp(-π²*α*t) + A_2*sin(2π*x)*exp(-4π²*α*t) + ...
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Why acceptable</strong>: Both representations are mathematically equivalent. MathHook finite sum is more practical for numerical evaluation.</p>
+<h3 id="2-variable-naming"><a class="header" href="#2-variable-naming">2. Variable Naming</a></h3>
+<p><strong>SymPy</strong>: Uses function notation <code>u(x,t)</code></p>
+<p><strong>MathHook</strong>: Uses symbol <code>u</code> with independent variables as context</p>
+<p><strong>Why acceptable</strong>: Notational difference only; mathematical content identical.</p>
+<h3 id="3-symbolic-vs-numerical-coefficients"><a class="header" href="#3-symbolic-vs-numerical-coefficients">3. Symbolic vs Numerical Coefficients</a></h3>
+<p><strong>Both return symbolic coefficients</strong> for Fourier series. SymPy requires separate <code>fourier_series()</code> call; MathHook plans integration in Phase 2.</p>
+<p><strong>Why acceptable</strong>: Both defer coefficient computation to avoid integration challenges.</p>
+<h2 id="validation-checklist"><a class="header" href="#validation-checklist">Validation Checklist</a></h2>
+<p>Before claiming a PDE solver is correct:</p>
+<ol>
+<li>✅ <strong>Solution structure</strong> matches SymPy (sine/cosine modes, exp/sinh/cosh temporal)</li>
+<li>✅ <strong>Eigenvalue formula</strong> matches SymPy (verified numerically)</li>
+<li>✅ <strong>Boundary conditions</strong> satisfied when substituted</li>
+<li>✅ <strong>Initial conditions</strong> structure correct (even if coefficients symbolic)</li>
+<li>✅ <strong>Edge cases</strong> tested (different domain lengths, BCs)</li>
+<li>✅ <strong>Known limitations</strong> documented (Neumann BCs, non-homogeneous BCs, etc.)</li>
+</ol>
+<h2 id="sympy-mcp-integration"><a class="header" href="#sympy-mcp-integration">SymPy MCP Integration</a></h2>
+<p><strong>Available via MCP</strong>: SymPy can be queried programmatically for validation.</p>
+<p><strong>Example workflow</strong>:</p>
+<ol>
+<li>Agent implements new MathHook PDE solver</li>
+<li>Agent queries SymPy MCP for reference solution</li>
+<li>Agent compares eigenvalues, solution structure</li>
+<li>Agent verifies BCs/ICs satisfied</li>
+<li>Agent documents any acceptable differences</li>
+<li>Agent adds regression tests</li>
+</ol>
+<p><strong>Important</strong>: SymPy MCP is for <strong>internal validation</strong>, NOT cited in public documentation.</p>
+<h2 id="mathematical-references-for-public-documentation"><a class="header" href="#mathematical-references-for-public-documentation">Mathematical References (For Public Documentation)</a></h2>
+<p>When documenting PDE solvers, cite these instead of SymPy:</p>
+<ol>
+<li><strong>Strauss, Walter A.</strong> <em>Partial Differential Equations: An Introduction</em>, 2nd ed.</li>
+<li><strong>Evans, Lawrence C.</strong> <em>Partial Differential Equations</em>, 2nd ed.</li>
+<li><strong>Haberman, Richard</strong> <em>Applied Partial Differential Equations</em>, 5th ed.</li>
+</ol>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p><strong>SymPy Validation Workflow</strong>:</p>
+<ol>
+<li>Implement solver in MathHook</li>
+<li>Compare solution structure with SymPy</li>
+<li>Verify eigenvalues numerically</li>
+<li>Test BC/IC satisfaction</li>
+<li>Document acceptable differences</li>
+<li>Add regression tests</li>
+</ol>
+<p><strong>Validation Criteria</strong>:</p>
+<ul>
+<li>✅ Structure matches</li>
+<li>✅ Eigenvalues match (numerical verification)</li>
+<li>✅ BCs/ICs satisfied</li>
+<li>⚠️ Symbolic coefficients acceptable (both implementations)</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="heat-equation-validation"><a class="header" href="#heat-equation-validation">Heat Equation Validation</a></h3>
+<p>Compare MathHook solution with SymPy reference for heat equation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_heat_vs_sympy_dirichlet() {
+    // MathHook solution
+    let result = solve_heat_1d(...)?;
+
+    // SymPy reference (computed offline)
+    let expected_lambda_1 = 9.8696;  // π²
+
+    // Validate eigenvalue
+    let lambda_1 = result.eigenvalues[0].evaluate()?;
+    assert!((lambda_1 - expected_lambda_1).abs() &lt; 1e-4);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">def test_heat_vs_sympy_dirichlet():
+    # MathHook solution (via Python bindings)
+    result = solve_heat_1d(...)
+
+    # SymPy reference
+    expected_lambda_1 = 9.8696  # π²
+
+    # Validate eigenvalue
+    lambda_1 = result.eigenvalues[0].evaluate()
+    assert abs(lambda_1 - expected_lambda_1) &lt; 1e-4
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">test('heat equation matches SymPy', () =&gt; {
+    // MathHook solution
+    const result = solveHeat1d(...);
+
+    // SymPy reference
+    const expectedLambda1 = 9.8696;  // π²
+
+    // Validate eigenvalue
+    const lambda1 = result.eigenvalues[0].evaluate();
+    expect(Math.abs(lambda1 - expectedLambda1)).toBeLessThan(1e-4);
+});
+
+</code></pre>
+</details>
+<h3 id="eigenvalue-scaling-validation"><a class="header" href="#eigenvalue-scaling-validation">Eigenvalue Scaling Validation</a></h3>
+<p>Test eigenvalue scaling with different domain lengths</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_heat_eigenvalues_scaling() {
+    // L = 1: λ₁ = π²
+    // L = 2: λ₁ = (π/2)² = π²/4
+    // L = 0.5: λ₁ = (π/0.5)² = 4π²
+
+    let L = 2.0;
+    let result = solve_heat_1d_with_length(L)?;
+    let expected = std::f64::consts::PI.powi(2) / 4.0;
+    assert!((result.eigenvalues[0].evaluate()? - expected).abs() &lt; 1e-4);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">def test_heat_eigenvalues_scaling():
+    # L = 1: λ₁ = π²
+    # L = 2: λ₁ = (π/2)² = π²/4
+    # L = 0.5: λ₁ = (π/0.5)² = 4π²
+
+    L = 2.0
+    result = solve_heat_1d_with_length(L)
+    expected = (math.pi ** 2) / 4.0
+    assert abs(result.eigenvalues[0].evaluate() - expected) &lt; 1e-4
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">test('heat eigenvalues scale correctly', () =&gt; {
+    // L = 1: λ₁ = π²
+    // L = 2: λ₁ = (π/2)² = π²/4
+    // L = 0.5: λ₁ = (π/0.5)² = 4π²
+
+    const L = 2.0;
+    const result = solveHeat1dWithLength(L);
+    const expected = (Math.PI ** 2) / 4.0;
+    expect(Math.abs(result.eigenvalues[0].evaluate() - expected)).toBeLessThan(1e-4);
+});
+
+</code></pre>
+</details>
+<h3 id="wave-equation-frequency-validation"><a class="header" href="#wave-equation-frequency-validation">Wave Equation Frequency Validation</a></h3>
+<p>Verify wave equation frequencies against SymPy</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_wave_frequencies_vs_sympy() {
+    let c = 340.0;  // m/s (speed of sound)
+    let L = 1.0;    // m
+
+    let result = solve_wave_1d(...)?;
+
+    // SymPy: ω_n = n*π*c/L
+    let omega_1 = std::f64::consts::PI * c / L;
+    let f_1 = omega_1 / (2.0 * std::f64::consts::PI);  // Frequency in Hz
+
+    // MathHook eigenvalues: λ_n = (nπ/L)²
+    // ω_n = c*√λ_n = c*nπ/L
+    let lambda_1 = result.eigenvalues[0].evaluate()?;
+    let omega_mathhook = c * lambda_1.sqrt();
+
+    assert!((omega_mathhook - omega_1).abs() &lt; 1e-6);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">def test_wave_frequencies_vs_sympy():
+    c = 340.0  # m/s (speed of sound)
+    L = 1.0    # m
+
+    result = solve_wave_1d(...)
+
+    # SymPy: ω_n = n*π*c/L
+    omega_1 = math.pi * c / L
+    f_1 = omega_1 / (2.0 * math.pi)  # Frequency in Hz
+
+    # MathHook eigenvalues: λ_n = (nπ/L)²
+    # ω_n = c*√λ_n = c*nπ/L
+    lambda_1 = result.eigenvalues[0].evaluate()
+    omega_mathhook = c * math.sqrt(lambda_1)
+
+    assert abs(omega_mathhook - omega_1) &lt; 1e-6
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">test('wave equation frequencies match SymPy', () =&gt; {
+    const c = 340.0;  // m/s (speed of sound)
+    const L = 1.0;    // m
+
+    const result = solveWave1d(...);
+
+    // SymPy: ω_n = n*π*c/L
+    const omega1 = Math.PI * c / L;
+    const f1 = omega1 / (2.0 * Math.PI);  // Frequency in Hz
+
+    // MathHook eigenvalues: λ_n = (nπ/L)²
+    // ω_n = c*√λ_n = c*nπ/L
+    const lambda1 = result.eigenvalues[0].evaluate();
+    const omegaMathhook = c * Math.sqrt(lambda1);
+
+    expect(Math.abs(omegaMathhook - omega1)).toBeLessThan(1e-6);
+});
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(n)</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::pde::validation</code></li>
+<li><strong>Python</strong>: <code>mathhook.pde.validation</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.pde.validation</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../advanced/pde/registry.html">advanced.pde.registry</a></p>
+</li>
+<li>
+<p><a href="../advanced/pde/performance.html">advanced.pde.performance</a></p>
+</li>
+<li>
+<p><a href="../advanced/pde/technical_guide.html">advanced.pde.technical_guide</a></p>
+</li>
+<li>
+<p><a href="../advanced/pde/user_guide.html">advanced.pde.user_guide</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-pde-separation_of_variables.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="advanced-pde-technical_guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-pde-separation_of_variables.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="advanced-pde-technical_guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,119 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Evaluation vs Simplification }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Understand the key differences between evaluation (computing numerical results)
+and simplification (algebraic transformation) in MathHook's symbolic engine.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Evaluation vs Simplification
+
+MathHook provides two distinct operations for transforming expressions:
+
+## Evaluation
+- **Purpose**: Compute numerical values
+- **Input**: Symbolic expression with concrete values
+- **Output**: Numerical result (integer, float, rational)
+- **Example**: eval(2 + 3) → 5
+
+## Simplification
+- **Purpose**: Algebraic transformation to simpler form
+- **Input**: Symbolic expression
+- **Output**: Equivalent expression (may still be symbolic)
+- **Example**: simplify(x + x) → 2*x
+
+## Key Differences
+
+| Operation | Input | Output | Preserves Symbols |
+|-----------|-------|--------|-------------------|
+| Evaluate | Symbols → numbers | Numerical | No |
+| Simplify | Symbols → symbols | Symbolic | Yes |
+
+## When to Use Each
+
+### Use Evaluation
+- Final numerical answer needed
+- Plotting or visualization
+- Numerical comparison
+- Performance-critical paths
+
+### Use Simplification
+- Algebraic manipulation
+- Pattern matching
+- Symbolic solving
+- Maintaining exact form
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Evaluation Example }
+
+
+
+\begin{lstlisting}
+x = symbol('x')
+expr_val = x**2 + 2*x + 1
+
+evaluated = expr_val.subs(x, 3)
+# Result: 16
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Simplification Example }
+
+
+
+\begin{lstlisting}
+x = symbol('x')
+expr_val = x + x + x
+
+simplified = simplify(expr_val)
+# Result: 3*x
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

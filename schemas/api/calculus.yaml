@@ -32,7 +32,7 @@ article:
     ## Integration
 
     ### 8-Layer Strategy Architecture
-    1. **Table Lookup**: O(1) hash lookup for 500+ common patterns
+    1. **Table Lookup**: O(1) hash lookup for common patterns
     2. **Rational Functions**: Partial fraction decomposition
     3. **Function Registry**: Built-in antiderivatives
     4. **Integration by Parts**: LIATE heuristic
@@ -40,12 +40,6 @@ article:
     6. **Trigonometric**: Trig identities and reduction
     7. **Risch Algorithm**: Complete algorithm for elementary functions
     8. **Symbolic Fallback**: Return unevaluated integral
-
-    ### Coverage and Performance
-    - **Coverage**: 93-95% of elementary integrals
-    - **Fast Path**: Layers 1-4 (90% of integrals, <1ms)
-    - **Medium Path**: Layers 5-6 (5-8%, 1-10ms)
-    - **Slow Path**: Layer 7 (2-5%, 10-2000ms)
 
 code_refs:
   rust: "mathhook_core::calculus::{derivative, integrate}"

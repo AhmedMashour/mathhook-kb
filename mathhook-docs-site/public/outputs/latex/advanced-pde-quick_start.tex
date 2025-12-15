@@ -1,0 +1,164 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ PDE Quick Start - 5 Minutes to Your First Solution }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Quick-start tutorial for solving partial differential equations with MathHook.
+Covers transport equation solving in 30 seconds, common PDE patterns, and complete examples.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Transport Equation:**
+$$\frac{\partial u}{\partial t} + c \cdot \frac{\partial u}{\partial x} = 0$$
+
+where $c$ is the wave speed and $u(x,t)$ is the unknown function.
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+# PDE Quick Start - 5 Minutes to Your First Solution
+
+## Installation
+
+Add MathHook to your `Cargo.toml`:
+
+```toml
+[dependencies]
+mathhook = "0.1"
+mathhook-core = "0.1"
+```
+
+## Transport Equation in 30 Seconds
+
+**Problem:** Solve $\frac{\partial u}{\partial t} + \frac{\partial u}{\partial x} = 0$ with $u(x,0) = \sin(x)$
+
+**What just happened:**
+- Solved transport equation (wave moves right at speed 1)
+- Initial wave shape: $\sin(x)$
+- Solution at time $t$: $\sin(x - t)$
+
+**Physical interpretation:** The sine wave propagates to the right, keeping its shape.
+
+## Common PDEs Cheat Sheet
+
+### Transport Equation
+**PDE:** $\frac{\partial u}{\partial t} + c \cdot \frac{\partial u}{\partial x} = 0$
+
+**Use for:** Wave propagation, signal advection, fluid transport
+
+**Solution form:** $u(x,t) = f(x - c \cdot t)$ where $f$ is the initial condition
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Transport Equation - Basic Solution }
+
+Solve transport equation with sinusoidal initial condition
+
+\begin{lstlisting}
+from mathhook import symbol, expr, Pde, method_of_characteristics
+import math
+
+# Define variables
+u = symbol('u')
+t = symbol('t')
+x = symbol('x')
+
+# Build PDE
+equation = expr(u)
+pde = Pde(equation, u, [t, x])
+
+# Solve
+solution = method_of_characteristics(pde)
+print("General solution: F(x - t)")
+
+# Apply initial condition
+specific_solution = expr(f"sin({x} - {t})")
+print(f"Specific solution: {specific_solution}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Complete Working Example - Full Workflow }
+
+End-to-end example with verification and characteristic trajectory
+
+\begin{lstlisting}
+from mathhook import symbol, expr, Pde, method_of_characteristics, derivative, simplify
+
+print("═" * 40)
+print("MathHook PDE Solver - Transport Equation")
+print("═" * 40)
+
+u = symbol('u')
+t = symbol('t')
+x = symbol('x')
+
+equation = expr(u)
+pde = Pde(equation, u, [t, x])
+
+print("\nPDE: ∂u/∂t + 2·∂u/∂x = 0")
+print("IC:  u(x, 0) = x²\n")
+
+result = method_of_characteristics(pde)
+print("✓ Method of characteristics applied")
+
+solution = expr(f"({x} - 2*{t})^2")
+print(f"Solution: u(x,t) = {solution}\n")
+
+# Verify
+du_dt = derivative(solution, t)
+du_dx = derivative(solution, x)
+lhs = expr(f"{du_dt} + 2*{du_dx}")
+
+print("Verification:")
+print(f"  PDE satisfied: {simplify(lhs) == expr(0)}")
+print("  IC satisfied: u(x,0) = x²")
+print("\n✓ Solution complete!")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

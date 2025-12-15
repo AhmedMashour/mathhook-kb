@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Complex Number Operations }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Work with complex numbers in MathHook including imaginary unit i, complex
+arithmetic, polar form, Euler's formula, and operations like conjugate,
+magnitude, and argument.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Complex number: $$z = a + bi$$ where $a, b \in \mathbb{R}$ and $i^2 = -1$
+
+Polar form: $$z = r e^{i\theta} = r(\cos\theta + i\sin\theta)$$
+
+where $r = |z| = \sqrt{a^2 + b^2}$ and $\theta = \arg(z) = \arctan(b/a)$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+# Complex Number Operations
+
+MathHook provides comprehensive support for complex number arithmetic,
+conversions between rectangular and polar forms, and complex functions.
+
+## Creating Complex Numbers
+
+```rust
+use mathhook::Expression;
+
+// Imaginary unit
+let i = Expression::i();
+
+// Complex number: 3 + 4i
+let z = expr!(3 + 4*i);
+
+// Pure imaginary: 5i
+let w = expr!(5*i);
+```
+
+## Operations
+
+### Addition/Subtraction
+Component-wise: (a + bi) ± (c + di) = (a ± c) + (b ± d)i
+
+### Multiplication
+(a + bi)(c + di) = (ac - bd) + (ad + bc)i
+
+### Division
+Division by conjugate multiplication
+
+### Conjugate
+conj(a + bi) = a - bi
+
+### Magnitude
+|a + bi| = √(a² + b²)
+
+### Argument
+arg(a + bi) = arctan(b/a)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Complex Arithmetic }
+
+
+
+\begin{lstlisting}
+i = expr('I')
+z1 = expr('3 + 4*I')
+z2 = expr('1 - 2*I')
+
+sum_z = z1 + z2       # 4 + 2*I
+product = z1 * z2     # 11 - 2*I
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Euler's Formula }
+
+
+
+\begin{lstlisting}
+theta = symbol('theta')
+euler = exp(I * theta)
+
+# Expands to: cos(theta) + I*sin(theta)
+expanded = expand(euler)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Polar Form Conversion }
+
+
+
+\begin{lstlisting}
+z = expr('3 + 4*I')
+
+magnitude = abs(z)  # 5
+angle = arg(z)      # atan(4/3)
+
+# Polar form
+polar = magnitude * exp(I * angle)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

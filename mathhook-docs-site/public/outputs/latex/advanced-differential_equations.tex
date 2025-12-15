@@ -1,0 +1,93 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Differential Equation Solving }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Solve ordinary differential equations (ODEs) and partial differential equations
+(PDEs) symbolically in MathHook, with support for initial conditions, boundary
+conditions, and various solution methods.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Ordinary Differential Equation (ODE):
+$$F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \ldots\right) = 0$$
+
+Partial Differential Equation (PDE):
+$$F\left(x, y, u, \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y}, \ldots\right) = 0$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ First-Order ODE }
+
+Solve dy/dx = 2x with initial condition y(0) = 1
+
+\begin{lstlisting}
+x = symbol('x')
+y = Function('y')(x)
+
+ode = diff(y, x) - 2*x
+solution = dsolve(ode, y, ics={y.subs(x, 0): 1})
+# Result: y = x**2 + 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Second-Order Linear ODE }
+
+Solve y'' + y = 0 (simple harmonic oscillator)
+
+\begin{lstlisting}
+x = symbol('x')
+y = Function('y')(x)
+
+ode = diff(y, x, 2) + y
+solution = dsolve(ode, y)
+# Result: y = C1*cos(x) + C2*sin(x)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

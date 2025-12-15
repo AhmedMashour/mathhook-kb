@@ -1,0 +1,203 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Learning Paths }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Choose your journey based on background and goals. Structured learning paths for
+Python data scientists, Node.js developers, Rust programmers, mathematics educators,
+and computational scientists with time estimates and outcomes.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Learning Paths
+
+Choose your journey based on your background and goals. Each path is designed to
+get you productive with MathHook as quickly as possible.
+
+## Path 1: Python Data Scientist
+
+**Background**: Familiar with NumPy, SymPy, pandas
+**Goal**: Use MathHook for faster symbolic computation in Python
+**Time to Productivity**: 1-2 hours
+
+Learn Python API, performance comparison with SymPy, integration with data science
+stack, and when to use MathHook vs SymPy.
+
+## Path 2: Node.js/TypeScript Developer
+
+**Background**: JavaScript/TypeScript web development
+**Goal**: Add symbolic math to web applications
+**Time to Productivity**: 2-3 hours
+
+Learn Node.js bindings, LaTeX parsing for web forms, web framework integration,
+and V8 optimization.
+
+## Path 3: Rust Systems Programmer
+
+**Background**: Rust experience, need high-performance CAS
+**Goal**: Embed MathHook in Rust application or contribute to core
+**Time to Productivity**: 4-6 hours to mastery
+
+Learn architecture, memory layout, SIMD optimization, and custom extensions.
+
+## Path 4: Mathematics Student/Educator
+
+**Background**: Calculus, linear algebra, abstract algebra knowledge
+**Goal**: Understand CAS internals, use for teaching, contribute
+**Time to Productivity**: 8-12 hours to contribution-ready
+
+Learn symbolic computation theory, algorithm implementation, and educational features.
+
+## Path 5: Computational Scientist
+
+**Background**: MATLAB, Julia, scientific computing
+**Goal**: Fast symbolic preprocessing for numerical simulations
+**Time to Productivity**: 3-4 hours
+
+Learn symbolic matrix algebra, system solving, hybrid symbolic-numerical workflows,
+and code generation.
+
+## Common Themes
+
+Essential concepts for all users:
+- Expressions are immutable (safe for concurrent use)
+- Canonical forms (x + y equals y + x)
+- Exact vs approximate arithmetic (rationals vs floats)
+- Error handling (domain errors, undefined operations)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Python Data Scientist - SymPy Migration }
+
+Quick comparison of SymPy vs MathHook syntax
+
+\begin{lstlisting}
+# SymPy syntax (familiar to data scientists)
+# from sympy import symbols, simplify
+# x, y = symbols('x y')
+# expr = (x + y)**2
+
+# MathHook syntax (similar but faster)
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+expr = (x.add(y)).pow(2)
+simplified = expr.simplify()
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Node.js Developer - Web Form Parsing }
+
+Parse user input LaTeX from web forms
+
+\begin{lstlisting}
+# Not applicable for Node.js path
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Rust Programmer - Custom Extension }
+
+Extend Universal Function Registry with custom function
+
+\begin{lstlisting}
+# Not applicable for Rust path
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Mathematics Educator - Step-by-Step }
+
+Generate educational explanations for students
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+expr = (x.add(1)).mul(x.sub(1))
+
+explanation = expr.explain_simplification()
+for step in explanation.steps:
+    print(f"{step.title}: {step.description}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Computational Scientist - Symbolic Jacobian }
+
+Generate Jacobian matrix for nonlinear system
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+
+# System of equations
+f1 = x.pow(2).add(y)
+f2 = x.mul(y)
+
+# Compute Jacobian symbolically
+df1_dx = f1.derivative(x)
+df1_dy = f1.derivative(y)
+df2_dx = f2.derivative(x)
+df2_dy = f2.derivative(y)
+
+jacobian = Expression.matrix([
+    [df1_dx, df1_dy],
+    [df2_dx, df2_dy]
+])
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

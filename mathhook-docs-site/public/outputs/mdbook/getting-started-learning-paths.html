@@ -1,0 +1,537 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Started Learning Paths - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/getting-started-learning-paths.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="learning-paths"><a class="header" href="#learning-paths">Learning Paths</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>getting-started.learning-paths</code></p>
+</blockquote>
+<p>Choose your journey based on background and goals. Structured learning paths for
+Python data scientists, Node.js developers, Rust programmers, mathematics educators,
+and computational scientists with time estimates and outcomes.</p>
+<h1 id="learning-paths-1"><a class="header" href="#learning-paths-1">Learning Paths</a></h1>
+<p>Choose your journey based on your background and goals. Each path is designed to
+get you productive with MathHook as quickly as possible.</p>
+<h2 id="path-1-python-data-scientist"><a class="header" href="#path-1-python-data-scientist">Path 1: Python Data Scientist</a></h2>
+<p><strong>Background</strong>: Familiar with NumPy, SymPy, pandas
+<strong>Goal</strong>: Use MathHook for faster symbolic computation in Python
+<strong>Time to Productivity</strong>: 1-2 hours</p>
+<p>Learn Python API, performance comparison with SymPy, integration with data science
+stack, and when to use MathHook vs SymPy.</p>
+<h2 id="path-2-nodejstypescript-developer"><a class="header" href="#path-2-nodejstypescript-developer">Path 2: Node.js/TypeScript Developer</a></h2>
+<p><strong>Background</strong>: JavaScript/TypeScript web development
+<strong>Goal</strong>: Add symbolic math to web applications
+<strong>Time to Productivity</strong>: 2-3 hours</p>
+<p>Learn Node.js bindings, LaTeX parsing for web forms, web framework integration,
+and V8 optimization.</p>
+<h2 id="path-3-rust-systems-programmer"><a class="header" href="#path-3-rust-systems-programmer">Path 3: Rust Systems Programmer</a></h2>
+<p><strong>Background</strong>: Rust experience, need high-performance CAS
+<strong>Goal</strong>: Embed MathHook in Rust application or contribute to core
+<strong>Time to Productivity</strong>: 4-6 hours to mastery</p>
+<p>Learn architecture, memory layout, SIMD optimization, and custom extensions.</p>
+<h2 id="path-4-mathematics-studenteducator"><a class="header" href="#path-4-mathematics-studenteducator">Path 4: Mathematics Student/Educator</a></h2>
+<p><strong>Background</strong>: Calculus, linear algebra, abstract algebra knowledge
+<strong>Goal</strong>: Understand CAS internals, use for teaching, contribute
+<strong>Time to Productivity</strong>: 8-12 hours to contribution-ready</p>
+<p>Learn symbolic computation theory, algorithm implementation, and educational features.</p>
+<h2 id="path-5-computational-scientist"><a class="header" href="#path-5-computational-scientist">Path 5: Computational Scientist</a></h2>
+<p><strong>Background</strong>: MATLAB, Julia, scientific computing
+<strong>Goal</strong>: Fast symbolic preprocessing for numerical simulations
+<strong>Time to Productivity</strong>: 3-4 hours</p>
+<p>Learn symbolic matrix algebra, system solving, hybrid symbolic-numerical workflows,
+and code generation.</p>
+<h2 id="common-themes"><a class="header" href="#common-themes">Common Themes</a></h2>
+<p>Essential concepts for all users:</p>
+<ul>
+<li>Expressions are immutable (safe for concurrent use)</li>
+<li>Canonical forms (x + y equals y + x)</li>
+<li>Exact vs approximate arithmetic (rationals vs floats)</li>
+<li>Error handling (domain errors, undefined operations)</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="python-data-scientist---sympy-migration"><a class="header" href="#python-data-scientist---sympy-migration">Python Data Scientist - SymPy Migration</a></h3>
+<p>Quick comparison of SymPy vs MathHook syntax</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Not applicable for Python path
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python"># SymPy syntax (familiar to data scientists)
+# from sympy import symbols, simplify
+# x, y = symbols('x y')
+# expr = (x + y)**2
+
+# MathHook syntax (similar but faster)
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+expr = (x.add(y)).pow(2)
+simplified = expr.simplify()
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">// Not applicable for Python path
+
+</code></pre>
+</details>
+<h3 id="nodejs-developer---web-form-parsing"><a class="header" href="#nodejs-developer---web-form-parsing">Node.js Developer - Web Form Parsing</a></h3>
+<p>Parse user input LaTeX from web forms</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Not applicable for Node.js path
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python"># Not applicable for Node.js path
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Parser, ParserConfig } from 'mathhook-node';
+
+// Parse LaTeX from web form input
+const userInput = req.body.equation; // e.g., "x^2 + 2x + 1"
+const parser = new Parser(ParserConfig.default());
+const expr = parser.parse(userInput);
+
+// Render LaTeX output for display
+const latex = expr.toLatex();
+res.json({ latex });
+
+</code></pre>
+</details>
+<h3 id="rust-programmer---custom-extension"><a class="header" href="#rust-programmer---custom-extension">Rust Programmer - Custom Extension</a></h3>
+<p>Extend Universal Function Registry with custom function</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Implement custom simplification rule
+fn custom_simplify(expr: &amp;Expression) -&gt; Expression {
+    // Custom logic here
+    expr.clone()
+}
+
+// Register custom function
+// (Actual API may vary - check documentation)
+let x = symbol!(x);
+let expr = expr!(x ^ 2);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python"># Not applicable for Rust path
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">// Not applicable for Rust path
+
+</code></pre>
+</details>
+<h3 id="mathematics-educator---step-by-step"><a class="header" href="#mathematics-educator---step-by-step">Mathematics Educator - Step-by-Step</a></h3>
+<p>Generate educational explanations for students</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let expr = expr!((x + 1) * (x - 1));
+
+let explanation = expr.explain_simplification();
+for step in &amp;explanation.steps {
+    println!("{}: {}", step.title, step.description);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+expr = (x.add(1)).mul(x.sub(1))
+
+explanation = expr.explain_simplification()
+for step in explanation.steps:
+    print(f"{step.title}: {step.description}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+const expr = x.add(1).mul(x.sub(1));
+
+const explanation = expr.explainSimplification();
+for (const step of explanation.steps) {
+    console.log(`${step.title}: ${step.description}`);
+}
+
+</code></pre>
+</details>
+<h3 id="computational-scientist---symbolic-jacobian"><a class="header" href="#computational-scientist---symbolic-jacobian">Computational Scientist - Symbolic Jacobian</a></h3>
+<p>Generate Jacobian matrix for nonlinear system</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let y = symbol!(y);
+
+// System of equations
+let f1 = expr!(add: (x ^ 2), y);
+let f2 = expr!(x * y);
+
+// Compute Jacobian symbolically
+let df1_dx = f1.derivative(x.clone());
+let df1_dy = f1.derivative(y.clone());
+let df2_dx = f2.derivative(x.clone());
+let df2_dy = f2.derivative(y.clone());
+
+let jacobian = Expression::matrix(vec![
+    vec![df1_dx, df1_dy],
+    vec![df2_dx, df2_dy],
+]);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+
+# System of equations
+f1 = x.pow(2).add(y)
+f2 = x.mul(y)
+
+# Compute Jacobian symbolically
+df1_dx = f1.derivative(x)
+df1_dy = f1.derivative(y)
+df2_dx = f2.derivative(x)
+df2_dy = f2.derivative(y)
+
+jacobian = Expression.matrix([
+    [df1_dx, df1_dy],
+    [df2_dx, df2_dy]
+])
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook-node';
+
+const x = Expression.symbol('x');
+const y = Expression.symbol('y');
+
+// System of equations
+const f1 = x.pow(2).add(y);
+const f2 = x.mul(y);
+
+// Compute Jacobian symbolically
+const df1_dx = f1.derivative(x);
+const df1_dy = f1.derivative(y);
+const df2_dx = f2.derivative(x);
+const df2_dy = f2.derivative(y);
+
+const jacobian = Expression.matrix([
+    [df1_dx, df1_dy],
+    [df2_dx, df2_dy]
+]);
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook::prelude</code></li>
+<li><strong>Python</strong>: <code>mathhook</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook-node</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../getting-started/installation.html">getting-started.installation</a></p>
+</li>
+<li>
+<p><a href="../getting-started/quick-start.html">getting-started.quick-start</a></p>
+</li>
+<li>
+<p><a href="../bindings/python.html">bindings.python</a></p>
+</li>
+<li>
+<p><a href="../bindings/nodejs.html">bindings.nodejs</a></p>
+</li>
+<li>
+<p><a href="../architecture/principles.html">architecture.principles</a></p>
+</li>
+<li>
+<p><a href="../educational/step-by-step.html">educational.step-by-step</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="getting-started-introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="getting-started-quick-start.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="getting-started-introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="getting-started-quick-start.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

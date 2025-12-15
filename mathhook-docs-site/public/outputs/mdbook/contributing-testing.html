@@ -1,0 +1,473 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testing - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/contributing-testing.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="testing-strategy"><a class="header" href="#testing-strategy">Testing Strategy</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>contributing.testing</code></p>
+</blockquote>
+<p>Testing ensures mathematical correctness—the highest priority in MathHook.
+Covers unit tests, integration tests, doctests, and mathematical validation.</p>
+<h1 id="testing-strategy-1"><a class="header" href="#testing-strategy-1">Testing Strategy</a></h1>
+<p>Testing ensures mathematical correctness—the highest priority in MathHook.</p>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
+<pre><code class="language-bash"># All tests (with 10-min timeout)
+gtimeout 600s cargo test --no-fail-fast
+
+# Doctests only
+gtimeout 600s cargo test --no-fail-fast --doc
+
+# Specific crate
+cargo test -p mathhook-core
+
+# Specific module
+cargo test -p mathhook-core parser
+
+# Single test
+cargo test test_sin_special_values
+</code></pre>
+<h2 id="test-categories"><a class="header" href="#test-categories">Test Categories</a></h2>
+<h3 id="unit-tests"><a class="header" href="#unit-tests">Unit Tests</a></h3>
+<p>Test individual functions in isolation.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_sin_zero() {
+    let result = sin(&amp;expr!(0)).unwrap();
+    assert_eq!(result, expr!(0));
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="integration-tests"><a class="header" href="#integration-tests">Integration Tests</a></h3>
+<p>Test through the public API—not just internals.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_public_simplify_api() {
+    // ✅ Tests actual user-facing behavior
+    let result = mathhook::simplify("x + x");
+    assert_eq!(result, "2*x");
+}
+
+// ❌ Don't only test internal functions
+// Internal tests can pass while public API is broken
+<span class="boring">}</span></code></pre></pre>
+<h3 id="doctest-requirements"><a class="header" href="#doctest-requirements">Doctest Requirements</a></h3>
+<p>All public functions need working examples:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Compute sine of an expression.
+///
+/// # Examples
+///
+/// ```rust
+/// use mathhook::prelude::*;
+///
+/// let x = symbol!(x);
+/// let result = sin(&amp;expr!(0)).unwrap();
+/// assert_eq!(result, expr!(0));
+/// ```
+pub fn sin(arg: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt; { ... }
+<span class="boring">}</span></code></pre></pre>
+<h2 id="mathematical-test-requirements"><a class="header" href="#mathematical-test-requirements">Mathematical Test Requirements</a></h2>
+<h3 id="edge-cases-always-test"><a class="header" href="#edge-cases-always-test">Edge Cases (ALWAYS Test)</a></h3>
+<p>Every mathematical operation must test:</p>
+<div class="table-wrapper"><table><thead><tr><th>Case</th><th>Example</th></tr></thead><tbody>
+<tr><td>Zero</td><td><code>f(0)</code></td></tr>
+<tr><td>Negative</td><td><code>f(-1)</code>, <code>f(-x)</code></td></tr>
+<tr><td>Complex</td><td><code>f(i)</code>, <code>f(1+2i)</code></td></tr>
+<tr><td>Infinity</td><td><code>f(∞)</code>, <code>f(-∞)</code></td></tr>
+<tr><td>Undefined</td><td>Poles, domain violations</td></tr>
+<tr><td>Symbolic</td><td><code>f(x)</code> where x is unknown</td></tr>
+</tbody></table>
+</div>
+<h3 id="special-values"><a class="header" href="#special-values">Special Values</a></h3>
+<p>Test all special values from <code>data.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_gamma_special_values() {
+    // Integer values: Γ(n) = (n-1)!
+    assert_eq!(gamma(&amp;expr!(1)).unwrap(), expr!(1));
+    assert_eq!(gamma(&amp;expr!(5)).unwrap(), expr!(24));
+
+    // Half-integer: Γ(1/2) = √π
+    assert_eq!(gamma(&amp;expr!(1/2)).unwrap(), expr!(sqrt(pi)));
+
+    // Poles (undefined at non-positive integers)
+    assert!(gamma(&amp;expr!(0)).is_err());
+    assert!(gamma(&amp;expr!(-1)).is_err());
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="domain-errors"><a class="header" href="#domain-errors">Domain Errors</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_log_domain_error() {
+    // log(0) is undefined
+    let result = log(&amp;expr!(0));
+    assert!(matches!(result, Err(MathError::DomainError { .. })));
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="mathematical-properties"><a class="header" href="#mathematical-properties">Mathematical Properties</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_sin_odd_function() {
+    // sin(-x) = -sin(x)
+    let x = symbol!(x);
+    let neg_x = expr!(-x);
+
+    let sin_neg = sin(&amp;neg_x).unwrap();
+    let neg_sin = expr!(-sin(x));
+
+    assert_eq!(sin_neg, neg_sin);
+}
+
+#[test]
+fn test_sin_periodicity() {
+    // sin(x + 2π) = sin(x)
+    let x = symbol!(x);
+    let shifted = expr!(x + 2 * pi);
+
+    // After simplification, should be equivalent
+    assert_eq!(simplify(&amp;sin(&amp;shifted)), simplify(&amp;sin(&amp;x)));
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="sympy-validation"><a class="header" href="#sympy-validation">SymPy Validation</a></h2>
+<p><strong>Requirement:</strong> Verify against SymPy before implementing math algorithms.</p>
+<pre><code class="language-bash"># Validation scripts
+./scripts/validate.sh               # All validations
+./scripts/validate.sh simplify      # Simplification only
+./scripts/validate.sh ode           # ODE solver only
+</code></pre>
+<h3 id="manual-verification"><a class="header" href="#manual-verification">Manual Verification</a></h3>
+<pre><code class="language-python"># In SymPy
+from sympy import *
+
+x = Symbol('x')
+print(simplify(sin(x)**2 + cos(x)**2))  # Should be 1
+print(integrate(x**2, x))                # Should be x**3/3
+</code></pre>
+<p>Compare MathHook output against SymPy results.</p>
+<h2 id="numerical-accuracy"><a class="header" href="#numerical-accuracy">Numerical Accuracy</a></h2>
+<h3 id="float-comparison"><a class="header" href="#float-comparison">Float Comparison</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ❌ NEVER use ==
+assert_eq!(result, 1.0);
+
+// ✅ ALWAYS use epsilon
+const EPSILON: f64 = 1e-10;
+assert!((result - 1.0).abs() &lt; EPSILON);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="numerical-vs-symbolic"><a class="header" href="#numerical-vs-symbolic">Numerical vs Symbolic</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_sin_pi_exact() {
+    // sin(π) must be exactly 0, not 1.2246e-16
+    let result = sin(&amp;Expression::pi()).unwrap();
+    assert_eq!(result, expr!(0));  // Exact symbolic zero
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="test-organization"><a class="header" href="#test-organization">Test Organization</a></h2>
+<pre><code>crates/mathhook-core/src/
+├── functions/
+│   └── sin/
+│       ├── mod.rs       # Implementation
+│       ├── data.rs      # Special values
+│       └── tests.rs     # Unit tests
+└── tests/               # Integration tests
+</code></pre>
+<p><strong>Rule:</strong> Tests go in <code>tests.rs</code> submodule, not scattered in main code.</p>
+<h2 id="test-naming"><a class="header" href="#test-naming">Test Naming</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Pattern: test_{function}_{scenario}
+#[test] fn test_sin_zero() { ... }
+#[test] fn test_sin_pi() { ... }
+#[test] fn test_sin_negative() { ... }
+#[test] fn test_sin_complex() { ... }
+#[test] fn test_sin_domain_error() { ... }
+<span class="boring">}</span></code></pre></pre>
+<h2 id="regression-prevention"><a class="header" href="#regression-prevention">Regression Prevention</a></h2>
+<pre><code class="language-bash"># Before any change
+cargo test  # Must pass
+
+# After changes
+cargo test  # Must still pass
+
+# For performance changes
+./scripts/bench.sh save before-change
+# Make changes
+./scripts/bench.sh compare before-change
+</code></pre>
+<h2 id="what-not-to-do"><a class="header" href="#what-not-to-do">What NOT to Do</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>❌ Wrong</th><th>✅ Right</th></tr></thead><tbody>
+<tr><td>Skip tests to make build pass</td><td>Fix the underlying issue</td></tr>
+<tr><td>Comment out failing tests</td><td>Investigate root cause</td></tr>
+<tr><td>Test only happy path</td><td>Test edge cases and errors</td></tr>
+<tr><td>Only unit tests</td><td>Include integration tests</td></tr>
+<tr><td>Hardcode expected values</td><td>Derive from mathematical properties</td></tr>
+</tbody></table>
+</div>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../contributing/development.html">contributing.development</a></p>
+</li>
+<li>
+<p><a href="../contributing/correctness.html">contributing.correctness</a></p>
+</li>
+<li>
+<p><a href="../contributing/style.html">contributing.style</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="contributing-style.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="core-constants.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="contributing-style.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="core-constants.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

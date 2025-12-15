@@ -1,0 +1,209 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Function System }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MathHook provides a comprehensive mathematical function system with intelligent evaluation,
+symbolic manipulation, and educational explanations. Functions are first-class expressions
+supporting exact symbolic computation and high-performance numerical evaluation through
+a modular intelligence architecture.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Functions in MathHook follow standard mathematical definitions:
+
+**Trigonometric**: $$\sin(x), \cos(x), \tan(x)$$ with periodicity $$2\pi$$
+
+**Exponential/Logarithmic**: $$e^x, \ln(x), \log_b(x) = \frac{\ln(x)}{\ln(b)}$$
+
+**Special Functions**: $$\Gamma(n) = \int_0^{\infty} t^{n-1} e^{-t} dt$$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+[Full markdown content preserved from functions.md - truncated in this example for brevity]
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Creating Functions with Macros }
+
+Using function! and expr! macros for ergonomic function creation
+
+\begin{lstlisting}
+from mathhook import symbol, function, expr
+
+x = symbol('x')
+
+# Single argument functions
+sine = function('sin', x)
+cosine = function('cos', x)
+
+# Multi-argument functions
+log_base = function('log', x, 10)
+
+# Using expr
+trig_identity = expr('sin(x)^2 + cos(x)^2')
+assert trig_identity.simplify() == 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Trigonometric Functions with Exact Values }
+
+Automatic recognition of exact trigonometric values at special angles
+
+\begin{lstlisting}
+from mathhook import expr
+
+# Exact values recognized
+assert expr('sin(0)') == 0
+assert expr('sin(pi/6)') == expr('1/2')
+assert expr('sin(pi/4)') == expr('sqrt(2)/2')
+assert expr('sin(pi/2)') == 1
+
+assert expr('cos(0)') == 1
+assert expr('cos(pi/3)') == expr('1/2')
+assert expr('cos(pi/2)') == 0
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Logarithm and Exponential Identities }
+
+Automatic application of logarithm laws and exponential identities
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+a = symbol('a')
+b = symbol('b')
+n = symbol('n')
+
+# Logarithm laws
+assert expr('ln(a*b)').expand() == expr('ln(a) + ln(b)')
+assert expr('ln(a/b)').expand() == expr('ln(a) - ln(b)')
+assert expr('ln(a^n)').expand() == expr('n*ln(a)')
+
+# Exponential identities
+assert expr('e^(ln(a))').simplify() == a
+assert expr('ln(e^a)').simplify() == a
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Function Derivatives (Automatic Chain Rule) }
+
+Functions know their derivatives with automatic chain rule application
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Basic derivatives
+assert expr('sin(x)').derivative(x) == expr('cos(x)')
+assert expr('cos(x)').derivative(x) == expr('-sin(x)')
+assert expr('exp(x)').derivative(x) == expr('exp(x)')
+assert expr('ln(x)').derivative(x) == expr('1/x')
+
+# Chain rule automatic
+f = expr('sin(x^2)')
+assert f.derivative(x) == expr('2*x*cos(x^2)')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Special Functions (Gamma and Bessel) }
+
+Advanced special functions for scientific and engineering applications
+
+\begin{lstlisting}
+from mathhook import expr, symbol
+
+# Gamma function
+assert expr('gamma(1)') == 1
+assert expr('gamma(5)') == 24
+assert expr('gamma(1/2)') == expr('sqrt(pi)')
+
+# Bessel functions
+x = symbol('x')
+bessel_j0 = expr('bessel_j(0, x)')
+bessel_y0 = expr('bessel_y(0, x)')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Real-World Physics Application }
+
+Damped harmonic oscillator using exponential and trigonometric functions
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+# Damped harmonic motion
+t = symbol('t')
+position = expr('e^(-0.1*t) * cos(2*pi*t)')
+velocity = position.derivative(t)
+acceleration = velocity.derivative(t)
+
+# Differential equation verification
+gamma = 0.1
+omega = expr('2*pi')
+lhs = expr(f'acceleration + 2*{gamma}*velocity + omega^2*position')
+# Should simplify to 0
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

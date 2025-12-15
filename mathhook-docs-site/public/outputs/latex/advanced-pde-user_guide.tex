@@ -1,0 +1,198 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ PDE User Guide - MathHook CAS }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Comprehensive user guide for solving partial differential equations with MathHook. Covers
+fundamental PDE concepts, classification systems, the method of characteristics for first-order
+PDEs, and practical examples including transport equations, Burgers' equation, and heat equations.
+Includes educational features, troubleshooting, and performance considerations.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+A **partial differential equation (PDE)** is a functional equation involving partial derivatives:
+
+$$F\left(x, y, u, \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y}, \frac{\partial^2 u}{\partial x^2}, \ldots\right) = 0$$
+
+**First-order quasi-linear PDE**:
+
+$$a(x,y,u) \frac{\partial u}{\partial x} + b(x,y,u) \frac{\partial u}{\partial y} = c(x,y,u)$$
+
+**Characteristic equations** (method of characteristics):
+
+$$\frac{dx}{ds} = a(x,y,u), \quad \frac{dy}{ds} = b(x,y,u), \quad \frac{du}{ds} = c(x,y,u)$$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+# PDE User Guide - MathHook CAS
+
+Complete user guide content from the original markdown file, covering:
+- Introduction to PDEs and their real-world applications
+- PDE classification (by order, type, linearity)
+- Getting started with MathHook
+- Basic PDE solving examples
+- Method of characteristics
+- Educational features
+- Common patterns and troubleshooting
+- Advanced topics and API reference
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Transport Equation (Step-by-Step) }
+
+Solve transport equation ∂u/∂t + 2·∂u/∂x = 0 with initial condition u(x,0) = sin(x)
+
+\begin{lstlisting}
+u = symbol('u')
+t = symbol('t')
+x = symbol('x')
+
+# Build the PDE
+equation = expr(u)
+pde = Pde(equation, u, [t, x])
+
+# Solve using method of characteristics
+result = method_of_characteristics(pde)
+
+print("Characteristic equations:")
+for i, char_eq in enumerate(result.characteristic_equations):
+    print(f"  Equation {i + 1}: {char_eq}")
+
+print(f"\nGeneral solution: {result.solution}")
+
+# Apply initial condition: u(x,0) = sin(x)
+# Solution: u(x,t) = sin(x - 2t)
+solution_with_ic = expr('sin(x + (-2) * t)')
+print(f"\nSpecific solution: u(x,t) = {solution_with_ic}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Verifying PDE Solution }
+
+Check that solution satisfies the PDE and initial condition
+
+\begin{lstlisting}
+from mathhook.derivatives import derivative
+from mathhook.simplify import simplify
+
+# Solution: u(x,t) = sin(x - 2*t)
+solution = expr('sin(x + (-2) * t)')
+
+# Verify PDE: ∂u/∂t + 2·∂u/∂x = 0
+du_dt = derivative(solution, t)
+du_dx = derivative(solution, x)
+
+print(f"∂u/∂t = {du_dt}")
+# Output: -2*cos(x - 2*t)
+
+print(f"∂u/∂x = {du_dx}")
+# Output: cos(x - 2*t)
+
+# Check PDE
+lhs = expr(f"{du_dt} + 2 * {du_dx}")
+print(f"PDE LHS = {simplify(lhs)}")
+# Output: 0 ✓
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Burgers' Equation (Nonlinear) }
+
+Analyze Burgers' equation ∂u/∂t + u·∂u/∂x = 0 showing nonlinear characteristics
+
+\begin{lstlisting}
+# Burgers' equation coefficients
+u_sym = symbol('u')
+coefficients = PdeCoefficients(
+    a=expr(1),           # Coefficient of ∂u/∂t
+    b=expr(u_sym),       # Coefficient of ∂u/∂x (nonlinear!)
+    c=expr(0)            # RHS
+)
+
+print("Burgers' equation characteristic system:")
+print(f"dt/ds = {coefficients.a}")
+print(f"dx/ds = {coefficients.b}")  # Note: depends on u!
+print(f"du/ds = {coefficients.c}")
+
+# The solution u = F(x - u*t) is implicit (requires solving for u)
+# Warning: Can develop shocks where characteristics intersect
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Educational Step-by-Step Solver }
+
+Get detailed explanations of solution process
+
+\begin{lstlisting}
+solver = EducationalPDESolver()
+
+u = symbol('u')
+x = symbol('x')
+t = symbol('t')
+
+equation = expr('u + x')
+
+# Solve with explanations
+result, explanation = solver.solve_pde(equation, u, [x, t])
+
+# Display step-by-step explanation
+print("Educational Explanation:")
+for i, step in enumerate(explanation.steps):
+    print(f"Step {i + 1}: {step.title}")
+    print(f"  {step.description}")
+    print()
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

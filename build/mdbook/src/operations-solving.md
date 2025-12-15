@@ -1,0 +1,442 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Solving Equations
+
+> **Topic**: `operations.solving`
+
+Find solutions to equations symbolically and numerically.
+
+
+
+## Mathematical Definition
+
+**Linear Equation:**
+$$ax + b = 0 \implies x = -\frac{b}{a}$$
+
+**Quadratic Formula:**
+$$ax^2 + bx + c = 0 \implies x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+**Discriminant ($\Delta$):**
+$$\Delta = b^2 - 4ac$$
+- $\Delta > 0$: Two distinct real roots
+- $\Delta = 0$: One repeated real root
+- $\Delta < 0$: Two complex conjugate roots
+
+**Matrix Equations (Noncommutative):**
+- Left division: $AX = B \implies X = A^{-1}B$
+- Right division: $XA = B \implies X = BA^{-1}$
+- Note: $A^{-1}B \neq BA^{-1}$ for matrices!
+
+
+
+
+
+## Examples
+
+
+### Linear Equations
+
+Solve ax + b = 0
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: 2x + 3 = 0
+let eq1 = expr!(2 * x + 3);
+let mut solver = MathSolver::new();
+let sol1 = solver.solve(&eq1, &x);
+// Result: x = -3/2
+
+// Solve: 5x - 10 = 0
+let eq2 = expr!(5 * x - 10);
+let sol2 = solver.solve(&eq2, &x);
+// Result: x = 2
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: 2x + 3 = 0
+eq1 = 2*x + 3
+sol1 = solve(eq1, x)
+# Result: x = -3/2
+
+# Solve: 5x - 10 = 0
+eq2 = 5*x - 10
+sol2 = solve(eq2, x)
+# Result: x = 2
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, solve } = require('mathhook');
+
+const x = symbol('x');
+
+// Solve: 2x + 3 = 0
+const eq1 = x.mul(2).add(3);
+const sol1 = solve(eq1, x);
+// Result: x = -3/2
+
+```
+</details>
+
+
+
+
+
+### Quadratic Equations
+
+Solve ax² + bx + c = 0
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: x² - 5x + 6 = 0
+let eq1 = expr!(x ^ 2 - 5 * x + 6);
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&eq1, &x);
+// Result: [x = 2, x = 3]
+
+// Solve: x² - 4 = 0 (difference of squares)
+let eq2 = expr!(x ^ 2 - 4);
+let sol2 = solver.solve(&eq2, &x);
+// Result: [x = -2, x = 2]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x² - 5x + 6 = 0
+eq1 = x**2 - 5*x + 6
+solutions = solve(eq1, x)
+# Result: [2, 3]
+
+# Solve: x² - 4 = 0
+eq2 = x**2 - 4
+sol2 = solve(eq2, x)
+# Result: [-2, 2]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, solve } = require('mathhook');
+
+const x = symbol('x');
+
+// Solve: x² - 5x + 6 = 0
+const eq1 = x.pow(2).sub(x.mul(5)).add(6);
+const solutions = solve(eq1, x);
+// Result: [2, 3]
+
+```
+</details>
+
+
+
+
+
+### Complex Roots
+
+When discriminant is negative
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: x² + 1 = 0 (complex roots)
+let equation = expr!(x ^ 2 + 1);
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&equation, &x);
+// Result: [x = i, x = -i]
+
+// Solve: x² - 2x + 5 = 0
+// Discriminant: 4 - 20 = -16 < 0 (complex roots)
+let eq2 = expr!(x ^ 2 - 2 * x + 5);
+let sol2 = solver.solve(&eq2, &x);
+// Result: [x = 1 + 2i, x = 1 - 2i]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, solve, I
+
+x = symbol('x')
+
+# Solve: x² + 1 = 0
+equation = x**2 + 1
+solutions = solve(equation, x)
+# Result: [I, -I]
+
+# Solve: x² - 2x + 5 = 0
+eq2 = x**2 - 2*x + 5
+sol2 = solve(eq2, x)
+# Result: [1 + 2*I, 1 - 2*I]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, solve } = require('mathhook');
+
+const x = symbol('x');
+
+// Solve: x² + 1 = 0
+const equation = x.pow(2).add(1);
+const solutions = solve(equation, x);
+// Result: [i, -i]
+
+```
+</details>
+
+
+
+
+
+### Transcendental Equations
+
+Trigonometric, exponential, logarithmic
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: sin(x) = 0
+let eq1 = expr!(sin(x));
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&eq1, &x);
+// Result: [x = 0, x = π, x = 2π, ...] (infinitely many)
+
+// Solve: e^x = 5
+let eq2 = expr!(exp(x) - 5);
+let sol2 = solver.solve(&eq2, &x);
+// Result: x = ln(5)
+
+// Solve: log(x) = 2
+let eq3 = expr!(log(x) - 2);
+let sol3 = solver.solve(&eq3, &x);
+// Result: x = e² (if natural log)
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, solve, sin, exp, log
+
+x = symbol('x')
+
+# Solve: sin(x) = 0
+eq1 = sin(x)
+solutions = solve(eq1, x)
+# Result: [0, π, 2π, ...]
+
+# Solve: e^x = 5
+eq2 = exp(x) - 5
+sol2 = solve(eq2, x)
+# Result: log(5)
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, solve, parse } = require('mathhook');
+
+const x = symbol('x');
+
+// Solve: sin(x) = 0
+const eq1 = parse('sin(x)');
+const solutions = solve(eq1, x);
+// Result: [0, π, 2π, ...]
+
+```
+</details>
+
+
+
+
+
+### Matrix Equations (Noncommutative)
+
+Left and right division for matrices
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+// Matrix symbols
+let A = symbol!(A; matrix);
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+
+// Left division: A*X = B → X = A⁻¹*B
+let left_eq = expr!(A * X - B);
+let mut solver = MathSolver::new();
+let solution_left = solver.solve(&left_eq, &X);
+// Result: X = A⁻¹*B
+
+// Right division: X*A = B → X = B*A⁻¹
+let right_eq = expr!(X * A - B);
+let solution_right = solver.solve(&right_eq, &X);
+// Result: X = B*A⁻¹
+
+// Note: A⁻¹*B ≠ B*A⁻¹ for matrices!
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, solve
+
+# Matrix symbols
+A = symbol('A', matrix=True)
+X = symbol('X', matrix=True)
+B = symbol('B', matrix=True)
+
+# Left division: A*X = B → X = A⁻¹*B
+left_eq = A*X - B
+solution_left = solve(left_eq, X)
+# Result: X = A^(-1)*B
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, solve } = require('mathhook');
+
+// Matrix symbols
+const A = symbol('A', { type: 'matrix' });
+const X = symbol('X', { type: 'matrix' });
+const B = symbol('B', { type: 'matrix' });
+
+// Left division: A*X = B → X = A⁻¹*B
+const leftEq = A.mul(X).sub(B);
+const solutionLeft = solve(leftEq, X);
+// Result: X = A^(-1)*B
+
+```
+</details>
+
+
+
+
+
+
+
+## Performance
+
+**Time Complexity**: Varies: O(1) for linear, O(n^3) for polynomial factoring
+
+
+## API Reference
+
+- **Rust**: `mathhook_core::solvers::MathSolver`
+- **Python**: `mathhook.solve`
+- **JavaScript**: `mathhook.solve`
+
+
+## See Also
+
+
+- [operations.substitution](../operations/substitution.md)
+
+- [operations.differentiation](../operations/differentiation.md)
+
+- [features.noncommutative](../features/noncommutative.md)
+
+

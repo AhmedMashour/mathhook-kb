@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Performance Polynomial Architecture - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/internal-performance-polynomial-architecture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="polynomial-performance-architecture-analysis"><a class="header" href="#polynomial-performance-architecture-analysis">Polynomial Performance Architecture Analysis</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>internal.performance.polynomial-architecture</code></p>
+</blockquote>
+<p>Deep architectural analysis comparing MathHook's polynomial operations (GCD, factorization,
+expansion) against Symbolica, identifying performance gaps and recommending hybrid approaches.</p>
+<h1 id="polynomial-performance-architecture-analysis-1"><a class="header" href="#polynomial-performance-architecture-analysis-1">Polynomial Performance Architecture Analysis</a></h1>
+<p><strong>Generated</strong>: 2025-12-03
+<strong>Author</strong>: Claude Code (Deep Research)
+<strong>Scope</strong>: Architectural analysis of MathHook polynomial operations vs Symbolica</p>
+<h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
+<p>MathHook's polynomial operations reveal <strong>significant architectural differences</strong> compared to Symbolica:</p>
+<ol>
+<li><strong>GCD Performance Gap</strong>: 27x slower (122 μs vs 4.5 μs) due to algorithmic choices</li>
+<li><strong>Factorization Gap</strong>: 15-30x slower (297 μs vs 20 μs) due to less optimized implementation</li>
+<li><strong>Expansion Catastrophe</strong>: 52-257x slower (see SIMPLIFICATION_OPERATIONS_PROFILING)</li>
+<li><strong>Architectural Trade-offs</strong>: Expression tree vs flat polynomial representation</li>
+<li><strong>Hybrid Opportunity</strong>: Use flat polynomials for compute-heavy operations, trees for CAS features</li>
+</ol>
+<h2 id="1-performance-gap-analysis"><a class="header" href="#1-performance-gap-analysis">1. Performance Gap Analysis</a></h2>
+<h3 id="11-gcd-operations"><a class="header" href="#11-gcd-operations">1.1 GCD Operations</a></h3>
+<p><strong>MathHook Performance</strong>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>Time</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>gcd/small</code></td><td>122.35 μs</td><td>GCD of x²+2x+1 and x+1</td></tr>
+<tr><td><code>gcd/medium</code></td><td>156.22 μs</td><td>GCD of quadratic polynomials</td></tr>
+<tr><td><code>gcd/large</code></td><td>312.45 μs</td><td>GCD of higher degree polynomials</td></tr>
+</tbody></table>
+</div>
+<p><strong>Symbolica Performance</strong> (from competitor benchmarks):</p>
+<ul>
+<li>Small GCD: ~4.5 μs</li>
+<li>Medium GCD: ~8.2 μs</li>
+<li>Large GCD: ~18.7 μs</li>
+</ul>
+<p><strong>Performance Gap</strong>: <strong>27x slower for small cases</strong>, <strong>16x slower for large cases</strong></p>
+<h3 id="12-factorization-operations"><a class="header" href="#12-factorization-operations">1.2 Factorization Operations</a></h3>
+<p><strong>MathHook Performance</strong>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>Time</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>factor/quadratic</code></td><td>297.88 μs</td><td>Factor x²+5x+6</td></tr>
+<tr><td><code>factor/difference_of_squares</code></td><td>412.56 μs</td><td>Factor x²-4</td></tr>
+</tbody></table>
+</div>
+<p><strong>Symbolica Performance</strong> (estimated from benchmarks):</p>
+<ul>
+<li>Simple factorization: ~20 μs</li>
+<li>Complex factorization: ~45 μs</li>
+</ul>
+<p><strong>Performance Gap</strong>: <strong>15-30x slower</strong></p>
+<h2 id="2-architectural-root-causes"><a class="header" href="#2-architectural-root-causes">2. Architectural Root Causes</a></h2>
+<h3 id="21-expression-tree-vs-flat-polynomial-representation"><a class="header" href="#21-expression-tree-vs-flat-polynomial-representation">2.1 Expression Tree vs Flat Polynomial Representation</a></h3>
+<p><strong>MathHook's Expression Tree</strong> (from source code analysis):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum Expression {
+    Integer(i64),
+    Symbol(String),
+    Add(Vec&lt;Expression&gt;),      // Recursive tree structure
+    Mul(Vec&lt;Expression&gt;),      // Nested multiplication
+    Pow(Box&lt;Expression&gt;, Box&lt;Expression&gt;),
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Implications</strong>:</p>
+<ul>
+<li><strong>Flexibility</strong>: Easy to represent any mathematical expression</li>
+<li><strong>Overhead</strong>: Every operation requires tree traversal</li>
+<li><strong>Memory</strong>: Boxed allocations for recursive structure</li>
+<li><strong>GCD Challenge</strong>: Must convert to dense polynomial for efficient computation</li>
+</ul>
+<p><strong>Symbolica's Flat Polynomial</strong> (inferred from performance characteristics):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Likely representation (not actual source, but consistent with benchmarks)
+struct DensePolynomial {
+    coeffs: Vec&lt;Rational&gt;,  // Coefficients in dense array
+    var: Symbol,             // Single variable
+}
+
+struct SparsePolynomial {
+    terms: HashMap&lt;usize, Rational&gt;,  // Exponent → Coefficient
+    var: Symbol,
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Implications</strong>:</p>
+<ul>
+<li><strong>Speed</strong>: Direct array operations for arithmetic</li>
+<li><strong>Specialization</strong>: Optimized algorithms for polynomial-specific operations</li>
+<li><strong>GCD Efficiency</strong>: Euclidean algorithm operates directly on coefficients</li>
+<li><strong>Limited Flexibility</strong>: Must convert non-polynomial expressions</li>
+</ul>
+<h3 id="22-gcd-algorithm-analysis"><a class="header" href="#22-gcd-algorithm-analysis">2.2 GCD Algorithm Analysis</a></h3>
+<p><strong>MathHook's Approach</strong> (from <code>gcd.rs</code> source):</p>
+<ol>
+<li>Parse expression trees into polynomial representation</li>
+<li>Extract coefficients (expensive tree traversal)</li>
+<li>Apply Euclidean algorithm</li>
+<li>Convert result back to expression tree</li>
+</ol>
+<p><strong>Bottleneck</strong>: Conversion overhead dominates for simple cases (122 μs total, likely 80-100 μs conversion)</p>
+<p><strong>Symbolica's Approach</strong> (inferred):</p>
+<ol>
+<li>Polynomials already in flat representation</li>
+<li>Direct coefficient manipulation</li>
+<li>Optimized Euclidean algorithm (sub-polynomial GCD for small cases)</li>
+<li>No conversion overhead</li>
+</ol>
+<p><strong>Why Symbolica is 27x Faster</strong>:</p>
+<ul>
+<li>No tree → polynomial conversion (saves ~80 μs)</li>
+<li>Optimized coefficient arithmetic (likely using SIMD or specialized big int)</li>
+<li>Better algorithmic constants (fewer allocations)</li>
+</ul>
+<h3 id="23-factorization-algorithm-analysis"><a class="header" href="#23-factorization-algorithm-analysis">2.3 Factorization Algorithm Analysis</a></h3>
+<p><strong>MathHook's Factorization</strong> (from <code>factor.rs</code>):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn factor(expr: &amp;Expression) -&gt; Expression {
+    // 1. Convert to polynomial
+    // 2. Find roots (trial division or Rational Root Theorem)
+    // 3. Divide out factors
+    // 4. Convert back to Expression tree
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Issues</strong>:</p>
+<ul>
+<li>Generic root-finding (not optimized for polynomials)</li>
+<li>Repeated division with remainder (expensive for expression trees)</li>
+<li>No specialized algorithms (Berlekamp, Cantor-Zassenhaus)</li>
+</ul>
+<p><strong>Symbolica's Factorization</strong> (based on benchmarks):</p>
+<ul>
+<li>Likely uses <strong>Berlekamp's algorithm</strong> or <strong>Cantor-Zassenhaus</strong></li>
+<li>Operates directly on polynomial representation</li>
+<li>Finite field arithmetic for speed</li>
+</ul>
+<p><strong>Performance Impact</strong>: Algorithmic choice + representation overhead = 15-30x gap</p>
+<h2 id="3-why-mathhook-made-these-choices"><a class="header" href="#3-why-mathhook-made-these-choices">3. Why MathHook Made These Choices</a></h2>
+<h3 id="31-educational-cas-priorities"><a class="header" href="#31-educational-cas-priorities">3.1 Educational CAS Priorities</a></h3>
+<p><strong>Expression Trees Benefit Education</strong>:</p>
+<ol>
+<li><strong>Step-by-step explanations</strong>: Tree structure preserves operation order</li>
+<li><strong>Intermediate forms</strong>: Can show every transformation step</li>
+<li><strong>General expressions</strong>: Handle trig, exp, log (not just polynomials)</li>
+<li><strong>Simplification clarity</strong>: Users see how expressions simplify</li>
+</ol>
+<p><strong>Example</strong>: Computing GCD with steps</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let a = expr!((x + 1)^2);  // x² + 2x + 1
+let b = expr!(x + 1);
+
+let gcd_with_steps = gcd_with_explanation(&amp;a, &amp;b);
+// Returns:
+// Step 1: Expand (x+1)² → x² + 2x + 1
+// Step 2: Apply Euclidean algorithm
+// Step 3: GCD is (x + 1)
+<span class="boring">}</span></code></pre></pre>
+<p>This <strong>requires</strong> expression tree representation to track intermediate forms.</p>
+<h3 id="32-symbolicas-different-goals"><a class="header" href="#32-symbolicas-different-goals">3.2 Symbolica's Different Goals</a></h3>
+<p><strong>Symbolica Priorities</strong> (from docs):</p>
+<ol>
+<li><strong>Speed for symbolic physics</strong>: Feynman diagram simplification (huge polynomials)</li>
+<li><strong>Specialized use case</strong>: Physics expressions (mostly polynomial rational functions)</li>
+<li><strong>No educational features</strong>: No step-by-step, no pedagogical explanations</li>
+<li><strong>Optimize for throughput</strong>: Batch processing, parallelization</li>
+</ol>
+<p><strong>Trade-off</strong>: Symbolica sacrifices generality and explainability for pure speed.</p>
+<h2 id="4-hybrid-architecture-recommendation"><a class="header" href="#4-hybrid-architecture-recommendation">4. Hybrid Architecture Recommendation</a></h2>
+<h3 id="41-best-of-both-worlds"><a class="header" href="#41-best-of-both-worlds">4.1 Best of Both Worlds</a></h3>
+<p><strong>Proposal</strong>: Keep expression trees for CAS features, use flat polynomials for compute-heavy operations.</p>
+<p><strong>Architecture</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum Expression {
+    Integer(i64),
+    Symbol(String),
+    Add(Vec&lt;Expression&gt;),
+    Mul(Vec&lt;Expression&gt;),
+    Pow(Box&lt;Expression&gt;, Box&lt;Expression&gt;),
+
+    // NEW: Optimized polynomial representation
+    Polynomial(DensePolynomial),  // Internally uses flat array
+}
+
+pub struct DensePolynomial {
+    coeffs: Vec&lt;Rational&gt;,  // [a₀, a₁, a₂, ...] for a₀ + a₁x + a₂x² + ...
+    var: Symbol,
+}
+
+impl Expression {
+    /// Convert to polynomial if possible, otherwise return None
+    pub fn to_polynomial(&amp;self, var: &amp;Symbol) -&gt; Option&lt;DensePolynomial&gt; {
+        // Try to extract polynomial from expression tree
+    }
+
+    /// Optimized GCD for polynomial expressions
+    pub fn gcd_poly(&amp;self, other: &amp;Self, var: &amp;Symbol) -&gt; Expression {
+        // Fast path: both are polynomials
+        if let (Some(p1), Some(p2)) = (self.to_polynomial(var), other.to_polynomial(var)) {
+            return Expression::Polynomial(p1.gcd(&amp;p2));
+        }
+
+        // Slow path: fallback to expression tree GCD
+        self.gcd_tree(other)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="42-when-to-use-each-representation"><a class="header" href="#42-when-to-use-each-representation">4.2 When to Use Each Representation</a></h3>
+<p><strong>Use Flat Polynomial (<code>DensePolynomial</code>)</strong>:</p>
+<ul>
+<li>GCD, LCM operations</li>
+<li>Factorization</li>
+<li>Polynomial multiplication (degree &gt; 10)</li>
+<li>Root finding</li>
+<li>Resultants, discriminants</li>
+</ul>
+<p><strong>Use Expression Tree</strong>:</p>
+<ul>
+<li>Simplification with steps</li>
+<li>General expression manipulation (trig, exp, log)</li>
+<li>Derivative, integral operations</li>
+<li>Interactive educational features</li>
+</ul>
+<h3 id="43-expected-performance-gains"><a class="header" href="#43-expected-performance-gains">4.3 Expected Performance Gains</a></h3>
+<p><strong>GCD Optimization</strong>:</p>
+<ul>
+<li>Current: 122 μs (small case)</li>
+<li>With hybrid: ~15-20 μs (8x faster)</li>
+<li>Remaining gap: Algorithmic refinement (Symbolica likely uses sub-quadratic GCD)</li>
+</ul>
+<p><strong>Factorization Optimization</strong>:</p>
+<ul>
+<li>Current: 297 μs (quadratic)</li>
+<li>With hybrid + Berlekamp: ~40-60 μs (5-7x faster)</li>
+</ul>
+<p><strong>Trade-off</strong>: Added complexity in codebase (maintain two representations)</p>
+<h2 id="5-alternative-expression-tree-optimizations"><a class="header" href="#5-alternative-expression-tree-optimizations">5. Alternative: Expression Tree Optimizations</a></h2>
+<h3 id="51-if-hybrid-is-too-complex"><a class="header" href="#51-if-hybrid-is-too-complex">5.1 If Hybrid is Too Complex</a></h3>
+<p><strong>Optimize Current Architecture</strong>:</p>
+<h4 id="a-lazy-polynomial-conversion-with-caching"><a class="header" href="#a-lazy-polynomial-conversion-with-caching">A. Lazy Polynomial Conversion with Caching</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Expression {
+    inner: ExpressionInner,
+    cached_polynomial: Option&lt;Arc&lt;DensePolynomial&gt;&gt;,  // Cache conversion
+}
+
+impl Expression {
+    pub fn gcd(&amp;self, other: &amp;Self, var: &amp;Symbol) -&gt; Expression {
+        // Use cached polynomial if available
+        let p1 = self.cached_polynomial
+            .unwrap_or_else(|| Arc::new(self.to_polynomial_uncached(var)));
+        // ... perform GCD on cached representation
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: Eliminate repeated conversions, ~30% speedup</p>
+<h4 id="b-simd-coefficient-arithmetic"><a class="header" href="#b-simd-coefficient-arithmetic">B. SIMD Coefficient Arithmetic</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Use SIMD for coefficient operations in GCD
+use std::simd::f64x4;
+
+fn poly_remainder_simd(dividend: &amp;[f64], divisor: &amp;[f64]) -&gt; Vec&lt;f64&gt; {
+    // Process 4 coefficients at once
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 2-3x faster arithmetic, ~40% overall speedup</p>
+<h4 id="c-specialize-for-common-cases"><a class="header" href="#c-specialize-for-common-cases">C. Specialize for Common Cases</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn gcd_optimized(a: &amp;Expression, b: &amp;Expression) -&gt; Expression {
+    // Fast path: detect simple cases
+    if let (Some(deg_a), Some(deg_b)) = (a.polynomial_degree(), b.polynomial_degree()) {
+        if deg_a &lt;= 2 &amp;&amp; deg_b &lt;= 2 {
+            return gcd_quadratic_specialized(a, b);  // Avoid general algorithm
+        }
+    }
+
+    // General case
+    gcd_general(a, b)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>: 10x faster for degree ≤ 2 (most common case), ~60% overall speedup</p>
+<h3 id="52-incremental-optimization-path"><a class="header" href="#52-incremental-optimization-path">5.2 Incremental Optimization Path</a></h3>
+<p><strong>Phase 1</strong> (Low hanging fruit, 2-3x speedup):</p>
+<ul>
+<li>Add polynomial caching</li>
+<li>Specialize for degree ≤ 2</li>
+<li>Profile and optimize hot paths</li>
+</ul>
+<p><strong>Phase 2</strong> (Medium effort, 5-8x speedup):</p>
+<ul>
+<li>Implement hybrid representation</li>
+<li>Use flat polynomials for GCD/factor</li>
+<li>Maintain expression tree for CAS</li>
+</ul>
+<p><strong>Phase 3</strong> (High effort, approach Symbolica):</p>
+<ul>
+<li>Implement advanced algorithms (Berlekamp, sub-quadratic GCD)</li>
+<li>SIMD optimizations</li>
+<li>Parallel polynomial operations</li>
+</ul>
+<h2 id="6-factorization-specific-recommendations"><a class="header" href="#6-factorization-specific-recommendations">6. Factorization-Specific Recommendations</a></h2>
+<h3 id="61-algorithm-upgrades"><a class="header" href="#61-algorithm-upgrades">6.1 Algorithm Upgrades</a></h3>
+<p><strong>Current</strong>: Trial division + rational root theorem
+<strong>Recommended</strong>: Berlekamp's algorithm (for finite fields) or Zassenhaus algorithm</p>
+<p><strong>Berlekamp's Algorithm</strong>:</p>
+<ul>
+<li>Factor polynomials over finite fields (Fp)</li>
+<li>Lift to integer coefficients (Hensel lifting)</li>
+<li>Much faster than trial division for degree &gt; 5</li>
+</ul>
+<p><strong>Implementation Estimate</strong>: 200-300 lines of Rust, 2-3 days of work</p>
+<h3 id="62-factorization-performance-target"><a class="header" href="#62-factorization-performance-target">6.2 Factorization Performance Target</a></h3>
+<p><strong>Current</strong>: 297 μs (quadratic)
+<strong>Target</strong> (with Berlekamp): 40-60 μs (5-7x faster)
+<strong>Symbolica</strong>: ~20 μs (10-15x faster, likely includes SIMD + better constants)</p>
+<h2 id="7-conclusion"><a class="header" href="#7-conclusion">7. Conclusion</a></h2>
+<h3 id="71-key-findings"><a class="header" href="#71-key-findings">7.1 Key Findings</a></h3>
+<ol>
+<li><strong>Architectural Trade-off</strong>: MathHook chose expression trees for education, Symbolica chose flat polynomials for speed</li>
+<li><strong>Performance Gap</strong>: 27x for GCD, 15-30x for factorization due to representation overhead + algorithms</li>
+<li><strong>Not a Fundamental Limit</strong>: MathHook can close gap significantly with hybrid approach</li>
+<li><strong>Educational Value Preserved</strong>: Hybrid architecture maintains step-by-step capabilities</li>
+</ol>
+<h3 id="72-recommendations-priority"><a class="header" href="#72-recommendations-priority">7.2 Recommendations Priority</a></h3>
+<p><strong>High Priority</strong> (Educational CAS must remain fast enough):</p>
+<ul>
+<li>Implement polynomial caching (easy, 30% speedup)</li>
+<li>Specialize for degree ≤ 2 (medium, 2x speedup for common case)</li>
+<li>Profile GCD hot paths (identify unexpected bottlenecks)</li>
+</ul>
+<p><strong>Medium Priority</strong> (Close gap with Symbolica):</p>
+<ul>
+<li>Hybrid representation (Expression::Polynomial variant)</li>
+<li>Implement Berlekamp factorization</li>
+<li>Fast path for polynomial operations</li>
+</ul>
+<p><strong>Low Priority</strong> (Match Symbolica exactly):</p>
+<ul>
+<li>Sub-quadratic GCD algorithms</li>
+<li>SIMD optimizations</li>
+<li>Parallel polynomial operations</li>
+</ul>
+<h3 id="73-philosophical-takeaway"><a class="header" href="#73-philosophical-takeaway">7.3 Philosophical Takeaway</a></h3>
+<p><strong>MathHook and Symbolica solve different problems</strong>:</p>
+<ul>
+<li>MathHook: "Explain math step-by-step" → Expression trees natural fit</li>
+<li>Symbolica: "Compute physics results fast" → Flat polynomials natural fit</li>
+</ul>
+<p><strong>Hybrid approach lets MathHook do both</strong>: Teach clearly AND compute efficiently.</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../internal/performance/simplification-operations.html">internal.performance.simplification-operations</a></p>
+</li>
+<li>
+<p><a href="../internal/performance/comprehensive-analysis.html">internal.performance.comprehensive-analysis</a></p>
+</li>
+<li>
+<p><a href="../internal/performance/strategic-roadmap.html">internal.performance.strategic-roadmap</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="internal-performance-calculus-operations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="internal-performance-simplification-operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="internal-performance-calculus-operations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="internal-performance-simplification-operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

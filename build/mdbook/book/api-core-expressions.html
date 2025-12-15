@@ -1,0 +1,519 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Core Expressions - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/api-core-expressions.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="core-expression-system"><a class="header" href="#core-expression-system">Core Expression System</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>api.core.expressions</code></p>
+</blockquote>
+<p>The Expression type is the foundation of MathHook. Expressions are immutable,
+32-byte cache-optimized structures representing mathematical constructs from
+numbers to complex symbolic operations.</p>
+<h1 id="core-expression-system-1"><a class="header" href="#core-expression-system-1">Core Expression System</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The <code>Expression</code> type is MathHook's core data structure, designed for:</p>
+<ul>
+<li><strong>Immutability</strong>: Thread-safe, predictable behavior</li>
+<li><strong>Performance</strong>: 32-byte size for cache optimization (2 per cache line)</li>
+<li><strong>Canonical Forms</strong>: Automatic normalization for equality checking</li>
+</ul>
+<h2 id="expression-structure"><a class="header" href="#expression-structure">Expression Structure</a></h2>
+<p>Expressions use Rust enums for type-safe mathematical constructs:</p>
+<ul>
+<li><strong>Numbers</strong>: Integer, Rational, Float, Complex</li>
+<li><strong>Variables</strong>: Symbol</li>
+<li><strong>Operations</strong>: Add, Mul, Pow</li>
+<li><strong>Functions</strong>: Function calls (sin, cos, log, etc.)</li>
+<li><strong>Constants</strong>: π, e, i, φ, γ</li>
+<li><strong>Matrices</strong>: Matrix (noncommutative)</li>
+<li><strong>Relations</strong>: Equation, Inequality</li>
+</ul>
+<h2 id="design-decisions"><a class="header" href="#design-decisions">Design Decisions</a></h2>
+<h3 id="why-32-bytes"><a class="header" href="#why-32-bytes">Why 32 Bytes?</a></h3>
+<ul>
+<li>Modern CPUs have 64-byte cache lines</li>
+<li>Two expressions fit perfectly in one cache line</li>
+<li>3-5x faster operations in hot loops</li>
+<li>Critical for CAS workloads with millions of expression traversals</li>
+</ul>
+<h3 id="why-immutable"><a class="header" href="#why-immutable">Why Immutable?</a></h3>
+<ul>
+<li>Thread safety without locks</li>
+<li>No hidden mutation surprises</li>
+<li>Compiler optimizations</li>
+<li>Traceable expression history</li>
+</ul>
+<h3 id="why-canonical-forms"><a class="header" href="#why-canonical-forms">Why Canonical Forms?</a></h3>
+<ul>
+<li>Structural equality: y + x → x + y</li>
+<li>Flattening: (a + b) + c → Add(a, b, c)</li>
+<li>Identity removal: x + 0 → x</li>
+<li>Rational reduction: 6/4 → 3/2</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="creating-expressions-with-macros"><a class="header" href="#creating-expressions-with-macros">Creating Expressions with Macros</a></h3>
+<p>Use expr!() and symbol!() macros for ergonomic expression creation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let y = symbol!(y);
+
+// Basic arithmetic
+let sum = expr!(x + y);
+let product = expr!(x * y);
+let power = expr!(x ^ 2);
+
+// Complex nested expressions
+let complex = expr!(sin(x ^ 2) + cos(y ^ 2));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+y = symbol('y')
+
+# Basic arithmetic
+sum_expr = x + y
+product = x * y
+power = x**2
+
+# Complex nested expressions
+from mathhook import sin, cos
+complex_expr = sin(x**2) + cos(y**2)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse } from 'mathhook';
+
+const x = symbol('x');
+const y = symbol('y');
+
+// Parse expressions
+const sum = parse('x + y');
+const product = parse('x * y');
+const power = parse('x^2');
+
+// Complex nested expressions
+const complex = parse('sin(x^2) + cos(y^2)');
+
+</code></pre>
+</details>
+<h3 id="immutability-and-operations"><a class="header" href="#immutability-and-operations">Immutability and Operations</a></h3>
+<p>All operations return new expressions, original unchanged</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let expr = expr!(x + 1);
+let doubled = expr.mul(&amp;expr!(2));  // Returns new expression
+// `expr` is unchanged - still x + 1
+
+// Safe to use in multiple threads
+use std::sync::Arc;
+let expr_arc = Arc::new(expr!(x ^ 2));
+let clone = Arc::clone(&amp;expr_arc);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">expr = x + 1
+doubled = expr * 2  # Returns new expression
+# expr is unchanged - still x + 1
+
+# Safe for concurrent use
+import threading
+shared_expr = x**2
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const expr = parse('x + 1');
+const doubled = expr.mul(2);  // Returns new expression
+// expr is unchanged - still x + 1
+
+// Immutable - safe for concurrent access
+
+</code></pre>
+</details>
+<h3 id="canonical-forms-and-equality"><a class="header" href="#canonical-forms-and-equality">Canonical Forms and Equality</a></h3>
+<p>Automatic normalization ensures equivalent expressions are equal</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let expr1 = expr!(x + y);
+let expr2 = expr!(y + x);
+assert_eq!(expr1, expr2);  // True - both normalized to x + y
+
+// Flattening
+let nested = expr!((x + y) + z);
+// Automatically flattened to Add(x, y, z)
+
+// Identity removal
+let identity = expr!(x + 0);
+assert_eq!(identity.simplify(), expr!(x));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">expr1 = x + y
+expr2 = y + x
+assert expr1 == expr2  # True - both normalized to x + y
+
+# Flattening and identity removal
+nested = (x + y) + z
+identity = x + 0
+assert identity.simplify() == x
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const expr1 = parse('x + y');
+const expr2 = parse('y + x');
+// Both normalized to x + y
+
+// Identity removal
+const identity = parse('x + 0');
+const simplified = identity.simplify();
+// Result: x
+
+</code></pre>
+</details>
+<h3 id="pattern-matching-and-structure"><a class="header" href="#pattern-matching-and-structure">Pattern Matching and Structure</a></h3>
+<p>Work with expression structure using pattern matching</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::Expression;
+
+match expr {
+    Expression::Add(terms) =&gt; {
+        println!("Sum with {} terms", terms.len());
+    }
+    Expression::Mul(factors) =&gt; {
+        println!("Product with {} factors", factors.len());
+    }
+    Expression::Pow(base, exp) =&gt; {
+        println!("Power: {} ^ {}", base, exp);
+    }
+    Expression::Function(name, args) =&gt; {
+        println!("Function {} with {} args", name, args.len());
+    }
+    _ =&gt; {}
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import Expression
+
+# Python uses method introspection
+if expr.is_add():
+    terms = expr.get_terms()
+    print(f"Sum with {len(terms)} terms")
+elif expr.is_mul():
+    factors = expr.get_factors()
+    print(f"Product with {len(factors)} factors")
+elif expr.is_pow():
+    base, exp = expr.get_base_exp()
+    print(f"Power: {base} ^ {exp}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { Expression } from 'mathhook';
+
+// Node.js uses type checking methods
+if (expr.isAdd()) {
+    const terms = expr.getTerms();
+    console.log(`Sum with ${terms.length} terms`);
+} else if (expr.isMul()) {
+    const factors = expr.getFactors();
+    console.log(`Product with ${factors.length} factors`);
+} else if (expr.isPow()) {
+    const [base, exp] = expr.getBaseExp();
+    console.log(`Power: ${base} ^ ${exp}`);
+}
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(1) construction, O(n) operations for n-node trees</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::expression::Expression</code></li>
+<li><strong>Python</strong>: <code>mathhook.Expression</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.Expression</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../api/core/symbols_numbers.html">api.core.symbols_numbers</a></p>
+</li>
+<li>
+<p><a href="../api/core/functions.html">api.core.functions</a></p>
+</li>
+<li>
+<p><a href="../api/operations/simplification.html">api.operations.simplification</a></p>
+</li>
+<li>
+<p><a href="../api/operations/substitution.html">api.operations.substitution</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="api-calculus-operations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="api-matrix-operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="api-calculus-operations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="api-matrix-operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

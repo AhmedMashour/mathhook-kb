@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Expression Evaluation }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MathHook provides two fundamental operations for working with expressions:
+
+1. **Evaluation** - Compute numerical values with domain checking
+2. **Simplification** - Algebraic reduction while staying symbolic
+
+Understanding when to use each operation is critical for correct mathematical computation.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Function Evaluation:**
+$$f(a) = f(x)|_{x=a}$$
+
+**Evaluation with Context:**
+For expression $f(x_1, \ldots, x_n)$ and substitutions $\{x_i \mapsto v_i\}$:
+$$\text{evaluate}(f, \{x_i \mapsto v_i\}) = f(v_1, \ldots, v_n)$$
+
+**Domain Constraints:**
+- $\sqrt{x}$ requires $x \geq 0$ in $\mathbb{R}$
+- $\log(x)$ requires $x > 0$ (pole at 0)
+- $\tan(x)$ has poles at $\frac{\pi}{2} + n\pi$
+- $\arcsin(x), \arccos(x)$ require $|x| \leq 1$ in $\mathbb{R}$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+## Quick Decision Guide
+
+Need a numerical value?
+├─ YES → Use evaluate() or evaluate_with_context()
+│   ├─ With variables? → evaluate_with_context(context)
+│   └─ Constants only? → evaluate()
+│
+└─ NO → Need algebraic simplification?
+    ├─ YES → Use simplify()
+    └─ NO → Keep expression as-is
+
+## Key Differences
+
+| Operation | Purpose | Domain Checking | Substitution | Returns |
+|-----------|---------|-----------------|--------------|---------|
+| **evaluate()** | Numerical computation | ✅ Yes | ❌ No | Result<Expression, MathError> |
+| **evaluate_with_context()** | Substitution + computation | ✅ Yes | ✅ Yes | Result<Expression, MathError> |
+| **simplify()** | Algebraic reduction | ❌ No | ❌ No | Expression |
+
+## Domain Constraints Checked
+
+- sqrt(x): Requires x ≥ 0 in real domain
+- log(x): Requires x > 0 (pole at 0)
+- tan(x): Has poles at π/2 + nπ
+- arcsin(x), arccos(x): Require |x| ≤ 1 in real domain
+- Division by zero: Checked in x/y and x^(-n)
+
+## Evaluation Context Options
+
+```rust
+pub struct EvalContext {
+    pub variables: HashMap<String, Expression>,  // Variable substitutions
+    pub precision: u32,                          // Numerical precision
+    pub simplify_first: bool,                    // Simplify before evaluation?
+    pub numeric: bool,                           // Perform numerical evaluation?
+}
+```
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Constants Evaluate to Numbers }
+
+Direct evaluation of constant expressions
+
+\begin{lstlisting}
+from mathhook import expr
+
+sum_expr = expr('2 + 3')
+assert sum_expr.evaluate() == 5
+
+# Domain checking catches errors
+sqrt_neg = expr('sqrt(-1)')
+try:
+    sqrt_neg.evaluate()
+    assert False, "Should raise domain error"
+except MathError:
+    pass
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Evaluation with Context (Substitution) }
+
+Substitute variable values and evaluate
+
+\begin{lstlisting}
+from mathhook import symbol, Expression
+
+x = symbol('x')
+expr = x ** 2
+
+# Substitute x = 3 and evaluate
+ctx = {'x': 3}
+result = expr.evaluate_with_context(ctx)
+assert result == 9
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Simplification Without Domain Checking }
+
+Simplify operates purely symbolically without domain validation
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Combine like terms
+sum_expr = x + x
+assert sum_expr.simplify() == 2 * x
+
+# Apply identities
+assert (x * 1).simplify() == x
+assert (0 * x).simplify() == 0
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

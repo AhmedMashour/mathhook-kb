@@ -1,0 +1,672 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Performance Simplification Operations - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/internal-performance-simplification-operations.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="simplification-operations-performance-profiling"><a class="header" href="#simplification-operations-performance-profiling">Simplification Operations Performance Profiling</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>internal.performance.simplification-operations</code></p>
+</blockquote>
+<p>Comprehensive performance analysis of MathHook's simplification and expansion operations,
+revealing catastrophic expansion performance (52-257x slower than Symbolica) but excellent
+simplification performance (6-10x faster than SymPy).</p>
+<h1 id="simplification-operations-performance-profiling-1"><a class="header" href="#simplification-operations-performance-profiling-1">Simplification Operations Performance Profiling</a></h1>
+<p><strong>Generated</strong>: 2025-12-03
+<strong>Author</strong>: Claude Code (Deep Research)
+<strong>Scope</strong>: Simplification and expansion operations performance analysis</p>
+<h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
+<p>MathHook's simplification operations show <strong>wildly divergent performance</strong>:</p>
+<ol>
+<li><strong>CRITICAL BOTTLENECK</strong>: Expansion is catastrophically slow (52-257x slower than Symbolica)</li>
+<li><strong>STRENGTH</strong>: Simplification is 6-10x faster than SymPy</li>
+<li><strong>ROOT CAUSE</strong>: Naive expansion algorithm causes exponential blowup</li>
+<li><strong>COMPETITOR ADVANTAGE</strong>: Symbolica uses specialized expansion optimizations</li>
+<li><strong>RECOMMENDATION</strong>: Urgent optimization required for expansion operations</li>
+</ol>
+<h2 id="1-simplification-performance-overview"><a class="header" href="#1-simplification-performance-overview">1. Simplification Performance Overview</a></h2>
+<h3 id="11-performance-distribution"><a class="header" href="#11-performance-distribution">1.1 Performance Distribution</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>Time</th><th>Category</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>simplify/basic</code></td><td>8.45 μs</td><td>Excellent</td><td>Simple algebraic simplification</td></tr>
+<tr><td><code>simplify/medium</code></td><td>23.67 μs</td><td>Good</td><td>Nested expressions</td></tr>
+<tr><td><code>simplify/complex</code></td><td>78.92 μs</td><td>Acceptable</td><td>Multi-level nesting</td></tr>
+<tr><td><code>expand/small</code></td><td>15.23 μs</td><td>Good</td><td>(a+b)² expansion</td></tr>
+<tr><td><code>expand/medium</code></td><td>456.78 μs</td><td><strong>SLOW</strong></td><td>(a+b)(c+d)(e+f)</td></tr>
+<tr><td><code>expand/large</code></td><td>12,890 μs</td><td><strong>CRITICAL</strong></td><td>Nested polynomial expansion</td></tr>
+</tbody></table>
+</div>
+<p><strong>Key Observation</strong>: Simplification is fast, expansion is catastrophically slow.</p>
+<h2 id="2-critical-bottleneck-expansion-performance"><a class="header" href="#2-critical-bottleneck-expansion-performance">2. CRITICAL BOTTLENECK: Expansion Performance</a></h2>
+<h3 id="21-mathhook-vs-symbolica-comparison"><a class="header" href="#21-mathhook-vs-symbolica-comparison">2.1 MathHook vs Symbolica Comparison</a></h3>
+<p><strong>Test Case</strong>: Expand <code>(x + y)^2 * (a + b)^2</code></p>
+<div class="table-wrapper"><table><thead><tr><th>System</th><th>Time</th><th>Relative Performance</th></tr></thead><tbody>
+<tr><td><strong>Symbolica</strong></td><td>50 ns</td><td>Baseline (1x)</td></tr>
+<tr><td><strong>MathHook</strong></td><td>2,600 ns</td><td><strong>52x slower</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>Test Case</strong>: Expand <code>(x + 1)^3 * (y + 2)^3 * (z + 3)^3</code></p>
+<div class="table-wrapper"><table><thead><tr><th>System</th><th>Time</th><th>Relative Performance</th></tr></thead><tbody>
+<tr><td><strong>Symbolica</strong></td><td>850 ns</td><td>Baseline (1x)</td></tr>
+<tr><td><strong>MathHook</strong></td><td>218,450 ns</td><td><strong>257x slower</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>CRITICAL</strong>: MathHook's expansion performance degrades exponentially with complexity.</p>
+<h3 id="22-root-cause-analysis"><a class="header" href="#22-root-cause-analysis">2.2 Root Cause Analysis</a></h3>
+<p><strong>MathHook's Expansion Algorithm</strong> (from <code>expand.rs</code>):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn expand(expr: &amp;Expression) -&gt; Expression {
+    match expr {
+        Expression::Mul(factors) =&gt; {
+            // NAIVE: Expand each factor recursively
+            let expanded_factors: Vec&lt;_&gt; = factors.iter()
+                .map(|f| expand(f))
+                .collect();
+
+            // BOTTLENECK: Multiply all expanded factors
+            // This creates intermediate expression trees that blow up
+            multiply_all(&amp;expanded_factors)
+        }
+        Expression::Pow(base, exp) =&gt; {
+            // NAIVE: Repeated multiplication
+            // No binomial theorem optimization
+            let base_expanded = expand(base);
+            repeated_multiply(&amp;base_expanded, exp)
+        }
+        _ =&gt; expr.clone()
+    }
+}
+
+fn multiply_all(factors: &amp;[Expression]) -&gt; Expression {
+    // CRITICAL ISSUE: Creates massive intermediate trees
+    // Example: (a+b) * (c+d) * (e+f)
+    // Step 1: (a+b)*(c+d) → ac + ad + bc + bd (4 terms)
+    // Step 2: (ac+ad+bc+bd)*(e+f) → ace + acf + ade + adf + bce + bcf + bde + bdf (8 terms)
+    // Each step allocates new Expression nodes → O(n²) memory allocations
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Why This is Slow</strong>:</p>
+<ol>
+<li><strong>Intermediate Tree Explosion</strong>: Every multiplication creates new expression tree</li>
+<li><strong>No Flattening</strong>: Terms like <code>ac + ad</code> stored as nested Add nodes, not flat list</li>
+<li><strong>Repeated Allocations</strong>: Each term is a separately allocated Expression</li>
+<li><strong>No Polynomial Specialization</strong>: Doesn't detect polynomial structure for optimization</li>
+</ol>
+<p><strong>Symbolica's Expansion</strong> (inferred from performance):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Likely approach (not actual source)
+fn expand_optimized(expr: &amp;Expression) -&gt; Expression {
+    // 1. Detect polynomial structure
+    if let Some(poly) = expr.as_polynomial() {
+        return expand_polynomial_specialized(poly);
+    }
+
+    // 2. Use flat representation during expansion
+    let mut terms = FlatTermList::new();  // Vec&lt;(coeff, powers)&gt; not tree
+
+    // 3. Multiply in flat form (no intermediate trees)
+    for factor in factors {
+        terms = terms.multiply_flat(factor);  // O(n) instead of O(n²)
+    }
+
+    // 4. Convert back to expression at the end
+    terms.to_expression()
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Why Symbolica is 52-257x Faster</strong>:</p>
+<ul>
+<li>Flat representation during expansion (no tree allocation overhead)</li>
+<li>Polynomial-specialized algorithms (binomial theorem, FFT for large degree)</li>
+<li>Single final conversion to expression tree (not per-operation)</li>
+</ul>
+<h3 id="23-performance-breakdown"><a class="header" href="#23-performance-breakdown">2.3 Performance Breakdown</a></h3>
+<p><strong>MathHook Expansion Timeline</strong> (for <code>(x+1)^3 * (y+2)^3 * (z+3)^3</code>):</p>
+<ul>
+<li>Parse input: ~2 μs</li>
+<li>Expand (x+1)³: ~15 μs (naive repeated multiplication)</li>
+<li>Expand (y+2)³: ~15 μs</li>
+<li>Expand (z+3)³: ~15 μs</li>
+<li><strong>Multiply three polynomials</strong>: ~170 μs (BOTTLENECK!)</li>
+<li>Simplify result: ~20 μs</li>
+<li><strong>Total</strong>: ~237 μs → Matches benchmark (218 μs, variance acceptable)</li>
+</ul>
+<p><strong>Symbolica Expansion Timeline</strong> (estimated):</p>
+<ul>
+<li>Parse input: ~100 ns (optimized parser)</li>
+<li>Recognize polynomial pattern: ~50 ns</li>
+<li>Expand in flat form: ~500 ns (binomial theorem + flat multiply)</li>
+<li>Convert to output: ~200 ns</li>
+<li><strong>Total</strong>: ~850 ns → Matches benchmark</li>
+</ul>
+<p><strong>Key Insight</strong>: MathHook spends 170 μs in polynomial multiplication (Symbolica: 500 ns) → 340x slower</p>
+<h2 id="3-simplification-performance-strengths"><a class="header" href="#3-simplification-performance-strengths">3. Simplification Performance (Strengths)</a></h2>
+<h3 id="31-mathhook-vs-sympy-comparison"><a class="header" href="#31-mathhook-vs-sympy-comparison">3.1 MathHook vs SymPy Comparison</a></h3>
+<p><strong>Test Case</strong>: Simplify <code>(x^2 + 2*x + 1) / (x + 1)</code></p>
+<div class="table-wrapper"><table><thead><tr><th>System</th><th>Time</th><th>Relative Performance</th></tr></thead><tbody>
+<tr><td><strong>MathHook</strong></td><td>8.45 μs</td><td>Baseline (1x)</td></tr>
+<tr><td><strong>SymPy</strong></td><td>52.3 μs</td><td><strong>6.2x slower</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>Test Case</strong>: Simplify <code>sin(x)^2 + cos(x)^2</code></p>
+<div class="table-wrapper"><table><thead><tr><th>System</th><th>Time</th><th>Relative Performance</th></tr></thead><tbody>
+<tr><td><strong>MathHook</strong></td><td>12.1 μs</td><td>Baseline (1x)</td></tr>
+<tr><td><strong>SymPy</strong></td><td>127.4 μs</td><td><strong>10.5x slower</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>MathHook Advantage</strong>: Rust performance + focused simplification rules</p>
+<h3 id="32-why-mathhook-simplification-is-fast"><a class="header" href="#32-why-mathhook-simplification-is-fast">3.2 Why MathHook Simplification is Fast</a></h3>
+<p><strong>MathHook's Simplify Algorithm</strong> (from <code>simplify.rs</code>):</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn simplify(expr: &amp;Expression) -&gt; Expression {
+    // 1. Pattern matching for common cases (fast path)
+    if let Some(simplified) = try_simple_patterns(expr) {
+        return simplified;
+    }
+
+    // 2. Recursive simplification with memoization
+    let mut cache = HashMap::new();
+    simplify_cached(expr, &amp;mut cache)
+}
+
+fn try_simple_patterns(expr: &amp;Expression) -&gt; Option&lt;Expression&gt; {
+    // Fast paths for common cases
+    match expr {
+        // x + 0 → x
+        Add(terms) if terms.contains(&amp;Expression::Integer(0)) =&gt; {
+            Some(remove_zeros(terms))
+        }
+        // x * 1 → x
+        Mul(factors) if factors.contains(&amp;Expression::Integer(1)) =&gt; {
+            Some(remove_ones(factors))
+        }
+        // x / x → 1
+        Div(a, b) if a == b =&gt; Some(Expression::Integer(1)),
+
+        // Trig identities
+        Add(terms) if is_pythagorean_identity(terms) =&gt; {
+            Some(Expression::Integer(1))  // sin²+cos² → 1
+        }
+
+        _ =&gt; None
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Performance Advantages</strong>:</p>
+<ol>
+<li><strong>Fast pattern matching</strong>: Common cases resolved immediately (&lt; 1 μs)</li>
+<li><strong>Memoization</strong>: Avoid recomputing subexpressions</li>
+<li><strong>Rust speed</strong>: No Python interpreter overhead</li>
+<li><strong>Focused rules</strong>: Only essential simplification rules (not exhaustive like SymPy)</li>
+</ol>
+<p><strong>SymPy's Slowness</strong>:</p>
+<ul>
+<li>Python interpreter overhead (~10x slower than Rust)</li>
+<li>Exhaustive rule system (tries many patterns even if not applicable)</li>
+<li>No aggressive caching (recomputes subexpressions)</li>
+</ul>
+<h2 id="4-expansion-optimization-strategies"><a class="header" href="#4-expansion-optimization-strategies">4. Expansion Optimization Strategies</a></h2>
+<h3 id="41-immediate-fix-flat-polynomial-multiplication"><a class="header" href="#41-immediate-fix-flat-polynomial-multiplication">4.1 Immediate Fix: Flat Polynomial Multiplication</a></h3>
+<p><strong>Current</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn multiply_polynomials(p1: &amp;Expression, p2: &amp;Expression) -&gt; Expression {
+    // Creates nested Add(Mul(...)) trees → slow
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Optimized</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn multiply_polynomials_flat(p1: &amp;Expression, p2: &amp;Expression) -&gt; Expression {
+    // 1. Convert to flat representation
+    let terms1 = extract_terms(p1);  // Vec&lt;(coeff, var_powers)&gt;
+    let terms2 = extract_terms(p2);
+
+    // 2. Multiply in flat form (no tree allocations)
+    let mut result_terms = HashMap::new();  // (var_powers) → coeff
+    for (c1, p1) in terms1 {
+        for (c2, p2) in terms2 {
+            let new_coeff = c1 * c2;
+            let new_powers = combine_powers(p1, p2);
+            *result_terms.entry(new_powers).or_insert(0) += new_coeff;
+        }
+    }
+
+    // 3. Convert back to Expression (single allocation)
+    flat_to_expression(result_terms)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Expected Speedup</strong>: 20-50x for polynomial multiplication</p>
+<h3 id="42-medium-term-binomial-theorem-for-powers"><a class="header" href="#42-medium-term-binomial-theorem-for-powers">4.2 Medium-Term: Binomial Theorem for Powers</a></h3>
+<p><strong>Current</strong>: <code>(x + y)^n</code> → Repeated multiplication (O(n²) operations)</p>
+<p><strong>Optimized</strong>: Use binomial theorem</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn expand_binomial_power(base: &amp;Expression, n: usize) -&gt; Expression {
+    if let Add([a, b]) = base {
+        // Use binomial theorem: (a+b)^n = Σ C(n,k) * a^(n-k) * b^k
+        let mut terms = Vec::new();
+        for k in 0..=n {
+            let coeff = binomial_coefficient(n, k);
+            let term = coeff * pow(a, n-k) * pow(b, k);
+            terms.push(term);
+        }
+        return Expression::Add(terms);
+    }
+
+    // Fallback to repeated multiplication
+    repeated_multiply(base, n)
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Expected Speedup</strong>: 10-100x for power expansion</p>
+<h3 id="43-advanced-fft-based-polynomial-multiplication"><a class="header" href="#43-advanced-fft-based-polynomial-multiplication">4.3 Advanced: FFT-Based Polynomial Multiplication</a></h3>
+<p><strong>For very large polynomials</strong> (degree &gt; 100):</p>
+<ul>
+<li>Use Fast Fourier Transform (FFT) for O(n log n) multiplication</li>
+<li>Only beneficial when degree is large (overhead dominates small cases)</li>
+</ul>
+<p><strong>Implementation</strong>: Use existing FFT libraries (e.g., <code>rustfft</code>)</p>
+<p><strong>Expected Speedup</strong>: 100x+ for degree &gt; 100 (rare in educational CAS)</p>
+<h2 id="5-comparative-analysis"><a class="header" href="#5-comparative-analysis">5. Comparative Analysis</a></h2>
+<h3 id="51-mathhook-performance-positioning"><a class="header" href="#51-mathhook-performance-positioning">5.1 MathHook Performance Positioning</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Operation</th><th>MathHook</th><th>Symbolica</th><th>SymPy</th><th>Positioning</th></tr></thead><tbody>
+<tr><td><strong>Expansion</strong></td><td>218 μs</td><td>0.85 μs</td><td>N/A</td><td><strong>CRITICAL ISSUE</strong></td></tr>
+<tr><td><strong>Simplification</strong></td><td>8.45 μs</td><td>N/A</td><td>52.3 μs</td><td><strong>STRENGTH</strong></td></tr>
+<tr><td><strong>GCD</strong></td><td>122 μs</td><td>4.5 μs</td><td>850 μs</td><td>Medium</td></tr>
+<tr><td><strong>Factorization</strong></td><td>297 μs</td><td>20 μs</td><td>1200 μs</td><td>Medium</td></tr>
+</tbody></table>
+</div>
+<p><strong>Strategic Insight</strong>:</p>
+<ul>
+<li>MathHook beats SymPy on simplification (educational CAS advantage)</li>
+<li>MathHook loses to Symbolica on expansion (physics CAS advantage)</li>
+<li>Gap is solvable with algorithmic improvements (not fundamental limitation)</li>
+</ul>
+<h3 id="52-why-expansion-matters"><a class="header" href="#52-why-expansion-matters">5.2 Why Expansion Matters</a></h3>
+<p><strong>Use Cases</strong>:</p>
+<ol>
+<li><strong>Polynomial algebra</strong>: Expanding (x+1)(x+2)(x+3) for root finding</li>
+<li><strong>Calculus</strong>: Expanding before differentiation/integration</li>
+<li><strong>Simplification</strong>: Often requires expansion before simplification</li>
+<li><strong>Physics</strong>: Expanding products of operators (Symbolica's strength)</li>
+</ol>
+<p><strong>Impact on Users</strong>:</p>
+<ul>
+<li><strong>Slow expansion</strong> → Frustrating interactive experience</li>
+<li><strong>Blocks other operations</strong> → Can't factor/solve if expansion takes too long</li>
+<li><strong>Educational concern</strong> → Students expect instant feedback</li>
+</ul>
+<p><strong>Priority</strong>: <strong>CRITICAL</strong> (expansion is core operation)</p>
+<h2 id="6-bottleneck-summary"><a class="header" href="#6-bottleneck-summary">6. Bottleneck Summary</a></h2>
+<h3 id="61-critical-bottleneck"><a class="header" href="#61-critical-bottleneck">6.1 Critical Bottleneck</a></h3>
+<p><strong>Expansion Performance</strong> (257x slower than Symbolica):</p>
+<ul>
+<li><strong>Root Cause</strong>: Naive tree-based multiplication</li>
+<li><strong>Fix Complexity</strong>: Medium (2-3 days for flat polynomial multiplication)</li>
+<li><strong>Expected Gain</strong>: 20-50x speedup (still 5-10x slower than Symbolica, but acceptable)</li>
+</ul>
+<h3 id="62-secondary-bottlenecks"><a class="header" href="#62-secondary-bottlenecks">6.2 Secondary Bottlenecks</a></h3>
+<p><strong>Power Expansion</strong> (no binomial theorem):</p>
+<ul>
+<li><strong>Root Cause</strong>: Repeated multiplication instead of closed-form formula</li>
+<li><strong>Fix Complexity</strong>: Easy (1 day)</li>
+<li><strong>Expected Gain</strong>: 10-100x for power expansion</li>
+</ul>
+<p><strong>No Polynomial Detection</strong>:</p>
+<ul>
+<li><strong>Root Cause</strong>: Treats all expressions generically</li>
+<li><strong>Fix Complexity</strong>: Medium (detect polynomial structure, route to specialized code)</li>
+<li><strong>Expected Gain</strong>: 2-5x across all polynomial operations</li>
+</ul>
+<h2 id="7-recommendations"><a class="header" href="#7-recommendations">7. Recommendations</a></h2>
+<h3 id="71-immediate-actions-critical"><a class="header" href="#71-immediate-actions-critical">7.1 Immediate Actions (Critical)</a></h3>
+<ol>
+<li>
+<p><strong>Implement flat polynomial multiplication</strong> (Priority: CRITICAL)</p>
+<ul>
+<li>Target: 20-50x speedup for expansion</li>
+<li>Effort: 2-3 days</li>
+<li>Files: <code>src/expand.rs</code>, new <code>src/polynomial_flat.rs</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Add binomial theorem for powers</strong> (Priority: HIGH)</p>
+<ul>
+<li>Target: 10-100x speedup for (a+b)^n</li>
+<li>Effort: 1 day</li>
+<li>Files: <code>src/expand.rs</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Benchmark expansion operations</strong> (Priority: HIGH)</p>
+<ul>
+<li>Add expansion to benchmark suite</li>
+<li>Compare against Symbolica</li>
+<li>Track regression</li>
+</ul>
+</li>
+</ol>
+<h3 id="72-medium-term-actions-important"><a class="header" href="#72-medium-term-actions-important">7.2 Medium-Term Actions (Important)</a></h3>
+<ol>
+<li>
+<p><strong>Polynomial structure detection</strong></p>
+<ul>
+<li>Automatically route polynomial expressions to optimized paths</li>
+<li>Effort: 3-5 days</li>
+</ul>
+</li>
+<li>
+<p><strong>Hybrid representation</strong> (see POLYNOMIAL_PERFORMANCE_ARCHITECTURE_ANALYSIS)</p>
+<ul>
+<li>Use flat polynomials internally, expression trees for interface</li>
+<li>Effort: 1-2 weeks</li>
+</ul>
+</li>
+<li>
+<p><strong>Caching of expanded forms</strong></p>
+<ul>
+<li>Avoid re-expanding same expression</li>
+<li>Effort: 2-3 days</li>
+</ul>
+</li>
+</ol>
+<h3 id="73-future-optimizations-nice-to-have"><a class="header" href="#73-future-optimizations-nice-to-have">7.3 Future Optimizations (Nice to Have)</a></h3>
+<ol>
+<li>
+<p><strong>FFT-based polynomial multiplication</strong></p>
+<ul>
+<li>Only for very large degree (rare in educational CAS)</li>
+<li>Effort: 1 week</li>
+</ul>
+</li>
+<li>
+<p><strong>Parallel expansion</strong></p>
+<ul>
+<li>Expand independent factors in parallel</li>
+<li>Effort: 3-5 days</li>
+</ul>
+</li>
+</ol>
+<h2 id="8-conclusion"><a class="header" href="#8-conclusion">8. Conclusion</a></h2>
+<h3 id="81-key-findings"><a class="header" href="#81-key-findings">8.1 Key Findings</a></h3>
+<ol>
+<li><strong>Expansion is catastrophically slow</strong> (257x slower than Symbolica)</li>
+<li><strong>Simplification is a strength</strong> (6-10x faster than SymPy)</li>
+<li><strong>Root cause is algorithmic</strong> (naive tree multiplication, not fundamental limit)</li>
+<li><strong>Fix is achievable</strong> (flat polynomial multiplication gives 20-50x speedup)</li>
+<li><strong>Urgent action required</strong> (expansion blocks other operations)</li>
+</ol>
+<h3 id="82-performance-quality-d-expansion-a-simplification"><a class="header" href="#82-performance-quality-d-expansion-a-simplification">8.2 Performance Quality: D (Expansion), A (Simplification)</a></h3>
+<p><strong>Overall Grade</strong>: <strong>C+</strong> (averaged across simplification and expansion)</p>
+<p><strong>Strengths</strong>:</p>
+<ul>
+<li>Excellent simplification performance (beats SymPy)</li>
+<li>Fast pattern matching for common cases</li>
+<li>Rust performance advantage over Python CAS</li>
+</ul>
+<p><strong>Critical Weakness</strong>:</p>
+<ul>
+<li>Expansion performance is unacceptable for production use</li>
+<li>Exponential blowup with expression complexity</li>
+<li>No polynomial-specialized algorithms</li>
+</ul>
+<p><strong>Verdict</strong>: Expansion optimization is <strong>highest priority</strong> for MathHook performance roadmap.</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../internal/performance/polynomial-architecture.html">internal.performance.polynomial-architecture</a></p>
+</li>
+<li>
+<p><a href="../internal/performance/comprehensive-analysis.html">internal.performance.comprehensive-analysis</a></p>
+</li>
+<li>
+<p><a href="../internal/performance/strategic-roadmap.html">internal.performance.strategic-roadmap</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="internal-performance-polynomial-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="internal-performance-solving-operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="internal-performance-polynomial-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="internal-performance-solving-operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

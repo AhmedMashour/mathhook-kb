@@ -1,0 +1,554 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Crate Structure - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/architecture-crate-structure.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="crate-structure"><a class="header" href="#crate-structure">Crate Structure</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>architecture.crate-structure</code></p>
+</blockquote>
+<p>MathHook workspace organization with specialized crates for different concerns.
+Covers the modular architecture from core mathematical engine to language bindings.</p>
+<h1 id="crate-structure-1"><a class="header" href="#crate-structure-1">Crate Structure</a></h1>
+<p><strong>Last Updated:</strong> 2025-12-14T1730</p>
+<p>MathHook is organized as a Rust workspace with specialized crates for different concerns.</p>
+<h2 id="workspace-overview"><a class="header" href="#workspace-overview">Workspace Overview</a></h2>
+<pre><code>mathhook/
+├── mathhook-core/       # Core mathematical engine
+├── mathhook-macros/     # Procedural macros
+├── mathhook/            # High-level user API
+├── mathhook-python/     # Python bindings (PyO3)
+├── mathhook-node/       # Node.js bindings (NAPI)
+└── mathhook-benchmarks/ # Performance benchmarks
+</code></pre>
+<h2 id="mathhook-core"><a class="header" href="#mathhook-core">mathhook-core</a></h2>
+<p>The core mathematical engine providing fundamental types and operations.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Expression type and AST representation</li>
+<li>Mathematical operations (simplification, evaluation, differentiation)</li>
+<li>Parser implementation (LALRPOP-based)</li>
+<li>Special function implementations</li>
+<li>Polynomial operations</li>
+<li>Solver algorithms</li>
+</ul>
+<p><strong>Key Types:</strong></p>
+<ul>
+<li><code>Expression</code> - 32-byte AST node (cache-optimized)</li>
+<li><code>Number</code> - 16-byte tagged union (integer/rational/float/complex)</li>
+<li><code>Symbol</code> - Interned strings for O(1) equality</li>
+</ul>
+<p><strong>Public API:</strong></p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::{Expression, symbol, expr};
+
+let x = symbol!(x);
+let polynomial = expr!(x^2 + 2*x + 1);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="mathhook-macros"><a class="header" href="#mathhook-macros">mathhook-macros</a></h2>
+<p>Procedural macros for ergonomic expression creation. All macros are re-exported by <code>mathhook-core</code> for convenience.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Compile-time code generation for symbols and expressions</li>
+<li>Natural mathematical syntax parsing</li>
+<li>Type inference for symbol kinds (scalar, matrix, operator, quaternion)</li>
+</ul>
+<h3 id="available-macros"><a class="header" href="#available-macros">Available Macros</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Macro</th><th>Purpose</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>symbol!(name)</code></td><td>Create scalar symbol</td><td><code>symbol!(x)</code></td></tr>
+<tr><td><code>symbol!(name; type)</code></td><td>Create typed symbol</td><td><code>symbol!(A; matrix)</code></td></tr>
+<tr><td><code>symbols![...]</code></td><td>Create multiple symbols</td><td><code>symbols![x, y, z]</code></td></tr>
+<tr><td><code>function!(name, args...)</code></td><td>Create function call</td><td><code>function!(sin, x)</code></td></tr>
+<tr><td><code>expr!(...)</code></td><td>Create expression with math syntax</td><td><code>expr!(x^2 + 2*x + 1)</code></td></tr>
+</tbody></table>
+</div>
+<h3 id="symbol-types"><a class="header" href="#symbol-types">Symbol Types</a></h3>
+<p>Symbols can be declared with different algebraic properties:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_macros::*;
+
+// Scalar (commutative) - default
+let x = symbol!(x);
+
+// Matrix (noncommutative): A*B ≠ B*A
+let a = symbol!(A; matrix);
+let b = symbol!(B; matrix);
+
+// Operator (noncommutative): [x,p] = xp - px ≠ 0
+let p = symbol!(p; operator);
+
+// Quaternion (noncommutative): i*j = k, j*i = -k
+let i = symbol!(i; quaternion);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="expression-syntax"><a class="header" href="#expression-syntax">Expression Syntax</a></h3>
+<p>The <code>expr!</code> macro supports full mathematical syntax with natural operator precedence:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_macros::expr;
+
+// Arithmetic operations
+expr!(42)           // Integer literal
+expr!(3.14)         // Float literal
+expr!(x + y)        // Addition
+expr!(x - y)        // Subtraction (becomes x + (-1)*y)
+expr!(x * y)        // Multiplication
+expr!(x / y)        // Division (becomes x * y^(-1))
+
+// Power operations - THREE equivalent syntaxes
+expr!(x ^ 2)        // Caret (natural math notation)
+expr!(x ** 2)       // Double-star (Python-style)
+expr!(x.pow(2))     // Method call
+
+// Mathematical precedence (^ binds tighter than * and /)
+expr!(2 * x ^ 2)    // Parsed as 2 * (x^2), NOT (2*x)^2
+expr!(a * x^2 + b*x + c)  // Quadratic - no parentheses needed
+
+// Right-associativity for power
+expr!(2 ^ 3 ^ 4)    // Parsed as 2^(3^4) = 2^81
+
+// Comparison operators
+expr!(x == y)       // Equality
+expr!(x &lt; y)        // Less than
+expr!(x &gt; y)        // Greater than
+expr!(x &lt;= y)       // Less than or equal
+expr!(x &gt;= y)       // Greater than or equal
+
+// Method calls
+expr!(x.abs())      // Absolute value
+expr!(x.sqrt())     // Square root
+expr!(x.simplify()) // Simplify expression
+
+// Function calls (any arity)
+expr!(sin(x))       // Unary function
+expr!(log(x, base)) // Binary function
+expr!(f(a, b, c))   // N-ary function
+
+// Complex nested expressions
+expr!(sin(x^2) + cos(y^2))
+expr!((x + 1) * (x - 1))
+expr!(a*x^3 + b*x^2 + c*x + d)
+<span class="boring">}</span></code></pre></pre>
+<h3 id="important-runtime-variables"><a class="header" href="#important-runtime-variables">Important: Runtime Variables</a></h3>
+<p>Macros capture identifiers as <strong>symbols</strong>, not values. Use explicit API for runtime values:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::Expression;
+
+// ❌ WRONG - creates Symbol("i"), not integers
+for i in 0..10 {
+    expr!(i)  // Creates symbol "i" every iteration!
+}
+
+// ✅ CORRECT - use explicit API for runtime values
+for i in 0..10 {
+    Expression::integer(i)
+}
+
+// ❌ WRONG - creates Symbol("val")
+let val = 42;
+expr!(val)
+
+// ✅ CORRECT
+let val = 42;
+Expression::integer(val)
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Rule:</strong> If the value comes from a variable, loop, or conditional → use explicit API.</p>
+<h3 id="macro-implementation"><a class="header" href="#macro-implementation">Macro Implementation</a></h3>
+<p>All macros are <strong>procedural macros</strong> implemented using <code>syn</code> and <code>quote</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// mathhook-macros/src/lib.rs
+use proc_macro::TokenStream;
+
+#[proc_macro]
+pub fn symbol(input: TokenStream) -&gt; TokenStream {
+    // Parse and generate Symbol construction code
+}
+
+#[proc_macro]
+pub fn expr(input: TokenStream) -&gt; TokenStream {
+    // Parse mathematical syntax and generate Expression AST
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="re-exports"><a class="header" href="#re-exports">Re-exports</a></h3>
+<p>For convenience, <code>mathhook-core</code> re-exports all macros:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// mathhook-core/src/lib.rs
+pub use mathhook_macros::{symbol, symbols, function, expr};
+<span class="boring">}</span></code></pre></pre>
+<p>Users can import from either crate:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Direct from macros crate
+use mathhook_macros::{symbol, expr};
+
+// Or from core (recommended)
+use mathhook_core::{symbol, expr};
+<span class="boring">}</span></code></pre></pre>
+<h2 id="mathhook"><a class="header" href="#mathhook">mathhook</a></h2>
+<p>High-level user-facing API that wraps <code>mathhook-core</code> with convenience functions.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Simplified public API</li>
+<li>String-based parsing functions</li>
+<li>Convenience methods and builders</li>
+<li>Integration utilities</li>
+</ul>
+<p><strong>Public API:</strong></p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::{parse, simplify, differentiate};
+
+let result = simplify("x + x")?;  // Returns "2*x"
+let derivative = differentiate("x^2", "x")?;  // Returns "2*x"
+<span class="boring">}</span></code></pre></pre>
+<h2 id="mathhook-python"><a class="header" href="#mathhook-python">mathhook-python</a></h2>
+<p>Python bindings using PyO3 for native performance in Python environments.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Python class wrappers for Rust types</li>
+<li>Type conversion between Python and Rust</li>
+<li>Python-idiomatic API design</li>
+<li>NumPy integration</li>
+</ul>
+<p><strong>Public API:</strong></p>
+<pre><code class="language-python">from mathhook import Symbol, parse, simplify
+
+x = Symbol("x")
+expr = parse("x^2 + 2*x + 1")
+simplified = simplify(expr)
+</code></pre>
+<h2 id="mathhook-node"><a class="header" href="#mathhook-node">mathhook-node</a></h2>
+<p>Node.js/TypeScript bindings using NAPI-RS for native performance in JavaScript environments.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>JavaScript class wrappers for Rust types</li>
+<li>Type conversion between JS and Rust</li>
+<li>TypeScript type definitions</li>
+<li>Promise-based async API where appropriate</li>
+</ul>
+<p><strong>Public API:</strong></p>
+<pre><code class="language-typescript">import { Symbol, parse, simplify } from 'mathhook';
+
+const x = new Symbol("x");
+const expr = parse("x^2 + 2*x + 1");
+const simplified = simplify(expr);
+</code></pre>
+<h2 id="mathhook-benchmarks"><a class="header" href="#mathhook-benchmarks">mathhook-benchmarks</a></h2>
+<p>Performance benchmarking suite using Criterion.</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>Comparative benchmarks vs SymPy, Symbolica</li>
+<li>Regression detection for performance changes</li>
+<li>Memory usage profiling</li>
+<li>Cache efficiency metrics</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<pre><code class="language-bash">./scripts/bench.sh run              # Full benchmark suite
+./scripts/bench.sh quick            # Quick run
+./scripts/bench.sh save baseline    # Save baseline
+./scripts/bench.sh compare baseline # Compare to baseline
+</code></pre>
+<h2 id="dependency-graph"><a class="header" href="#dependency-graph">Dependency Graph</a></h2>
+<pre><code>mathhook-benchmarks
+    ↓
+mathhook  ←─── mathhook-python
+    ↓              ↓
+mathhook-core ←────┘ ←─── mathhook-node
+    ↓
+mathhook-macros
+</code></pre>
+<p><strong>Key Properties:</strong></p>
+<ul>
+<li>No circular dependencies</li>
+<li><code>mathhook-macros</code> has no dependencies on other mathhook crates</li>
+<li><code>mathhook-core</code> depends only on <code>mathhook-macros</code></li>
+<li>Language bindings depend on <code>mathhook-core</code> (not high-level <code>mathhook</code>)</li>
+</ul>
+<h2 id="design-principles"><a class="header" href="#design-principles">Design Principles</a></h2>
+<h3 id="separation-of-concerns"><a class="header" href="#separation-of-concerns">Separation of Concerns</a></h3>
+<p>Each crate has a single, well-defined responsibility:</p>
+<ul>
+<li><strong>macros</strong>: Compile-time code generation only</li>
+<li><strong>core</strong>: Mathematical operations and types</li>
+<li><strong>mathhook</strong>: High-level convenience API</li>
+<li><strong>bindings</strong>: Language-specific wrappers</li>
+</ul>
+<h3 id="performance-isolation"><a class="header" href="#performance-isolation">Performance Isolation</a></h3>
+<p>Performance-critical code lives in <code>mathhook-core</code>:</p>
+<ul>
+<li>32-byte <code>Expression</code> constraint</li>
+<li>Zero-copy operations</li>
+<li>SIMD-enabled bulk operations</li>
+<li>Minimal allocations</li>
+</ul>
+<h3 id="testing-strategy"><a class="header" href="#testing-strategy">Testing Strategy</a></h3>
+<p>Each crate has its own test suite:</p>
+<pre><code class="language-bash">cargo test -p mathhook-macros      # Macro expansion tests
+cargo test -p mathhook-core        # Core math correctness
+cargo test -p mathhook             # High-level API tests
+cargo test -p mathhook-python      # Python binding tests
+cargo test -p mathhook-node        # Node binding tests
+</code></pre>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core</code></li>
+<li><strong>Python</strong>: <code>mathhook</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../architecture/principles.html">architecture.principles</a></p>
+</li>
+<li>
+<p><a href="../architecture/type-system.html">architecture.type-system</a></p>
+</li>
+<li>
+<p><a href="../architecture/memory-layout.html">architecture.memory-layout</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-risch_algorithm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="architecture-function-intelligence.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-risch_algorithm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="architecture-function-intelligence.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

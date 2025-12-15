@@ -1,0 +1,133 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Piecewise Functions }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Define functions with different formulas in different regions, essential for
+modeling discontinuous behavior, conditional logic, step functions, and
+threshold-based systems.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Piecewise function:
+$$f(x) = \begin{cases}
+f_1(x) & \text{if } C_1(x) \\
+f_2(x) & \text{if } C_2(x) \\
+\vdots & \\
+f_n(x) & \text{if } C_n(x) \\
+f_{\text{default}} & \text{otherwise}
+\end{cases}$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Absolute Value Function }
+
+|x| = { x if x ≥ 0, -x if x < 0 }
+
+\begin{lstlisting}
+from sympy import symbols, Piecewise
+
+x = symbols('x')
+abs_x = Piecewise((x, x >= 0), (-x, x < 0))
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Heaviside Step Function }
+
+H(x) = { 0 if x < 0, 1 if x ≥ 0 }
+
+\begin{lstlisting}
+from sympy import symbols, Heaviside
+
+x = symbols('x')
+H = Heaviside(x)  # Built-in Heaviside function
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Tax Bracket Example }
+
+Progressive tax with income thresholds
+
+\begin{lstlisting}
+from sympy import symbols, Piecewise
+
+income = symbols('income')
+
+tax = Piecewise(
+    (0.10 * income, income <= 10000),
+    (1000 + 0.12 * (income - 10000), income <= 40000),
+    (4600 + 0.22 * (income - 40000), True)
+)
+
+tax_owed = tax.subs(income, 50000)
+# Result: 6800
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Differentiation of Piecewise }
+
+Derivative computed piece-by-piece
+
+\begin{lstlisting}
+from sympy import symbols, Piecewise, diff
+
+x = symbols('x')
+f = Piecewise((x**2, x >= 0), (-x**2, x < 0))
+
+df = diff(f, x)
+# Result: Piecewise((2*x, x > 0), (-2*x, x < 0))
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

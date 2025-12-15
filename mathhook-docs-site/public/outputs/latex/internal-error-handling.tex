@@ -1,0 +1,259 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Error Handling & Fallback Architecture }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Analysis of MathHook's error type hierarchy, fallback strategies, and critical gaps
+in domain error handling. Overall score: 6/10 with MEDIUM-HIGH risk level.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Error Handling & Fallback Architecture
+
+> **Last Updated:** 2025-11-28 21:30
+> **Status:** INTERNAL - Remove before publication
+> **Overall Score:** 6/10
+
+---
+
+## Executive Summary
+
+MathHook has a **well-structured error type hierarchy** but suffers from **inconsistent fallback strategies** and **critical gaps** in domain error handling.
+
+**Risk Level:** MEDIUM-HIGH
+
+---
+
+## Quick Scores
+
+| Aspect | Score | Status |
+|--------|-------|--------|
+| Error Type Design | 8/10 | Good |
+| Domain Validation | 4/10 | Critical Gap |
+| Fallback Strategy | 5/10 | Inconsistent |
+| Error Propagation | 6/10 | Partial |
+| Test Coverage | 4/10 | Missing cases |
+| Production Safety | 5/10 | panic! calls exist |
+
+---
+
+## Error Type Hierarchy
+
+```
+MathError (Primary)
+├── DomainError { operation, value, reason }
+├── DivisionByZero
+├── Undefined { expression, reason }
+├── Pole { function, at }
+├── BranchCut { function, value }
+├── NumericOverflow { operation }
+├── MaxIterationsReached { max_iterations }
+├── ConvergenceFailed { reason }
+├── NonNumericalResult { expression }
+└── NotImplemented { feature }
+
+Domain-Specific Errors
+├── ParseError (7 variants)
+├── PolynomialError (8 variants)
+├── SolverError (4 variants)
+├── ODEError / PDEError
+└── FormattingError / SerializationError
+```
+
+**Strengths:**
+- All errors implement `Display` and `std::error::Error`
+- Rich context information
+- Type alias: `MathResult<T> = Result<T, MathError>`
+
+---
+
+## Critical Issue: Silent Symbolic Fallback
+
+**The Problem:** Elementary functions return symbolic representations instead of errors on domain violations.
+
+```rust
+// Current behavior (PROBLEMATIC):
+sqrt(-1)   // Returns "sqrt(-1)" - no error!
+arcsin(2)  // Returns "arcsin(2)" - no error!
+log(-1)    // Returns "ln(-1)" - no error!
+
+// Expected behavior:
+sqrt(-1)   // Should return Err(DomainError)
+arcsin(2)  // Should return Err(DomainError)
+log(-1)    // Should return Err(DomainError) or promote to complex
+```
+
+**Affected Functions:** ALL elementary functions (sqrt, log, trig inverse, etc.)
+
+**Impact:** Users may not realize results are mathematically invalid.
+
+---
+
+## Critical Issue: panic! in Production Code
+
+**Location:** 4 panic! calls in trig function property lookups
+
+```rust
+// In trig_inverse.rs and trig_circular.rs:
+if properties.get("arcsin").is_none() {
+    panic!("arcsin properties not found");  // CRASH!
+}
+```
+
+**Risk:** Application crash (unrecoverable)
+
+**Fix:** Return `Result<T, MathError>` instead of panicking
+
+---
+
+## Fallback Flow Analysis
+
+### What Works (Division by Zero)
+```
+1/0 → evaluate() → detects zero denominator → Err(DivisionByZero)
+```
+
+### What Fails (Domain Violations)
+```
+sqrt(-1) → sqrt_eval::sqrt() → "sqrt(-1)" → evaluate() → "sqrt(-1)" (NO ERROR)
+```
+
+**Root Cause:** Elementary functions return `Expression`, not `Result<Expression, MathError>`
+
+---
+
+## Module Consistency
+
+| Module | Returns Result? | Error Handling |
+|--------|----------------|----------------|
+| core/expression/evaluation | Yes | Good |
+| algebra/solvers | SolverResult (enum) | Partial |
+| functions/elementary | No | Silent fallback |
+| functions/special | No | Silent fallback |
+| parser | ParseError | Good |
+| calculus | Partial | Inconsistent |
+
+---
+
+## Missing Test Coverage
+
+```
+Missing tests for:
+- sqrt(-1) → should error
+- log(0) → should error (pole)
+- log(-1) → should error or complex
+- arcsin(2) → should error
+- tan(pi/2) → should error (pole)
+- 0^0 → should error or warn (indeterminate)
+```
+
+---
+
+## Priority Fixes
+
+### P0: Critical (This Week)
+
+1. **Remove panic! calls** (2-4 hours)
+   - Replace with `Result<T, MathError>` returns
+   - 4 locations in trig functions
+
+2. **Add domain error tests** (1 day)
+   - Create `tests/domain_error_tests.rs`
+   - Cover sqrt, log, inverse trig, poles
+
+### P1: High (Next 2 Weeks)
+
+3. **Elementary functions return Result** (2-3 days)
+   - Change `fn sqrt(arg) -> Expression`
+   - To `fn sqrt(arg) -> Result<Expression, MathError>`
+   - 14+ files affected
+
+4. **Unify SolverResult and SolverError** (1 day)
+   - Change to `Result<SolverResult, SolverError>`
+
+### P2: Medium (Month 1)
+
+5. **Automatic complex domain promotion**
+   - `sqrt(-1)` → automatically convert to `i`
+
+6. **Unify error types**
+   - Single root error type with domain-specific variants
+
+---
+
+## Unwrap Statistics
+
+```
+Total unwrap() calls:     510
+Safe combinators used:    193 (unwrap_or, ok_or, map_err)
+panic! in production:       4 (CRITICAL)
+panic! in tests only:       4 (acceptable)
+```
+
+**Dangerous locations:**
+- `functions/elementary/trigonometric/` - panic on missing properties
+- `solvers/polynomial/` - unwrap on expression builder
+
+---
+
+## Recommendation Summary
+
+| What | Current | Target |
+|------|---------|--------|
+| Elementary functions | `-> Expression` | `-> Result<Expression, MathError>` |
+| Domain violations | Silent symbolic | Return DomainError |
+| panic! calls | 4 in production | 0 in production |
+| Error test coverage | 4/10 | 8/10 |
+
+---
+
+## Detailed Report
+
+For the complete 16-section investigation report, see:
+`claudedocs/ERROR_HANDLING_ARCHITECTURE_2025-11-28_2130.md`
+
+---
+
+*This document is part of the internal investigation series.*
+*See [Overview](./overview.md) for the complete status.*
+
+
+
+
+
+\section{Examples}
+
+
+
+
+
+\end{document}

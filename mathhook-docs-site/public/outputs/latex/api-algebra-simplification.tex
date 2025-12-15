@@ -1,0 +1,211 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic Simplification }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Comprehensive symbolic simplification for mathematical expressions, with full
+support for noncommutative algebra (matrices, operators, quaternions). Implements
+canonical forms and mathematical identities to reduce expressions to simplest form.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Symbolic Simplification
+
+## Overview
+
+MathHook's simplification system transforms expressions to canonical form through:
+- **Arithmetic Simplification**: Collect like terms, flatten operations, remove identities
+- **Power Rule**: Combine like powers ($x^a \cdot x^b \rightarrow x^{a+b}$)
+- **Noncommutative Algebra**: Preserve order for matrices, operators, quaternions
+- **Rational Arithmetic**: Exact computation with arbitrary precision
+
+## Capabilities
+
+### Arithmetic Operations
+- **Addition**: Collects like terms, flattens nested sums, removes 0
+- **Multiplication**: Combines factors, flattens products, removes 1, applies power rule
+- **Power**: Simplifies exponents, distributes when safe (commutative only)
+
+### Noncommutative Algebra
+- **Matrices**: Preserves order ($AB \neq BA$)
+- **Operators**: Quantum mechanics commutators $[x,p] = xp - px$
+- **Quaternions**: $ij = k$ but $ji = -k$
+
+### Numerical Stability
+- **Checked arithmetic**: Integer operations use checked_mul, checked_add
+- **BigInt promotion**: Automatic on overflow
+- **Iterative flattening**: Avoids stack overflow for deeply nested expressions
+
+## Performance
+
+### Targets
+- **Simplification time**: <1ms for expressions with <100 nodes
+- **Memory**: Minimal allocations through iterative flattening
+- **Cache efficiency**: 32-byte expression size (2 per cache line)
+
+### Optimization Strategies
+- **Iterative flattening**: Avoids recursion stack overflow
+- **Early exit**: Returns immediately for identity elements
+- **Power combining**: O(n) grouping of like powers
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Simplification }
+
+Identity elements and constant folding
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Identity elements
+expr = (x + 0) * 1
+simplified = expr.simplify()
+# Result: x
+
+# Constant folding
+expr = 2 + 3
+simplified = expr.simplify()
+# Result: 5
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Power Rule Simplification }
+
+Combine like powers with same base
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Combine like powers
+expr = x**2 * x**3
+simplified = expr.simplify()
+# Result: x^5
+
+# Multiple powers
+expr = x**2 * x**3 * x**4
+simplified = expr.simplify()
+# Result: x^9
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Noncommutative Algebra }
+
+Preserve order for noncommutative symbols
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Scalar symbols (commutative)
+x = symbol('x')
+y = symbol('y')
+expr = y * x
+simplified = expr.simplify()
+# Result: x * y (sorted)
+
+# Matrix symbols (noncommutative)
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+expr = B * A
+simplified = expr.simplify()
+# Result: B * A (order preserved)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Power Distribution (Commutative Only) }
+
+Distribute powers for scalars, not for matrices
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Scalars (commutative)
+x = symbol('x')
+y = symbol('y')
+expr = (x * y)**2
+simplified = expr.simplify()
+# Result: x^2 * y^2
+
+# Matrices (noncommutative)
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+expr = (A * B)**2
+simplified = expr.simplify()
+# Result: (A*B)^2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Rational Arithmetic }
+
+Exact rational computation with arbitrary precision
+
+\begin{lstlisting}
+from mathhook import expr as parse_expr
+
+expr = parse_expr('1/3 + 1/6')
+simplified = expr.simplify()
+# Result: 1/2 (exact rational)
+
+# Arbitrary precision
+expr = parse_expr('1/999999999 + 1/999999999')
+simplified = expr.simplify()
+# Result: 2/999999999 (exact)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,398 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Separation of Variables for PDEs
+
+> **Topic**: `pde.separation-of-variables`
+
+Separation of variables is the fundamental technique for solving linear partial differential
+equations (PDEs) with boundary conditions. This method transforms a PDE into a system of
+ordinary differential equations (ODEs) that can be solved independently, then combines the
+solutions into an infinite series.
+
+
+
+## Mathematical Definition
+
+For a PDE with two independent variables ($x$ and $t$), the **product ansatz** assumes:
+
+$$u(x,t) = X(x) \cdot T(t)$$
+
+where $X(x)$ depends **only** on spatial variable $x$ and $T(t)$ depends **only** on
+temporal variable $t$.
+
+
+
+
+# Separation of Variables for PDEs
+
+**Applies to:** Linear second-order PDEs with separable boundary conditions
+**Equation types:** Heat equation, wave equation, Laplace equation, and more
+**Key idea:** Assume solution is a product of single-variable functions
+**MathHook implementation:** Complete workflow from separation to series solution
+
+## Mathematical Background
+
+### What is Separation of Variables?
+
+For a PDE with two independent variables ($x$ and $t$), the **product ansatz** assumes:
+
+$$u(x,t) = X(x) \cdot T(t)$$
+
+where:
+- $X(x)$ depends **only** on spatial variable $x$
+- $T(t)$ depends **only** on temporal variable $t$
+
+**Key insight:** By substituting this product form into the PDE, we can separate the equation into two independent ODEs—one for $X(x)$ and one for $T(t)$.
+
+### When Does Separation Work?
+
+**Requirements:**
+
+1. **Linear PDE:** The PDE must be linear in $u$ and its derivatives
+2. **Separable boundary conditions:** Boundary conditions must only involve one variable
+3. **Product domain:** Domain must be a product of intervals (e.g., $[0, L] \times [0, \infty)$)
+
+**Common examples:**
+- Heat equation: $\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$
+- Wave equation: $\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}$
+- Laplace equation: $\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$
+
+### The Separation Process (Overview)
+
+1. **Substitute product ansatz** $u(x,t) = X(x)T(t)$ into PDE
+2. **Separate variables:** Divide to get $\frac{f(x)}{g(t)} = \text{constant}$
+3. **Introduce separation constant** $\lambda$: Each side must equal $-\lambda$
+4. **Solve spatial ODE** with boundary conditions → eigenvalues $\lambda_n$ and eigenfunctions $X_n(x)$
+5. **Solve temporal ODE** for each $\lambda_n$ → temporal solutions $T_n(t)$
+6. **Superposition:** General solution is $u(x,t) = \sum_{n=1}^{\infty} c_n X_n(x) T_n(t)$
+7. **Apply initial conditions** → determine coefficients $c_n$ (Fourier series)
+
+
+
+
+
+
+
+
+
+
+
+
+## Examples
+
+
+### Heat Equation with Dirichlet BCs
+
+Solve 1D heat equation with fixed boundary conditions
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let u = symbol!(u);
+let x = symbol!(x);
+let t = symbol!(t);
+let alpha = symbol!(alpha);
+
+let equation = expr!(u);
+let pde = Pde::new(equation, u, vec![x.clone(), t.clone()]);
+
+// Boundary conditions: u(0,t) = 0, u(π,t) = 0
+let bc_left = BoundaryCondition::dirichlet_at(x.clone(), expr!(0), expr!(0));
+let bc_right = BoundaryCondition::dirichlet_at(x.clone(), expr!(pi), expr!(0));
+let bcs = vec![bc_left, bc_right];
+
+// Initial condition: u(x,0) = sin(x)
+let ic = InitialCondition::value(expr!(sin(x)));
+let ics = vec![ic];
+
+let solution = separate_variables(&pde, &bcs, &ics)?;
+// Result: eigenvalues [1, 4, 9, 16, ...], eigenfunctions [sin(x), sin(2x), ...]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, expr
+from mathhook.pde import Pde, BoundaryCondition, InitialCondition, separate_variables
+
+u = symbol('u')
+x = symbol('x')
+t = symbol('t')
+
+pde = Pde(u, u, [x, t])
+
+# Boundary conditions
+bc_left = BoundaryCondition.dirichlet_at(x, expr('0'), expr('0'))
+bc_right = BoundaryCondition.dirichlet_at(x, expr('pi'), expr('0'))
+bcs = [bc_left, bc_right]
+
+# Initial condition
+ic = InitialCondition.value(expr('sin(x)'))
+ics = [ic]
+
+solution = separate_variables(pde, bcs, ics)
+# Result: eigenvalues [1, 4, 9, 16, ...], eigenfunctions [sin(x), sin(2x), ...]
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, expr } = require('mathhook');
+const { Pde, BoundaryCondition, InitialCondition, separateVariables } = require('mathhook/pde');
+
+const u = symbol('u');
+const x = symbol('x');
+const t = symbol('t');
+
+const pde = new Pde(u, u, [x, t]);
+
+// Boundary conditions
+const bcLeft = BoundaryCondition.dirichletAt(x, expr('0'), expr('0'));
+const bcRight = BoundaryCondition.dirichletAt(x, expr('pi'), expr('0'));
+const bcs = [bcLeft, bcRight];
+
+// Initial condition
+const ic = InitialCondition.value(expr('sin(x)'));
+const ics = [ic];
+
+const solution = separateVariables(pde, bcs, ics);
+// Result: eigenvalues [1, 4, 9, 16, ...], eigenfunctions [sin(x), sin(2x), ...]
+
+```
+</details>
+
+
+
+
+
+### Wave Equation
+
+Solve 1D wave equation with Dirichlet boundary conditions
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let u = symbol!(u);
+let x = symbol!(x);
+let t = symbol!(t);
+let L = symbol!(L);
+
+let pde = Pde::new(expr!(u), u, vec![x.clone(), t.clone()]);
+
+let bc_left = BoundaryCondition::dirichlet_at(x.clone(), expr!(0), expr!(0));
+let bc_right = BoundaryCondition::dirichlet_at(x.clone(), expr!(L), expr!(0));
+let bcs = vec![bc_left, bc_right];
+
+// Initial displacement and velocity
+let ic_displacement = InitialCondition::value(expr!(sin(pi * x / L)));
+let ic_velocity = InitialCondition::derivative(expr!(0));
+let ics = vec![ic_displacement, ic_velocity];
+
+let solution = separate_variables(&pde, &bcs, &ics)?;
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, expr
+from mathhook.pde import Pde, BoundaryCondition, InitialCondition, separate_variables
+
+u = symbol('u')
+x = symbol('x')
+t = symbol('t')
+L = symbol('L')
+
+pde = Pde(u, u, [x, t])
+
+bc_left = BoundaryCondition.dirichlet_at(x, expr('0'), expr('0'))
+bc_right = BoundaryCondition.dirichlet_at(x, L, expr('0'))
+bcs = [bc_left, bc_right]
+
+ic_displacement = InitialCondition.value(expr('sin(pi*x/L)'))
+ic_velocity = InitialCondition.derivative(expr('0'))
+ics = [ic_displacement, ic_velocity]
+
+solution = separate_variables(pde, bcs, ics)
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, expr } = require('mathhook');
+const { Pde, BoundaryCondition, InitialCondition, separateVariables } = require('mathhook/pde');
+
+const u = symbol('u');
+const x = symbol('x');
+const t = symbol('t');
+const L = symbol('L');
+
+const pde = new Pde(u, u, [x, t]);
+
+const bcLeft = BoundaryCondition.dirichletAt(x, expr('0'), expr('0'));
+const bcRight = BoundaryCondition.dirichletAt(x, L, expr('0'));
+const bcs = [bcLeft, bcRight];
+
+const icDisplacement = InitialCondition.value(expr('sin(pi*x/L)'));
+const icVelocity = InitialCondition.derivative(expr('0'));
+const ics = [icDisplacement, icVelocity];
+
+const solution = separateVariables(pde, bcs, ics);
+
+```
+</details>
+
+
+
+
+
+### Laplace Equation on Rectangle
+
+Solve Laplace's equation on rectangular domain
+
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::prelude::*;
+
+let u = symbol!(u);
+let x = symbol!(x);
+let y = symbol!(y);
+let a = symbol!(a);
+
+let pde = Pde::new(expr!(u), u, vec![x.clone(), y.clone()]);
+
+let bc_left = BoundaryCondition::dirichlet_at(x.clone(), expr!(0), expr!(0));
+let bc_right = BoundaryCondition::dirichlet_at(x.clone(), expr!(a), expr!(0));
+let bcs = vec![bc_left, bc_right];
+
+let ics = vec![];  // Laplace is elliptic, not time-dependent
+
+let solution = separate_variables(&pde, &bcs, &ics)?;
+
+```
+</details>
+
+
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol, expr
+from mathhook.pde import Pde, BoundaryCondition, separate_variables
+
+u = symbol('u')
+x = symbol('x')
+y = symbol('y')
+a = symbol('a')
+
+pde = Pde(u, u, [x, y])
+
+bc_left = BoundaryCondition.dirichlet_at(x, expr('0'), expr('0'))
+bc_right = BoundaryCondition.dirichlet_at(x, a, expr('0'))
+bcs = [bc_left, bc_right]
+
+ics = []  # Laplace is elliptic
+
+solution = separate_variables(pde, bcs, ics)
+
+```
+</details>
+
+
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol, expr } = require('mathhook');
+const { Pde, BoundaryCondition, separateVariables } = require('mathhook/pde');
+
+const u = symbol('u');
+const x = symbol('x');
+const y = symbol('y');
+const a = symbol('a');
+
+const pde = new Pde(u, u, [x, y]);
+
+const bcLeft = BoundaryCondition.dirichletAt(x, expr('0'), expr('0'));
+const bcRight = BoundaryCondition.dirichletAt(x, a, expr('0'));
+const bcs = [bcLeft, bcRight];
+
+const ics = [];  // Laplace is elliptic
+
+const solution = separateVariables(pde, bcs, ics);
+
+```
+</details>
+
+
+
+
+
+
+
+
+## API Reference
+
+- **Rust**: `mathhook_core::pde::separation_of_variables`
+- **Python**: `mathhook.pde.separation_of_variables`
+- **JavaScript**: `mathhook.pde.separationOfVariables`
+
+
+## See Also
+
+
+- [pde.heat-equation](../pde/heat-equation.md)
+
+- [pde.wave-equation](../pde/wave-equation.md)
+
+- [pde.laplace-equation](../pde/laplace-equation.md)
+
+- [pde.fourier-coefficients](../pde/fourier-coefficients.md)
+
+- [pde.eigenvalue-problems](../pde/eigenvalue-problems.md)
+
+- [pde.boundary-conditions](../pde/boundary-conditions.md)
+
+

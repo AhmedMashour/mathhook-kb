@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Overview - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/internal-overview.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="mathhook-complete-status"><a class="header" href="#mathhook-complete-status">MathHook Complete Status</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>internal.overview</code></p>
+</blockquote>
+<p>Single entry point for all investigation findings on MathHook architecture,
+module status, educational coverage, and priority actions.</p>
+<h1 id="mathhook-complete-status-1"><a class="header" href="#mathhook-complete-status-1">MathHook Complete Status</a></h1>
+<blockquote>
+<p><strong>Last Updated:</strong> 2025-11-28 21:30
+<strong>Status:</strong> INTERNAL - Remove before publication</p>
+</blockquote>
+<p><strong>This is the SINGLE entry point for ALL investigation findings.</strong></p>
+<p>For the complete detailed document, see: <code>claudedocs/MATHHOOK_COMPLETE_STATUS_2025-11-28_2045.md</code></p>
+<hr />
+<h2 id="quick-status"><a class="header" href="#quick-status">Quick Status</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Module</th><th>Score</th><th>Educational</th><th>Ship?</th></tr></thead><tbody>
+<tr><td>ODE</td><td>4.6/5</td><td>90%</td><td>YES (model)</td></tr>
+<tr><td>Solvers</td><td>4.2/5</td><td>100%</td><td>YES</td></tr>
+<tr><td>Calculus</td><td>4.2/5</td><td>60%</td><td>YES</td></tr>
+<tr><td>Matrices</td><td>4.0/5</td><td>10%</td><td>YES (gaps)</td></tr>
+<tr><td>Pattern Match</td><td>3.4/5</td><td>0%</td><td>Hidden</td></tr>
+<tr><td>PDE</td><td>2.4/5</td><td>0%</td><td><strong>NO</strong></td></tr>
+<tr><td><strong>Error Handling</strong></td><td><strong>6/10</strong></td><td>N/A</td><td><strong>Needs Work</strong></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="the-core-problem"><a class="header" href="#the-core-problem">The Core Problem</a></h2>
+<p><strong>Two systems that don't talk:</strong></p>
+<ol>
+<li><strong>Registry</strong> - Has metadata (domains, special values, derivatives, education)</li>
+<li><strong>Implementation</strong> - Hardcoded <code>match name.as_str()</code> in 29+ locations</li>
+</ol>
+<p>Registry is never used for dispatch. Adding new function = 8-10 file edits.</p>
+<p><strong>Exception:</strong> <code>evaluate_function_dispatch()</code> stays hardcoded (5-10ns performance).</p>
+<hr />
+<h2 id="whats-broken"><a class="header" href="#whats-broken">What's Broken</a></h2>
+<h3 id="pde-module"><a class="header" href="#pde-module">PDE Module</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Admits using heuristics, not math
+// Coefficients hardcoded as (1,1,0) for ALL PDEs
+// Boundary conditions: empty function
+<span class="boring">}</span></code></pre></pre>
+<p>All solutions meaningless.</p>
+<h3 id="hidden-apis"><a class="header" href="#hidden-apis">Hidden APIs</a></h3>
+<ul>
+<li>Pattern matching: Complete but not exported</li>
+<li>DerivativeWithSteps: Complete but not exported</li>
+<li>explain_* functions: Complete but not exported</li>
+</ul>
+<h3 id="error-handling-score-610"><a class="header" href="#error-handling-score-610">Error Handling (Score: 6/10)</a></h3>
+<ul>
+<li><strong>Silent Fallbacks</strong>: <code>sqrt(-1)</code> returns symbolic, no error</li>
+<li><strong>panic! in Production</strong>: 4 locations can crash the app</li>
+<li><strong>Missing Tests</strong>: Domain violation scenarios untested</li>
+<li>See <a href="./error-handling.html">Error Handling Architecture</a></li>
+</ul>
+<hr />
+<h2 id="educational-coverage"><a class="header" href="#educational-coverage">Educational Coverage</a></h2>
+<pre><code>Solvers     ████████████ 100%
+ODE         █████████░░░  90%
+Derivatives ████████░░░░  80%
+Limits      ███████░░░░░  70%
+Integration ████░░░░░░░░  40%
+Matrices    █░░░░░░░░░░░  10%
+Pattern     ░░░░░░░░░░░░   0%
+PDE         ░░░░░░░░░░░░   0%
+</code></pre>
+<hr />
+<h2 id="priority-actions"><a class="header" href="#priority-actions">Priority Actions</a></h2>
+<h3 id="p0-this-week-2-hrs"><a class="header" href="#p0-this-week-2-hrs">P0 This Week (2 hrs)</a></h3>
+<ul>
+<li>Export Pattern API (5 min)</li>
+<li>Export DerivativeWithSteps (5 min)</li>
+<li>Fix PDE Symbol::scalar() (1 hr)</li>
+</ul>
+<h3 id="p1-next-2-weeks-20-hrs"><a class="header" href="#p1-next-2-weeks-20-hrs">P1 Next 2 Weeks (20 hrs)</a></h3>
+<ul>
+<li>IntegrationWithSteps trait</li>
+<li>LinearAlgebra messages</li>
+<li>Matrix educational steps</li>
+<li>PDE coefficient extraction</li>
+</ul>
+<h3 id="p2-month-1-40-hrs"><a class="header" href="#p2-month-1-40-hrs">P2 Month 1 (40 hrs)</a></h3>
+<ul>
+<li>Pattern matching education</li>
+<li>PDE boundary conditions</li>
+<li>FunctionProperties extensions</li>
+</ul>
+<hr />
+<h2 id="model-to-follow"><a class="header" href="#model-to-follow">Model to Follow</a></h2>
+<p><strong>ODE module</strong> - Clean enum classification, O(1) registry dispatch, complete educational stepping</p>
+<hr />
+<h2 id="detailed-docs-if-needed"><a class="header" href="#detailed-docs-if-needed">Detailed Docs (If Needed)</a></h2>
+<p>These are superseded by the main document but available for deep specifics:</p>
+<ul>
+<li><a href="./investigation.html">Consolidated Investigation</a> - Original type dispatch audit</li>
+<li><a href="./educational-plan.html">Educational Plan</a> - Phase breakdown</li>
+<li><a href="./type-dispatch-review.html">Type Dispatch Review</a> - Module-by-module scores</li>
+<li><a href="./error-handling.html">Error Handling Architecture</a> - Error handling and fallbacks</li>
+</ul>
+<hr />
+<p><em>This overview supersedes all individual documents.</em>
+<em>Full details: <code>claudedocs/MATHHOOK_COMPLETE_STATUS_2025-11-28_2045.md</code></em></p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../internal/error-handling.html">internal.error-handling</a></p>
+</li>
+<li>
+<p><a href="../internal/educational-plan.html">internal.educational-plan</a></p>
+</li>
+<li>
+<p><a href="../internal/investigation.html">internal.investigation</a></p>
+</li>
+<li>
+<p><a href="../internal/type-dispatch-review.html">internal.type-dispatch-review</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="internal-investigation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="internal-performance-calculus-operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="internal-investigation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="internal-performance-calculus-operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

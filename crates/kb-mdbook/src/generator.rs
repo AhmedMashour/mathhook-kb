@@ -245,7 +245,7 @@ const PAGE_TEMPLATE: &str = r#"---
 {% if math_definition %}
 ## Mathematical Definition
 
-$${{ math_definition }}$$
+{{ math_definition }}
 {% endif %}
 
 {% if has_article %}
@@ -294,6 +294,7 @@ $${{ math_definition }}$$
 
 {{ example.explanation }}
 
+{% if example.rust %}
 <details>
 <summary><b>Rust</b></summary>
 
@@ -301,7 +302,9 @@ $${{ math_definition }}$$
 {{ example.rust }}
 ```
 </details>
+{% endif %}
 
+{% if example.python %}
 <details>
 <summary><b>Python</b></summary>
 
@@ -309,7 +312,9 @@ $${{ math_definition }}$$
 {{ example.python }}
 ```
 </details>
+{% endif %}
 
+{% if example.nodejs %}
 <details>
 <summary><b>JavaScript</b></summary>
 
@@ -317,6 +322,7 @@ $${{ math_definition }}$$
 {{ example.nodejs }}
 ```
 </details>
+{% endif %}
 
 {% if example.output %}
 **Expected Output:**

@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Colab Notebooks - MathHook</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'logic-navy': { 700: '#1e3a5f', 800: '#152a45', 900: '#0d1b2a' },
+            'rust-core': '#E64524',
+            'solve-cyan': '#06B6D4',
+            'chalk': { DEFAULT: '#F5F5F5', 400: '#A3A3A3', 500: '#737373', 600: '#525252' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-up { animation: fade-up 0.6s ease-out forwards; }
+    .notebook-card { animation: fade-up 0.4s ease-out forwards; opacity: 0; }
+  </style>
+</head>
+<body class="min-h-screen bg-logic-navy-900 text-chalk">
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-br from-logic-navy-900 via-logic-navy-800 to-logic-navy-900"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-solve-cyan/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <nav class="sticky top-0 z-50 bg-logic-navy-900/95 backdrop-blur-xl border-b border-logic-navy-700/50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <a href="/" class="flex items-center gap-2">
+          <svg class="w-7 h-7" viewBox="0 0 48 48" fill="none">
+            <defs><linearGradient id="nav-logo" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#E64524"/><stop offset="100%" stop-color="#06B6D4"/></linearGradient></defs>
+            <path d="M12 40 C12 40 12 12 12 10 C12 6 16 4 20 8 L24 16 L28 8 C32 4 36 6 36 10 C36 12 36 40 36 40" stroke="url(#nav-logo)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="text-lg font-semibold"><span class="text-rust-core">Math</span><span class="text-solve-cyan">Hook</span></span>
+        </a>
+        <a href="/outputs" class="text-chalk-400 hover:text-chalk transition-colors">← Back to Outputs</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-10 relative z-10">
+    <div class="mb-10 animate-fade-up">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center">
+          <svg class="w-7 h-7 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
+            <path d="M10 8l6 4-6 4V8z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-chalk">Google Colab Notebooks</h1>
+          <p class="text-chalk-400">One-click execution in the cloud</p>
+        </div>
+      </div>
+      <p class="text-chalk-400 max-w-2xl">Click "Open in Colab" to launch any notebook directly in Google Colab with zero setup required.</p>
+    </div>
+
+    <div class="mb-6 animate-fade-up" style="animation-delay: 0.1s">
+      <input type="text" id="search" placeholder="Search notebooks..." class="w-full max-w-md px-4 py-2 rounded-xl bg-logic-navy-800/50 border border-logic-navy-700/50 text-chalk placeholder-chalk-500 focus:outline-none focus:border-amber-500/50 transition-colors">
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Advanced</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 0ms" data-filename="advanced-assumptions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Assumptions</h3>
+              <p class="text-sm text-chalk-500">advanced-assumptions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-assumptions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 15ms" data-filename="advanced-complex_numbers.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Complex Numbers</h3>
+              <p class="text-sm text-chalk-500">advanced-complex_numbers.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-complex_numbers.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 30ms" data-filename="advanced-differential_equations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Differential Equations</h3>
+              <p class="text-sm text-chalk-500">advanced-differential_equations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-differential_equations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 45ms" data-filename="advanced-evaluation_vs_simplification.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Evaluation Vs Simplification</h3>
+              <p class="text-sm text-chalk-500">advanced-evaluation_vs_simplification.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-evaluation_vs_simplification.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 60ms" data-filename="advanced-matrices.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Matrices</h3>
+              <p class="text-sm text-chalk-500">advanced-matrices.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-matrices.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 75ms" data-filename="advanced-noncommutative_algebra.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Noncommutative Algebra</h3>
+              <p class="text-sm text-chalk-500">advanced-noncommutative_algebra.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-noncommutative_algebra.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 90ms" data-filename="advanced-noncommutative_api_reference.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Noncommutative Api Reference</h3>
+              <p class="text-sm text-chalk-500">advanced-noncommutative_api_reference.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-noncommutative_api_reference.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 105ms" data-filename="advanced-noncommutative_examples.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Noncommutative Examples</h3>
+              <p class="text-sm text-chalk-500">advanced-noncommutative_examples.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-noncommutative_examples.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 120ms" data-filename="advanced-pde-boundary_conditions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Boundary Conditions</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-boundary_conditions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-boundary_conditions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 135ms" data-filename="advanced-pde-classification.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Classification</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-classification.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-classification.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 150ms" data-filename="advanced-pde-examples.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Examples</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-examples.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-examples.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 165ms" data-filename="advanced-pde-fourier_coefficients.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Fourier Coefficients</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-fourier_coefficients.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-fourier_coefficients.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 180ms" data-filename="advanced-pde-heat_equation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Heat Equation</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-heat_equation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-heat_equation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 195ms" data-filename="advanced-pde-laplace_equation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Laplace Equation</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-laplace_equation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-laplace_equation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 210ms" data-filename="advanced-pde-method_of_characteristics.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Method Of Characteristics</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-method_of_characteristics.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-method_of_characteristics.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 225ms" data-filename="advanced-pde-overview.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Overview</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-overview.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-overview.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 240ms" data-filename="advanced-pde-performance.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Performance</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-performance.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-performance.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 255ms" data-filename="advanced-pde-quick_reference.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Quick Reference</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-quick_reference.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-quick_reference.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 270ms" data-filename="advanced-pde-quick_start.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Quick Start</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-quick_start.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-quick_start.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 285ms" data-filename="advanced-pde-registry.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Registry</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-registry.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-registry.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-pde-separation_of_variables.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Separation Of Variables</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-separation_of_variables.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-separation_of_variables.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-pde-sympy_validation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Sympy Validation</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-sympy_validation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-sympy_validation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-pde-technical_guide.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Technical Guide</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-technical_guide.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-technical_guide.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-pde-user_guide.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde User Guide</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-user_guide.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-user_guide.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-pde-wave_equation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pde Wave Equation</h3>
+              <p class="text-sm text-chalk-500">advanced-pde-wave_equation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-pde-wave_equation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-piecewise.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Piecewise</h3>
+              <p class="text-sm text-chalk-500">advanced-piecewise.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-piecewise.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-residue_calculus.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Residue Calculus</h3>
+              <p class="text-sm text-chalk-500">advanced-residue_calculus.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-residue_calculus.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-special_functions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Special Functions</h3>
+              <p class="text-sm text-chalk-500">advanced-special_functions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-special_functions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="advanced-system_solving.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">System Solving</h3>
+              <p class="text-sm text-chalk-500">advanced-system_solving.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/advanced/advanced-system_solving.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Api</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-algebra-simplification.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Algebra Simplification</h3>
+              <p class="text-sm text-chalk-500">api-algebra-simplification.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-algebra-simplification.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-calculus-operations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Calculus Operations</h3>
+              <p class="text-sm text-chalk-500">api-calculus-operations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-calculus-operations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-core-expressions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Core Expressions</h3>
+              <p class="text-sm text-chalk-500">api-core-expressions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-core-expressions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-matrix-operations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Matrix Operations</h3>
+              <p class="text-sm text-chalk-500">api-matrix-operations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-matrix-operations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-parser-latex.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Parser Latex</h3>
+              <p class="text-sm text-chalk-500">api-parser-latex.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-parser-latex.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="api-solver-equations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Solver Equations</h3>
+              <p class="text-sm text-chalk-500">api-solver-equations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/api/api-solver-equations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Appendix</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-changelog.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Changelog</h3>
+              <p class="text-sm text-chalk-500">appendix-changelog.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-changelog.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-errors.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Errors</h3>
+              <p class="text-sm text-chalk-500">appendix-errors.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-errors.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-faq.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Faq</h3>
+              <p class="text-sm text-chalk-500">appendix-faq.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-faq.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-glossary.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Glossary</h3>
+              <p class="text-sm text-chalk-500">appendix-glossary.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-glossary.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-notation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Notation</h3>
+              <p class="text-sm text-chalk-500">appendix-notation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-notation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="appendix-risch_algorithm.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Risch Algorithm</h3>
+              <p class="text-sm text-chalk-500">appendix-risch_algorithm.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/appendix/appendix-risch_algorithm.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Architecture</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-crate-structure.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Crate Structure</h3>
+              <p class="text-sm text-chalk-500">architecture-crate-structure.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-crate-structure.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-function-intelligence.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Function Intelligence</h3>
+              <p class="text-sm text-chalk-500">architecture-function-intelligence.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-function-intelligence.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-memory-layout.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Memory Layout</h3>
+              <p class="text-sm text-chalk-500">architecture-memory-layout.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-memory-layout.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-principles.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Principles</h3>
+              <p class="text-sm text-chalk-500">architecture-principles.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-principles.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-thread-safety.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Thread Safety</h3>
+              <p class="text-sm text-chalk-500">architecture-thread-safety.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-thread-safety.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="architecture-type-system.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Type System</h3>
+              <p class="text-sm text-chalk-500">architecture-type-system.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/architecture/architecture-type-system.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Bindings</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="bindings-nodejs.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Nodejs</h3>
+              <p class="text-sm text-chalk-500">bindings-nodejs.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/bindings/bindings-nodejs.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="bindings-python.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Python</h3>
+              <p class="text-sm text-chalk-500">bindings-python.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/bindings/bindings-python.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="bindings-wasm.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Wasm</h3>
+              <p class="text-sm text-chalk-500">bindings-wasm.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/bindings/bindings-wasm.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Contributing</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-architecture-reference.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Architecture Reference</h3>
+              <p class="text-sm text-chalk-500">contributing-architecture-reference.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-architecture-reference.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-correctness.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Correctness</h3>
+              <p class="text-sm text-chalk-500">contributing-correctness.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-correctness.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-development.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Development</h3>
+              <p class="text-sm text-chalk-500">contributing-development.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-development.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-documentation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Documentation</h3>
+              <p class="text-sm text-chalk-500">contributing-documentation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-documentation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-style.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Style</h3>
+              <p class="text-sm text-chalk-500">contributing-style.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-style.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="contributing-testing.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Testing</h3>
+              <p class="text-sm text-chalk-500">contributing-testing.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/contributing/contributing-testing.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Core</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="core-constants.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Constants</h3>
+              <p class="text-sm text-chalk-500">core-constants.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/core/core-constants.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="core-expressions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Expressions</h3>
+              <p class="text-sm text-chalk-500">core-expressions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/core/core-expressions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="core-functions.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Functions</h3>
+              <p class="text-sm text-chalk-500">core-functions.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/core/core-functions.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="core-pattern-matching.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Pattern Matching</h3>
+              <p class="text-sm text-chalk-500">core-pattern-matching.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/core/core-pattern-matching.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="core-symbols-numbers.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Symbols Numbers</h3>
+              <p class="text-sm text-chalk-500">core-symbols-numbers.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/core/core-symbols-numbers.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Educational</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="educational-api.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Api</h3>
+              <p class="text-sm text-chalk-500">educational-api.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/educational/educational-api.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="educational-messages.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Messages</h3>
+              <p class="text-sm text-chalk-500">educational-messages.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/educational/educational-messages.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="educational-step_by_step.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Step By Step</h3>
+              <p class="text-sm text-chalk-500">educational-step_by_step.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/educational/educational-step_by_step.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Evaluation</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="evaluation-function-evaluation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Function Evaluation</h3>
+              <p class="text-sm text-chalk-500">evaluation-function-evaluation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/evaluation/evaluation-function-evaluation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Getting</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-basic-usage.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Basic Usage</h3>
+              <p class="text-sm text-chalk-500">getting-started-basic-usage.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-basic-usage.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-common-patterns.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Common Patterns</h3>
+              <p class="text-sm text-chalk-500">getting-started-common-patterns.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-common-patterns.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-installation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Installation</h3>
+              <p class="text-sm text-chalk-500">getting-started-installation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-installation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-introduction.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Introduction</h3>
+              <p class="text-sm text-chalk-500">getting-started-introduction.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-introduction.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-learning-paths.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Learning Paths</h3>
+              <p class="text-sm text-chalk-500">getting-started-learning-paths.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-learning-paths.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="getting-started-quick-start.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Started Quick Start</h3>
+              <p class="text-sm text-chalk-500">getting-started-quick-start.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/getting/getting-started-quick-start.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Internal</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-complexity-findings.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Complexity Findings</h3>
+              <p class="text-sm text-chalk-500">internal-complexity-findings.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-complexity-findings.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-educational-effort-estimation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Educational Effort Estimation</h3>
+              <p class="text-sm text-chalk-500">internal-educational-effort-estimation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-educational-effort-estimation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-educational-plan.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Educational Plan</h3>
+              <p class="text-sm text-chalk-500">internal-educational-plan.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-educational-plan.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-error-handling.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Error Handling</h3>
+              <p class="text-sm text-chalk-500">internal-error-handling.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-error-handling.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-feature-gap-tests.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Feature Gap Tests</h3>
+              <p class="text-sm text-chalk-500">internal-feature-gap-tests.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-feature-gap-tests.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-investigation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Investigation</h3>
+              <p class="text-sm text-chalk-500">internal-investigation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-investigation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-overview.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Overview</h3>
+              <p class="text-sm text-chalk-500">internal-overview.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-overview.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-performance-calculus-operations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Performance Calculus Operations</h3>
+              <p class="text-sm text-chalk-500">internal-performance-calculus-operations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-performance-calculus-operations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-performance-polynomial-architecture.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Performance Polynomial Architecture</h3>
+              <p class="text-sm text-chalk-500">internal-performance-polynomial-architecture.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-performance-polynomial-architecture.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-performance-simplification-operations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Performance Simplification Operations</h3>
+              <p class="text-sm text-chalk-500">internal-performance-simplification-operations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-performance-simplification-operations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-performance-solving-operations.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Performance Solving Operations</h3>
+              <p class="text-sm text-chalk-500">internal-performance-solving-operations.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-performance-solving-operations.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-performance-strategic-roadmap.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Performance Strategic Roadmap</h3>
+              <p class="text-sm text-chalk-500">internal-performance-strategic-roadmap.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-performance-strategic-roadmap.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-planning-fast-path-opportunities.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Planning Fast Path Opportunities</h3>
+              <p class="text-sm text-chalk-500">internal-planning-fast-path-opportunities.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-planning-fast-path-opportunities.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-planning-matrix-solver-integration.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Planning Matrix Solver Integration</h3>
+              <p class="text-sm text-chalk-500">internal-planning-matrix-solver-integration.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-planning-matrix-solver-integration.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-planning-phase3-and-phase5-summary.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Planning Phase3 And Phase5 Summary</h3>
+              <p class="text-sm text-chalk-500">internal-planning-phase3-and-phase5-summary.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-planning-phase3-and-phase5-summary.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="internal-type-dispatch-review.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Type Dispatch Review</h3>
+              <p class="text-sm text-chalk-500">internal-type-dispatch-review.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/internal/internal-type-dispatch-review.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Ode</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="ode-separable.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Separable</h3>
+              <p class="text-sm text-chalk-500">ode-separable.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/ode/ode-separable.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Operations</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-differentiation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Differentiation</h3>
+              <p class="text-sm text-chalk-500">operations-differentiation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-differentiation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-evaluation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Evaluation</h3>
+              <p class="text-sm text-chalk-500">operations-evaluation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-evaluation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-expansion-factoring.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Expansion Factoring</h3>
+              <p class="text-sm text-chalk-500">operations-expansion-factoring.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-expansion-factoring.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-integration.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Integration</h3>
+              <p class="text-sm text-chalk-500">operations-integration.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-integration.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-limits.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Limits</h3>
+              <p class="text-sm text-chalk-500">operations-limits.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-limits.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-series.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Series</h3>
+              <p class="text-sm text-chalk-500">operations-series.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-series.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-simplification.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Simplification</h3>
+              <p class="text-sm text-chalk-500">operations-simplification.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-simplification.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-solving.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Solving</h3>
+              <p class="text-sm text-chalk-500">operations-solving.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-solving.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-substitution.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Substitution</h3>
+              <p class="text-sm text-chalk-500">operations-substitution.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-substitution.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="operations-summation.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Summation</h3>
+              <p class="text-sm text-chalk-500">operations-summation.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/operations/operations-summation.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Parser</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="parser-custom.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Custom</h3>
+              <p class="text-sm text-chalk-500">parser-custom.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/parser/parser-custom.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="parser-formatting.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Formatting</h3>
+              <p class="text-sm text-chalk-500">parser-formatting.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/parser/parser-formatting.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="parser-latex.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Latex</h3>
+              <p class="text-sm text-chalk-500">parser-latex.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/parser/parser-latex.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="parser-noncommutative_design.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Noncommutative Design</h3>
+              <p class="text-sm text-chalk-500">parser-noncommutative_design.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/parser/parser-noncommutative_design.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="parser-wolfram.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Wolfram</h3>
+              <p class="text-sm text-chalk-500">parser-wolfram.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/parser/parser-wolfram.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Pde</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="pde-separation-of-variables.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Separation Of Variables</h3>
+              <p class="text-sm text-chalk-500">pde-separation-of-variables.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/pde/pde-separation-of-variables.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Performance</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="performance-architecture.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Architecture</h3>
+              <p class="text-sm text-chalk-500">performance-architecture.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/performance/performance-architecture.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="performance-caching.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Caching</h3>
+              <p class="text-sm text-chalk-500">performance-caching.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/performance/performance-caching.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="performance-parallel.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Parallel</h3>
+              <p class="text-sm text-chalk-500">performance-parallel.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/performance/performance-parallel.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="performance-simd.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Simd</h3>
+              <p class="text-sm text-chalk-500">performance-simd.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/performance/performance-simd.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-amber-500 mb-4">Polynomial</h2>
+      <div class="grid gap-3">
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="polynomial-division.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Division</h3>
+              <p class="text-sm text-chalk-500">polynomial-division.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/polynomial/polynomial-division.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="polynomial-gcd.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Gcd</h3>
+              <p class="text-sm text-chalk-500">polynomial-gcd.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/polynomial/polynomial-gcd.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="polynomial-groebner.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Groebner</h3>
+              <p class="text-sm text-chalk-500">polynomial-groebner.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/polynomial/polynomial-groebner.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="polynomial-overview.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Overview</h3>
+              <p class="text-sm text-chalk-500">polynomial-overview.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/polynomial/polynomial-overview.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+        <div class="notebook-card flex items-center justify-between p-4 rounded-xl bg-logic-navy-800/30 border border-logic-navy-700/50 hover:bg-logic-navy-800/50 hover:border-amber-500/30 transition-all" style="animation-delay: 300ms" data-filename="polynomial-special-families.colab.ipynb">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-chalk">Special Families</h3>
+              <p class="text-sm text-chalk-500">polynomial-special-families.colab.ipynb</p>
+            </div>
+          </div>
+          <a href="https://colab.research.google.com/github/AhmedMashour/mathhook/blob/master/colab-notebooks/polynomial/polynomial-special-families.colab.ipynb" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-logic-navy-900 rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all font-medium text-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+            Open in Colab
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const cards = document.querySelectorAll('.notebook-card');
+    document.getElementById('search').addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase();
+      cards.forEach(card => {
+        const filename = card.dataset.filename.toLowerCase();
+        card.style.display = filename.includes(query) ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

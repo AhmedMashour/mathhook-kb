@@ -1,0 +1,579 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Function Evaluation - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/evaluation-function-evaluation.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="function-evaluation"><a class="header" href="#function-evaluation">Function Evaluation</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>evaluation.function-evaluation</code></p>
+</blockquote>
+<p>MathHook provides a unified, intelligent function evaluation system that handles both symbolic
+and numerical computation. The system uses the Universal Function Registry architecture to
+dispatch function calls to specialized implementations while maintaining mathematical correctness.</p>
+<h1 id="function-evaluation-1"><a class="header" href="#function-evaluation-1">Function Evaluation</a></h1>
+<p>MathHook provides a unified, intelligent function evaluation system that handles both symbolic and numerical computation. The system uses the <strong>Universal Function Registry</strong> architecture to dispatch function calls to specialized implementations while maintaining mathematical correctness.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Function evaluation in MathHook supports:</p>
+<ul>
+<li><strong>Elementary functions</strong>: sin, cos, tan, exp, log, sqrt, abs, and their inverses</li>
+<li><strong>Hyperbolic functions</strong>: sinh, cosh, tanh, and their inverses</li>
+<li><strong>Special functions</strong>: gamma, zeta, bessel functions</li>
+<li><strong>Number theory functions</strong>: factorial, binomial coefficients</li>
+<li><strong>Symbolic evaluation</strong>: Returns exact symbolic results when possible</li>
+<li><strong>Numerical evaluation</strong>: High-performance numerical approximations</li>
+<li><strong>Special value recognition</strong>: Automatically simplifies known exact values</li>
+</ul>
+<h2 id="evaluation-architecture"><a class="header" href="#evaluation-architecture">Evaluation Architecture</a></h2>
+<h3 id="function-intelligence-system"><a class="header" href="#function-intelligence-system">Function Intelligence System</a></h3>
+<p>Every function in MathHook has associated <strong>intelligence properties</strong> that define:</p>
+<ol>
+<li><strong>Domain and Range</strong>: Where the function is defined and what values it can produce</li>
+<li><strong>Special Values</strong>: Known exact values (e.g., sin(0) = 0, gamma(1) = 1)</li>
+<li><strong>Evaluation Strategy</strong>: How to compute the function symbolically and numerically</li>
+<li><strong>Mathematical Properties</strong>: Symmetry, periodicity, derivative rules, etc.</li>
+</ol>
+<h3 id="evaluation-flow"><a class="header" href="#evaluation-flow">Evaluation Flow</a></h3>
+<pre><code>User Expression
+      ↓
+Function Name + Arguments
+      ↓
+Universal Registry Lookup
+      ↓
+Function Properties Dispatch
+      ↓
+┌─────────────────┬──────────────────┐
+│ Special Value?  │ Symbolic Input?  │ Numerical Input?
+│ → Exact Result  │ → Keep Symbolic  │ → Numerical Eval
+└─────────────────┴──────────────────┘
+</code></pre>
+<h2 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h2>
+<p>The function evaluation system is designed for high performance:</p>
+<ul>
+<li><strong>Registry lookup</strong>: O(1) constant time using hash maps</li>
+<li><strong>Special value detection</strong>: &lt;50ns for known values</li>
+<li><strong>Numerical evaluation</strong>: &lt;100ns for elementary functions</li>
+<li><strong>Total dispatch overhead</strong>: &lt;10ns</li>
+<li><strong>Bulk evaluation</strong>: SIMD-optimized for arrays of values</li>
+</ul>
+<h2 id="mathematical-correctness-guarantees"><a class="header" href="#mathematical-correctness-guarantees">Mathematical Correctness Guarantees</a></h2>
+<p>MathHook's function evaluation system provides:</p>
+<ol>
+<li><strong>Exact symbolic computation</strong>: Special values return exact results (not floating-point approximations)</li>
+<li><strong>Domain checking</strong>: Functions respect their mathematical domains (e.g., log requires positive inputs)</li>
+<li><strong>SymPy validation</strong>: All implementations validated against SymPy reference</li>
+<li><strong>Numerical stability</strong>: Algorithms chosen for numerical accuracy</li>
+</ol>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="elementary-functions"><a class="header" href="#elementary-functions">Elementary Functions</a></h3>
+<p>Evaluating basic trigonometric and exponential functions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+let sin_x = expr!(sin(x));
+let cos_x = expr!(cos(x));
+let exp_x = expr!(exp(x));
+let log_x = expr!(log(x));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+
+sin_x = expr('sin(x)')
+cos_x = expr('cos(x)')
+exp_x = expr('exp(x)')
+log_x = expr('log(x)')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+
+const x = symbol('x');
+
+const sinX = expr('sin(x)');
+const cosX = expr('cos(x)');
+const expX = expr('exp(x)');
+const logX = expr('log(x)');
+
+</code></pre>
+</details>
+<h3 id="special-value-evaluation"><a class="header" href="#special-value-evaluation">Special Value Evaluation</a></h3>
+<p>Automatic simplification of known exact values</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Trigonometric special values
+let sin_0 = expr!(sin(0));
+assert_eq!(sin_0.simplify(), expr!(0));
+
+let cos_0 = expr!(cos(0));
+assert_eq!(cos_0.simplify(), expr!(1));
+
+// Exponential and logarithmic
+let exp_0 = expr!(exp(0));
+assert_eq!(exp_0.simplify(), expr!(1));
+
+let log_1 = expr!(log(1));
+assert_eq!(log_1.simplify(), expr!(0));
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import expr
+
+# Trigonometric special values
+sin_0 = expr('sin(0)')
+assert sin_0.simplify() == expr('0')
+
+cos_0 = expr('cos(0)')
+assert cos_0.simplify() == expr('1')
+
+# Exponential and logarithmic
+exp_0 = expr('exp(0)')
+assert exp_0.simplify() == expr('1')
+
+log_1 = expr('log(1)')
+assert log_1.simplify() == expr('0')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { expr } = require('mathhook');
+
+// Trigonometric special values
+const sin0 = expr('sin(0)');
+console.assert(sin0.simplify().equals(expr('0')));
+
+const cos0 = expr('cos(0)');
+console.assert(cos0.simplify().equals(expr('1')));
+
+// Exponential and logarithmic
+const exp0 = expr('exp(0)');
+console.assert(exp0.simplify().equals(expr('1')));
+
+const log1 = expr('log(1)');
+console.assert(log1.simplify().equals(expr('0')));
+
+</code></pre>
+</details>
+<h3 id="composite-expression-evaluation"><a class="header" href="#composite-expression-evaluation">Composite Expression Evaluation</a></h3>
+<p>Mixed symbolic and numeric evaluation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let y = symbol!(y);
+
+// sqrt(4) evaluates to 2, symbolic parts preserved
+let composite = expr!((sin((x^2) + 1) * cos(y)) - sqrt(4));
+let result = composite.simplify();
+// Result: sin(x^2 + 1) * cos(y) - 2
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+y = symbol('y')
+
+# sqrt(4) evaluates to 2, symbolic parts preserved
+composite = expr('sin(x^2 + 1) * cos(y) - sqrt(4)')
+result = composite.simplify()
+# Result: sin(x^2 + 1) * cos(y) - 2
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+
+const x = symbol('x');
+const y = symbol('y');
+
+// sqrt(4) evaluates to 2, symbolic parts preserved
+const composite = expr('sin(x^2 + 1) * cos(y) - sqrt(4)');
+const result = composite.simplify();
+// Result: sin(x^2 + 1) * cos(y) - 2
+
+</code></pre>
+</details>
+<h3 id="function-composition"><a class="header" href="#function-composition">Function Composition</a></h3>
+<p>Nested and composed functions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// sin(cos(x))
+let nested = expr!(sin(cos(x)));
+
+// exp(log(x)) simplifies to x
+let exp_log = expr!(exp(log(x)));
+let simplified = exp_log.simplify();
+// Result: x (identity simplification)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+x = symbol('x')
+
+# sin(cos(x))
+nested = expr('sin(cos(x))')
+
+# exp(log(x)) simplifies to x
+exp_log = expr('exp(log(x))')
+simplified = exp_log.simplify()
+# Result: x
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+
+const x = symbol('x');
+
+// sin(cos(x))
+const nested = expr('sin(cos(x))');
+
+// exp(log(x)) simplifies to x
+const expLog = expr('exp(log(x))');
+const simplified = expLog.simplify();
+// Result: x
+
+</code></pre>
+</details>
+<h3 id="bulk-evaluation"><a class="header" href="#bulk-evaluation">Bulk Evaluation</a></h3>
+<p>Efficient numerical evaluation over multiple points</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::functions::FunctionEvaluator;
+
+let evaluator = FunctionEvaluator::new();
+let points = vec![0.0, 0.5, 1.0, 1.5, 2.0];
+
+// SIMD-optimized evaluation
+if let Some(results) = evaluator.evaluate_bulk_f64("sin", &amp;points) {
+    println!("Results: {:?}", results);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.functions import FunctionEvaluator
+
+evaluator = FunctionEvaluator()
+points = [0.0, 0.5, 1.0, 1.5, 2.0]
+
+# SIMD-optimized evaluation
+results = evaluator.evaluate_bulk('sin', points)
+print(f"Results: {results}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { FunctionEvaluator } = require('mathhook/functions');
+
+const evaluator = new FunctionEvaluator();
+const points = [0.0, 0.5, 1.0, 1.5, 2.0];
+
+// SIMD-optimized evaluation
+const results = evaluator.evaluateBulk('sin', points);
+console.log(`Results: ${results}`);
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::functions::evaluation</code></li>
+<li><strong>Python</strong>: <code>mathhook.functions.evaluation</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.functions.evaluation</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../architecture/function-intelligence.html">architecture.function-intelligence</a></p>
+</li>
+<li>
+<p><a href="../advanced/special-functions.html">advanced.special-functions</a></p>
+</li>
+<li>
+<p><a href="../performance/benchmarking.html">performance.benchmarking</a></p>
+</li>
+<li>
+<p><a href="../calculus/derivatives.html">calculus.derivatives</a></p>
+</li>
+<li>
+<p><a href="../simplification/algebraic.html">simplification.algebraic</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="educational-step_by_step.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="getting-started-basic-usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="educational-step_by_step.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="getting-started-basic-usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

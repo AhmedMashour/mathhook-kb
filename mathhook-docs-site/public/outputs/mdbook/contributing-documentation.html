@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Documentation - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/contributing-documentation.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="documentation-standards"><a class="header" href="#documentation-standards">Documentation Standards</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>contributing.documentation</code></p>
+</blockquote>
+<p>Documentation must be accurate, complete, and match the actual code.
+Covers API documentation, doctests, mdbook, and keeping docs updated.</p>
+<h1 id="documentation-standards-1"><a class="header" href="#documentation-standards-1">Documentation Standards</a></h1>
+<p>Documentation must be accurate, complete, and match the actual code.</p>
+<h2 id="required-documentation"><a class="header" href="#required-documentation">Required Documentation</a></h2>
+<h3 id="public-api"><a class="header" href="#public-api">Public API</a></h3>
+<p>Every public function, struct, trait, and enum needs documentation:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Compute the derivative of an expression.
+///
+/// # Arguments
+///
+/// * `expr` - The expression to differentiate
+/// * `var` - The variable to differentiate with respect to
+///
+/// # Returns
+///
+/// * `Ok(Expression)` - The derivative
+/// * `Err(MathError)` - If differentiation fails
+///
+/// # Examples
+///
+/// ```rust
+/// use mathhook::prelude::*;
+///
+/// let x = symbol!(x);
+/// let f = expr!(x ^ 2);
+/// let df = differentiate(&amp;f, &amp;x)?;
+/// assert_eq!(df, expr!(2 * x));
+/// ```
+pub fn differentiate(expr: &amp;Expression, var: &amp;Symbol) -&gt; Result&lt;Expression, MathError&gt;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="module-level"><a class="header" href="#module-level">Module Level</a></h3>
+<p>Each module needs a <code>//!</code> header:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Polynomial operations for symbolic computation.
+//!
+//! This module provides:
+//! - GCD computation via Euclidean algorithm
+//! - Polynomial division with remainder
+//! - Factorization over integers and finite fields
+<span class="boring">}</span></code></pre></pre>
+<h2 id="documentation-structure"><a class="header" href="#documentation-structure">Documentation Structure</a></h2>
+<h3 id="example-pattern"><a class="header" href="#example-pattern">Example Pattern</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Brief one-line description.
+///
+/// Longer explanation if needed, describing behavior,
+/// mathematical background, or implementation notes.
+///
+/// # Arguments
+///
+/// * `param1` - Description
+/// * `param2` - Description
+///
+/// # Returns
+///
+/// Description of return value or Result variants.
+///
+/// # Errors
+///
+/// - `MathError::DomainError` - When input is outside valid domain
+/// - `MathError::Undefined` - When result is mathematically undefined
+///
+/// # Panics
+///
+/// This function does not panic. (Or list panic conditions if any)
+///
+/// # Examples
+///
+/// ```rust
+/// // Working example with assertions
+/// ```
+///
+/// # Mathematical Background
+///
+/// Optional section for complex algorithms.
+pub fn function_name(...) { ... }
+<span class="boring">}</span></code></pre></pre>
+<h2 id="doctests"><a class="header" href="#doctests">Doctests</a></h2>
+<h3 id="requirements"><a class="header" href="#requirements">Requirements</a></h3>
+<ol>
+<li><strong>Every example must compile and run</strong></li>
+<li><strong>Include assertions to verify behavior</strong></li>
+<li><strong>Use <code>use mathhook::prelude::*;</code></strong> for common imports</li>
+</ol>
+<h3 id="patterns"><a class="header" href="#patterns">Patterns</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// # Examples
+///
+/// Basic usage:
+/// ```rust
+/// use mathhook::prelude::*;
+///
+/// let x = symbol!(x);
+/// let result = sin(&amp;expr!(0)).unwrap();
+/// assert_eq!(result, expr!(0));
+/// ```
+///
+/// Error handling:
+/// ```rust
+/// use mathhook::prelude::*;
+///
+/// let result = log(&amp;expr!(0));
+/// assert!(result.is_err());
+/// ```
+<span class="boring">}</span></code></pre></pre>
+<h3 id="hidden-lines"><a class="header" href="#hidden-lines">Hidden Lines</a></h3>
+<p>Use <code>#</code> to hide setup code:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">/// ```rust
+/// # use mathhook::prelude::*;
+/// # fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+/// let x = symbol!(x);
+/// let f = expr!(x ^ 2);
+/// # Ok(())
+/// # }
+/// ```</code></pre></pre>
+<h2 id="mdbook-documentation"><a class="header" href="#mdbook-documentation">mdbook Documentation</a></h2>
+<h3 id="location"><a class="header" href="#location">Location</a></h3>
+<p>All user-facing documentation lives in <code>docs/src/</code>.</p>
+<h3 id="building"><a class="header" href="#building">Building</a></h3>
+<pre><code class="language-bash">cd docs
+mdbook serve --open  # Preview at localhost:3000
+mdbook build         # Build static site
+</code></pre>
+<h3 id="latex"><a class="header" href="#latex">LaTeX</a></h3>
+<p>Use <code>$...$</code> for inline math and <code>$$...$$</code> for display math:</p>
+<pre><code class="language-markdown">The quadratic formula is $x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$.
+
+For the heat equation:
+
+$$\frac{\partial u}{\partial t} = \alpha \nabla^2 u$$
+</code></pre>
+<p><strong>Note:</strong> We use mdbook-katex preprocessor. Avoid characters that conflict with Markdown (escape underscores in text mode).</p>
+<h2 id="code-examples-in-docs"><a class="header" href="#code-examples-in-docs">Code Examples in Docs</a></h2>
+<h3 id="always-use-macros"><a class="header" href="#always-use-macros">Always Use Macros</a></h3>
+<pre><code class="language-markdown">✅ Correct:
+​```rust
+let x = symbol!(x);
+let f = expr!(x ^ 2 + 2 * x + 1);
+​```
+
+❌ Wrong:
+​```rust
+let x = Symbol::new("x");  // Never in docs
+​```
+</code></pre>
+<h3 id="show-practical-usage"><a class="header" href="#show-practical-usage">Show Practical Usage</a></h3>
+<pre><code class="language-markdown">// Complete working example
+let x = symbol!(x);
+let f = expr!(sin(x) ^ 2 + cos(x) ^ 2);
+let simplified = simplify(&amp;f);
+assert_eq!(simplified, expr!(1));
+</code></pre>
+<h2 id="api-reference-accuracy"><a class="header" href="#api-reference-accuracy">API Reference Accuracy</a></h2>
+<h3 id="verify-before-publishing"><a class="header" href="#verify-before-publishing">Verify Before Publishing</a></h3>
+<ol>
+<li><strong>Check function signatures</strong> match actual code</li>
+<li><strong>Verify return types</strong> (especially <code>Result</code> vs direct return)</li>
+<li><strong>Test all examples</strong> with <code>cargo test --doc</code></li>
+<li><strong>Check method names</strong> match (<code>.to_latex()</code> parameters, etc.)</li>
+</ol>
+<h3 id="common-errors"><a class="header" href="#common-errors">Common Errors</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Error</th><th>Example</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Wrong method signature</td><td><code>.to_latex(ctx)</code></td><td>Check actual API</td></tr>
+<tr><td>Outdated macro</td><td><code>Symbol::matrix("A")</code></td><td>Use <code>symbol!(A; matrix)</code></td></tr>
+<tr><td>Missing Result handling</td><td><code>function(&amp;x)</code></td><td>Add <code>.unwrap()</code> or <code>?</code></td></tr>
+<tr><td>Wrong import</td><td><code>use mathhook::*</code></td><td><code>use mathhook::prelude::*</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="keeping-docs-updated"><a class="header" href="#keeping-docs-updated">Keeping Docs Updated</a></h2>
+<h3 id="when-code-changes"><a class="header" href="#when-code-changes">When Code Changes</a></h3>
+<ol>
+<li>Update corresponding documentation</li>
+<li>Run <code>cargo test --doc</code> to verify examples</li>
+<li>Check mdbook builds without errors</li>
+</ol>
+<h3 id="audit-process"><a class="header" href="#audit-process">Audit Process</a></h3>
+<pre><code class="language-bash"># Find potentially outdated patterns
+grep -r "Symbol::new" docs/src/
+grep -r "Symbol::matrix" docs/src/
+grep -r "LaTeXContext::default" docs/src/
+
+# Verify mdbook builds
+cd docs &amp;&amp; mdbook build
+</code></pre>
+<h2 id="what-not-to-document"><a class="header" href="#what-not-to-document">What NOT to Document</a></h2>
+<ol>
+<li><strong>Private implementation details</strong> - They can change</li>
+<li><strong>Obvious behavior</strong> - <code>add</code> adds things</li>
+<li><strong>Internal helper functions</strong> - Unless exposed publicly</li>
+<li><strong>Deprecated patterns</strong> - Remove, don't document</li>
+</ol>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../contributing/development.html">contributing.development</a></p>
+</li>
+<li>
+<p><a href="../contributing/style.html">contributing.style</a></p>
+</li>
+<li>
+<p><a href="../contributing/testing.html">contributing.testing</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="contributing-development.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="contributing-style.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="contributing-development.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="contributing-style.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

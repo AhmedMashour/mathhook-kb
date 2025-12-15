@@ -1,0 +1,582 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Pde Registry - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/advanced-pde-registry.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="pde-solver-registry-system"><a class="header" href="#pde-solver-registry-system">PDE Solver Registry System</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>advanced.pde.registry</code></p>
+</blockquote>
+<p>MathHook uses a registry-based dispatch system for PDE solvers, eliminating hardcoded match
+statements and enabling O(1) solver lookup. This architecture is inspired by the ODE module
+registry and provides extensible, testable, and efficient solver selection.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p>Registry-based dispatch uses a HashMap for O(1) lookup by PDE type:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Registry</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">PdeType</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Vec</span></span><span class="mopen">⟨</span><span class="mord text"><span class="mord">Arc</span></span><span class="mopen">⟨</span><span class="mord text"><span class="mord">dyn PDESolver</span></span><span class="mclose">⟩⟩</span></span></span></span></span></p>
+<p>Priority-based selection from multiple solvers per type ensures optimal solver choice.</p>
+<h1 id="pde-solver-registry-system-1"><a class="header" href="#pde-solver-registry-system-1">PDE Solver Registry System</a></h1>
+<h2 id="architecture-registry-pattern"><a class="header" href="#architecture-registry-pattern">Architecture: Registry Pattern</a></h2>
+<p>MathHook uses a <strong>registry-based dispatch system</strong> for PDE solvers, eliminating hardcoded <code>match</code> statements and enabling O(1) solver lookup.</p>
+<p><strong>Design inspired by</strong>: ODE module registry (scored 9/10 for quality)</p>
+<h2 id="registry-structure"><a class="header" href="#registry-structure">Registry Structure</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PDESolverRegistry {
+    /// Solvers organized by PDE type
+    solvers: HashMap&lt;PdeType, Vec&lt;Arc&lt;dyn PDESolver&gt;&gt;&gt;,
+    /// Priority order for trying solvers
+    priority_order: Vec&lt;PdeType&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Key features</strong>:</p>
+<ul>
+<li><strong>O(1) lookup</strong> by PDE type (HashMap)</li>
+<li><strong>Multiple solvers per type</strong> (priority-sorted Vec)</li>
+<li><strong>Thread-safe</strong> (Arc for shared solver instances)</li>
+<li><strong>Extensible</strong> (register custom solvers)</li>
+</ul>
+<h2 id="pdesolver-trait"><a class="header" href="#pdesolver-trait">PDESolver Trait</a></h2>
+<p>All solvers implement this trait:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait PDESolver: Send + Sync {
+    /// Attempts to solve the given PDE
+    fn solve(&amp;self, pde: &amp;Pde) -&gt; PDEResult;
+
+    /// Returns true if this solver can handle the given PDE type
+    fn can_solve(&amp;self, pde_type: PdeType) -&gt; bool;
+
+    /// Priority for this solver (higher = try first)
+    fn priority(&amp;self) -&gt; u8;
+
+    /// Solver name for diagnostics
+    fn name(&amp;self) -&gt; &amp;'static str;
+
+    /// Solver description
+    fn description(&amp;self) -&gt; &amp;'static str;
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Why Send + Sync?</strong> Registry is shared across threads (web servers, parallel computation).</p>
+<h2 id="default-solvers"><a class="header" href="#default-solvers">Default Solvers</a></h2>
+<p>Registry auto-registers standard solvers for three main PDE types:</p>
+<ul>
+<li>Heat Equation Solver (Parabolic, priority 100)</li>
+<li>Wave Equation Solver (Hyperbolic, priority 100)</li>
+<li>Laplace Equation Solver (Elliptic, priority 100)</li>
+</ul>
+<h2 id="solver-dispatch-workflow"><a class="header" href="#solver-dispatch-workflow">Solver Dispatch Workflow</a></h2>
+<h3 id="automatic-classification--solving"><a class="header" href="#automatic-classification--solving">Automatic Classification + Solving</a></h3>
+<p><strong>Workflow</strong>:</p>
+<ol>
+<li><strong>Classify</strong>: Compute discriminant, determine PDE type</li>
+<li><strong>Lookup</strong>: <code>HashMap::get(pde_type)</code> → O(1)</li>
+<li><strong>Select</strong>: First solver in priority-sorted Vec</li>
+<li><strong>Solve</strong>: Call <code>solver.solve(&amp;pde)</code></li>
+<li><strong>Return</strong>: <code>PDESolution</code> with metadata</li>
+</ol>
+<h3 id="try-all-solvers-fallback"><a class="header" href="#try-all-solvers-fallback">Try All Solvers (Fallback)</a></h3>
+<p>If classification uncertain, the registry can try all solvers in priority order until one succeeds.</p>
+<h2 id="adding-custom-solvers"><a class="header" href="#adding-custom-solvers">Adding Custom Solvers</a></h2>
+<p>Custom solvers can be registered with specified priority levels:</p>
+<ul>
+<li><strong>Override</strong>: Higher priority than standard solver</li>
+<li><strong>Fallback</strong>: Lower priority, try if standard fails</li>
+<li><strong>Specialized</strong>: Same priority, but more specific <code>can_solve()</code> logic</li>
+</ul>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>The registry provides comprehensive error types:</p>
+<ul>
+<li><code>NoSolverAvailable</code>: No solver registered for PDE type</li>
+<li><code>ClassificationFailed</code>: Cannot determine PDE type</li>
+<li><code>SolutionFailed</code>: Solver encountered an error</li>
+<li><code>InvalidBoundaryConditions</code>: Boundary conditions incompatible</li>
+<li><code>InvalidInitialConditions</code>: Initial conditions incompatible</li>
+<li><code>NotSeparable</code>: PDE not separable (for separation of variables)</li>
+<li><code>InvalidForm</code>: PDE structure not recognized</li>
+</ul>
+<h2 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h2>
+<h3 id="lookup-complexity"><a class="header" href="#lookup-complexity">Lookup Complexity</a></h3>
+<ul>
+<li><strong>Classification</strong>: O(1) - pattern matching</li>
+<li><strong>Registry lookup</strong>: O(1) - HashMap</li>
+<li><strong>Solver selection</strong>: O(1) - first element in sorted Vec</li>
+<li><strong>Overall</strong>: O(1) for standard PDEs</li>
+</ul>
+<h3 id="memory-overhead"><a class="header" href="#memory-overhead">Memory Overhead</a></h3>
+<ul>
+<li><strong>Arc<dyn PDESolver></strong>: 16 bytes per solver (fat pointer)</li>
+<li><strong>HashMap</strong>: ~24 bytes + entries</li>
+<li><strong>Total</strong>: ~100 bytes for default registry (3 solvers)</li>
+</ul>
+<p><strong>Negligible</strong> compared to solution computation.</p>
+<h2 id="comparison-registry-vs-hardcoded-match"><a class="header" href="#comparison-registry-vs-hardcoded-match">Comparison: Registry vs Hardcoded Match</a></h2>
+<p>Registry approach provides:</p>
+<ul>
+<li>✅ Extensible (register custom solvers)</li>
+<li>✅ Priority-based selection</li>
+<li>✅ Testable (inject mock solvers)</li>
+<li>✅ Solver reuse (Arc-wrapped, cached)</li>
+</ul>
+<p>Hardcoded approach problems:</p>
+<ul>
+<li>❌ Cannot add solvers without modifying source</li>
+<li>❌ No priority system</li>
+<li>❌ Hard to test (tightly coupled)</li>
+<li>❌ Creates new solver instance every time (no caching)</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="default-registry-usage"><a class="header" href="#default-registry-usage">Default Registry Usage</a></h3>
+<p>Create and use default registry with standard solvers</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let registry = PDESolverRegistry::new();
+
+// Automatically classify and solve
+let solution = registry.solve(&amp;pde)?;
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">registry = PDESolverRegistry()
+
+# Automatically classify and solve
+solution = registry.solve(pde)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const registry = new PDESolverRegistry();
+
+// Automatically classify and solve
+const solution = registry.solve(pde);
+
+</code></pre>
+</details>
+<h3 id="custom-poisson-solver"><a class="header" href="#custom-poisson-solver">Custom Poisson Solver</a></h3>
+<p>Register a custom solver for Poisson equation (non-homogeneous Laplace)</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PoissonEquationSolver {
+    max_terms: usize,
+}
+
+impl PDESolver for PoissonEquationSolver {
+    fn solve(&amp;self, pde: &amp;Pde) -&gt; PDEResult {
+        // Poisson solver logic here
+        Ok(PDESolution::laplace(solution, eigenvalues, coefficients))
+    }
+
+    fn can_solve(&amp;self, pde_type: PdeType) -&gt; bool {
+        matches!(pde_type, PdeType::Elliptic)
+    }
+
+    fn priority(&amp;self) -&gt; u8 {
+        90  // Lower than Laplace solver (100)
+    }
+
+    fn name(&amp;self) -&gt; &amp;'static str {
+        "Poisson Equation Solver"
+    }
+
+    fn description(&amp;self) -&gt; &amp;'static str {
+        "Solves Poisson equation ∇²u = f with non-zero source term"
+    }
+}
+
+// Register custom solver
+let mut registry = PDESolverRegistry::new();
+registry.register(
+    PdeType::Elliptic,
+    Arc::new(PoissonEquationSolver { max_terms: 10 }),
+);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">class PoissonEquationSolver:
+    def __init__(self, max_terms=10):
+        self.max_terms = max_terms
+
+    def solve(self, pde):
+        # Poisson solver logic here
+        return PDESolution.laplace(solution, eigenvalues, coefficients)
+
+    def can_solve(self, pde_type):
+        return pde_type == PdeType.Elliptic
+
+    def priority(self):
+        return 90
+
+    def name(self):
+        return "Poisson Equation Solver"
+
+    def description(self):
+        return "Solves Poisson equation ∇²u = f with non-zero source term"
+
+# Register custom solver
+registry = PDESolverRegistry()
+registry.register(PdeType.Elliptic, PoissonEquationSolver(max_terms=10))
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">class PoissonEquationSolver {
+    constructor(maxTerms = 10) {
+        this.maxTerms = maxTerms;
+    }
+
+    solve(pde) {
+        // Poisson solver logic here
+        return PDESolution.laplace(solution, eigenvalues, coefficients);
+    }
+
+    canSolve(pdeType) {
+        return pdeType === PdeType.Elliptic;
+    }
+
+    priority() {
+        return 90;
+    }
+
+    name() {
+        return "Poisson Equation Solver";
+    }
+
+    description() {
+        return "Solves Poisson equation ∇²u = f with non-zero source term";
+    }
+}
+
+// Register custom solver
+const registry = new PDESolverRegistry();
+registry.register(PdeType.Elliptic, new PoissonEquationSolver(10));
+
+</code></pre>
+</details>
+<h3 id="solver-discovery"><a class="header" href="#solver-discovery">Solver Discovery</a></h3>
+<p>List available solvers and inspect registry contents</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let registry = PDESolverRegistry::new();
+
+println!("Registered PDE types: {:?}", registry.registered_types());
+// [Parabolic, Hyperbolic, Elliptic]
+
+println!("Total solvers: {}", registry.solver_count());
+// 3
+
+// Get solver for specific type
+if let Some(solver) = registry.get_solver(&amp;PdeType::Parabolic) {
+    println!("Heat solver: {}", solver.name());
+    println!("Description: {}", solver.description());
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">registry = PDESolverRegistry()
+
+print(f"Registered PDE types: {registry.registered_types()}")
+# [Parabolic, Hyperbolic, Elliptic]
+
+print(f"Total solvers: {registry.solver_count()}")
+# 3
+
+# Get solver for specific type
+solver = registry.get_solver(PdeType.Parabolic)
+if solver:
+    print(f"Heat solver: {solver.name()}")
+    print(f"Description: {solver.description()}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const registry = new PDESolverRegistry();
+
+console.log(`Registered PDE types: ${registry.registeredTypes()}`);
+// [Parabolic, Hyperbolic, Elliptic]
+
+console.log(`Total solvers: ${registry.solverCount()}`);
+// 3
+
+// Get solver for specific type
+const solver = registry.getSolver(PdeType.Parabolic);
+if (solver) {
+    console.log(`Heat solver: ${solver.name()}`);
+    console.log(`Description: ${solver.description()}`);
+}
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(1)</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::pde::registry</code></li>
+<li><strong>Python</strong>: <code>mathhook.pde.registry</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.pde.registry</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../advanced/pde/sympy_validation.html">advanced.pde.sympy_validation</a></p>
+</li>
+<li>
+<p><a href="../advanced/pde/performance.html">advanced.pde.performance</a></p>
+</li>
+<li>
+<p><a href="../advanced/pde/technical_guide.html">advanced.pde.technical_guide</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-pde-quick_start.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="advanced-pde-separation_of_variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-pde-quick_start.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="advanced-pde-separation_of_variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

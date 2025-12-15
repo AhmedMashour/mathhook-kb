@@ -1,0 +1,288 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Educational API }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The Educational API provides programmatic access to MathHook's educational features for external applications. Integrate step-by-step explanations, assessment tools, and adaptive learning systems into Learning Management Systems (LMS), mobile apps, and educational platforms.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Educational API
+
+> 📍 **Navigation:** [Step-by-Step](./step-by-step.md) | [Message Registry](./messages.md) | [Advanced Features](../advanced/complex-numbers.md)
+
+The Educational API provides programmatic access to MathHook's educational features for external applications. Integrate step-by-step explanations, assessment tools, and adaptive learning systems into Learning Management Systems (LMS), mobile apps, and educational platforms.
+
+## What is the Educational API?
+
+**Learning Journey:** This is the advanced topic after mastering [step-by-step explanations](./step-by-step.md) and [message customization](./messages.md). Here you'll learn programmatic integration for external applications.
+
+**Purpose:** Enable external applications to:
+- Generate educational content programmatically
+- Export structured data for machine consumption
+- Integrate with Learning Management Systems
+- Build adaptive learning applications
+- Create assessment and verification tools
+- Track student progress systematically
+
+**Design Philosophy:** Dual-format output—human-readable explanations for students AND machine-consumable data for applications.
+
+## API Architecture
+
+### Core Components
+
+```rust
+use mathhook::educational::{
+    traits::{EducationalOperation, OperationContext},
+    enhanced_steps::{EnhancedStep, EnhancedStepExplanation, EnhancedStepBuilder},
+    step_by_step::{StepByStepExplanation, Step},
+};
+```
+
+### Layer Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│         External Application                 │
+│    (LMS, Mobile App, Web Frontend)          │
+└─────────────────┬───────────────────────────┘
+                  │
+                  │ JSON/REST API
+                  │
+┌─────────────────▼───────────────────────────┐
+│      Educational API Layer                   │
+│  (EnhancedStep, EducationalOperation)       │
+└─────────────────┬───────────────────────────┘
+                  │
+                  │ Internal API
+                  │
+┌─────────────────▼───────────────────────────┐
+│    Message Registry + Step Generation       │
+│  (Templates, Substitution, SmartStepFactory)│
+└─────────────────┬───────────────────────────┘
+                  │
+                  │ Core Operations
+                  │
+┌─────────────────▼───────────────────────────┐
+│      Mathematical Engine                     │
+│  (Solving, Simplification, Differentiation) │
+└─────────────────────────────────────────────┘
+```
+
+## Dual-Format Output
+
+### EnhancedStep Structure
+
+The core dual-format type:
+
+```rust
+pub struct EnhancedStep {
+    pub step_id: String,
+    pub title: String,
+    pub human_message: String,      // For students
+    pub api_data: StepApiData,      // For machines
+    pub message_key: MessageKey,    // For customization
+    pub math_context: MathContext,  // Mathematical state
+    pub presentation: PresentationHints,
+}
+```
+
+### Machine-Readable Format
+
+JSON Structure for external applications with metadata, summary, and detailed step information.
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Dual-Format Output }
+
+Generate both human and machine-readable educational content
+
+\begin{lstlisting}
+x = symbol('x')
+equation = expr_parse('2*x + 3')
+
+# Get enhanced explanation
+explanation = EnhancedStepExplanation(steps)
+
+# Display for students
+for step in explanation.steps:
+    print(step.human_message)
+
+# Export structured data
+json_data = explanation.to_json()
+# Parse in external application
+data = json.loads(json_data)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ SmartStepFactory Context-Aware Generation }
+
+Generate educational steps based on operation context and difficulty
+
+\begin{lstlisting}
+# Generate introduction step for linear equation
+intro_step = EnhancedStepBuilder("step_1") \
+    .with_human_message(
+        "Identify Equation Type",
+        "We have a linear equation in one variable"
+    ) \
+    .with_api_data("linear_equation", "identification", "classify") \
+    .with_input("equation", "2x + 3 = 0") \
+    .with_input("variable", "x") \
+    .with_output("equation_type", "linear") \
+    .with_output("degree", "1") \
+    .with_math_context("2x + 3 = 0", "x", 0.25) \
+    .with_message_key("linear_equation", "introduction", 0) \
+    .build()
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Educational Operation Trait Implementation }
+
+Add educational capabilities to mathematical operations
+
+\begin{lstlisting}
+class LinearEquationSolver(EducationalOperation):
+    def __init__(self, equation, variable):
+        self.equation = equation
+        self.variable = variable
+
+    def execute_with_steps(self):
+        steps = []
+
+        # Step 1: Identify equation type
+        steps.append(Step(
+            "Identify Equation Type",
+            "This is a linear equation ax + b = 0"
+        ))
+
+        # Step 2: Isolate variable term
+        steps.append(Step(
+            "Isolate Variable Term",
+            "Subtract constant from both sides"
+        ))
+
+        # Step 3: Solve for variable
+        steps.append(Step(
+            "Solve for Variable",
+            "Divide both sides by coefficient"
+        ))
+
+        # Perform actual solving
+        solution = self.solve_internal()
+
+        explanation = StepByStepExplanation(steps)
+        return (solution, explanation)
+
+    def educational_context(self):
+        return OperationContext.equation_solving(3)
+
+    def execute_fast(self):
+        return self.solve_internal()
+
+    def estimated_steps(self):
+        return 3
+
+\end{lstlisting}
+
+
+
+
+\subsection{ LMS Integration with Progress Tracking }
+
+Export educational content to Learning Management System
+
+\begin{lstlisting}
+# Generate explanation
+explanation = EnhancedStepExplanation(steps)
+
+# Export to JSON
+json_data = explanation.to_json()
+
+# Send to LMS via REST API
+response = requests.post(
+    "https://lms.example.com/api/lessons",
+    json=json.loads(json_data)
+)
+
+# Track which steps student has viewed
+for step in explanation.steps:
+    lms_api.mark_step_viewed(
+        student_id,
+        lesson_id,
+        step.step_id
+    )
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Assessment and Verification }
+
+Verify student answers and provide feedback
+
+\begin{lstlisting}
+def verify_answer(student_answer, expected_solution, variable):
+    student_expr = parse_latex(student_answer)
+
+    # Substitute student's answer into original equation
+    substituted = original_equation.substitute(variable, student_expr)
+    simplified = substituted.simplify()
+
+    return VerificationResult(
+        correct=(simplified == Expression.integer(0)),
+        student_expression=student_expr,
+        substituted_form=substituted,
+        explanation=generate_verification_explanation(simplified)
+    )
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

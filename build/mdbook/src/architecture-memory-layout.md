@@ -1,0 +1,96 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Memory Layout Optimization
+
+> **Topic**: `architecture.memory-layout`
+
+32-byte expression constraint and cache-line optimization strategy for maximum performance.
+Covers memory layout details and performance implications.
+
+
+
+
+
+# Memory Layout Optimization
+
+This chapter covers internal implementation details of memory layout optimization.
+
+## 32-Byte Expression Constraint
+
+Expressions are exactly 32 bytes to fit two expressions per 64-byte cache line.
+
+### Cache-Line Optimization
+
+Modern CPUs use 64-byte cache lines. MathHook's 32-byte expressions:
+
+- Fit two expressions per cache line
+- Minimize cache misses during traversal
+- Improve CPU cache utilization
+- Provide 10-100x speedup over Python-based systems
+
+## Memory Layout Details
+
+```rust
+#[repr(C)]
+pub struct Expression {
+    // Total: 32 bytes
+    discriminant: u8,     // 1 byte: expression type
+    flags: u8,            // 1 byte: metadata flags
+    _padding: [u8; 6],    // 6 bytes: alignment
+    data: [u64; 3],       // 24 bytes: expression data
+}
+```
+
+## Performance Implications
+
+The 32-byte constraint:
+
+- **Memory efficiency**: Compact representation
+- **Cache efficiency**: Optimal cache-line usage
+- **Traversal speed**: Fast tree traversal
+- **Allocation speed**: Predictable allocation patterns
+
+
+
+
+
+
+
+
+
+
+
+
+## Examples
+
+
+
+
+
+## API Reference
+
+- **Rust**: `mathhook_core::Expression`
+- **Python**: ``
+- **JavaScript**: ``
+
+
+## See Also
+
+
+- [architecture.principles](../architecture/principles.md)
+
+- [architecture.type-system](../architecture/type-system.md)
+
+- [architecture.thread-safety](../architecture/thread-safety.md)
+
+

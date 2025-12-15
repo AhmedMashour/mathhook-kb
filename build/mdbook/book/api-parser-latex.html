@@ -1,0 +1,711 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Parser Latex - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/api-parser-latex.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="latex-parsing-and-mathematical-notation"><a class="header" href="#latex-parsing-and-mathematical-notation">LaTeX Parsing and Mathematical Notation</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>api.parser.latex</code></p>
+</blockquote>
+<p>Parse and generate LaTeX notation for mathematical expressions. Full bidirectional
+support: LaTeX → Expression and Expression → LaTeX. Automatic type inference for
+matrix symbols (\mathbf{A}), operator symbols (\hat{p}), and implicit multiplication.</p>
+<h1 id="latex-parsing-and-notation"><a class="header" href="#latex-parsing-and-notation">LaTeX Parsing and Notation</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>MathHook provides comprehensive LaTeX support:</p>
+<ul>
+<li><strong>Bidirectional</strong>: Parse LaTeX → Expression, Expression → LaTeX</li>
+<li><strong>Type Inference</strong>: <code>\mathbf{A}</code> creates matrix symbols, <code>\hat{p}</code> creates operators</li>
+<li><strong>Implicit Multiplication</strong>: Handles <code>2x</code>, <code>\pi x</code>, <code>(a)(b)</code> correctly</li>
+<li><strong>150+ Commands</strong>: Functions, symbols, operators, calculus notation</li>
+</ul>
+<h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
+<h3 id="two-stage-processing"><a class="header" href="#two-stage-processing">Two-Stage Processing</a></h3>
+<p><strong>1. Lexer (Token Generation)</strong>:</p>
+<ul>
+<li>Inserts implicit multiplication tokens (<code>2x</code> → <code>2*x</code>)</li>
+<li>Classifies tokens (number, identifier, function, operator)</li>
+<li>O(1) HashMap lookups for LaTeX commands (<code>\sin</code>, <code>\pi</code>, <code>\alpha</code>)</li>
+</ul>
+<p><strong>2. Parser (LALRPOP Grammar)</strong>:</p>
+<ul>
+<li>LR(1) parser with operator precedence</li>
+<li>Right-associative exponentiation: <code>2^3^4</code> → <code>2^(3^4)</code></li>
+<li>Context-aware function resolution</li>
+</ul>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<ul>
+<li>
+<blockquote>
+<p>100K simple expressions/second</p>
+</blockquote>
+</li>
+<li>Thread-local caching for common expressions</li>
+<li>Zero-copy string processing where possible</li>
+</ul>
+<h2 id="supported-latex"><a class="header" href="#supported-latex">Supported LaTeX</a></h2>
+<h3 id="greek-letters"><a class="header" href="#greek-letters">Greek Letters</a></h3>
+<ul>
+<li>Lowercase: <code>\alpha</code>, <code>\beta</code>, <code>\gamma</code>, ..., <code>\omega</code></li>
+<li>Uppercase: <code>\Gamma</code>, <code>\Delta</code>, <code>\Theta</code>, ..., <code>\Omega</code></li>
+</ul>
+<h3 id="mathematical-constants"><a class="header" href="#mathematical-constants">Mathematical Constants</a></h3>
+<ul>
+<li><code>\pi</code>: π (pi)</li>
+<li><code>e</code>: Euler's number</li>
+<li><code>\phi</code>: Golden ratio</li>
+<li><code>i</code>: Imaginary unit</li>
+</ul>
+<h3 id="fractions-and-roots"><a class="header" href="#fractions-and-roots">Fractions and Roots</a></h3>
+<ul>
+<li><code>\frac{a}{b}</code>: Fractions</li>
+<li><code>\sqrt{x}</code>: Square root</li>
+<li><code>\sqrt[n]{x}</code>: nth root</li>
+</ul>
+<h3 id="trigonometric-functions"><a class="header" href="#trigonometric-functions">Trigonometric Functions</a></h3>
+<ul>
+<li><code>\sin</code>, <code>\cos</code>, <code>\tan</code>, <code>\cot</code>, <code>\sec</code>, <code>\csc</code></li>
+<li><code>\arcsin</code>, <code>\arccos</code>, <code>\arctan</code></li>
+<li><code>\sinh</code>, <code>\cosh</code>, <code>\tanh</code></li>
+</ul>
+<h3 id="calculus-notation"><a class="header" href="#calculus-notation">Calculus Notation</a></h3>
+<ul>
+<li><code>\int</code>: Integral</li>
+<li><code>\frac{d}{dx}</code>: Derivative</li>
+<li><code>\lim</code>: Limit</li>
+<li><code>\sum</code>: Summation</li>
+<li><code>\prod</code>: Product</li>
+</ul>
+<h3 id="matrix-notation"><a class="header" href="#matrix-notation">Matrix Notation</a></h3>
+<ul>
+<li><code>\mathbf{A}</code>: Matrix symbol (bold, noncommutative)</li>
+<li><code>\hat{p}</code>: Operator symbol (quantum mechanics)</li>
+<li><code>\begin{matrix}...\end{matrix}</code>: Matrix construction</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-latex-parsing"><a class="header" href="#basic-latex-parsing">Basic LaTeX Parsing</a></h3>
+<p>Parse standard mathematical expressions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::{Parser, ParserConfig};
+
+let parser = Parser::new(ParserConfig::default());
+
+// Basic arithmetic
+let expr = parser.parse(r"2 + 3 \cdot 4")?;  // 2 + 3*4
+
+// Fractions
+let expr = parser.parse(r"\frac{x^2 + 1}{x - 1}")?;
+
+// Functions
+let expr = parser.parse(r"\sin(x) + \cos(y)")?;
+
+// Square roots
+let expr = parser.parse(r"\sqrt{x^2 + y^2}")?;
+
+// Exponents
+let expr = parser.parse(r"e^{-x^2}")?;  // Gaussian
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_latex
+
+# Basic arithmetic
+expr = parse_latex(r"2 + 3 \cdot 4")  # 2 + 3*4
+
+# Fractions
+expr = parse_latex(r"\frac{x^2 + 1}{x - 1}")
+
+# Functions
+expr = parse_latex(r"\sin(x) + \cos(y)")
+
+# Square roots
+expr = parse_latex(r"\sqrt{x^2 + y^2}")
+
+# Exponents
+expr = parse_latex(r"e^{-x^2}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { parseLatex } from 'mathhook';
+
+// Basic arithmetic
+const expr = parseLatex(String.raw`2 + 3 \cdot 4`);
+
+// Fractions
+const expr2 = parseLatex(String.raw`\frac{x^2 + 1}{x - 1}`);
+
+// Functions
+const expr3 = parseLatex(String.raw`\sin(x) + \cos(y)`);
+
+// Square roots
+const expr4 = parseLatex(String.raw`\sqrt{x^2 + y^2}`);
+
+</code></pre>
+</details>
+<h3 id="greek-letters-and-constants"><a class="header" href="#greek-letters-and-constants">Greek Letters and Constants</a></h3>
+<p>Parse Greek symbols and mathematical constants</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::Parser;
+
+let parser = Parser::new(ParserConfig::default());
+
+// Greek symbols (lowercase)
+let expr = parser.parse(r"\alpha + \beta + \gamma")?;
+
+// Greek symbols (uppercase functions)
+let expr = parser.parse(r"\Gamma(n)")?;  // Gamma function
+
+// Mathematical constants
+let expr = parser.parse(r"\pi r^2")?;          // π*r²
+let expr = parser.parse(r"e^{i\pi} + 1")?;     // Euler's identity
+let expr = parser.parse(r"\phi = \frac{1+\sqrt{5}}{2}")?;  // Golden ratio
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_latex
+
+# Greek symbols
+expr = parse_latex(r"\alpha + \beta + \gamma")
+
+# Gamma function
+expr = parse_latex(r"\Gamma(n)")
+
+# Constants
+expr = parse_latex(r"\pi r^2")
+expr = parse_latex(r"e^{i\pi} + 1")
+expr = parse_latex(r"\phi = \frac{1+\sqrt{5}}{2}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { parseLatex } from 'mathhook';
+
+// Greek symbols
+const expr = parseLatex(String.raw`\alpha + \beta + \gamma`);
+
+// Gamma function
+const expr2 = parseLatex(String.raw`\Gamma(n)`);
+
+// Constants
+const expr3 = parseLatex(String.raw`\pi r^2`);
+const expr4 = parseLatex(String.raw`e^{i\pi} + 1`);
+
+</code></pre>
+</details>
+<h3 id="matrix-and-operator-symbols"><a class="header" href="#matrix-and-operator-symbols">Matrix and Operator Symbols</a></h3>
+<p>Automatic type inference from LaTeX notation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::Parser;
+
+let parser = Parser::new(ParserConfig::default());
+
+// Matrix symbols (bold, noncommutative)
+let expr = parser.parse(r"\mathbf{A} \mathbf{B}")?;
+// Creates: symbol!(A; matrix) * symbol!(B; matrix)
+
+// Operator symbols (quantum mechanics)
+let expr = parser.parse(r"\hat{p} \hat{x}")?;
+// Creates: symbol!(p; operator) * symbol!(x; operator)
+
+// Mixed scalar and matrix
+let expr = parser.parse(r"x \mathbf{A}")?;
+// Creates: symbol!(x) * symbol!(A; matrix)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_latex
+
+# Matrix symbols (automatic inference)
+expr = parse_latex(r"\mathbf{A} \mathbf{B}")
+# Creates matrix symbols A, B
+
+# Operator symbols
+expr = parse_latex(r"\hat{p} \hat{x}")
+# Creates operator symbols p, x
+
+# Mixed
+expr = parse_latex(r"x \mathbf{A}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { parseLatex } from 'mathhook';
+
+// Matrix symbols
+const expr = parseLatex(String.raw`\mathbf{A} \mathbf{B}`);
+
+// Operator symbols
+const expr2 = parseLatex(String.raw`\hat{p} \hat{x}`);
+
+// Mixed scalar and matrix
+const expr3 = parseLatex(String.raw`x \mathbf{A}`);
+
+</code></pre>
+</details>
+<h3 id="generating-latex-output"><a class="header" href="#generating-latex-output">Generating LaTeX Output</a></h3>
+<p>Convert expressions back to LaTeX</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::latex::LaTeXFormatter;
+
+let x = symbol!(x);
+
+// Simple expression
+let expr = expr!(x^2 / 2);
+let latex = expr.to_latex(None)?;
+// Returns: "\frac{x^{2}}{2}"
+
+// Matrix expression
+let A = symbol!(A; matrix);
+let B = symbol!(B; matrix);
+let expr = expr!(A * B);
+let latex = expr.to_latex(None)?;
+// Returns: "\mathbf{A}\mathbf{B}"
+
+// Complex expression
+let expr = expr!(sin(x) + cos(x^2));
+let latex = expr.to_latex(None)?;
+// Returns: "\sin\left(x\right) + \cos\left(x^{2}\right)"
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+from mathhook.formatter import to_latex
+
+x = symbol('x')
+
+# Simple expression
+expr = x**2 / 2
+latex = to_latex(expr)
+# Returns: "\frac{x^{2}}{2}"
+
+# Matrix expression
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+expr = A * B
+latex = to_latex(expr)
+# Returns: "\mathbf{A}\mathbf{B}"
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, toLatex } from 'mathhook';
+
+const x = symbol('x');
+
+// Simple expression
+const expr = parse('x^2 / 2');
+const latex = toLatex(expr);
+// Returns: "\frac{x^{2}}{2}"
+
+// Matrix expression
+const A = symbol('A', { type: 'matrix' });
+const B = symbol('B', { type: 'matrix' });
+const expr2 = parse('A * B');
+const latex2 = toLatex(expr2);
+// Returns: "\mathbf{A}\mathbf{B}"
+
+</code></pre>
+</details>
+<h3 id="implicit-multiplication"><a class="header" href="#implicit-multiplication">Implicit Multiplication</a></h3>
+<p>Automatic insertion of multiplication operators</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::Parser;
+
+let parser = Parser::new(ParserConfig::default());
+
+// Number-variable: 2x → 2*x
+let expr = parser.parse("2x")?;
+
+// Parentheses: (a)(b) → a*b
+let expr = parser.parse("(a)(b)")?;
+
+// Functions: sin(x)cos(y) → sin(x)*cos(y)
+let expr = parser.parse(r"\sin(x)\cos(y)")?;
+
+// Mixed: 2πr → 2*π*r
+let expr = parser.parse(r"2\pi r")?;
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_latex
+
+# Implicit multiplication handled automatically
+expr = parse_latex("2x")           # 2*x
+expr = parse_latex("(a)(b)")       # a*b
+expr = parse_latex(r"\sin(x)\cos(y)")  # sin(x)*cos(y)
+expr = parse_latex(r"2\pi r")      # 2*π*r
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { parseLatex } from 'mathhook';
+
+// Implicit multiplication
+const expr = parseLatex("2x");           // 2*x
+const expr2 = parseLatex("(a)(b)");      // a*b
+const expr3 = parseLatex(String.raw`\sin(x)\cos(y)`);  // sin(x)*cos(y)
+const expr4 = parseLatex(String.raw`2\pi r`);  // 2*π*r
+
+</code></pre>
+</details>
+<h3 id="calculus-notation-1"><a class="header" href="#calculus-notation-1">Calculus Notation</a></h3>
+<p>Parse derivatives, integrals, limits</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::Parser;
+
+let parser = Parser::new(ParserConfig::default());
+
+// Derivative notation
+let expr = parser.parse(r"\frac{d}{dx} x^2")?;
+
+// Integral notation
+let expr = parser.parse(r"\int x^2 \, dx")?;
+
+// Definite integral
+let expr = parser.parse(r"\int_0^1 x^2 \, dx")?;
+
+// Limit notation
+let expr = parser.parse(r"\lim_{x \to 0} \frac{\sin(x)}{x}")?;
+
+// Summation
+let expr = parser.parse(r"\sum_{i=1}^{n} i^2")?;
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_latex
+
+# Derivative
+expr = parse_latex(r"\frac{d}{dx} x^2")
+
+# Integral
+expr = parse_latex(r"\int x^2 \, dx")
+
+# Definite integral
+expr = parse_latex(r"\int_0^1 x^2 \, dx")
+
+# Limit
+expr = parse_latex(r"\lim_{x \to 0} \frac{\sin(x)}{x}")
+
+# Summation
+expr = parse_latex(r"\sum_{i=1}^{n} i^2")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { parseLatex } from 'mathhook';
+
+// Derivative
+const expr = parseLatex(String.raw`\frac{d}{dx} x^2`);
+
+// Integral
+const expr2 = parseLatex(String.raw`\int x^2 \, dx`);
+
+// Definite integral
+const expr3 = parseLatex(String.raw`\int_0^1 x^2 \, dx`);
+
+// Limit
+const expr4 = parseLatex(String.raw`\lim_{x \to 0} \frac{\sin(x)}{x}`);
+
+</code></pre>
+</details>
+<h2 id="performance-1"><a class="header" href="#performance-1">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(n) for n-character LaTeX string</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::parser::{Parser, ParserConfig}</code></li>
+<li><strong>Python</strong>: <code>mathhook.parser.parse_latex</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.parser.parseLatex</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../api/parser/wolfram.html">api.parser.wolfram</a></p>
+</li>
+<li>
+<p><a href="../api/parser/custom.html">api.parser.custom</a></p>
+</li>
+<li>
+<p><a href="../api/core/expressions.html">api.core.expressions</a></p>
+</li>
+<li>
+<p><a href="../api/advanced/noncommutative_algebra.html">api.advanced.noncommutative_algebra</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="api-matrix-operations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="api-solver-equations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="api-matrix-operations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="api-solver-equations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

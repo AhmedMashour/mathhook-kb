@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Series Expansions }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Expand functions as infinite series for numerical approximation and analysis.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Taylor's Theorem:**
+If $f(x)$ is infinitely differentiable at $x = a$, then:
+$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (x - a)^n$$
+
+Expanded form:
+$$f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 + \cdots$$
+
+**Maclaurin Series (Special Case: a = 0):**
+$$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n$$
+
+**Common Series:**
+- $e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$
+- $\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$
+- $\cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$
+- $\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots$ for $|x| < 1$
+
+**Radius of Convergence ($R$):**
+The series converges for $|x - a| < R$ and may diverge for $|x - a| > R$.
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Maclaurin Series (Expansion at x=0) }
+
+Standard functions at x = 0
+
+\begin{lstlisting}
+from mathhook import symbol, series, exp, sin, cos
+
+x = symbol('x')
+
+# exp(x)
+exp_series = series(exp(x), x, 0, n=5)
+# Result: 1 + x + x^2/2 + x^3/6 + x^4/24 + x^5/120
+
+# sin(x)
+sin_series = series(sin(x), x, 0, n=7)
+# Result: x - x^3/6 + x^5/120 - x^7/5040
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Taylor Series at Arbitrary Points }
+
+Expand around any point a
+
+\begin{lstlisting}
+from mathhook import symbol, series, sin, exp, log, pi
+
+x = symbol('x')
+
+# sin(x) at x = π/2
+sin_at_pi_2 = series(sin(x), x, pi/2, n=5)
+
+# exp(x) at x = 1
+exp_at_1 = series(exp(x), x, 1, n=5)
+
+# ln(x) at x = 1
+log_at_1 = series(log(x), x, 1, n=5)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Laurent Series (Negative Powers) }
+
+For functions with singularities
+
+\begin{lstlisting}
+from mathhook import symbol, laurent_series, exp
+
+x = symbol('x')
+
+# 1/x near x = 0
+pole = 1/x
+laurent = laurent_series(pole, x, 0, -1, 5)
+# Result: x^(-1)
+
+# exp(1/x) at x = 0
+exp_pole = exp(1/x)
+laurent2 = laurent_series(exp_pole, x, 0, -10, 0)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

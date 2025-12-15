@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Messages - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/educational-messages.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="educational-message-registry"><a class="header" href="#educational-message-registry">Educational Message Registry</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>educational.messages</code></p>
+</blockquote>
+<p>The message registry system provides organized, mappable, hashable educational content separated from code logic. Instead of hardcoding explanatory text throughout the codebase, MathHook maintains a centralized registry of educational messages that can be customized, internationalized, and adapted for different audiences.</p>
+<h1 id="educational-message-registry-1"><a class="header" href="#educational-message-registry-1">Educational Message Registry</a></h1>
+<blockquote>
+<p>📍 <strong>Navigation:</strong> <a href="./step-by-step.html">Step-by-Step</a> | <a href="./api.html">Educational API</a> | <a href="../getting-started/learning-paths.html">Previous: Getting Started</a></p>
+</blockquote>
+<p>The message registry system provides organized, mappable, hashable educational content separated from code logic. Instead of hardcoding explanatory text throughout the codebase, MathHook maintains a centralized registry of educational messages that can be customized, internationalized, and adapted for different audiences.</p>
+<h2 id="what-is-the-message-registry"><a class="header" href="#what-is-the-message-registry">What is the Message Registry?</a></h2>
+<p><strong>Problem:</strong> Hardcoding educational text in code makes it difficult to:</p>
+<ul>
+<li>Customize explanations for different student levels</li>
+<li>Translate content to other languages</li>
+<li>Maintain consistent educational messaging</li>
+<li>A/B test different explanations</li>
+<li>Update content without code changes</li>
+</ul>
+<p><strong>Solution:</strong> The message registry provides a centralized, indexed system where:</p>
+<ul>
+<li>Messages are stored separately from code logic</li>
+<li>Each message has a unique hash for fast lookup</li>
+<li>Templates support dynamic substitution</li>
+<li>Content can be customized per audience without touching code</li>
+</ul>
+<p><strong>Learning Journey:</strong> After understanding <a href="./step-by-step.html">step-by-step explanations</a>, learn how to customize the language. Then explore <a href="./api.html">programmatic API integration</a>.</p>
+<h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
+<h3 id="core-components"><a class="header" href="#core-components">Core Components</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::educational::message_registry::{
+    MessageCategory,
+    MessageType,
+    MessageKey,
+    MessageHashSystem,
+    MessageBuilder,
+};
+<span class="boring">}</span></code></pre></pre>
+<h3 id="message-key-structure"><a class="header" href="#message-key-structure">Message Key Structure</a></h3>
+<p>Every message is uniquely identified by a composite key:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MessageKey {
+    pub category: String,        // Domain: "linear_equation", "calculus", etc.
+    pub message_type: String,    // Type: "introduction", "strategy", "result"
+    pub variant: u32,            // Alternative phrasing (0, 1, 2, ...)
+    pub hash: u64,               // Fast lookup hash
+    pub template_params: Vec&lt;String&gt;,  // Required substitutions
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Hash System for Performance:</strong></p>
+<p>Messages are hashed for O(1) lookup:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord">hash</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">fnv1a</span></span><span class="mopen">(</span><span class="mord text"><span class="mord">category</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">type</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">variant</span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>This allows instant message retrieval without string comparison.</p>
+<h2 id="message-categories"><a class="header" href="#message-categories">Message Categories</a></h2>
+<h3 id="algebra-messages"><a class="header" href="#algebra-messages">Algebra Messages</a></h3>
+<p>Messages for algebraic operations including linear equations, quadratic equations, polynomial equations, and general algebraic simplification.</p>
+<h3 id="calculus-messages"><a class="header" href="#calculus-messages">Calculus Messages</a></h3>
+<p>Messages for calculus operations including derivatives (power rule, chain rule), integration (by parts, substitution), and limits.</p>
+<h3 id="solver-messages"><a class="header" href="#solver-messages">Solver Messages</a></h3>
+<p>Messages for equation solving including system equations (substitution, elimination), matrix methods, and solution verification.</p>
+<h3 id="ode-messages"><a class="header" href="#ode-messages">ODE Messages</a></h3>
+<p>Messages for ordinary differential equations including separable equations, linear first-order equations, and exact equations.</p>
+<p><strong>Separable ODE Form:</strong></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟹</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3074em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span></span></span></span></span></p>
+<h3 id="pde-messages"><a class="header" href="#pde-messages">PDE Messages</a></h3>
+<p>Messages for partial differential equations including heat equation, wave equation, and Laplace equation.</p>
+<p><strong>Heat Equation:</strong></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathnormal">t</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathnormal">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1771em;vertical-align:-0.686em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h3 id="noncommutative-algebra-messages"><a class="header" href="#noncommutative-algebra-messages">Noncommutative Algebra Messages</a></h3>
+<p>Messages for matrix and operator algebra where order matters. Critical property: For matrices, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal">A</span></span></span></span> in general, so left and right division are different.</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-message-usage"><a class="header" href="#basic-message-usage">Basic Message Usage</a></h3>
+<p>Create and use educational messages with template substitution</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let intro = MessageBuilder::new(
+    MessageCategory::LinearEquation,
+    MessageType::Introduction,
+    0  // variant
+)
+.with_substitution("equation", "2x + 3 = 7")
+.with_substitution("variable", "x")
+.build()
+.unwrap();
+
+println!("{}", intro.description);
+// Output: "We have a linear equation in the form ax + b = c. To solve for x, we'll isolate the variable."
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">intro = MessageBuilder(
+    MessageCategory.LINEAR_EQUATION,
+    MessageType.INTRODUCTION,
+    0  # variant
+) \
+.with_substitution("equation", "2x + 3 = 7") \
+.with_substitution("variable", "x") \
+.build()
+
+print(intro.description)
+# Output: "We have a linear equation in the form ax + b = c. To solve for x, we'll isolate the variable."
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const intro = new MessageBuilder(
+  MessageCategory.LINEAR_EQUATION,
+  MessageType.INTRODUCTION,
+  0  // variant
+)
+.withSubstitution('equation', '2x + 3 = 7')
+.withSubstitution('variable', 'x')
+.build();
+
+console.log(intro.description);
+// Output: "We have a linear equation in the form ax + b = c. To solve for x, we'll isolate the variable."
+
+</code></pre>
+</details>
+<h3 id="calculus-message-with-power-rule"><a class="header" href="#calculus-message-with-power-rule">Calculus Message with Power Rule</a></h3>
+<p>Generate educational message for derivative explanation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let derivative_msg = MessageBuilder::new(
+    MessageCategory::Calculus,
+    MessageType::DerivativePowerRule,
+    0
+)
+.with_substitution("expression", "x^3")
+.with_substitution("exponent", "3")
+.with_substitution("result", "3x^2")
+.build()
+.unwrap();
+
+println!("{}", derivative_msg.description);
+// Output: "Apply the power rule: d/dx(x^3) = 3·x^(3-1) = 3x^2"
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">derivative_msg = MessageBuilder(
+    MessageCategory.CALCULUS,
+    MessageType.DERIVATIVE_POWER_RULE,
+    0
+) \
+.with_substitution("expression", "x^3") \
+.with_substitution("exponent", "3") \
+.with_substitution("result", "3x^2") \
+.build()
+
+print(derivative_msg.description)
+# Output: "Apply the power rule: d/dx(x^3) = 3·x^(3-1) = 3x^2"
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const derivativeMsg = new MessageBuilder(
+  MessageCategory.CALCULUS,
+  MessageType.DERIVATIVE_POWER_RULE,
+  0
+)
+.withSubstitution('expression', 'x^3')
+.withSubstitution('exponent', '3')
+.withSubstitution('result', '3x^2')
+.build();
+
+console.log(derivativeMsg.description);
+// Output: "Apply the power rule: d/dx(x^3) = 3·x^(3-1) = 3x^2"
+
+</code></pre>
+</details>
+<h3 id="multiple-variants-for-different-audiences"><a class="header" href="#multiple-variants-for-different-audiences">Multiple Variants for Different Audiences</a></h3>
+<p>Use different message variants for beginner, intermediate, and advanced students</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Variant 0: Formal mathematical language
+let formal = MessageBuilder::new(
+    MessageCategory::LinearEquation,
+    MessageType::Strategy,
+    0  // variant 0
+)
+.build()
+.unwrap();
+
+// Variant 1: Conversational tone
+let casual = MessageBuilder::new(
+    MessageCategory::LinearEquation,
+    MessageType::Strategy,
+    1  // variant 1
+)
+.build()
+.unwrap();
+
+// Variant 2: Step-by-step procedural
+let procedural = MessageBuilder::new(
+    MessageCategory::LinearEquation,
+    MessageType::Strategy,
+    2  // variant 2
+)
+.build()
+.unwrap();
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python"># Variant 0: Formal mathematical language
+formal = MessageBuilder(
+    MessageCategory.LINEAR_EQUATION,
+    MessageType.STRATEGY,
+    0  # variant 0
+).build()
+
+# Variant 1: Conversational tone
+casual = MessageBuilder(
+    MessageCategory.LINEAR_EQUATION,
+    MessageType.STRATEGY,
+    1  # variant 1
+).build()
+
+# Variant 2: Step-by-step procedural
+procedural = MessageBuilder(
+    MessageCategory.LINEAR_EQUATION,
+    MessageType.STRATEGY,
+    2  # variant 2
+).build()
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">// Variant 0: Formal mathematical language
+const formal = new MessageBuilder(
+  MessageCategory.LINEAR_EQUATION,
+  MessageType.STRATEGY,
+  0  // variant 0
+).build();
+
+// Variant 1: Conversational tone
+const casual = new MessageBuilder(
+  MessageCategory.LINEAR_EQUATION,
+  MessageType.STRATEGY,
+  1  // variant 1
+).build();
+
+// Variant 2: Step-by-step procedural
+const procedural = new MessageBuilder(
+  MessageCategory.LINEAR_EQUATION,
+  MessageType.STRATEGY,
+  2  // variant 2
+).build();
+
+</code></pre>
+</details>
+<h3 id="generating-educational-step-sequences"><a class="header" href="#generating-educational-step-sequences">Generating Educational Step Sequences</a></h3>
+<p>Generate complete explanation sequences using message registry</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Generate complete explanation sequence
+let steps = EducationalMessageGenerator::linear_equation_steps(
+    "2x + 3 = 7",  // equation
+    "x",           // variable
+    "2"            // solution
+);
+
+for step in &amp;steps {
+    println!("{}", step.description);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python"># Generate complete explanation sequence
+steps = EducationalMessageGenerator.linear_equation_steps(
+    "2x + 3 = 7",  # equation
+    "x",           # variable
+    "2"            # solution
+)
+
+for step in steps:
+    print(step.description)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">// Generate complete explanation sequence
+const steps = EducationalMessageGenerator.linearEquationSteps(
+  '2x + 3 = 7',  // equation
+  'x',           // variable
+  '2'            // solution
+);
+
+steps.forEach(step =&gt; {
+  console.log(step.description);
+});
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(1)</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook::educational::message_registry</code></li>
+<li><strong>Python</strong>: <code>mathhook.educational.message_registry</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.educational.messageRegistry</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../educational/step_by_step.html">educational.step_by_step</a></p>
+</li>
+<li>
+<p><a href="../educational/api.html">educational.api</a></p>
+</li>
+<li>
+<p><a href="../architecture/design_principles.html">architecture.design_principles</a></p>
+</li>
+<li>
+<p><a href="../contributing/documentation.html">contributing.documentation</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="educational-api.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="educational-step_by_step.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="educational-api.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="educational-step_by_step.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Wolfram - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/parser-wolfram.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="wolfram-language-notation"><a class="header" href="#wolfram-language-notation">Wolfram Language Notation</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>parser.wolfram</code></p>
+</blockquote>
+<p>Parse and generate Mathematica/Wolfram Language syntax for compatibility with Wolfram products.
+Supports bidirectional conversion between MathHook expressions and Wolfram notation.</p>
+<h1 id="wolfram-language-notation-1"><a class="header" href="#wolfram-language-notation-1">Wolfram Language Notation</a></h1>
+<p>Parse and generate Mathematica/Wolfram Language syntax for compatibility with Wolfram products.</p>
+<h2 id="understanding-wolfram-notation"><a class="header" href="#understanding-wolfram-notation">Understanding Wolfram Notation</a></h2>
+<h3 id="what-is-wolfram-language"><a class="header" href="#what-is-wolfram-language">What is Wolfram Language?</a></h3>
+<p>Wolfram Language (used in Mathematica, Wolfram Alpha, Wolfram Cloud) is a symbolic computation language with:</p>
+<ul>
+<li><strong>Capital letter functions</strong>: <code>Sin</code>, <code>Cos</code>, <code>Exp</code> (not <code>sin</code>, <code>cos</code>, <code>exp</code>)</li>
+<li><strong>Bracket notation</strong>: Function calls use <code>[]</code> (e.g., <code>Sin[x]</code>, not <code>Sin(x)</code>)</li>
+<li><strong>Symbolic core</strong>: Everything is an expression tree (similar to MathHook)</li>
+<li><strong>Pattern matching</strong>: Powerful transformation rules (MathHook: simplification)</li>
+</ul>
+<h3 id="why-wolfram-compatibility"><a class="header" href="#why-wolfram-compatibility">Why Wolfram Compatibility?</a></h3>
+<ul>
+<li><strong>Academic Migration</strong>: Many researchers use Mathematica</li>
+<li><strong>Cross-Platform</strong>: Export MathHook results to Wolfram Alpha</li>
+<li><strong>Data Exchange</strong>: Import/export equations between systems</li>
+<li><strong>Validation</strong>: Compare MathHook results with Mathematica</li>
+</ul>
+<h3 id="how-it-works-architecture"><a class="header" href="#how-it-works-architecture">How It Works (Architecture)</a></h3>
+<p><strong>Parser:</strong></p>
+<ul>
+<li>Recognizes Wolfram function tokens (<code>Sin</code>, <code>Cos</code>, <code>D</code>, <code>Integrate</code>)</li>
+<li>Bracket parsing: <code>f[x, y, z]</code> → Function call</li>
+<li>PascalCase → snake_case conversion for custom functions</li>
+</ul>
+<p><strong>Formatter:</strong></p>
+<ul>
+<li>Lowercase → Capitalized function names (<code>sin</code> → <code>Sin</code>)</li>
+<li>Parentheses → Brackets (<code>(...)</code> → <code>[...]</code>)</li>
+<li>Operator precedence matching Wolfram</li>
+</ul>
+<h2 id="wolfram--mathhook-translation-table"><a class="header" href="#wolfram--mathhook-translation-table">Wolfram ↔ MathHook Translation Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th><strong>Operation</strong></th><th><strong>Wolfram</strong></th><th><strong>MathHook</strong></th><th><strong>Notes</strong></th></tr></thead><tbody>
+<tr><td>Addition</td><td><code>a + b</code></td><td><code>a + b</code></td><td>Same</td></tr>
+<tr><td>Multiplication</td><td><code>a * b</code> or <code>a b</code></td><td><code>a * b</code></td><td>Same</td></tr>
+<tr><td>Division</td><td><code>a / b</code></td><td><code>a / b</code></td><td>Same</td></tr>
+<tr><td>Power</td><td><code>a^b</code></td><td><code>a^b</code></td><td>Same</td></tr>
+<tr><td>Function call</td><td><code>f[x]</code></td><td><code>f(x)</code></td><td>Brackets vs parens</td></tr>
+<tr><td>Derivative</td><td><code>D[f, x]</code></td><td><code>f.derivative(&amp;x, 1)</code></td><td>Functional vs method</td></tr>
+<tr><td>Integral</td><td><code>Integrate[f, x]</code></td><td><code>f.integrate(&amp;x)</code></td><td>Functional vs method</td></tr>
+<tr><td>Sqrt</td><td><code>Sqrt[x]</code></td><td><code>sqrt(x)</code></td><td>Capital vs lowercase</td></tr>
+<tr><td>Sin</td><td><code>Sin[x]</code></td><td><code>sin(x)</code></td><td>Capital vs lowercase</td></tr>
+<tr><td>Cos</td><td><code>Cos[x]</code></td><td><code>cos(x)</code></td><td>Capital vs lowercase</td></tr>
+<tr><td>Exp</td><td><code>Exp[x]</code></td><td><code>exp(x)</code></td><td>Capital vs lowercase</td></tr>
+<tr><td>Log</td><td><code>Log[x]</code></td><td><code>log(x)</code></td><td>Capital vs lowercase</td></tr>
+</tbody></table>
+</div>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-wolfram-parsing"><a class="header" href="#basic-wolfram-parsing">Basic Wolfram Parsing</a></h3>
+<p>Parse common Wolfram Language expressions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::wolfram::parse_wolfram;
+
+// Functions (capital letters, brackets)
+let expr = parse_wolfram("Sin[x]")?;
+let expr = parse_wolfram("Exp[x]")?;
+let expr = parse_wolfram("Log[x]")?;
+
+// Powers use ^ (not brackets)
+let expr = parse_wolfram("x^2")?;
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_wolfram
+
+# Functions (capital letters, brackets)
+expr = parse_wolfram("Sin[x]")
+expr = parse_wolfram("Exp[x]")
+expr = parse_wolfram("Log[x]")
+
+# Powers use ^ (not brackets)
+expr = parse_wolfram("x^2")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { parseWolfram } = require('mathhook');
+
+// Functions (capital letters, brackets)
+const expr = parseWolfram("Sin[x]");
+const expr = parseWolfram("Exp[x]");
+const expr = parseWolfram("Log[x]");
+
+// Powers use ^ (not brackets)
+const expr = parseWolfram("x^2");
+
+</code></pre>
+</details>
+<h3 id="calculus-operations"><a class="header" href="#calculus-operations">Calculus Operations</a></h3>
+<p>Wolfram calculus notation</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::wolfram::parse_wolfram;
+
+// Derivative: D[expr, var]
+let expr = parse_wolfram("D[x^2, x]")?;  // 2x
+
+// Integral: Integrate[expr, var]
+let expr = parse_wolfram("Integrate[x^2, x]")?;  // x^3/3
+
+// Definite integral: Integrate[expr, {var, a, b}]
+let expr = parse_wolfram("Integrate[x^2, {x, 0, 1}]")?;
+
+// Limit: Limit[expr, var -&gt; value]
+let expr = parse_wolfram("Limit[Sin[x]/x, x -&gt; 0]")?;
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import parse_wolfram
+
+# Derivative: D[expr, var]
+expr = parse_wolfram("D[x^2, x]")  # 2x
+
+# Integral: Integrate[expr, var]
+expr = parse_wolfram("Integrate[x^2, x]")  # x^3/3
+
+# Definite integral: Integrate[expr, {var, a, b}]
+expr = parse_wolfram("Integrate[x^2, {x, 0, 1}]")
+
+# Limit: Limit[expr, var -&gt; value]
+expr = parse_wolfram("Limit[Sin[x]/x, x -&gt; 0]")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { parseWolfram } = require('mathhook');
+
+// Derivative: D[expr, var]
+const expr = parseWolfram("D[x^2, x]");  // 2x
+
+// Integral: Integrate[expr, var]
+const expr = parseWolfram("Integrate[x^2, x]");  // x^3/3
+
+// Definite integral: Integrate[expr, {var, a, b}]
+const expr = parseWolfram("Integrate[x^2, {x, 0, 1}]");
+
+// Limit: Limit[expr, var -&gt; value]
+const expr = parseWolfram("Limit[Sin[x]/x, x -&gt; 0]");
+
+</code></pre>
+</details>
+<h3 id="generating-wolfram-output"><a class="header" href="#generating-wolfram-output">Generating Wolfram Output</a></h3>
+<p>Format MathHook expressions as Wolfram Language</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::wolfram::WolframFormatter;
+
+let formatter = WolframFormatter::new();
+let x = symbol!(x);
+
+// Functions
+let expr = expr!(sin(x));
+println!("{}", formatter.format(&amp;expr));  // Sin[x]
+
+// Complex expressions
+let expr = expr!((x + 1) / (x - 1));
+println!("{}", formatter.format(&amp;expr));  // (x + 1)/(x - 1)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr, WolframFormatter
+
+formatter = WolframFormatter()
+x = symbol('x')
+
+# Functions
+expr_obj = expr('sin(x)')
+print(formatter.format(expr_obj))  # Sin[x]
+
+# Complex expressions
+expr_obj = expr('(x + 1) / (x - 1)')
+print(formatter.format(expr_obj))  # (x + 1)/(x - 1)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr, WolframFormatter } = require('mathhook');
+
+const formatter = new WolframFormatter();
+const x = symbol('x');
+
+// Functions
+const exprObj = expr('sin(x)');
+console.log(formatter.format(exprObj));  // Sin[x]
+
+// Complex expressions
+const exprObj = expr('(x + 1) / (x - 1)');
+console.log(formatter.format(exprObj));  // (x + 1)/(x - 1)
+
+</code></pre>
+</details>
+<h3 id="cross-platform-validation"><a class="header" href="#cross-platform-validation">Cross-Platform Validation</a></h3>
+<p>Export to Wolfram for verification</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::formatter::wolfram::WolframFormatter;
+
+// Compute derivative in MathHook
+let x = symbol!(x);
+let f = expr!(x^3 + 2*x^2 + x);
+let df = f.derivative(&amp;x, 1);
+
+// Export to Wolfram for verification
+let formatter = WolframFormatter::new();
+let wolfram_code = formatter.format(&amp;df);
+
+println!("Verify in Wolfram Alpha:");
+println!("Simplify[{}]", wolfram_code);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr, WolframFormatter
+
+# Compute derivative in MathHook
+x = symbol('x')
+f = expr('x^3 + 2*x^2 + x')
+df = f.derivative(x, 1)
+
+# Export to Wolfram for verification
+formatter = WolframFormatter()
+wolfram_code = formatter.format(df)
+
+print("Verify in Wolfram Alpha:")
+print(f"Simplify[{wolfram_code}]")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr, WolframFormatter } = require('mathhook');
+
+// Compute derivative in MathHook
+const x = symbol('x');
+const f = expr('x^3 + 2*x^2 + x');
+const df = f.derivative(x, 1);
+
+// Export to Wolfram for verification
+const formatter = new WolframFormatter();
+const wolframCode = formatter.format(df);
+
+console.log("Verify in Wolfram Alpha:");
+console.log(`Simplify[${wolframCode}]`);
+
+</code></pre>
+</details>
+<h2 id="performance"><a class="header" href="#performance">Performance</a></h2>
+<p><strong>Time Complexity</strong>: O(n) where n = expression tree size</p>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::parser::wolfram</code></li>
+<li><strong>Python</strong>: <code>mathhook.parser.wolfram</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.parser.wolfram</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../parser/latex.html">parser.latex</a></p>
+</li>
+<li>
+<p><a href="../parser/formatting.html">parser.formatting</a></p>
+</li>
+<li>
+<p><a href="../parser/custom.html">parser.custom</a></p>
+</li>
+<li>
+<p><a href="../core/expressions.html">core.expressions</a></p>
+</li>
+<li>
+<p><a href="../operations/solving.html">operations.solving</a></p>
+</li>
+<li>
+<p><a href="../operations/calculus.html">operations.calculus</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="parser-noncommutative_design.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="pde-separation-of-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="parser-noncommutative_design.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="pde-separation-of-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

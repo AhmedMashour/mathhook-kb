@@ -1,0 +1,718 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Architecture Reference - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/contributing-architecture-reference.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="quick-reference-for-core-math-functions"><a class="header" href="#quick-reference-for-core-math-functions">Quick Reference for Core Math Functions</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>contributing.architecture-reference</code></p>
+</blockquote>
+<p>Module structure patterns, implementation checklists, and templates for implementing
+math functions in MathHook. Covers elementary functions, special functions, and
+number theory operations.</p>
+<h1 id="quick-reference-for-core-math-functions-1"><a class="header" href="#quick-reference-for-core-math-functions-1">Quick Reference for Core Math Functions</a></h1>
+<h2 id="module-structure-pattern"><a class="header" href="#module-structure-pattern">Module Structure Pattern</a></h2>
+<pre><code>src/core/functions/FUNCNAME/
+├── mod.rs       # Main implementation with evaluate(), properties(), simplify()
+├── data.rs      # Special values HashMap (LazyLock&lt;SpecialValuesMap&gt;)
+└── tests.rs     # Unit tests
+</code></pre>
+<h2 id="implementation-checklist-per-function"><a class="header" href="#implementation-checklist-per-function">Implementation Checklist (Per Function)</a></h2>
+<ul>
+<li><input disabled="" type="checkbox"/>
+Create module directory: <code>src/core/functions/FUNCNAME/</code></li>
+<li><input disabled="" type="checkbox"/>
+Implement <code>mod.rs</code> with:
+<ul>
+<li><input disabled="" type="checkbox"/>
+<code>pub fn FUNCNAME(arg: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt;</code></li>
+<li><input disabled="" type="checkbox"/>
+Special value lookups from data.rs</li>
+<li><input disabled="" type="checkbox"/>
+Computed special values (general patterns)</li>
+<li><input disabled="" type="checkbox"/>
+Mathematical identities (symmetry, periodicity)</li>
+<li><input disabled="" type="checkbox"/>
+Numerical evaluation</li>
+<li><input disabled="" type="checkbox"/>
+Symbolic return for unevaluated forms</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Create <code>data.rs</code> with:
+<ul>
+<li><input disabled="" type="checkbox"/>
+<code>pub static FUNCNAME_SPECIAL_VALUES: LazyLock&lt;SpecialValuesMap&gt;</code></li>
+<li><input disabled="" type="checkbox"/>
+Exact values with LaTeX explanations</li>
+<li><input disabled="" type="checkbox"/>
+Undefined/error cases (poles, domain violations)</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Migrate/create <code>tests.rs</code>:
+<ul>
+<li><input disabled="" type="checkbox"/>
+Test all special values</li>
+<li><input disabled="" type="checkbox"/>
+Test domain boundaries</li>
+<li><input disabled="" type="checkbox"/>
+Test mathematical properties (symmetry, periodicity, identities)</li>
+<li><input disabled="" type="checkbox"/>
+Test numerical evaluation</li>
+<li><input disabled="" type="checkbox"/>
+Test error cases</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"/>
+Register in UniversalFunctionRegistry (if needed)</li>
+<li><input disabled="" type="checkbox"/>
+Test: <code>cargo test -p mathhook-core functions::FUNCNAME</code></li>
+<li><input disabled="" type="checkbox"/>
+Verify no regressions: <code>cargo test</code></li>
+</ul>
+<h2 id="pattern-templates"><a class="header" href="#pattern-templates">Pattern Templates</a></h2>
+<h3 id="datars-template-elementary-functions"><a class="header" href="#datars-template-elementary-functions">data.rs Template (Elementary Functions)</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>//! Special values for FUNCNAME function
+
+use crate::core::Expression;
+use std::sync::LazyLock;
+use std::collections::HashMap;
+
+pub type SpecialValuesMap = HashMap&lt;Expression, SpecialValueResult&gt;;
+
+pub enum SpecialValueResult {
+    Exact {
+        output: Expression,
+        latex: String,
+    },
+    Error {
+        error: MathError,
+        latex: String,
+    },
+}
+
+pub static FUNCNAME_SPECIAL_VALUES: LazyLock&lt;SpecialValuesMap&gt; = LazyLock::new(|| {
+    let mut map = SpecialValuesMap::new();
+
+    // Exact zero
+    map.insert(
+        Expression::integer(0),
+        SpecialValueResult::Exact {
+            output: Expression::integer(0),
+            latex: "\\FUNCNAME(0) = 0".to_string(),
+        },
+    );
+
+    // Common special values
+    // ...
+
+    // Undefined cases (poles)
+    map.insert(
+        Expression::div(Expression::pi(), Expression::integer(2)),
+        SpecialValueResult::Error {
+            error: MathError::Undefined {
+                expression: Expression::function("FUNCNAME", vec![
+                    Expression::div(Expression::pi(), Expression::integer(2))
+                ]),
+            },
+            latex: "\\FUNCNAME(\\frac{\\pi}{2}) = \\text{undefined}".to_string(),
+        },
+    );
+
+    map
+});
+<span class="boring">}</span></code></pre></pre>
+<h3 id="modrs-template-elementary-functions"><a class="header" href="#modrs-template-elementary-functions">mod.rs Template (Elementary Functions)</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>//! FUNCNAME function implementation
+//!
+//! Provides exact symbolic evaluation, special values, and numerical computation.
+
+use crate::core::Expression;
+use crate::error::MathError;
+
+mod data;
+use data::{FUNCNAME_SPECIAL_VALUES, SpecialValueResult};
+
+#[cfg(test)]
+mod tests;
+
+/// Evaluate FUNCNAME function
+///
+/// # Arguments
+///
+/// * `arg` - The input expression
+///
+/// # Returns
+///
+/// * `Ok(Expression)` - The evaluated result
+/// * `Err(MathError)` - Domain error or undefined
+///
+/// # Examples
+///
+/// ```rust
+/// use mathhook::functions::elementary::FUNCNAME::FUNCNAME;
+/// use mathhook::{expr, symbol};
+///
+/// let x = symbol!(x);
+/// let result = FUNCNAME(&amp;expr!(0)).unwrap();
+/// assert_eq!(result, expr!(0));
+/// ```
+pub fn FUNCNAME(arg: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt; {
+    // 1. Check shared special values (exact or error)
+    if let Some(result) = FUNCNAME_SPECIAL_VALUES.get(arg) {
+        match result {
+            SpecialValueResult::Exact { output, .. } =&gt; return Ok(output.clone()),
+            SpecialValueResult::Error { error, .. } =&gt; return Err(error.clone()),
+        }
+    }
+
+    // 2. Computed special values (general patterns)
+    // Example: For trig functions, handle multiples of π
+    // if let Some(pi_mult) = arg.as_pi_multiple() {
+    //     return Ok(eval_FUNCNAME_at_pi_multiple(&amp;pi_mult));
+    // }
+
+    // 3. Mathematical identities
+    // Example: sin(-x) = -sin(x) (odd function)
+    // if let Some(neg_arg) = arg.as_negation() {
+    //     return FUNCNAME(&amp;neg_arg).map(|result| Expression::neg(result));
+    // }
+
+    // 4. Numerical evaluation
+    if let Some(val) = arg.try_to_f64() {
+        return Ok(Expression::float(val.FUNCNAME()));  // Use appropriate std method
+    }
+
+    // 5. Unevaluated (symbolic)
+    Ok(Expression::function("FUNCNAME", vec![arg.clone()]))
+}
+
+/// Dispatcher for registry integration
+pub(crate) fn FUNCNAME_dispatch(args: &amp;[Expression]) -&gt; Result&lt;Expression, MathError&gt; {
+    if args.len() != 1 {
+        return Err(MathError::InvalidArgumentCount {
+            expected: 1,
+            got: args.len(),
+        });
+    }
+    FUNCNAME(&amp;args[0])
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="testsrs-template"><a class="header" href="#testsrs-template">tests.rs Template</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>//! Tests for FUNCNAME function
+
+use super::*;
+use crate::{expr, symbol};
+
+#[test]
+fn test_FUNCNAME_special_values() {
+    // Test exact zero
+    assert_eq!(FUNCNAME(&amp;expr!(0)).unwrap(), expr!(0));
+
+    // Test other special values
+    // ...
+}
+
+#[test]
+fn test_FUNCNAME_domain_errors() {
+    // Test undefined cases (poles)
+    let result = FUNCNAME(&amp;expr!(pi / 2));
+    assert!(result.is_err());
+    if let Err(MathError::Undefined { .. }) = result {
+        // Expected
+    } else {
+        panic!("Expected Undefined error");
+    }
+}
+
+#[test]
+fn test_FUNCNAME_identities() {
+    let x = symbol!(x);
+
+    // Test symmetry (odd/even function)
+    // Example: sin(-x) = -sin(x)
+    // let neg_x = expr!(-x);
+    // assert_eq!(FUNCNAME(&amp;neg_x), expr!(- FUNCNAME(x)));
+
+    // Test periodicity
+    // Example: sin(x + 2π) = sin(x)
+}
+
+#[test]
+fn test_FUNCNAME_numerical() {
+    // Test numerical evaluation
+    use std::f64::consts::PI;
+
+    let result = FUNCNAME(&amp;Expression::float(0.0)).unwrap();
+    assert!((result.try_to_f64().unwrap() - 0.0).abs() &lt; 1e-10);
+
+    // More numerical tests...
+}
+
+#[test]
+fn test_FUNCNAME_symbolic() {
+    let x = symbol!(x);
+
+    // Unevaluated form
+    let result = FUNCNAME(&amp;Expression::symbol(x)).unwrap();
+    assert_eq!(result, Expression::function("FUNCNAME", vec![Expression::symbol(x)]));
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="special-function-patterns-gamma-zeta-bessel"><a class="header" href="#special-function-patterns-gamma-zeta-bessel">Special Function Patterns (Gamma, Zeta, Bessel)</a></h2>
+<h3 id="datars-for-special-functions"><a class="header" href="#datars-for-special-functions">data.rs for Special Functions</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>pub static GAMMA_SPECIAL_VALUES: LazyLock&lt;SpecialValuesMap&gt; = LazyLock::new(|| {
+    let mut map = SpecialValuesMap::new();
+
+    // Integer values: Γ(n) = (n-1)!
+    map.insert(expr!(1), special_value!(1, "\\Gamma(1) = 1"));
+    map.insert(expr!(2), special_value!(1, "\\Gamma(2) = 1"));
+    map.insert(expr!(3), special_value!(2, "\\Gamma(3) = 2"));
+    map.insert(expr!(4), special_value!(6, "\\Gamma(4) = 6"));
+
+    // Half-integer values: Γ(1/2) = √π
+    map.insert(expr!(1/2), special_value!(sqrt(pi), "\\Gamma(\\frac{1}{2}) = \\sqrt{\\pi}"));
+
+    // Poles (undefined at non-positive integers)
+    map.insert_undefined(expr!(0), "\\Gamma(0) = \\text{undefined}");
+    map.insert_undefined(expr!(-1), "\\Gamma(-1) = \\text{undefined}");
+
+    map
+});
+<span class="boring">}</span></code></pre></pre>
+<h3 id="computed-special-values-pattern"><a class="header" href="#computed-special-values-pattern">Computed Special Values Pattern</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>// For gamma: Handle general factorial cases
+if let Some(n) = arg.as_positive_integer() {
+    if n &gt; 0 &amp;&amp; n &lt;= 20 {  // Precompute up to reasonable limit
+        return Ok(Expression::integer(factorial(n - 1)));
+    }
+}
+
+// For zeta: Handle general even integer cases
+if let Some(n) = arg.as_even_positive_integer() {
+    // Use Bernoulli numbers formula
+    return Ok(compute_zeta_even_integer(n));
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="number-theory-functions-no-hashmap---algorithmic"><a class="header" href="#number-theory-functions-no-hashmap---algorithmic">Number Theory Functions (NO HashMap - Algorithmic)</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>// gcd, lcm, factor do NOT use HashMap
+// They are purely algorithmic
+
+pub fn gcd(a: &amp;Expression, b: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt; {
+    // Euclidean algorithm
+    if let (Some(a_int), Some(b_int)) = (a.as_integer(), b.as_integer()) {
+        return Ok(Expression::integer(gcd_algorithm(a_int, b_int)));
+    }
+
+    // Symbolic GCD
+    Ok(Expression::function("gcd", vec![a.clone(), b.clone()]))
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="registry-integration-pattern"><a class="header" href="#registry-integration-pattern">Registry Integration Pattern</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>// functions/registry/elementary.rs
+
+use crate::functions::elementary::sin::{sin_dispatch, SIN_SPECIAL_VALUES};
+
+pub fn get_elementary_properties() -&gt; Vec&lt;(String, FunctionProperties)&gt; {
+    vec![
+        (
+            "sin".to_string(),
+            FunctionProperties {
+                name: "sin",
+                // Derived from shared data (CANNOT drift!)
+                special_values: SIN_SPECIAL_VALUES
+                    .iter()
+                    .map(|(input, result)| match result {
+                        SpecialValueResult::Exact { output, latex } =&gt; SpecialValue {
+                            input: input.to_string(),
+                            output: output.clone(),
+                            latex_explanation: latex.clone(),
+                        },
+                        SpecialValueResult::Error { .. } =&gt; SpecialValue {
+                            input: input.to_string(),
+                            output: Expression::undefined(),
+                            latex_explanation: "undefined".to_string(),
+                        },
+                    })
+                    .collect(),
+                dispatch: sin_dispatch,
+                domain: "all reals".to_string(),
+                range: "[-1, 1]".to_string(),
+                period: Some(Expression::mul(vec![Expression::integer(2), Expression::pi()])),
+            },
+        ),
+        // More functions...
+    ]
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="critical-patterns"><a class="header" href="#critical-patterns">Critical Patterns</a></h2>
+<h3 id="1-single-source-of-truth"><a class="header" href="#1-single-source-of-truth">1. Single Source of Truth</a></h3>
+<ul>
+<li>Special values defined ONCE in data.rs</li>
+<li>Registry derives from data.rs (no duplication)</li>
+<li>Implementation uses data.rs directly (no hardcoded values)</li>
+</ul>
+<h3 id="2-error-handling"><a class="header" href="#2-error-handling">2. Error Handling</a></h3>
+<ul>
+<li>Domain violations return <code>Err(MathError::DomainError { ... })</code></li>
+<li>Undefined cases (poles) use <code>SpecialValueResult::Error</code></li>
+<li>Symbolic unevaluated forms for generic expressions</li>
+</ul>
+<h3 id="3-mathematical-correctness"><a class="header" href="#3-mathematical-correctness">3. Mathematical Correctness</a></h3>
+<ul>
+<li>Exact symbolic values (use rationals, not floats)</li>
+<li>Handle symmetry (odd/even functions)</li>
+<li>Handle periodicity (trig functions)</li>
+<li>Handle domain restrictions (log, sqrt, etc.)</li>
+</ul>
+<h3 id="4-testing-requirements"><a class="header" href="#4-testing-requirements">4. Testing Requirements</a></h3>
+<ul>
+<li>Test ALL special values from data.rs</li>
+<li>Test domain boundaries and error cases</li>
+<li>Test mathematical properties (identities, symmetry)</li>
+<li>Test numerical evaluation accuracy</li>
+<li>Test symbolic unevaluated forms</li>
+</ul>
+<h2 id="migration-workflow"><a class="header" href="#migration-workflow">Migration Workflow</a></h2>
+<h3 id="for-refactored-functions-7-functions"><a class="header" href="#for-refactored-functions-7-functions">For Refactored Functions (7 functions)</a></h3>
+<ol>
+<li><strong>Extract current implementation</strong> from special.rs</li>
+<li><strong>Create module directory</strong> <code>src/core/functions/FUNCNAME/</code></li>
+<li><strong>Create data.rs</strong> with special values from hardcoded matches</li>
+<li><strong>Migrate mod.rs</strong> to use data.rs lookups</li>
+<li><strong>Migrate tests</strong> from special.rs to tests.rs</li>
+<li><strong>Run tests</strong> to verify no regressions</li>
+<li><strong>Update registry</strong> (if needed)</li>
+</ol>
+<h3 id="for-new-implementations-21-functions"><a class="header" href="#for-new-implementations-21-functions">For New Implementations (21 functions)</a></h3>
+<ol>
+<li><strong>Create module directory</strong> <code>src/core/functions/FUNCNAME/</code></li>
+<li><strong>Create data.rs</strong> with special values</li>
+<li><strong>Implement mod.rs</strong> following pattern</li>
+<li><strong>Create tests.rs</strong> with coverage</li>
+<li><strong>Register in registry</strong> (elementary.rs, polynomials.rs, etc.)</li>
+<li><strong>Run tests</strong> and verify correctness</li>
+</ol>
+<h2 id="verification-commands"><a class="header" href="#verification-commands">Verification Commands</a></h2>
+<pre><code class="language-bash"># Test individual function
+cargo test -p mathhook-core functions::FUNCNAME
+
+# Test all functions
+cargo test -p mathhook-core functions
+
+# Full test suite (no regressions)
+cargo test
+
+# Doctests
+cargo test --doc
+
+# Check Expression size (must remain 32 bytes)
+cargo test expression_size
+</code></pre>
+<h2 id="success-criteria"><a class="header" href="#success-criteria">Success Criteria</a></h2>
+<ul>
+<li>✅ All functions pass individual tests</li>
+<li>✅ All functions pass integration tests</li>
+<li>✅ No test regressions (full suite passes)</li>
+<li>✅ Expression size remains 32 bytes</li>
+<li>✅ Documentation complete with examples</li>
+<li>✅ No hardcoded special values in implementation (only in data.rs)</li>
+<li>✅ Registry correctly derives from data.rs</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../contributing/development.html">contributing.development</a></p>
+</li>
+<li>
+<p><a href="../contributing/testing.html">contributing.testing</a></p>
+</li>
+<li>
+<p><a href="../contributing/style.html">contributing.style</a></p>
+</li>
+<li>
+<p><a href="../contributing/correctness.html">contributing.correctness</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="bindings-wasm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="contributing-correctness.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="bindings-wasm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="contributing-correctness.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

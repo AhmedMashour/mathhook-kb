@@ -1,0 +1,600 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Evaluation Vs Simplification - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/advanced-evaluation_vs_simplification.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="evaluation-vs-simplification"><a class="header" href="#evaluation-vs-simplification">Evaluation vs Simplification</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>advanced.evaluation_vs_simplification</code></p>
+</blockquote>
+<p>Understand the critical differences between evaluation (computing numerical results
+with domain checking) and simplification (algebraic transformation) in MathHook's
+symbolic engine. Knowing when to use each operation is essential for correct
+mathematical computation.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p><strong>Evaluation</strong> maps expressions to numerical values:
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord">eval</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord mathbb">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord mathbb">C</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord text"><span class="mord">Error</span></span><span class="mclose">}</span></span></span></span></span>
+where <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> is the set of expressions and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> is a variable substitution.</p>
+<p><strong>Simplification</strong> maps expressions to equivalent canonical forms:
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">simplify</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">such that </span></span><span class="mord">∀</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4637em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">simplify</span></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mclose">)</span></span></span></span></span></p>
+<h1 id="evaluation-vs-simplification-1"><a class="header" href="#evaluation-vs-simplification-1">Evaluation vs Simplification</a></h1>
+<p>MathHook provides two fundamental operations for working with expressions:</p>
+<ol>
+<li><strong>Evaluation</strong> (<code>evaluate()</code>, <code>evaluate_with_context()</code>) - Compute numerical values</li>
+<li><strong>Simplification</strong> (<code>simplify()</code>) - Algebraic reduction</li>
+</ol>
+<h2 id="the-key-principle"><a class="header" href="#the-key-principle">The Key Principle</a></h2>
+<blockquote>
+<p><strong><code>evaluate()</code> ≠ <code>simplify()</code></strong> - They serve different purposes and should not be used interchangeably.</p>
+</blockquote>
+<div class="table-wrapper"><table><thead><tr><th>Aspect</th><th>Evaluation</th><th>Simplification</th></tr></thead><tbody>
+<tr><td><strong>Purpose</strong></td><td>Compute numerical values</td><td>Reduce algebraic complexity</td></tr>
+<tr><td><strong>Input</strong></td><td>Expression (+ optional variables)</td><td>Expression only</td></tr>
+<tr><td><strong>Output</strong></td><td>Numerical result or error</td><td>Simpler symbolic form</td></tr>
+<tr><td><strong>Domain Checking</strong></td><td>✅ Yes (catches mathematical errors)</td><td>❌ No</td></tr>
+<tr><td><strong>Substitution</strong></td><td>✅ Yes (with context)</td><td>❌ No</td></tr>
+<tr><td><strong>Error Handling</strong></td><td><code>Result&lt;Expression, MathError&gt;</code></td><td><code>Expression</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h2>
+<h3 id="evaluation-numerical-computation"><a class="header" href="#evaluation-numerical-computation">Evaluation: Numerical Computation</a></h3>
+<p>Evaluation converts symbolic expressions into concrete numerical values with
+domain checking:</p>
+<ul>
+<li><strong>Domain Checking</strong>: Catches mathematical errors (sqrt(-1), log(0), division by zero)</li>
+<li><strong>Recursive Evaluation</strong>: Evaluates entire expression tree</li>
+<li><strong>Error Propagation</strong>: Errors bubble up from nested expressions</li>
+</ul>
+<h3 id="simplification-algebraic-reduction"><a class="header" href="#simplification-algebraic-reduction">Simplification: Algebraic Reduction</a></h3>
+<p>Simplification transforms expressions into equivalent but simpler symbolic forms:</p>
+<ul>
+<li><strong>Algebraic Equivalence</strong>: Output is mathematically equivalent to input</li>
+<li><strong>No Domain Checking</strong>: Operates purely symbolically</li>
+<li><strong>Idempotency</strong>: Simplifying twice yields the same result</li>
+</ul>
+<h2 id="decision-guide"><a class="header" href="#decision-guide">Decision Guide</a></h2>
+<h3 id="use-evaluate-when"><a class="header" href="#use-evaluate-when">Use <code>evaluate()</code> when:</a></h3>
+<ul>
+<li>You need a numerical result</li>
+<li>You want domain validation</li>
+<li>Expression contains only constants</li>
+</ul>
+<h3 id="use-evaluate_with_context-when"><a class="header" href="#use-evaluate_with_context-when">Use <code>evaluate_with_context()</code> when:</a></h3>
+<ul>
+<li>Expression contains variables you need to substitute</li>
+<li>You want control over evaluation behavior</li>
+<li>You're solving equations or evaluating formulas</li>
+</ul>
+<h3 id="use-simplify-when"><a class="header" href="#use-simplify-when">Use <code>simplify()</code> when:</a></h3>
+<ul>
+<li>You need algebraic reduction</li>
+<li>You want to reduce expression complexity</li>
+<li>You're preparing for symbolic operations</li>
+</ul>
+<h2 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h2>
+<h3 id="-expecting-numbers-from-simplify"><a class="header" href="#-expecting-numbers-from-simplify">❌ Expecting Numbers from <code>simplify()</code></a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = symbol!(x);
+let result = expr!(x + x).simplify();
+// Returns: 2*x (still symbolic, NOT a number!)
+<span class="boring">}</span></code></pre></pre>
+<h3 id="-using-evaluate-without-substitution"><a class="header" href="#-using-evaluate-without-substitution">❌ Using <code>evaluate()</code> Without Substitution</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = symbol!(x);
+let result = expr!(x + 1).evaluate().unwrap();
+// Returns: x + 1 (symbolic, can't substitute without context)
+<span class="boring">}</span></code></pre></pre>
+<h3 id="-ignoring-domain-errors"><a class="header" href="#-ignoring-domain-errors">❌ Ignoring Domain Errors</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let result = expr!(sqrt(-1)).evaluate().unwrap(); // PANIC!
+// Always handle Result properly
+<span class="boring">}</span></code></pre></pre>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="basic-evaluation-vs-simplification"><a class="header" href="#basic-evaluation-vs-simplification">Basic Evaluation vs Simplification</a></h3>
+<p>Shows the fundamental difference between the two operations</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::{expr, symbol};
+
+// Simplify: algebraic reduction
+let x = symbol!(x);
+let simplified = expr!(x + x + x).simplify();
+assert_eq!(simplified, expr!(3 * x));  // Still symbolic
+
+// Evaluate: numerical computation
+let result = expr!(2 + 3).evaluate().unwrap();
+assert_eq!(result, expr!(5));  // Numerical value
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+# Simplify: algebraic reduction
+x = symbol('x')
+simplified = (x + x + x).simplify()
+# Result: 3*x (still symbolic)
+
+# Evaluate: numerical computation
+result = expr('2 + 3').evaluate()
+# Result: 5 (numerical value)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+
+// Simplify: algebraic reduction
+const x = symbol('x');
+const simplified = expr(x.add(x).add(x)).simplify();
+// Result: 3*x (still symbolic)
+
+// Evaluate: numerical computation
+const result = expr('2 + 3').evaluate();
+// Result: 5 (numerical value)
+
+</code></pre>
+</details>
+<h3 id="evaluation-with-variable-substitution"><a class="header" href="#evaluation-with-variable-substitution">Evaluation with Variable Substitution</a></h3>
+<p>Using evaluate_with_context for variable substitution</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::core::expression::eval_numeric::EvalContext;
+use mathhook_core::{expr, symbol};
+use std::collections::HashMap;
+
+let x = symbol!(x);
+let y = symbol!(y);
+
+// Create context with variable values
+let mut vars = HashMap::new();
+vars.insert("x".to_string(), expr!(3));
+vars.insert("y".to_string(), expr!(4));
+let ctx = EvalContext::numeric(vars);
+
+// Evaluate x² + 2xy + y² at (x=3, y=4)
+let formula = expr!(x^2 + 2*x*y + y^2);
+let result = formula.evaluate_with_context(&amp;ctx).unwrap();
+assert_eq!(result, expr!(49)); // (3 + 4)² = 49
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr, EvalContext
+
+x = symbol('x')
+y = symbol('y')
+
+# Create context with variable values
+ctx = EvalContext({'x': 3, 'y': 4})
+
+# Evaluate x² + 2xy + y² at (x=3, y=4)
+formula = x**2 + 2*x*y + y**2
+result = formula.evaluate_with_context(ctx)
+# Result: 49  (which is (3+4)²)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr, EvalContext } = require('mathhook');
+
+const x = symbol('x');
+const y = symbol('y');
+
+// Create context with variable values
+const ctx = new EvalContext({x: 3, y: 4});
+
+// Evaluate x² + 2xy + y² at (x=3, y=4)
+const formula = x.pow(2).add(x.mul(y).mul(2)).add(y.pow(2));
+const result = formula.evaluateWithContext(ctx);
+// Result: 49  (which is (3+4)²)
+
+</code></pre>
+</details>
+<h3 id="domain-error-handling"><a class="header" href="#domain-error-handling">Domain Error Handling</a></h3>
+<p>Evaluation catches mathematical domain errors</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::{expr, MathError};
+
+// sqrt(-1) triggers domain error
+match expr!(sqrt(-1)).evaluate() {
+    Ok(result) =&gt; println!("Result: {}", result),
+    Err(MathError::DomainError { operation, value, reason }) =&gt; {
+        eprintln!("Domain error in {}: {} ({})", operation, value, reason);
+    }
+    Err(e) =&gt; eprintln!("Error: {:?}", e),
+}
+
+// log(0) triggers domain error
+assert!(expr!(log(0)).evaluate().is_err());
+
+// Division by zero
+assert!(expr!(1 / 0).evaluate().is_err());
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import expr, MathError
+
+# sqrt(-1) triggers domain error
+try:
+    result = expr('sqrt(-1)').evaluate()
+except MathError as e:
+    print(f"Domain error: {e}")
+
+# log(0) triggers domain error
+try:
+    result = expr('log(0)').evaluate()
+except MathError as e:
+    print(f"Domain error: {e}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { expr, MathError } = require('mathhook');
+
+// sqrt(-1) triggers domain error
+try {
+    const result = expr('sqrt(-1)').evaluate();
+} catch (e) {
+    if (e instanceof MathError) {
+        console.error(`Domain error: ${e.message}`);
+    }
+}
+
+// log(0) triggers domain error - also throws
+// Division by zero - also throws
+
+</code></pre>
+</details>
+<h3 id="simplification-for-algebraic-manipulation"><a class="header" href="#simplification-for-algebraic-manipulation">Simplification for Algebraic Manipulation</a></h3>
+<p>Simplification applies algebraic identities without domain checking</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook_core::{expr, symbol};
+
+let x = symbol!(x);
+
+// Combine like terms
+assert_eq!(expr!(x + x + x).simplify(), expr!(3 * x));
+
+// Remove identity elements
+assert_eq!(expr!(x * 1).simplify(), expr!(x));
+assert_eq!(expr!(x + 0).simplify(), expr!(x));
+
+// Zero propagation
+assert_eq!(expr!(0 * x).simplify(), expr!(0));
+
+// Trigonometric identities
+assert_eq!(expr!(sin(x)^2 + cos(x)^2).simplify(), expr!(1));
+
+// Simplify doesn't check domain (stays symbolic)
+let result = expr!(sqrt(x)).simplify(); // OK, stays sqrt(x)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr, simplify
+
+x = symbol('x')
+
+# Combine like terms
+assert simplify(x + x + x) == 3*x
+
+# Remove identity elements
+assert simplify(x * 1) == x
+assert simplify(x + 0) == x
+
+# Zero propagation
+assert simplify(0 * x) == 0
+
+# Trigonometric identities
+from mathhook import sin, cos
+assert simplify(sin(x)**2 + cos(x)**2) == 1
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr, simplify, sin, cos } = require('mathhook');
+
+const x = symbol('x');
+
+// Combine like terms
+console.log(simplify(x.add(x).add(x)));  // 3*x
+
+// Remove identity elements
+console.log(simplify(x.mul(1)));  // x
+console.log(simplify(x.add(0)));  // x
+
+// Zero propagation
+console.log(simplify(x.mul(0)));  // 0
+
+// Trigonometric identities
+console.log(simplify(sin(x).pow(2).add(cos(x).pow(2))));  // 1
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::core::expression::eval_numeric</code></li>
+<li><strong>Python</strong>: <code>mathhook.evaluation</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.evaluation</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../operations/simplification.html">operations.simplification</a></p>
+</li>
+<li>
+<p><a href="../operations/evaluation.html">operations.evaluation</a></p>
+</li>
+<li>
+<p><a href="../operations/substitution.html">operations.substitution</a></p>
+</li>
+<li>
+<p><a href="../core/expressions.html">core.expressions</a></p>
+</li>
+<li>
+<p><a href="../appendix/errors.html">appendix.errors</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-differential_equations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="advanced-matrices.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-differential_equations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="advanced-matrices.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

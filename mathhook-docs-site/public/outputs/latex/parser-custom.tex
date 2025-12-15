@@ -1,0 +1,246 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Custom Parsers and Extensions }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Extend MathHook's parser for domain-specific mathematical notation.
+Add custom functions, operators, preprocessors, and grammar modifications.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Custom Parsers and Extensions
+
+Extend MathHook's parser for domain-specific mathematical notation.
+
+## Understanding Parser Extension
+
+### What Can You Extend?
+
+MathHook's parser is modular and extensible. You can add:
+
+- **Custom Functions**: Domain-specific functions (chemistry, physics, engineering)
+- **Custom Operators**: New infix/prefix/postfix operators
+- **Custom Notation**: LaTeX macros, specialized symbols
+- **Parser Preprocessors**: Transform input before parsing
+- **Lexer Tokens**: New token types for specialized syntax
+
+### When to Extend the Parser
+
+**Use Built-In Features When:**
+- Standard mathematical notation suffices
+- Functions can be named conventionally
+- LaTeX or Wolfram notation covers your needs
+
+**Extend the Parser When:**
+- Domain-specific notation is essential (chemistry: `→`, physics: `⊗`)
+- Custom operators with special precedence
+- Proprietary mathematical notation
+- Legacy system compatibility
+
+### Architecture Overview
+
+```
+Input String
+    ↓
+Preprocessor (optional) - Transform syntax before parsing
+    ↓
+Lexer - Tokenize input (recognizes custom tokens)
+    ↓
+Parser (LALRPOP) - Build expression tree
+    ↓
+Post-Processor (optional) - Transform parsed expression
+    ↓
+Expression
+```
+
+## Domain-Specific Examples
+
+### Chemistry Notation
+
+Custom parser for chemical equations:
+- `→` for yields
+- `⇌` for equilibrium
+- Subscripts for molecular formulas
+
+### Quantum Mechanics
+
+Specialized notation:
+- `⊗` for tensor product
+- `⟨|⟩` for inner product
+- `[,]` for commutator
+- `{,}` for anticommutator
+
+### Financial Mathematics
+
+Finance-specific functions:
+- NPV (Net Present Value)
+- IRR (Internal Rate of Return)
+- FV/PV (Future/Present Value)
+- % operator for percentages
+
+### Control Theory
+
+System notation:
+- `*` as convolution
+- `ℒ` for Laplace transform
+- `//` for feedback connection
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Adding Custom Functions }
+
+Register domain-specific functions
+
+\begin{lstlisting}
+from mathhook.parser import ParserBuilder
+
+parser = (ParserBuilder()
+    .add_function("erf", "error_function")
+    .add_function("Si", "sine_integral")
+    .add_function("Ci", "cosine_integral")
+    .build())
+
+expr = parser.parse("erf(x) + Si(x)")
+# Parsed as: error_function(x) + sine_integral(x)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Adding Custom Operators }
+
+Define new infix operators with precedence
+
+\begin{lstlisting}
+from mathhook.parser import ParserBuilder, Precedence
+
+parser = (ParserBuilder()
+    .add_operator("×", "*")
+    .add_operator("⊗", "tensor")
+    .add_operator_with_precedence(
+        "⊕",
+        "direct_sum",
+        Precedence.ADDITION
+    )
+    .build())
+
+expr = parser.parse("A ⊗ B")
+# Parsed as: tensor(A, B)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Preprocessor Transformations }
+
+Transform input before parsing
+
+\begin{lstlisting}
+from mathhook.parser import ParserBuilder
+
+def preprocess(input_str):
+    return (input_str
+        .replace("→", "->")
+        .replace("×", "*")
+        .replace("÷", "/"))
+
+parser = (ParserBuilder()
+    .add_preprocessor(preprocess)
+    .build())
+
+expr = parser.parse("x → ∞")
+# Preprocessed to: x -> ∞
+# Then parsed normally
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Domain-Specific Parser (Chemistry) }
+
+Complete chemistry equation parser
+
+\begin{lstlisting}
+from mathhook.parser import ParserBuilder
+
+def create_chemistry_parser():
+    return (ParserBuilder()
+        .add_operator("→", "yields")
+        .add_operator("⇌", "equilibrium")
+        .add_operator("+", "plus")
+        .add_preprocessor(expand_chemical_formulas)
+        .add_postprocessor(balance_equation)
+        .build())
+
+parser = create_chemistry_parser()
+reaction = parser.parse("H₂ + O₂ → H₂O")
+balanced = reaction.balance()  # 2H₂ + O₂ → 2H₂O
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Custom LaTeX Macros }
+
+Expand LaTeX macros before parsing
+
+\begin{lstlisting}
+from mathhook.parser import LatexParserBuilder
+
+parser = (LatexParserBuilder()
+    .add_macro(r"\RR", r"\mathbb{R}")
+    .add_macro(r"\CC", r"\mathbb{C}")
+    .add_macro(r"\NN", r"\mathbb{N}")
+    .add_macro(r"\dd", r"\mathrm{d}")
+    .build())
+
+expr = parser.parse(r"f: \RR \to \CC")
+# Expands to: f: \mathbb{R} \to \mathbb{C}
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

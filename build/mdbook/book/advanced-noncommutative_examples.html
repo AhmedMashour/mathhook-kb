@@ -1,0 +1,874 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Noncommutative Examples - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/advanced-noncommutative_examples.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="noncommutative-algebra-examples"><a class="header" href="#noncommutative-algebra-examples">Noncommutative Algebra Examples</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>advanced.noncommutative_examples</code></p>
+</blockquote>
+<p>Comprehensive examples of noncommutative algebra in MathHook covering
+quantum mechanics operators, matrix algebra, quaternion rotations, and
+bulk symbol creation patterns.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p><strong>Noncommutative algebra</strong>: An algebraic structure where multiplication
+is not commutative, i.e., <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal">A</span></span></span></span> in general.</p>
+<p>Key examples:</p>
+<ul>
+<li><strong>Matrix multiplication</strong>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathbf">AB</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">BA</span></span></span></span></li>
+<li><strong>Quantum operators</strong>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">p</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">p</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">p</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord mathnormal">i</span><span class="mord">ℏ</span></span></span></span></li>
+<li><strong>Quaternions</strong>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">ij</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ji</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></li>
+</ul>
+<h1 id="noncommutative-algebra-examples-1"><a class="header" href="#noncommutative-algebra-examples-1">Noncommutative Algebra Examples</a></h1>
+<p>This guide provides practical examples of working with noncommutative
+algebra in MathHook across different domains.</p>
+<h2 id="quantum-mechanics"><a class="header" href="#quantum-mechanics">Quantum Mechanics</a></h2>
+<h3 id="position-and-momentum-operators"><a class="header" href="#position-and-momentum-operators">Position and Momentum Operators</a></h3>
+<p>The canonical commutation relation: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord mathnormal">i</span><span class="mord">ℏ</span></span></span></span></p>
+<h3 id="hamiltonian-eigenvalue-equation"><a class="header" href="#hamiltonian-eigenvalue-equation">Hamiltonian Eigenvalue Equation</a></h3>
+<p>Solving <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.03588em;">ψ</span><span class="mclose">⟩</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.03588em;">ψ</span><span class="mclose">⟩</span></span></span></span></p>
+<h3 id="angular-momentum-operators"><a class="header" href="#angular-momentum-operators">Angular Momentum Operators</a></h3>
+<p>Quantum angular momentum: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.15em;"></span><span class="mord mathnormal">i</span><span class="mord">ℏ</span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<h2 id="matrix-algebra"><a class="header" href="#matrix-algebra">Matrix Algebra</a></h2>
+<h3 id="left-vs-right-division"><a class="header" href="#left-vs-right-division">Left vs Right Division</a></h3>
+<ul>
+<li><strong>Left division</strong>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></li>
+<li><strong>Right division</strong>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+<p>Order of multiplication matters when the unknown is on different sides.</p>
+<h2 id="quaternion-rotations"><a class="header" href="#quaternion-rotations">Quaternion Rotations</a></h2>
+<h3 id="basis-elements"><a class="header" href="#basis-elements">Basis Elements</a></h3>
+<p>Quaternion basis <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">}</span></span></span></span> with:</p>
+<ul>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">ij</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ji</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">jk</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">kj</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord mathnormal">i</span></span></span></span></li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">ki</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">ik</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span></li>
+</ul>
+<h3 id="3d-rotations"><a class="header" href="#3d-rotations">3D Rotations</a></h3>
+<p>Rotating vector <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span> by quaternion <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7519em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7622em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">ˉ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="quantum-commutator"><a class="header" href="#quantum-commutator">Quantum Commutator</a></h3>
+<p>Position-momentum canonical commutation relation [x,p] = iℏ</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x; operator);  // Position operator
+let p = symbol!(p; operator);  // Momentum operator
+
+// Commutator: [x, p] = xp - px
+let xp = expr!(x * p);
+let px = expr!(p * x);
+let commutator = expr!(xp - px);
+
+// These are structurally different (noncommutative)
+assert_ne!(xp.to_string(), px.to_string());
+
+// LaTeX output preserves operator hats
+let latex = commutator.to_latex(None).unwrap();
+// Output: \hat{x}\hat{p} - \hat{p}\hat{x}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+# Create operator symbols
+x = symbol('x', type='operator')  # Position operator
+p = symbol('p', type='operator')  # Momentum operator
+
+# Commutator: [x, p] = xp - px
+xp = x * p
+px = p * x
+commutator = xp - px
+
+# These are structurally different (noncommutative)
+assert str(xp) != str(px)
+
+# LaTeX output preserves operator hats
+latex = commutator.to_latex()
+# Output: \hat{x}\hat{p} - \hat{p}\hat{x}
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, expr } = require('mathhook');
+
+// Create operator symbols
+const x = symbol('x', {type: 'operator'});  // Position operator
+const p = symbol('p', {type: 'operator'});  // Momentum operator
+
+// Commutator: [x, p] = xp - px
+const xp = x.mul(p);
+const px = p.mul(x);
+const commutator = xp.sub(px);
+
+// These are structurally different (noncommutative)
+console.log(xp.toString() !== px.toString());  // true
+
+// LaTeX output preserves operator hats
+const latex = commutator.toLatex();
+// Output: \hat{x}\hat{p} - \hat{p}\hat{x}
+
+</code></pre>
+</details>
+<h3 id="angular-momentum-operators-1"><a class="header" href="#angular-momentum-operators-1">Angular Momentum Operators</a></h3>
+<p>Quantum angular momentum with [Lx, Ly] = iℏLz</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let lx = symbol!(Lx; operator);
+let ly = symbol!(Ly; operator);
+let lz = symbol!(Lz; operator);
+
+// Lx*Ly product
+let lx_ly = expr!(lx * ly);
+
+// Ly*Lx product
+let ly_lx = expr!(ly * lx);
+
+// These are NOT equal (noncommutative)
+assert_ne!(lx_ly.to_string(), ly_lx.to_string());
+
+// Commutator [Lx, Ly] = Lx*Ly - Ly*Lx
+let commutator = expr!(lx_ly - ly_lx);
+// In quantum mechanics, this equals i*hbar*Lz
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, expr
+
+lx = symbol('Lx', type='operator')
+ly = symbol('Ly', type='operator')
+lz = symbol('Lz', type='operator')
+
+# Lx*Ly product
+lx_ly = lx * ly
+
+# Ly*Lx product
+ly_lx = ly * lx
+
+# These are NOT equal (noncommutative)
+assert str(lx_ly) != str(ly_lx)
+
+# Commutator [Lx, Ly] = Lx*Ly - Ly*Lx
+commutator = lx_ly - ly_lx
+# In quantum mechanics, this equals i*hbar*Lz
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+const lx = symbol('Lx', {type: 'operator'});
+const ly = symbol('Ly', {type: 'operator'});
+const lz = symbol('Lz', {type: 'operator'});
+
+// Lx*Ly product
+const lx_ly = lx.mul(ly);
+
+// Ly*Lx product
+const ly_lx = ly.mul(lx);
+
+// These are NOT equal (noncommutative)
+console.log(lx_ly.toString() !== ly_lx.toString());  // true
+
+</code></pre>
+</details>
+<h3 id="matrix-equation-left-division"><a class="header" href="#matrix-equation-left-division">Matrix Equation Left Division</a></h3>
+<p>Solve A*X = B using left division X = A^(-1)*B</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let solver = MatrixEquationSolver::new();
+let A = symbol!(A; matrix);
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+
+// Equation: A*X - B = 0 (i.e., A*X = B)
+let equation = expr!((A * X) - B);
+
+let result = solver.solve(&amp;equation, &amp;X);
+// Returns: X = A^(-1)*B (left multiplication by inverse)
+
+// Note: We multiply by A^(-1) on the LEFT because X is on the right of A
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# Equation: A*X = B
+equation = A * X - B
+
+result = solver.solve(equation, X)
+# Returns: X = A.inv() * B (left multiplication by inverse)
+
+# Note: We multiply by A^(-1) on the LEFT because X is on the right of A
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, MatrixEquationSolver } = require('mathhook');
+
+const solver = new MatrixEquationSolver();
+const A = symbol('A', {type: 'matrix'});
+const X = symbol('X', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+
+// Equation: A*X = B
+const equation = A.mul(X).sub(B);
+
+const result = solver.solve(equation, X);
+// Returns: X = A.inv().mul(B) (left multiplication by inverse)
+
+</code></pre>
+</details>
+<h3 id="matrix-equation-right-division"><a class="header" href="#matrix-equation-right-division">Matrix Equation Right Division</a></h3>
+<p>Solve X<em>A = B using right division X = B</em>A^(-1)</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let solver = MatrixEquationSolver::new();
+let A = symbol!(A; matrix);
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+
+// Equation: X*A - B = 0 (i.e., X*A = B)
+let equation = expr!((X * A) - B);
+
+let result = solver.solve(&amp;equation, &amp;X);
+// Returns: X = B*A^(-1) (right multiplication by inverse)
+
+// Note: We multiply by A^(-1) on the RIGHT because X is on the left of A
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# Equation: X*A = B
+equation = X * A - B
+
+result = solver.solve(equation, X)
+# Returns: X = B * A.inv() (right multiplication by inverse)
+
+# Note: We multiply by A^(-1) on the RIGHT because X is on the left of A
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, MatrixEquationSolver } = require('mathhook');
+
+const solver = new MatrixEquationSolver();
+const A = symbol('A', {type: 'matrix'});
+const X = symbol('X', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+
+// Equation: X*A = B
+const equation = X.mul(A).sub(B);
+
+const result = solver.solve(equation, X);
+// Returns: X = B.mul(A.inv()) (right multiplication by inverse)
+
+</code></pre>
+</details>
+<h3 id="quaternion-multiplication"><a class="header" href="#quaternion-multiplication">Quaternion Multiplication</a></h3>
+<p>Noncommutative quaternion basis multiplication i<em>j = k, j</em>i = -k</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let i = symbol!(i; quaternion);
+let j = symbol!(j; quaternion);
+let k = symbol!(k; quaternion);
+
+// i*j = k
+let ij = expr!(i * j);
+
+// j*i = -k (different!)
+let ji = expr!(j * i);
+
+// Order matters - multiplication is noncommutative
+assert_ne!(ij.to_string(), ji.to_string());
+
+// All quaternion products
+// i*j = k, j*i = -k
+// j*k = i, k*j = -i
+// k*i = j, i*k = -j
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+
+i = symbol('i', type='quaternion')
+j = symbol('j', type='quaternion')
+k = symbol('k', type='quaternion')
+
+# i*j = k
+ij = i * j
+
+# j*i = -k (different!)
+ji = j * i
+
+# Order matters - multiplication is noncommutative
+assert str(ij) != str(ji)
+
+# All quaternion products:
+# i*j = k, j*i = -k
+# j*k = i, k*j = -i
+# k*i = j, i*k = -j
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+const i = symbol('i', {type: 'quaternion'});
+const j = symbol('j', {type: 'quaternion'});
+const k = symbol('k', {type: 'quaternion'});
+
+// i*j = k
+const ij = i.mul(j);
+
+// j*i = -k (different!)
+const ji = j.mul(i);
+
+// Order matters - multiplication is noncommutative
+console.log(ij.toString() !== ji.toString());  // true
+
+</code></pre>
+</details>
+<h3 id="3d-rotation-with-quaternions"><a class="header" href="#3d-rotation-with-quaternions">3D Rotation with Quaternions</a></h3>
+<p>Rotating a vector v by quaternion q: v' = q<em>v</em>conj(q)</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let q = symbol!(q; quaternion);       // Rotation quaternion
+let v = symbol!(v; quaternion);       // Vector as pure quaternion
+let q_conj = symbol!(q_conj; quaternion); // Conjugate of q
+
+// Rotation formula: v' = q*v*q_conj
+let rotation = expr!(q * v * q_conj);
+
+// The order matters:
+// q * v * q_conj ≠ q_conj * v * q
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+
+q = symbol('q', type='quaternion')       # Rotation quaternion
+v = symbol('v', type='quaternion')       # Vector as pure quaternion
+q_conj = symbol('q_conj', type='quaternion')  # Conjugate of q
+
+# Rotation formula: v' = q*v*q_conj
+rotation = q * v * q_conj
+
+# The order matters:
+# q * v * q_conj ≠ q_conj * v * q
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+const q = symbol('q', {type: 'quaternion'});       // Rotation quaternion
+const v = symbol('v', {type: 'quaternion'});       // Vector as pure quaternion
+const q_conj = symbol('q_conj', {type: 'quaternion'});  // Conjugate of q
+
+// Rotation formula: v' = q*v*q_conj
+const rotation = q.mul(v).mul(q_conj);
+
+// The order matters:
+// q * v * q_conj ≠ q_conj * v * q
+
+</code></pre>
+</details>
+<h3 id="bulk-symbol-creation"><a class="header" href="#bulk-symbol-creation">Bulk Symbol Creation</a></h3>
+<p>Create multiple symbols at once using the symbols![] macro</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Multiple scalars (default type)
+let scalars = symbols![x, y, z];
+let x = &amp;scalars[0];
+let y = &amp;scalars[1];
+let z = &amp;scalars[2];
+
+// Multiple matrices
+let matrices = symbols![A, B, C =&gt; matrix];
+let A = &amp;matrices[0];
+let B = &amp;matrices[1];
+let C = &amp;matrices[2];
+
+// Multiple operators
+let operators = symbols![p, x_op, H =&gt; operator];
+let p = &amp;operators[0];
+let x_op = &amp;operators[1];
+let H = &amp;operators[2];
+
+// Multiple quaternions
+let quaternions = symbols![i, j, k =&gt; quaternion];
+let i = &amp;quaternions[0];
+let j = &amp;quaternions[1];
+let k = &amp;quaternions[2];
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbols
+
+# Multiple scalars (default type)
+x, y, z = symbols('x y z')
+
+# Multiple matrices
+A, B, C = symbols('A B C', type='matrix')
+
+# Multiple operators
+p, x_op, H = symbols('p x_op H', type='operator')
+
+# Multiple quaternions
+i, j, k = symbols('i j k', type='quaternion')
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbols } = require('mathhook');
+
+// Multiple scalars (default type)
+const [x, y, z] = symbols(['x', 'y', 'z']);
+
+// Multiple matrices
+const [A, B, C] = symbols(['A', 'B', 'C'], {type: 'matrix'});
+
+// Multiple operators
+const [p, x_op, H] = symbols(['p', 'x_op', 'H'], {type: 'operator'});
+
+// Multiple quaternions
+const [i, j, k] = symbols(['i', 'j', 'k'], {type: 'quaternion'});
+
+</code></pre>
+</details>
+<h3 id="complete-workflow-example"><a class="header" href="#complete-workflow-example">Complete Workflow Example</a></h3>
+<p>End-to-end example: create symbols, build equation, solve, format as LaTeX</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+use mathhook::educational::message_registry::{
+    MessageBuilder, MessageCategory, MessageType
+};
+
+// 1. Create matrix symbols
+let A = symbol!(A; matrix);
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+
+// 2. Build equation: A*X = B
+let equation = expr!((A * X) - B);
+
+// 3. Solve equation
+let solver = MatrixEquationSolver::new();
+let result = solver.solve(&amp;equation, &amp;X);
+
+// 4. Format solution as LaTeX
+if let SolverResult::Single(solution) = result {
+    let latex = solution.to_latex(None).unwrap();
+    println!("Solution: {}", latex);
+    // Output: \mathbf{A}^{-1} \cdot \mathbf{B}
+}
+
+// 5. Get educational explanation
+let msg = MessageBuilder::new(
+    MessageCategory::NoncommutativeAlgebra,
+    MessageType::LeftMultiplyInverse,
+    0
+).build();
+
+if let Some(message) = msg {
+    println!("Explanation: {}", message.description);
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, MatrixEquationSolver, SolverResult
+from mathhook.educational import MessageBuilder, MessageCategory, MessageType
+
+# 1. Create matrix symbols
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# 2. Build equation: A*X = B
+equation = A * X - B
+
+# 3. Solve equation
+solver = MatrixEquationSolver()
+result = solver.solve(equation, X)
+
+# 4. Format solution as LaTeX
+if isinstance(result, SolverResult.Single):
+    latex = result.solution.to_latex()
+    print(f"Solution: {latex}")
+    # Output: \mathbf{A}^{-1} \cdot \mathbf{B}
+
+# 5. Get educational explanation
+msg = MessageBuilder(
+    MessageCategory.NoncommutativeAlgebra,
+    MessageType.LeftMultiplyInverse,
+    step=0
+).build()
+
+if msg:
+    print(f"Explanation: {msg.description}")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, MatrixEquationSolver, SolverResult } = require('mathhook');
+const { MessageBuilder, MessageCategory, MessageType } = require('mathhook/educational');
+
+// 1. Create matrix symbols
+const A = symbol('A', {type: 'matrix'});
+const X = symbol('X', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+
+// 2. Build equation: A*X = B
+const equation = A.mul(X).sub(B);
+
+// 3. Solve equation
+const solver = new MatrixEquationSolver();
+const result = solver.solve(equation, X);
+
+// 4. Format solution as LaTeX
+if (result instanceof SolverResult.Single) {
+    const latex = result.solution.toLatex();
+    console.log(`Solution: ${latex}`);
+    // Output: \mathbf{A}^{-1} \cdot \mathbf{B}
+}
+
+// 5. Get educational explanation
+const msg = new MessageBuilder(
+    MessageCategory.NoncommutativeAlgebra,
+    MessageType.LeftMultiplyInverse,
+    0
+).build();
+
+if (msg) {
+    console.log(`Explanation: ${msg.description}`);
+}
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::noncommutative</code></li>
+<li><strong>Python</strong>: <code>mathhook.noncommutative</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.noncommutative</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../advanced/noncommutative_algebra.html">advanced.noncommutative_algebra</a></p>
+</li>
+<li>
+<p><a href="../advanced/noncommutative_api_reference.html">advanced.noncommutative_api_reference</a></p>
+</li>
+<li>
+<p><a href="../advanced/matrices.html">advanced.matrices</a></p>
+</li>
+<li>
+<p><a href="../educational/messages.html">educational.messages</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-noncommutative_api_reference.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="advanced-pde-boundary_conditions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-noncommutative_api_reference.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="advanced-pde-boundary_conditions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

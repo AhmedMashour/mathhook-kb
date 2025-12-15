@@ -1,0 +1,893 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Noncommutative Api Reference - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/advanced-noncommutative_api_reference.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="noncommutative-algebra-api-reference"><a class="header" href="#noncommutative-algebra-api-reference">Noncommutative Algebra API Reference</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>advanced.noncommutative_api_reference</code></p>
+</blockquote>
+<p>Complete API reference for MathHook's noncommutative algebra support,
+including symbol creation macros, type queries, expression creation,
+equation solving, and LaTeX formatting.</p>
+<h2 id="mathematical-definition"><a class="header" href="#mathematical-definition">Mathematical Definition</a></h2>
+<p><strong>Symbol Types</strong>:</p>
+<ul>
+<li><strong>Scalar</strong> (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>): Commutative, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> for all <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></li>
+<li><strong>Matrix</strong> (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">M</span></span></span></span>): Noncommutative, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathbf">AB</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">BA</span></span></span></span> in general</li>
+<li><strong>Operator</strong> (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9468em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span>): Noncommutative, used in quantum mechanics</li>
+<li><strong>Quaternion</strong> (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span>): Noncommutative, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">ij</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>, <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ji</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></li>
+</ul>
+<p><strong>Commutativity</strong>:
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">commutative</span></span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></span></p>
+<h1 id="noncommutative-algebra-api-reference-1"><a class="header" href="#noncommutative-algebra-api-reference-1">Noncommutative Algebra API Reference</a></h1>
+<p>Complete API reference for MathHook's noncommutative algebra support.</p>
+<h2 id="symbol-creation-api"><a class="header" href="#symbol-creation-api">Symbol Creation API</a></h2>
+<h3 id="symbolname---create-scalar-symbol"><a class="header" href="#symbolname---create-scalar-symbol"><code>symbol!(name)</code> - Create Scalar Symbol</a></h3>
+<p>Creates a scalar (commutative) symbol with the given name.</p>
+<p><strong>Syntax</strong>: <code>symbol!(identifier)</code>
+<strong>Returns</strong>: <code>Symbol</code> with type <code>Scalar</code></p>
+<h3 id="symbolname-type---create-typed-symbol"><a class="header" href="#symbolname-type---create-typed-symbol"><code>symbol!(name; type)</code> - Create Typed Symbol</a></h3>
+<p>Creates a symbol with specified type (matrix, operator, or quaternion).</p>
+<p><strong>Syntax</strong>: <code>symbol!(identifier; type_keyword)</code>
+<strong>Type keywords</strong>: <code>matrix</code>, <code>operator</code>, <code>quaternion</code>
+<strong>Returns</strong>: <code>Symbol</code> with specified type</p>
+<h3 id="symbols---create-multiple-symbols"><a class="header" href="#symbols---create-multiple-symbols"><code>symbols![...]</code> - Create Multiple Symbols</a></h3>
+<p>Creates multiple symbols of the same type.</p>
+<p><strong>Syntax</strong>: <code>symbols![id1, id2, ... =&gt; type]</code>
+<strong>Returns</strong>: <code>Vec&lt;Symbol&gt;</code></p>
+<h2 id="symbol-type-api"><a class="header" href="#symbol-type-api">Symbol Type API</a></h2>
+<h3 id="symboltype-enum"><a class="header" href="#symboltype-enum"><code>SymbolType</code> Enum</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum SymbolType {
+    Scalar,      // Commutative (default)
+    Matrix,      // Noncommutative
+    Operator,    // Noncommutative
+    Quaternion,  // Noncommutative
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="type-query-methods"><a class="header" href="#type-query-methods">Type Query Methods</a></h3>
+<ul>
+<li><code>symbol_type()</code> - Returns the symbol's type</li>
+<li><code>commutativity()</code> - Returns <code>Commutative</code> or <code>Noncommutative</code></li>
+</ul>
+<h2 id="expression-creation-api"><a class="header" href="#expression-creation-api">Expression Creation API</a></h2>
+<ul>
+<li><code>Expression::symbol(sym)</code> - Create symbol expression</li>
+<li><code>Expression::add(terms)</code> - Create addition</li>
+<li><code>Expression::mul(factors)</code> - Create multiplication (order matters!)</li>
+</ul>
+<h2 id="equation-solving-api"><a class="header" href="#equation-solving-api">Equation Solving API</a></h2>
+<ul>
+<li><code>MatrixEquationSolver::new()</code> - Create solver</li>
+<li><code>solver.solve(equation, variable)</code> - Solve equation</li>
+</ul>
+<h2 id="latex-formatting-api"><a class="header" href="#latex-formatting-api">LaTeX Formatting API</a></h2>
+<ul>
+<li><code>expr.to_latex(context)</code> - Format as LaTeX</li>
+</ul>
+<p><strong>LaTeX Output by Type</strong>:</p>
+<ul>
+<li><strong>Scalar</strong>: Standard notation (<code>x</code>, <code>θ</code>)</li>
+<li><strong>Matrix</strong>: Bold notation (<code>\mathbf{A}</code>)</li>
+<li><strong>Operator</strong>: Hat notation (<code>\hat{p}</code>)</li>
+<li><strong>Quaternion</strong>: Standard notation (<code>i</code>, <code>j</code>, <code>k</code>)</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="symbolname---create-scalar-symbol-1"><a class="header" href="#symbolname---create-scalar-symbol-1">symbol!(name) - Create Scalar Symbol</a></h3>
+<p>Creates a scalar (commutative) symbol with the given name</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let theta = symbol!(theta);
+
+// Scalars are commutative
+assert_eq!(x.symbol_type(), SymbolType::Scalar);
+assert_eq!(x.commutativity(), Commutativity::Commutative);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+
+x = symbol('x')
+theta = symbol('theta')
+
+# Scalars are commutative
+assert x.symbol_type == 'scalar'
+assert x.is_commutative == True
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+const x = symbol('x');
+const theta = symbol('theta');
+
+// Scalars are commutative
+console.log(x.symbolType);  // 'scalar'
+console.log(x.isCommutative);  // true
+
+</code></pre>
+</details>
+<h3 id="symbolname-type---create-typed-symbol-1"><a class="header" href="#symbolname-type---create-typed-symbol-1">symbol!(name; type) - Create Typed Symbol</a></h3>
+<p>Creates a symbol with specified type (matrix, operator, quaternion)</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Matrix (noncommutative)
+let A = symbol!(A; matrix);
+assert_eq!(A.symbol_type(), SymbolType::Matrix);
+assert_eq!(A.commutativity(), Commutativity::Noncommutative);
+
+// Operator (noncommutative)
+let p = symbol!(p; operator);
+assert_eq!(p.symbol_type(), SymbolType::Operator);
+
+// Quaternion (noncommutative)
+let i = symbol!(i; quaternion);
+assert_eq!(i.symbol_type(), SymbolType::Quaternion);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+
+# Matrix (noncommutative)
+A = symbol('A', type='matrix')
+assert A.symbol_type == 'matrix'
+assert A.is_commutative == False
+
+# Operator (noncommutative)
+p = symbol('p', type='operator')
+assert p.symbol_type == 'operator'
+
+# Quaternion (noncommutative)
+i = symbol('i', type='quaternion')
+assert i.symbol_type == 'quaternion'
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+// Matrix (noncommutative)
+const A = symbol('A', {type: 'matrix'});
+console.log(A.symbolType);  // 'matrix'
+console.log(A.isCommutative);  // false
+
+// Operator (noncommutative)
+const p = symbol('p', {type: 'operator'});
+console.log(p.symbolType);  // 'operator'
+
+// Quaternion (noncommutative)
+const i = symbol('i', {type: 'quaternion'});
+console.log(i.symbolType);  // 'quaternion'
+
+</code></pre>
+</details>
+<h3 id="symbols---bulk-symbol-creation"><a class="header" href="#symbols---bulk-symbol-creation">symbols![...] - Bulk Symbol Creation</a></h3>
+<p>Create multiple symbols at once with same type</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Multiple scalars (default)
+let scalars = symbols![x, y, z];
+assert_eq!(scalars.len(), 3);
+
+// Multiple matrices
+let matrices = symbols![A, B, C =&gt; matrix];
+assert_eq!(matrices[0].symbol_type(), SymbolType::Matrix);
+
+// Multiple operators
+let operators = symbols![p, x, H =&gt; operator];
+assert_eq!(operators[0].symbol_type(), SymbolType::Operator);
+
+// Multiple quaternions
+let quaternions = symbols![i, j, k =&gt; quaternion];
+assert_eq!(quaternions[0].symbol_type(), SymbolType::Quaternion);
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbols
+
+# Multiple scalars (default)
+x, y, z = symbols('x y z')
+
+# Multiple matrices
+A, B, C = symbols('A B C', type='matrix')
+assert A.symbol_type == 'matrix'
+
+# Multiple operators
+p, x_op, H = symbols('p x_op H', type='operator')
+assert p.symbol_type == 'operator'
+
+# Multiple quaternions
+i, j, k = symbols('i j k', type='quaternion')
+assert i.symbol_type == 'quaternion'
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbols } = require('mathhook');
+
+// Multiple scalars (default)
+const [x, y, z] = symbols(['x', 'y', 'z']);
+
+// Multiple matrices
+const [A, B, C] = symbols(['A', 'B', 'C'], {type: 'matrix'});
+console.log(A.symbolType);  // 'matrix'
+
+// Multiple operators
+const [p, x_op, H] = symbols(['p', 'x_op', 'H'], {type: 'operator'});
+
+// Multiple quaternions
+const [i, j, k] = symbols(['i', 'j', 'k'], {type: 'quaternion'});
+
+</code></pre>
+</details>
+<h3 id="symboltype-enum-and-query-methods"><a class="header" href="#symboltype-enum-and-query-methods">SymbolType Enum and Query Methods</a></h3>
+<p>Check symbol type and commutativity</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let A = symbol!(A; matrix);
+
+// Type check
+assert_eq!(x.symbol_type(), SymbolType::Scalar);
+assert_eq!(A.symbol_type(), SymbolType::Matrix);
+
+// Commutativity check
+assert_eq!(x.commutativity(), Commutativity::Commutative);
+assert_eq!(A.commutativity(), Commutativity::Noncommutative);
+
+// Match on type
+match A.symbol_type() {
+    SymbolType::Scalar =&gt; println!("Scalar"),
+    SymbolType::Matrix =&gt; println!("Matrix"),
+    SymbolType::Operator =&gt; println!("Operator"),
+    SymbolType::Quaternion =&gt; println!("Quaternion"),
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, SymbolType, Commutativity
+
+x = symbol('x')
+A = symbol('A', type='matrix')
+
+# Type check
+assert x.symbol_type == SymbolType.Scalar
+assert A.symbol_type == SymbolType.Matrix
+
+# Commutativity check
+assert x.commutativity == Commutativity.Commutative
+assert A.commutativity == Commutativity.Noncommutative
+
+# Check type
+if A.symbol_type == SymbolType.Matrix:
+    print("Matrix")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, SymbolType, Commutativity } = require('mathhook');
+
+const x = symbol('x');
+const A = symbol('A', {type: 'matrix'});
+
+// Type check
+console.log(x.symbolType === SymbolType.Scalar);  // true
+console.log(A.symbolType === SymbolType.Matrix);  // true
+
+// Commutativity check
+console.log(x.commutativity === Commutativity.Commutative);  // true
+console.log(A.commutativity === Commutativity.Noncommutative);  // true
+
+</code></pre>
+</details>
+<h3 id="expressionmul---order-matters"><a class="header" href="#expressionmul---order-matters">Expression::mul - Order Matters!</a></h3>
+<p>Creating multiplication expressions - order preserved for noncommutative</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let A = symbol!(A; matrix);
+let B = symbol!(B; matrix);
+
+// A*B ≠ B*A in general
+let ab = Expression::mul(vec![
+    Expression::symbol(A.clone()),
+    Expression::symbol(B.clone())
+]);
+
+let ba = Expression::mul(vec![
+    Expression::symbol(B),
+    Expression::symbol(A)
+]);
+
+// Structurally different
+assert_ne!(ab.to_string(), ba.to_string());
+
+// Using expr! macro (preferred)
+let A = symbol!(A; matrix);
+let B = symbol!(B; matrix);
+let ab = expr!(A * B);
+let ba = expr!(B * A);
+assert_ne!(ab.to_string(), ba.to_string());
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, Expression
+
+A = symbol('A', type='matrix')
+B = symbol('B', type='matrix')
+
+# A*B ≠ B*A in general
+ab = A * B
+ba = B * A
+
+# Structurally different
+assert str(ab) != str(ba)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, Expression } = require('mathhook');
+
+const A = symbol('A', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+
+// A*B ≠ B*A in general
+const ab = A.mul(B);
+const ba = B.mul(A);
+
+// Structurally different
+console.log(ab.toString() !== ba.toString());  // true
+
+</code></pre>
+</details>
+<h3 id="matrixequationsolver"><a class="header" href="#matrixequationsolver">MatrixEquationSolver</a></h3>
+<p>Solve matrix equations accounting for noncommutativity</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let solver = MatrixEquationSolver::new();
+
+let A = symbol!(A; matrix);
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+
+// A*X = B → X = A^(-1)*B (left multiply by A^(-1))
+let eq1 = expr!((A * X) - B);
+let result1 = solver.solve(&amp;eq1, &amp;X);
+// Returns: X = A^(-1) * B
+
+// X*A = B → X = B*A^(-1) (right multiply by A^(-1))
+let eq2 = expr!((X * A) - B);
+let result2 = solver.solve(&amp;eq2, &amp;X);
+// Returns: X = B * A^(-1)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, MatrixEquationSolver
+
+solver = MatrixEquationSolver()
+
+A = symbol('A', type='matrix')
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+
+# A*X = B → X = A^(-1)*B (left multiply by A^(-1))
+eq1 = A * X - B
+result1 = solver.solve(eq1, X)
+# Returns: X = A.inv() * B
+
+# X*A = B → X = B*A^(-1) (right multiply by A^(-1))
+eq2 = X * A - B
+result2 = solver.solve(eq2, X)
+# Returns: X = B * A.inv()
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, MatrixEquationSolver } = require('mathhook');
+
+const solver = new MatrixEquationSolver();
+
+const A = symbol('A', {type: 'matrix'});
+const X = symbol('X', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+
+// A*X = B → X = A^(-1)*B (left multiply by A^(-1))
+const eq1 = A.mul(X).sub(B);
+const result1 = solver.solve(eq1, X);
+// Returns: X = A.inv().mul(B)
+
+// X*A = B → X = B*A^(-1) (right multiply by A^(-1))
+const eq2 = X.mul(A).sub(B);
+const result2 = solver.solve(eq2, X);
+// Returns: X = B.mul(A.inv())
+
+</code></pre>
+</details>
+<h3 id="to_latex---type-specific-formatting"><a class="header" href="#to_latex---type-specific-formatting">to_latex() - Type-Specific Formatting</a></h3>
+<p>LaTeX formatting respects symbol types</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+// Scalar: standard notation
+let x = symbol!(x);
+let x_latex = Expression::symbol(x).to_latex(None).unwrap();
+// Output: "x"
+
+// Matrix: bold notation
+let A = symbol!(A; matrix);
+let a_latex = Expression::symbol(A).to_latex(None).unwrap();
+// Output: "\mathbf{A}"
+
+// Operator: hat notation
+let p = symbol!(p; operator);
+let p_latex = Expression::symbol(p).to_latex(None).unwrap();
+// Output: "\hat{p}"
+
+// Quaternion: standard notation
+let i = symbol!(i; quaternion);
+let i_latex = Expression::symbol(i).to_latex(None).unwrap();
+// Output: "i"
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol
+
+# Scalar: standard notation
+x = symbol('x')
+x_latex = x.to_latex()
+# Output: "x"
+
+# Matrix: bold notation
+A = symbol('A', type='matrix')
+a_latex = A.to_latex()
+# Output: "\mathbf{A}"
+
+# Operator: hat notation
+p = symbol('p', type='operator')
+p_latex = p.to_latex()
+# Output: "\hat{p}"
+
+# Quaternion: standard notation
+i = symbol('i', type='quaternion')
+i_latex = i.to_latex()
+# Output: "i"
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol } = require('mathhook');
+
+// Scalar: standard notation
+const x = symbol('x');
+const xLatex = x.toLatex();
+// Output: "x"
+
+// Matrix: bold notation
+const A = symbol('A', {type: 'matrix'});
+const aLatex = A.toLatex();
+// Output: "\mathbf{A}"
+
+// Operator: hat notation
+const p = symbol('p', {type: 'operator'});
+const pLatex = p.toLatex();
+// Output: "\hat{p}"
+
+// Quaternion: standard notation
+const i = symbol('i', {type: 'quaternion'});
+const iLatex = i.toLatex();
+// Output: "i"
+
+</code></pre>
+</details>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h3>
+<p>Handle errors from formatting and solving operations</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let A = symbol!(A; matrix);
+let expr = Expression::symbol(A);
+
+// Handle formatting errors
+match expr.to_latex(None) {
+    Ok(latex) =&gt; println!("LaTeX: {}", latex),
+    Err(e) =&gt; eprintln!("Formatting error: {}", e),
+}
+
+// Handle solver results
+let solver = MatrixEquationSolver::new();
+let X = symbol!(X; matrix);
+let B = symbol!(B; matrix);
+let equation = expr!((A * X) - B);
+
+match solver.solve(&amp;equation, &amp;X) {
+    SolverResult::Single(solution) =&gt; {
+        println!("Solution: {}", solution);
+    }
+    SolverResult::Multiple(solutions) =&gt; {
+        println!("Multiple solutions: {:?}", solutions);
+    }
+    SolverResult::None =&gt; {
+        println!("No solution exists");
+    }
+}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, MatrixEquationSolver, SolverResult
+
+A = symbol('A', type='matrix')
+
+# Handle formatting errors
+try:
+    latex = A.to_latex()
+    print(f"LaTeX: {latex}")
+except Exception as e:
+    print(f"Formatting error: {e}")
+
+# Handle solver results
+solver = MatrixEquationSolver()
+X = symbol('X', type='matrix')
+B = symbol('B', type='matrix')
+equation = A * X - B
+
+result = solver.solve(equation, X)
+if isinstance(result, SolverResult.Single):
+    print(f"Solution: {result.solution}")
+elif isinstance(result, SolverResult.Multiple):
+    print(f"Multiple solutions: {result.solutions}")
+elif isinstance(result, SolverResult.None_):
+    print("No solution exists")
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { symbol, MatrixEquationSolver, SolverResult } = require('mathhook');
+
+const A = symbol('A', {type: 'matrix'});
+
+// Handle formatting errors
+try {
+    const latex = A.toLatex();
+    console.log(`LaTeX: ${latex}`);
+} catch (e) {
+    console.error(`Formatting error: ${e.message}`);
+}
+
+// Handle solver results
+const solver = new MatrixEquationSolver();
+const X = symbol('X', {type: 'matrix'});
+const B = symbol('B', {type: 'matrix'});
+const equation = A.mul(X).sub(B);
+
+const result = solver.solve(equation, X);
+if (result instanceof SolverResult.Single) {
+    console.log(`Solution: ${result.solution}`);
+} else if (result instanceof SolverResult.Multiple) {
+    console.log(`Multiple solutions: ${result.solutions}`);
+} else if (result instanceof SolverResult.None) {
+    console.log("No solution exists");
+}
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::symbol</code></li>
+<li><strong>Python</strong>: <code>mathhook.symbol</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.symbol</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../advanced/noncommutative_algebra.html">advanced.noncommutative_algebra</a></p>
+</li>
+<li>
+<p><a href="../advanced/noncommutative_examples.html">advanced.noncommutative_examples</a></p>
+</li>
+<li>
+<p><a href="../core/symbols_numbers.html">core.symbols_numbers</a></p>
+</li>
+<li>
+<p><a href="../parser/latex.html">parser.latex</a></p>
+</li>
+<li>
+<p><a href="../educational/messages.html">educational.messages</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-noncommutative_algebra.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="advanced-noncommutative_examples.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-noncommutative_algebra.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="advanced-noncommutative_examples.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

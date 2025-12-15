@@ -5,7 +5,7 @@ use anyhow::{Context, Result};
 /// from KB schemas.
 use clap::{Parser, Subcommand};
 use kb_apidocs::ApiDocsGenerator;
-use kb_colab::ColabGenerator;
+use kb_colab::{ColabConfig, ColabGenerator, ColabManifest};
 use kb_core::{generator::OutputGenerator, Schema};
 use kb_json::JsonGenerator;
 use kb_jupyter::JupyterGenerator;
@@ -50,6 +50,23 @@ enum Commands {
 
     /// List available generators
     List,
+
+    /// Google Colab configuration and info
+    #[command(subcommand)]
+    Colab(ColabCommands),
+}
+
+#[derive(Subcommand)]
+enum ColabCommands {
+    /// Show current Colab/GitHub configuration
+    Config,
+
+    /// Show info about generated notebooks and their Colab URLs
+    Info {
+        /// Path to manifest file
+        #[arg(short, long, default_value = "output/colab-notebooks/manifest.json")]
+        manifest: PathBuf,
+    },
 }
 
 fn main() -> Result<()> {
@@ -66,18 +83,19 @@ fn main() -> Result<()> {
             list_command();
             Ok(())
         }
+        Commands::Colab(colab_cmd) => handle_colab_command(colab_cmd),
     }
 }
 
-fn build_command(schema_path: PathBuf, output_dir: PathBuf, generators_str: String) -> Result<()> {
+fn build_command(
+    schema_path: PathBuf,
+    output_dir: PathBuf,
+    generators_str: String,
+) -> Result<()> {
     println!("🔨 Building documentation...\n");
 
-    // Load schema
-    println!("📄 Loading schema: {}", schema_path.display());
-    let schema = Schema::load_from_file(&schema_path).context("Failed to load schema")?;
-
-    println!("   Topic: {}", schema.topic);
-    println!("   Title: {}\n", schema.title);
+    // Collect all schemas to process
+    let schemas = collect_schemas(&schema_path)?;
 
     // Create output directory
     std::fs::create_dir_all(&output_dir).context("Failed to create output directory")?;
@@ -85,135 +103,233 @@ fn build_command(schema_path: PathBuf, output_dir: PathBuf, generators_str: Stri
     // Parse generators to run
     let generators_list: Vec<&str> = generators_str.split(',').collect();
     let run_all = generators_list.contains(&"all");
+    let run_colab = run_all || generators_list.contains(&"colab");
 
-    let mut generated_count = 0;
+    let mut total_generated = 0;
 
-    // Run Jupyter generator
-    if run_all || generators_list.contains(&"jupyter") {
-        println!("📓 Generating Jupyter notebook...");
-        let generator = JupyterGenerator::new();
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
+    // Setup Colab manifest if we're generating Colab notebooks
+    let colab_config = ColabConfig::default();
+    let mut colab_manifest = ColabManifest::new(colab_config.clone());
+    let colab_base_dir = output_dir.join("colab-notebooks");
 
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate Jupyter notebook")?;
+    for schema_path in &schemas {
+        println!("📄 Loading schema: {}", schema_path.display());
+        let schema = Schema::load_from_file(schema_path).context("Failed to load schema")?;
 
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
+        println!("   Topic: {}", schema.topic);
+        println!("   Title: {}\n", schema.title);
+
+        let mut generated_count = 0;
+
+        // Run Jupyter generator
+        if run_all || generators_list.contains(&"jupyter") {
+            println!("📓 Generating Jupyter notebook...");
+            let generator = JupyterGenerator::new();
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate Jupyter notebook")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run mdBook generator
+        if run_all || generators_list.contains(&"mdbook") {
+            println!("📚 Generating mdBook markdown...");
+            let generator = MdBookGenerator::new()?;
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate mdBook markdown")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run LLM-RAG generator
+        if run_all || generators_list.contains(&"llm-rag") {
+            println!("🤖 Generating LLM-RAG markdown...");
+            let generator = LlmRagGenerator::from_schema(&schema);
+            let filename = format!("{}.rag.md", schema.topic.replace('.', "-"));
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate LLM-RAG markdown")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run Vue generator
+        if run_all || generators_list.contains(&"vue") {
+            println!("🎨 Generating Vue SSR component...");
+            let generator = VueGenerator::new()?;
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate Vue component")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run API docs generator
+        if run_all || generators_list.contains(&"api-docs") {
+            println!("📡 Generating API documentation...");
+            let generator = ApiDocsGenerator::new()?;
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate API documentation")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run Google Colab generator (organized by category)
+        if run_colab {
+            println!("📊 Generating Google Colab notebook...");
+            let generator = ColabGenerator::with_config(colab_config.clone());
+            let filename = generator.get_output_filename(&schema);
+
+            // Extract category from topic (e.g., "calculus.derivative" -> "calculus")
+            let category = schema.topic.split('.').next().unwrap_or("misc");
+
+            // Create category directory
+            let category_dir = colab_base_dir.join(category);
+            std::fs::create_dir_all(&category_dir)?;
+
+            let output_path = category_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate Google Colab notebook")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+
+            // Add to manifest
+            colab_manifest.add(&schema.topic, &schema.title, &filename);
+        }
+
+        // Run LaTeX generator
+        if run_all || generators_list.contains(&"latex") {
+            println!("📄 Generating LaTeX documentation...");
+            let generator = LatexGenerator::new()?;
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate LaTeX documentation")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        // Run JSON schema data generator
+        if run_all || generators_list.contains(&"json") {
+            println!("📋 Generating JSON schema data...");
+            let generator = JsonGenerator::new();
+            let filename = generator.get_output_filename(&schema);
+            let output_path = output_dir.join(&filename);
+
+            generator
+                .generate_to_file(&schema, &output_path)
+                .context("Failed to generate JSON schema data")?;
+
+            println!("   ✅ {}", output_path.display());
+            generated_count += 1;
+        }
+
+        total_generated += generated_count;
+        println!();
     }
 
-    // Run mdBook generator
-    if run_all || generators_list.contains(&"mdbook") {
-        println!("📚 Generating mdBook markdown...");
-        let generator = MdBookGenerator::new()?;
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
+    // Save Colab manifest and generate READMEs if we generated Colab notebooks
+    if run_colab && colab_manifest.total_notebooks > 0 {
+        println!("📋 Generating Colab manifest and READMEs...");
 
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate mdBook markdown")?;
+        // Save manifest
+        let manifest_path = colab_base_dir.join("manifest.json");
+        colab_manifest
+            .save(&manifest_path)
+            .context("Failed to save Colab manifest")?;
+        println!("   ✅ {}", manifest_path.display());
 
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
+        // Generate main README
+        let readme_content = colab_manifest.generate_readme();
+        let readme_path = colab_base_dir.join("README.md");
+        std::fs::write(&readme_path, readme_content)?;
+        println!("   ✅ {}", readme_path.display());
 
-    // Run LLM-RAG generator
-    if run_all || generators_list.contains(&"llm-rag") {
-        println!("🤖 Generating LLM-RAG markdown...");
-        let generator = LlmRagGenerator::from_schema(&schema);
-        let filename = format!("{}.rag.md", schema.topic.replace('.', "-"));
-        let output_path = output_dir.join(&filename);
+        // Generate category READMEs
+        for category in colab_manifest.sorted_categories() {
+            if let Some(category_readme) = colab_manifest.generate_category_readme(category) {
+                let category_readme_path = colab_base_dir.join(category).join("README.md");
+                std::fs::write(&category_readme_path, category_readme)?;
+                println!("   ✅ {}", category_readme_path.display());
+            }
+        }
 
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate LLM-RAG markdown")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
-
-    // Run Vue generator
-    if run_all || generators_list.contains(&"vue") {
-        println!("🎨 Generating Vue SSR component...");
-        let generator = VueGenerator::new()?;
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
-
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate Vue component")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
-
-    // Run API docs generator
-    if run_all || generators_list.contains(&"api-docs") {
-        println!("📡 Generating API documentation...");
-        let generator = ApiDocsGenerator::new()?;
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
-
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate API documentation")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
-
-    // Run Google Colab generator
-    if run_all || generators_list.contains(&"colab") {
-        println!("📊 Generating Google Colab notebook...");
-        let generator = ColabGenerator::new()?;
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
-
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate Google Colab notebook")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
-
-    // Run LaTeX generator
-    if run_all || generators_list.contains(&"latex") {
-        println!("📄 Generating LaTeX documentation...");
-        let generator = LatexGenerator::new()?;
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
-
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate LaTeX documentation")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
-    }
-
-    // Run JSON schema data generator
-    if run_all || generators_list.contains(&"json") {
-        println!("📋 Generating JSON schema data...");
-        let generator = JsonGenerator::new();
-        let filename = generator.get_output_filename(&schema);
-        let output_path = output_dir.join(&filename);
-
-        generator
-            .generate_to_file(&schema, &output_path)
-            .context("Failed to generate JSON schema data")?;
-
-        println!("   ✅ {}", output_path.display());
-        generated_count += 1;
+        println!();
+        println!("🔗 Colab notebooks will be available at:");
+        println!(
+            "   https://github.com/{}/{}/tree/{}/{}",
+            colab_manifest.config.github_user,
+            colab_manifest.config.github_repo,
+            colab_manifest.config.github_branch,
+            colab_manifest.config.notebooks_path
+        );
+        println!();
     }
 
     println!(
-        "\n🎉 Successfully generated {} output file(s) in {}",
-        generated_count,
+        "🎉 Successfully generated {} output file(s) from {} schema(s) in {}",
+        total_generated,
+        schemas.len(),
         output_dir.display()
     );
+
     Ok(())
+}
+
+/// Collect all schema files from path (file or directory)
+fn collect_schemas(path: &PathBuf) -> Result<Vec<PathBuf>> {
+    let mut schemas = Vec::new();
+
+    if path.is_file() {
+        schemas.push(path.clone());
+    } else if path.is_dir() {
+        for entry in std::fs::read_dir(path)? {
+            let entry = entry?;
+            let path = entry.path();
+            if path.is_file() {
+                if let Some(ext) = path.extension() {
+                    if ext == "yaml" || ext == "yml" {
+                        schemas.push(path);
+                    }
+                }
+            }
+        }
+        schemas.sort();
+    }
+
+    if schemas.is_empty() {
+        anyhow::bail!("No schema files found at {:?}", path);
+    }
+
+    Ok(schemas)
 }
 
 fn validate_command(schema_path: PathBuf) -> Result<()> {
@@ -257,10 +373,80 @@ fn list_command() {
     println!("   llm-rag    - LLM-optimized RAG markdown (.rag.md)");
     println!("   vue        - Vue SSR site components (.vue)");
     println!("   api-docs   - OpenAPI 3.0 specifications (.openapi.json)");
-    println!("   colab      - Google Colab notebooks (.ipynb)");
+    println!("   colab      - Google Colab notebooks (.colab.ipynb)");
     println!("   latex      - LaTeX documentation (.tex)");
     println!("   json       - Schema data for Vue site (.json)");
     println!("\nUse 'all' to run all available generators.");
+    println!("\n📓 Colab Notebooks:\n");
+    println!("   Colab notebooks are organized by category and hosted on GitHub.");
+    println!("   Users can open them directly in Google Colab via the badge links.");
+    println!("\n   Configure via environment variables:");
+    println!("     COLAB_GITHUB_USER    - GitHub username (default: AhmedMashour)");
+    println!("     COLAB_GITHUB_REPO    - Repository name (default: mathhook)");
+    println!("     COLAB_GITHUB_BRANCH  - Branch name (default: main)");
+    println!("     COLAB_NOTEBOOKS_PATH - Notebooks path (default: colab-notebooks)");
+    println!("\n🔧 Colab Commands:\n");
+    println!("   kb colab config   Show current Colab/GitHub configuration");
+    println!("   kb colab info     Show info about generated notebooks");
+}
+
+fn handle_colab_command(cmd: ColabCommands) -> Result<()> {
+    match cmd {
+        ColabCommands::Config => {
+            let config = ColabConfig::default();
+
+            println!("📊 Google Colab Configuration\n");
+            println!("GitHub Settings:");
+            println!("   User/Org:      {}", config.github_user);
+            println!("   Repository:    {}", config.github_repo);
+            println!("   Branch:        {}", config.github_branch);
+            println!("   Notebooks Dir: {}", config.notebooks_path);
+            println!();
+            println!("Example Colab URL:");
+            println!(
+                "   {}",
+                config.get_colab_url("calculus", "calculus-derivative.colab.ipynb")
+            );
+            println!();
+            println!("To customize, set environment variables:");
+            println!("   export COLAB_GITHUB_USER=YourUser");
+            println!("   export COLAB_GITHUB_REPO=your-repo");
+            println!("   export COLAB_GITHUB_BRANCH=main");
+            println!("   export COLAB_NOTEBOOKS_PATH=notebooks");
+        }
+
+        ColabCommands::Info { manifest } => {
+            if !manifest.exists() {
+                println!("❌ No manifest found at: {}", manifest.display());
+                println!("\nRun `kb build` with the colab generator first.");
+                return Ok(());
+            }
+
+            let manifest = ColabManifest::load(&manifest)?;
+
+            println!("📊 Colab Notebooks Info\n");
+            println!("Total notebooks: {}\n", manifest.total_notebooks);
+
+            println!("GitHub Repository:");
+            println!(
+                "   https://github.com/{}/{}",
+                manifest.config.github_user, manifest.config.github_repo
+            );
+            println!();
+
+            println!("Categories:");
+            for category in manifest.sorted_categories() {
+                let notebooks = &manifest.categories[category];
+                println!("\n  📁 {} ({} notebooks)", category, notebooks.len());
+                for nb in notebooks {
+                    println!("      • {}", nb.title);
+                    println!("        Colab: {}", nb.colab_url);
+                }
+            }
+        }
+    }
+
+    Ok(())
 }
 
 #[cfg(test)]

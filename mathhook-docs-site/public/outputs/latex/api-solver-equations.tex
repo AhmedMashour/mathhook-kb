@@ -1,0 +1,243 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic and Numerical Equation Solving }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Find solutions to equations symbolically and numerically. Supports linear, quadratic,
+polynomial, and transcendental equations with automatic strategy selection. Includes
+symbolic solving, numerical fallback, and parametric solutions.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Equation Solving
+
+## Overview
+
+MathHook's solver finds solutions to equations using:
+- **Linear equations**: Direct algebraic solution $x = -b/a$
+- **Quadratic equations**: Quadratic formula with complex root support
+- **Polynomial equations**: Factorization and root finding
+- **Transcendental equations**: Symbolic when possible, numerical fallback
+- **Matrix equations**: Left and right division for noncommutative systems
+
+## Mathematical Foundations
+
+### Quadratic Formula
+For $ax^2 + bx + c = 0$:
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+### Discriminant
+$$\Delta = b^2 - 4ac$$
+- $\Delta > 0$: Two distinct real roots
+- $\Delta = 0$: One repeated real root
+- $\Delta < 0$: Two complex conjugate roots
+
+## Solver Strategies
+
+### Automatic Strategy Selection
+1. Detect equation type (linear, quadratic, polynomial, transcendental)
+2. Apply appropriate technique:
+   - Linear: Algebraic isolation
+   - Quadratic: Quadratic formula
+   - Polynomial: Factorization then root finding
+   - Transcendental: Symbolic simplification or numerical methods
+3. Return all solutions (real and complex)
+
+### Numerical Fallback
+When no closed-form solution exists (e.g., $x = \cos(x)$):
+- Newton's method: $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$
+- Configurable tolerance and max iterations
+- Returns numerical approximation
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Linear Equations }
+
+Solve linear equations ax + b = 0
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: 2x + 3 = 0
+eq1 = 2*x + 3
+sol1 = solve(eq1, x)
+# Result: x = -3/2
+
+# Solve: 5x - 10 = 0
+eq2 = 5*x - 10
+sol2 = solve(eq2, x)
+# Result: x = 2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Quadratic Equations }
+
+Solve quadratic equations using quadratic formula
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x² - 5x + 6 = 0
+eq1 = x**2 - 5*x + 6
+solutions = solve(eq1, x)
+# Result: [x = 2, x = 3]
+
+# Solve: x² - 4 = 0
+eq2 = x**2 - 4
+sol2 = solve(eq2, x)
+# Result: [x = -2, x = 2]
+
+# Complex roots
+eq3 = x**2 + 1
+sol3 = solve(eq3, x)
+# Result: [x = i, x = -i]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Polynomial Equations }
+
+Solve polynomial equations via factorization
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x³ - 6x² + 11x - 6 = 0
+cubic = x**3 - 6*x**2 + 11*x - 6
+solutions = solve(cubic, x)
+# Result: [x = 1, x = 2, x = 3]
+
+# Solve: x⁴ - 1 = 0
+quartic = x**4 - 1
+sol2 = solve(quartic, x)
+# Result: [x = 1, x = -1, x = i, x = -i]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Transcendental Equations }
+
+Solve equations with trigonometric, exponential functions
+
+\begin{lstlisting}
+from mathhook import symbol, solve, sin, exp, cos
+
+x = symbol('x')
+
+# Solve: sin(x) = 0
+eq1 = sin(x)
+solutions = solve(eq1, x)
+# Result: [x = 0, x = π, x = 2π, ...]
+
+# Solve: e^x = 5
+eq2 = exp(x) - 5
+sol2 = solve(eq2, x)
+# Result: x = ln(5)
+
+# Numerical fallback
+eq3 = x - cos(x)
+sol3 = solve(eq3, x, numerical=True)
+# Result: x ≈ 0.739085133...
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Real-World Application: Projectile Motion }
+
+Physics application finding time to hit ground
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+t = symbol('t')
+
+# Position: y(t) = -16t² + 64t + 80
+position = -16*t**2 + 64*t + 80
+
+# Find time when y = 0
+times = solve(position, t)
+# Result: t ≈ 5 seconds (ignore negative)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Parametric Solutions }
+
+Solve in terms of parameters
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+a = symbol('a')
+b = symbol('b')
+
+# Solve: ax + b = 0
+equation = a*x + b
+solution = solve(equation, x)
+# Result: x = -b/a
+
+# Substitute specific values
+specific = solution.subs([(a, 2), (b, 6)])
+# Result: x = -3
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

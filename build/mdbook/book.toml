@@ -1,0 +1,48 @@
+[book]
+title = "MathHook KB Documentation"
+authors = ["MathHook Contributors"]
+description = "Comprehensive documentation for MathHook symbolic mathematics library"
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html]
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+mathjax-support = false
+git-repository-url = "https://github.com/AhmedMashour/mathhook"
+git-repository-icon = "fa-github"
+edit-url-template = "https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/{path}"
+additional-css = ["custom.css"]
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3
+
+[output.html.print]
+enable = true
+
+[output.html.playground]
+runnable = true
+editable = true
+
+# KaTeX for math rendering (install with: cargo install mdbook-katex)
+[preprocessor.katex]
+after = ["links"]
+
+[rust]
+edition = "2021"

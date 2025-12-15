@@ -1,0 +1,186 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Solving Equations }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Find solutions to equations symbolically and numerically.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Linear Equation:**
+$$ax + b = 0 \implies x = -\frac{b}{a}$$
+
+**Quadratic Formula:**
+$$ax^2 + bx + c = 0 \implies x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+**Discriminant ($\Delta$):**
+$$\Delta = b^2 - 4ac$$
+- $\Delta > 0$: Two distinct real roots
+- $\Delta = 0$: One repeated real root
+- $\Delta < 0$: Two complex conjugate roots
+
+**Matrix Equations (Noncommutative):**
+- Left division: $AX = B \implies X = A^{-1}B$
+- Right division: $XA = B \implies X = BA^{-1}$
+- Note: $A^{-1}B \neq BA^{-1}$ for matrices!
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Linear Equations }
+
+Solve ax + b = 0
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: 2x + 3 = 0
+eq1 = 2*x + 3
+sol1 = solve(eq1, x)
+# Result: x = -3/2
+
+# Solve: 5x - 10 = 0
+eq2 = 5*x - 10
+sol2 = solve(eq2, x)
+# Result: x = 2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Quadratic Equations }
+
+Solve ax² + bx + c = 0
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x² - 5x + 6 = 0
+eq1 = x**2 - 5*x + 6
+solutions = solve(eq1, x)
+# Result: [2, 3]
+
+# Solve: x² - 4 = 0
+eq2 = x**2 - 4
+sol2 = solve(eq2, x)
+# Result: [-2, 2]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Complex Roots }
+
+When discriminant is negative
+
+\begin{lstlisting}
+from mathhook import symbol, solve, I
+
+x = symbol('x')
+
+# Solve: x² + 1 = 0
+equation = x**2 + 1
+solutions = solve(equation, x)
+# Result: [I, -I]
+
+# Solve: x² - 2x + 5 = 0
+eq2 = x**2 - 2*x + 5
+sol2 = solve(eq2, x)
+# Result: [1 + 2*I, 1 - 2*I]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Transcendental Equations }
+
+Trigonometric, exponential, logarithmic
+
+\begin{lstlisting}
+from mathhook import symbol, solve, sin, exp, log
+
+x = symbol('x')
+
+# Solve: sin(x) = 0
+eq1 = sin(x)
+solutions = solve(eq1, x)
+# Result: [0, π, 2π, ...]
+
+# Solve: e^x = 5
+eq2 = exp(x) - 5
+sol2 = solve(eq2, x)
+# Result: log(5)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Equations (Noncommutative) }
+
+Left and right division for matrices
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+# Matrix symbols
+A = symbol('A', matrix=True)
+X = symbol('X', matrix=True)
+B = symbol('B', matrix=True)
+
+# Left division: A*X = B → X = A⁻¹*B
+left_eq = A*X - B
+solution_left = solve(left_eq, X)
+# Result: X = A^(-1)*B
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,915 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Risch Algorithm - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/appendix-risch_algorithm.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="the-risch-algorithm-in-mathhook"><a class="header" href="#the-risch-algorithm-in-mathhook">The Risch Algorithm in MathHook</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>appendix.risch_algorithm</code></p>
+</blockquote>
+<p>Complete guide to MathHook's Risch algorithm implementation for symbolic integration.
+Covers algorithm phases, implementation details, examples, non-elementary detection,
+limitations, and future enhancements.</p>
+<h1 id="the-risch-algorithm-in-mathhook-1"><a class="header" href="#the-risch-algorithm-in-mathhook-1">The Risch Algorithm in MathHook</a></h1>
+<p><strong>Complete guide to MathHook's Risch algorithm implementation</strong></p>
+<p>Version: 1.0
+Last Updated: 2025-10-20</p>
+<hr />
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ol>
+<li><a href="#what-is-the-risch-algorithm">What is the Risch Algorithm?</a></li>
+<li><a href="#why-it-matters">Why It Matters</a></li>
+<li><a href="#mathhooks-implementation">MathHook's Implementation</a></li>
+<li><a href="#algorithm-phases">Algorithm Phases</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#non-elementary-detection">Non-Elementary Detection</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#future-enhancements">Future Enhancements</a></li>
+<li><a href="#references">References</a></li>
+</ol>
+<hr />
+<h2 id="what-is-the-risch-algorithm"><a class="header" href="#what-is-the-risch-algorithm">What is the Risch Algorithm?</a></h2>
+<p>The <strong>Risch algorithm</strong> (pronounced "rish") is a complete decision procedure for symbolic integration of elementary functions. Developed by Robert Risch in 1969-1970, it can:</p>
+<ol>
+<li><strong>Compute antiderivatives</strong> when they exist in elementary form</li>
+<li><strong>Prove impossibility</strong> when no elementary antiderivative exists</li>
+</ol>
+<h3 id="elementary-functions"><a class="header" href="#elementary-functions">Elementary Functions</a></h3>
+<p>An <strong>elementary function</strong> is built from:</p>
+<ul>
+<li>Rational functions (polynomials and their quotients)</li>
+<li>Exponential functions (e^x, a^x)</li>
+<li>Logarithmic functions (ln(x), log(x))</li>
+<li>Trigonometric functions (sin, cos, tan, etc.)</li>
+<li>Inverse trigonometric functions (arcsin, arctan, etc.)</li>
+<li>Algebraic functions (roots like sqrt(x))</li>
+</ul>
+<p>...using a finite number of:</p>
+<ul>
+<li>Arithmetic operations (+, -, *, /)</li>
+<li>Compositions (f(g(x)))</li>
+</ul>
+<h3 id="what-makes-risch-special"><a class="header" href="#what-makes-risch-special">What Makes Risch Special?</a></h3>
+<p><strong>Before Risch</strong>: Integration was art + pattern matching</p>
+<ul>
+<li>No systematic approach</li>
+<li>Couldn't prove when integral was impossible</li>
+<li>Relied on human intuition and lookup tables</li>
+</ul>
+<p><strong>After Risch</strong>: Integration became algorithmic</p>
+<ul>
+<li>Deterministic procedure (polynomial time complexity)</li>
+<li>Provably correct (mathematical proof of correctness)</li>
+<li>Complete (decides all elementary integral questions)</li>
+</ul>
+<hr />
+<h2 id="why-it-matters"><a class="header" href="#why-it-matters">Why It Matters</a></h2>
+<h3 id="completeness-guarantee"><a class="header" href="#completeness-guarantee">Completeness Guarantee</a></h3>
+<p>The Risch algorithm provides a <strong>completeness guarantee</strong>:</p>
+<blockquote>
+<p>For any elementary function f(x), the Risch algorithm will either:</p>
+<ol>
+<li>Compute an elementary antiderivative F(x) such that F'(x) = f(x), OR</li>
+<li>Prove that no such F(x) exists in elementary functions</li>
+</ol>
+</blockquote>
+<p>This is revolutionary. Without Risch, you might spend hours trying to integrate something impossible.</p>
+<h3 id="real-world-impact"><a class="header" href="#real-world-impact">Real-World Impact</a></h3>
+<p><strong>Computer Algebra Systems</strong>:</p>
+<ul>
+<li>SymPy (Python): Full Risch implementation</li>
+<li>Mathematica: Proprietary Risch variant</li>
+<li>Maple: Risch-based integration</li>
+<li>MathHook: Basic Risch implementation (exponential/logarithmic cases)</li>
+</ul>
+<p><strong>Applications</strong>:</p>
+<ul>
+<li>Symbolic mathematics research</li>
+<li>Engineering calculations</li>
+<li>Physics simulations</li>
+<li>Educational tools</li>
+</ul>
+<p><strong>Example Why It Matters</strong>:</p>
+<pre><code>∫e^(-x^2) dx  # Gaussian integral
+
+Without Risch: Try for hours, never certain if you're missing a trick
+With Risch: Proves in milliseconds that no elementary form exists
+            Result: erf(x) (error function, non-elementary)
+</code></pre>
+<hr />
+<h2 id="mathhooks-implementation"><a class="header" href="#mathhooks-implementation">MathHook's Implementation</a></h2>
+<p>MathHook implements the <strong>basic Risch algorithm</strong> covering exponential and logarithmic extensions. Full algebraic extensions are planned for future releases.</p>
+<h3 id="architecture"><a class="header" href="#architecture">Architecture</a></h3>
+<pre><code>crates/mathhook-core/src/calculus/integrals/risch/
+├── mod.rs                    # Main entry point and orchestration
+├── differential_extension.rs # Differential extension tower
+├── hermite.rs                # Hermite reduction for rational part
+├── rde.rs                    # Risch Differential Equation solver
+└── helpers.rs                # Utility functions
+</code></pre>
+<h3 id="entry-point"><a class="header" href="#entry-point">Entry Point</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn try_risch_integration(expr: &amp;Expression, var: Symbol) -&gt; Option&lt;Expression&gt;
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Returns</strong>:</p>
+<ul>
+<li><code>Some(antiderivative)</code> if integration succeeds</li>
+<li><code>None</code> if integration fails (falls back to symbolic)</li>
+</ul>
+<p><strong>When Called</strong>:</p>
+<ul>
+<li>Layer 7 of integration strategy</li>
+<li>After all heuristics (table, rational, by-parts, substitution, trig) fail</li>
+</ul>
+<h3 id="integration-flow"><a class="header" href="#integration-flow">Integration Flow</a></h3>
+<pre><code>Input: f(x)
+  ↓
+Build Differential Extension Tower
+  ↓
+Apply Hermite Reduction (rational part)
+  ↓
+Solve Risch Differential Equation (RDE)
+  ↓
+Integrate Exponential Cases
+  ↓
+Integrate Logarithmic Cases
+  ↓
+Output: F(x) or None
+</code></pre>
+<hr />
+<h2 id="algorithm-phases"><a class="header" href="#algorithm-phases">Algorithm Phases</a></h2>
+<p>The Risch algorithm has several phases, each handling a specific aspect of the integration problem.</p>
+<h3 id="phase-1-differential-extension-tower"><a class="header" href="#phase-1-differential-extension-tower">Phase 1: Differential Extension Tower</a></h3>
+<p><strong>Purpose</strong>: Represent f(x) as a rational function over a tower of extensions</p>
+<p>A <strong>differential extension</strong> is a structure (K, ∂) where:</p>
+<ul>
+<li>K is a field (rational functions over extensions)</li>
+<li>∂ is a derivation (differentiation operation)</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<pre><code>f(x) = e^x / (e^x + 1)
+
+Extension tower:
+  Base: Q(x)                   [rationals in x]
+  Level 1: Q(x, t₁) where t₁ = e^x, ∂t₁ = t₁
+
+Now f(x) = t₁ / (t₁ + 1) ∈ Q(x, t₁)
+</code></pre>
+<p><strong>Why This Helps</strong>:</p>
+<ul>
+<li>Converts transcendental problem to algebraic one</li>
+<li>Standard techniques work on rational functions</li>
+<li>Systematic handling of exponentials and logarithms</li>
+</ul>
+<p><strong>MathHook Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DifferentialExtension {
+    pub base_field: Symbol,           // x
+    pub extensions: Vec&lt;Extension&gt;,   // [e^x, ln(x), ...]
+    pub derivations: Vec&lt;Expression&gt;, // [e^x, 1/x, ...]
+}
+
+pub enum Extension {
+    Exponential(Expression), // t = e^g(x)
+    Logarithmic(Expression), // t = ln(g(x))
+    Algebraic(Expression),   // Future: t^n = g(x)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="phase-2-hermite-reduction"><a class="header" href="#phase-2-hermite-reduction">Phase 2: Hermite Reduction</a></h3>
+<p><strong>Purpose</strong>: Split rational part into polynomial part + reduced rational part</p>
+<p>The <strong>Hermite reduction</strong> theorem states:</p>
+<blockquote>
+<p>Any rational function R(x) can be written as:
+R(x) = P(x) + S(x) + ∫T(x) dx</p>
+<p>Where:</p>
+<ul>
+<li>P(x) is a polynomial (integrates trivially)</li>
+<li>S(x) is a simple rational function (no repeated denominator factors)</li>
+<li>T(x) is a reduced rational function (denominator is squarefree)</li>
+</ul>
+</blockquote>
+<p><strong>Why This Helps</strong>:</p>
+<ul>
+<li>Polynomial integration is trivial: ∫x^n dx = x^(n+1)/(n+1)</li>
+<li>Reduced forms integrate using logarithmic formulas</li>
+<li>Eliminates repeated factors that complicate integration</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<pre><code>∫1/(x^2*(x+1)) dx
+
+Hermite reduction:
+  S(x) = -1/x           [simple part from repeated factor]
+  T(x) = 1/(x*(x+1))    [reduced part, squarefree denominator]
+
+Result:
+  ∫1/(x^2*(x+1)) dx = -1/x + ∫1/(x*(x+1)) dx
+                     = -1/x + ln|x| - ln|x+1| + C
+</code></pre>
+<p><strong>MathHook Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn hermite_reduce(
+    rational: &amp;RationalFunction,
+    extension: &amp;DifferentialExtension
+) -&gt; (Expression, Expression, Expression) {
+    // Returns: (polynomial_part, simple_part, reduced_part)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="phase-3-risch-differential-equation-rde"><a class="header" href="#phase-3-risch-differential-equation-rde">Phase 3: Risch Differential Equation (RDE)</a></h3>
+<p><strong>Purpose</strong>: Solve equations of the form ∂y + f*y = g for y</p>
+<p>The <strong>Risch Differential Equation</strong> (RDE) is:</p>
+<blockquote>
+<p>∂y + f*y = g</p>
+<p>Find y such that the equation holds, or prove none exists</p>
+</blockquote>
+<p><strong>Why This Appears</strong>:</p>
+<ul>
+<li>Integration in extension fields reduces to solving RDEs</li>
+<li>Exponential integrals: ∫g*e^f dx corresponds to RDE with f = ∂f/f</li>
+<li>Logarithmic integrals: Different RDE variant</li>
+</ul>
+<p><strong>Solution Methods</strong>:</p>
+<ol>
+<li>Polynomial ansatz (assume y is polynomial, solve for coefficients)</li>
+<li>Rational function ansatz (for more complex cases)</li>
+<li>Degree bounds (limit search space using theoretical bounds)</li>
+</ol>
+<p><strong>Example</strong>:</p>
+<pre><code>∫e^x/(e^x+1) dx
+
+In extension Q(x, t₁) where t₁ = e^x:
+  Need to integrate f = t₁/(t₁+1)
+
+RDE formulation:
+  ∂y + (∂t₁/t₁)*y = t₁/(t₁+1)
+  ∂y + y = t₁/(t₁+1)
+
+Solution:
+  y = ln(t₁+1) = ln(e^x+1)
+</code></pre>
+<p><strong>MathHook Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn solve_rde(
+    f: &amp;Expression,
+    g: &amp;Expression,
+    extension: &amp;DifferentialExtension
+) -&gt; Option&lt;Expression&gt; {
+    // Solve ∂y + f*y = g
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="phase-4-exponential-case-integration"><a class="header" href="#phase-4-exponential-case-integration">Phase 4: Exponential Case Integration</a></h3>
+<p><strong>Purpose</strong>: Integrate expressions with exponential extensions</p>
+<p><strong>Pattern</strong>: ∫P(x)*e^(Q(x)) dx where P, Q are rational</p>
+<p><strong>Algorithm</strong>:</p>
+<ol>
+<li>Build extension tower with t = e^(Q(x))</li>
+<li>Express integrand as rational in t</li>
+<li>Apply Hermite reduction</li>
+<li>Solve RDE for logarithmic part</li>
+<li>Combine results</li>
+</ol>
+<p><strong>Examples</strong>:</p>
+<pre><code>∫x*e^(x^2) dx
+  u = x^2, t = e^u
+  = (1/2)∫t dt  [after substitution]
+  = (1/2)t + C
+  = (1/2)e^(x^2) + C
+
+∫e^x/(e^x+1) dx
+  t = e^x
+  = ∫t/(t+1) dt
+  = ln(t+1) + C  [logarithmic part via RDE]
+  = ln(e^x+1) + C
+</code></pre>
+<p><strong>MathHook Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn integrate_exponential_case(
+    expr: &amp;Expression,
+    extension: &amp;DifferentialExtension
+) -&gt; Option&lt;Expression&gt;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="phase-5-logarithmic-case-integration"><a class="header" href="#phase-5-logarithmic-case-integration">Phase 5: Logarithmic Case Integration</a></h3>
+<p><strong>Purpose</strong>: Integrate expressions with logarithmic extensions</p>
+<p><strong>Pattern</strong>: ∫P(x, ln(Q(x))) dx where P is rational in both arguments</p>
+<p><strong>Algorithm</strong>:</p>
+<ol>
+<li>Build extension tower with t = ln(Q(x))</li>
+<li>Express integrand as rational in x and t</li>
+<li>Integrate rational part (partial fractions)</li>
+<li>Handle logarithmic terms via integration by parts</li>
+</ol>
+<p><strong>Examples</strong>:</p>
+<pre><code>∫ln(x)/x dx
+  t = ln(x), ∂t = 1/x
+  = ∫t*(1/x) dx
+  = ∫t*∂t
+  = t^2/2 + C
+  = (ln(x))^2/2 + C
+
+∫1/(x*ln(x)) dx
+  t = ln(x), ∂t = 1/x
+  = ∫(1/t)*∂t
+  = ln|t| + C
+  = ln|ln(x)| + C
+</code></pre>
+<p><strong>MathHook Implementation</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn integrate_logarithmic_case(
+    expr: &amp;Expression,
+    extension: &amp;DifferentialExtension
+) -&gt; Option&lt;Expression&gt;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="example-1-exponential-rational"><a class="header" href="#example-1-exponential-rational">Example 1: Exponential Rational</a></h3>
+<p><strong>Integral</strong>: ∫e^x/(e^x+1) dx</p>
+<p><strong>Step 1</strong>: Build extension</p>
+<pre><code>Base: Q(x)
+Extension: t = e^x, ∂t = e^x = t
+Integrand: f = t/(t+1) ∈ Q(x, t)
+</code></pre>
+<p><strong>Step 2</strong>: Hermite reduction</p>
+<pre><code>f = t/(t+1) is already reduced (denominator squarefree)
+Polynomial part: 0
+Simple part: 0
+Reduced part: t/(t+1)
+</code></pre>
+<p><strong>Step 3</strong>: RDE</p>
+<pre><code>Need: ∫t/(t+1) dt
+
+Partial fractions: t/(t+1) = 1 - 1/(t+1)
+
+∫1 dt = t
+∫1/(t+1) dt = ln|t+1|  [RDE solution]
+
+Result: t - ln|t+1| = e^x - ln|e^x+1|
+</code></pre>
+<p><strong>Step 4</strong>: Simplify</p>
+<pre><code>e^x - ln|e^x+1| = e^x - ln(e^x+1)  [e^x+1 always positive]
+</code></pre>
+<p><strong>MathHook Output</strong>: <code>ln(e^x+1) + C</code></p>
+<h3 id="example-2-logarithmic-composition"><a class="header" href="#example-2-logarithmic-composition">Example 2: Logarithmic Composition</a></h3>
+<p><strong>Integral</strong>: ∫1/(x*ln(x)) dx</p>
+<p><strong>Step 1</strong>: Build extension</p>
+<pre><code>Base: Q(x)
+Extension: t = ln(x), ∂t = 1/x
+Integrand: f = 1/(x*t) = (1/x)*(1/t)
+</code></pre>
+<p><strong>Step 2</strong>: Hermite reduction</p>
+<pre><code>f = 1/(x*t) is rational in x and t
+Already reduced form
+</code></pre>
+<p><strong>Step 3</strong>: Integrate</p>
+<pre><code>∫(1/x)*(1/t) dx
+
+Observe: ∂t = 1/x, so dx = x*dt
+
+∫(1/x)*(1/t)*x*dt = ∫(1/t) dt = ln|t| + C
+</code></pre>
+<p><strong>Step 4</strong>: Back-substitute</p>
+<pre><code>ln|t| + C = ln|ln(x)| + C
+</code></pre>
+<p><strong>MathHook Output</strong>: <code>ln|ln(x)| + C</code></p>
+<h3 id="example-3-mixed-exponential-and-polynomial"><a class="header" href="#example-3-mixed-exponential-and-polynomial">Example 3: Mixed Exponential and Polynomial</a></h3>
+<p><strong>Integral</strong>: ∫x*e^(x^2) dx</p>
+<p><strong>Step 1</strong>: Recognize composition (u-substitution would also work)</p>
+<pre><code>u = x^2, ∂u = 2x dx
+=&gt; x dx = (1/2) du
+</code></pre>
+<p><strong>Step 2</strong>: Build extension</p>
+<pre><code>Base: Q(u)
+Extension: t = e^u, ∂t = e^u = t
+Integrand (after substitution): (1/2)*t
+</code></pre>
+<p><strong>Step 3</strong>: Integrate</p>
+<pre><code>(1/2)∫t dt = (1/2)*t + C
+</code></pre>
+<p><strong>Step 4</strong>: Back-substitute</p>
+<pre><code>(1/2)*e^u + C = (1/2)*e^(x^2) + C
+</code></pre>
+<p><strong>MathHook Output</strong>: <code>(1/2)*e^(x^2) + C</code></p>
+<hr />
+<h2 id="non-elementary-detection"><a class="header" href="#non-elementary-detection">Non-Elementary Detection</a></h2>
+<p>One of Risch's most powerful features: <strong>proving impossibility</strong>.</p>
+<h3 id="how-it-works"><a class="header" href="#how-it-works">How It Works</a></h3>
+<p>The Risch algorithm can prove an integral has no elementary antiderivative by:</p>
+<ol>
+<li><strong>Degree Bounds</strong>: Computing maximum possible degree of antiderivative</li>
+<li><strong>Ansatz Failure</strong>: Showing no polynomial/rational solution exists to RDE</li>
+<li><strong>Structure Theorem</strong>: Using theorems about elementary function structure</li>
+</ol>
+<p>If all solution methods fail after exhaustive search within bounds, the integral is <strong>provably non-elementary</strong>.</p>
+<h3 id="classic-non-elementary-integrals"><a class="header" href="#classic-non-elementary-integrals">Classic Non-Elementary Integrals</a></h3>
+<p><strong>Error Function</strong>:</p>
+<pre><code>∫e^(-x^2) dx
+
+Risch analysis:
+  Extension: t = e^(-x^2), ∂t = -2x*t
+  RDE: ∂y - 2x*y = 1 (no elementary solution)
+
+Result: Not elementary
+Actual: (√π/2)*erf(x) + C  [erf is non-elementary]
+</code></pre>
+<p><strong>Sine Integral</strong>:</p>
+<pre><code>∫sin(x)/x dx
+
+Risch analysis:
+  Cannot reduce to rational form in any elementary extension
+
+Result: Not elementary
+Actual: Si(x) + C  [Si is non-elementary]
+</code></pre>
+<p><strong>Logarithmic Integral</strong>:</p>
+<pre><code>∫1/ln(x) dx
+
+Risch analysis:
+  Extension: t = ln(x), ∂t = 1/x
+  RDE formulation fails to find elementary solution
+
+Result: Not elementary
+Actual: li(x) + C  [li is non-elementary]
+</code></pre>
+<p><strong>Elliptic Integral (First Kind)</strong>:</p>
+<pre><code>∫1/sqrt(1-x^4) dx
+
+Risch analysis:
+  Algebraic extension (not yet implemented in MathHook)
+  Even with algebraic extensions, provably non-elementary
+
+Result: Not elementary
+Actual: Elliptic integral F(x, 1/2) + C
+</code></pre>
+<h3 id="mathhook-behavior"><a class="header" href="#mathhook-behavior">MathHook Behavior</a></h3>
+<p>When MathHook's Risch detects non-elementary:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>let result = expr.integrate(x);
+
+// Returns symbolic integral
+assert!(matches!(result, Expression::Calculus(_)));
+<span class="boring">}</span></code></pre></pre>
+<p>This indicates: "I tried everything, no elementary form exists."</p>
+<hr />
+<h2 id="limitations"><a class="header" href="#limitations">Limitations</a></h2>
+<p>MathHook's Risch implementation is <strong>basic</strong> and has limitations:</p>
+<h3 id="current-limitations"><a class="header" href="#current-limitations">Current Limitations</a></h3>
+<ol>
+<li>
+<p><strong>Algebraic Extensions Not Implemented</strong></p>
+<pre><code>∫sqrt(x+1) dx  # Would need algebraic extension
+</code></pre>
+<p>Workaround: Falls back to substitution heuristic</p>
+</li>
+<li>
+<p><strong>Trigonometric Functions Converted to Exponentials</strong></p>
+<pre><code>sin(x) = (e^(ix) - e^(-ix))/(2i)  # Complex exponentials
+</code></pre>
+<p>Limitation: Complex number handling incomplete</p>
+</li>
+<li>
+<p><strong>Mixed Extensions Limited</strong></p>
+<pre><code>∫e^x*ln(x) dx  # Multiple extension types
+</code></pre>
+<p>Limitation: Current implementation may fail</p>
+</li>
+<li>
+<p><strong>Performance on Large Expressions</strong></p>
+<ul>
+<li>O(n⁴) worst case complexity</li>
+<li>Large polynomial degrees slow down factoring</li>
+<li>Deep extension towers increase memory usage</li>
+</ul>
+</li>
+<li>
+<p><strong>Non-Elementary Detection Incomplete</strong></p>
+<ul>
+<li>May return <code>None</code> even when integral is elementary</li>
+<li>Conservative: Avoids false positives but may have false negatives</li>
+</ul>
+</li>
+</ol>
+<h3 id="comparison-with-sympy"><a class="header" href="#comparison-with-sympy">Comparison with SymPy</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Feature</th><th>MathHook Risch</th><th>SymPy Risch</th></tr></thead><tbody>
+<tr><td>Exponential cases</td><td>Full</td><td>Full</td></tr>
+<tr><td>Logarithmic cases</td><td>Full</td><td>Full</td></tr>
+<tr><td>Algebraic extensions</td><td>Planned</td><td>Full</td></tr>
+<tr><td>Trigonometric</td><td>Via exponentials</td><td>Full</td></tr>
+<tr><td>Non-elementary detection</td><td>Basic</td><td>Complete</td></tr>
+<tr><td>Performance</td><td>Fast (Rust)</td><td>Moderate (Python)</td></tr>
+<tr><td>Maturity</td><td>Basic (v1.0)</td><td>Production (15+ years)</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="future-enhancements"><a class="header" href="#future-enhancements">Future Enhancements</a></h2>
+<p>Planned improvements to MathHook's Risch implementation:</p>
+<h3 id="phase-1-algebraic-extensions-v11"><a class="header" href="#phase-1-algebraic-extensions-v11">Phase 1: Algebraic Extensions (v1.1)</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>pub enum Extension {
+    Exponential(Expression),
+    Logarithmic(Expression),
+    Algebraic {                    // NEW
+        expression: Expression,    // e.g., sqrt(x+1)
+        minimal_polynomial: Expression, // e.g., t^2 - (x+1)
+        degree: usize,
+    },
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Impact</strong>:</p>
+<ul>
+<li>∫sqrt(x+1) dx</li>
+<li>∫x*sqrt(x^2+1) dx</li>
+<li>Elliptic integral detection</li>
+</ul>
+<h3 id="phase-2-improved-non-elementary-detection-v12"><a class="header" href="#phase-2-improved-non-elementary-detection-v12">Phase 2: Improved Non-Elementary Detection (v1.2)</a></h3>
+<ul>
+<li>Complete degree bound analysis</li>
+<li>Structure theorem application</li>
+<li>Certified proof output</li>
+</ul>
+<p><strong>Impact</strong>:</p>
+<ul>
+<li>Definitive "not elementary" answers</li>
+<li>Educational explanations of why integral is impossible</li>
+</ul>
+<h3 id="phase-3-special-function-integration-v20"><a class="header" href="#phase-3-special-function-integration-v20">Phase 3: Special Function Integration (v2.0)</a></h3>
+<p>When Risch proves non-elementary, express result in terms of special functions:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">extern crate mathhook_book;
+</span><span class="boring">use mathhook_book::mathhook;
+</span><span class="boring">use mathhook::prelude::*;
+</span>∫e^(-x^2) dx → (√π/2)*erf(x) + C
+∫sin(x)/x dx → Si(x) + C
+∫1/ln(x) dx → li(x) + C
+<span class="boring">}</span></code></pre></pre>
+<h3 id="phase-4-parallel-risch-v21"><a class="header" href="#phase-4-parallel-risch-v21">Phase 4: Parallel Risch (v2.1)</a></h3>
+<ul>
+<li>Parallel extension tower construction</li>
+<li>Concurrent RDE solving</li>
+<li>Thread-safe differential fields</li>
+</ul>
+<p><strong>Impact</strong>: 10-100x speedup on multi-core systems</p>
+<hr />
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<h3 id="papers"><a class="header" href="#papers">Papers</a></h3>
+<ol>
+<li>
+<p><strong>Original Risch Papers</strong>:</p>
+<ul>
+<li>Risch, R. H. (1969). "The problem of integration in finite terms"</li>
+<li>Risch, R. H. (1970). "The solution of the problem of integration in finite terms"</li>
+</ul>
+</li>
+<li>
+<p><strong>Modern Treatments</strong>:</p>
+<ul>
+<li>Bronstein, M. (2005). "Symbolic Integration I: Transcendental Functions" (Springer)</li>
+<li>Geddes, K. O., et al. (1992). "Algorithms for Computer Algebra" (Kluwer)</li>
+</ul>
+</li>
+<li>
+<p><strong>Implementation References</strong>:</p>
+<ul>
+<li>SymPy Documentation: https://docs.sympy.org/latest/modules/integrals/integrals.html</li>
+<li>Axiom Computer Algebra System: https://axiom-developer.org/</li>
+</ul>
+</li>
+</ol>
+<h3 id="books"><a class="header" href="#books">Books</a></h3>
+<ul>
+<li>
+<p><strong>Bronstein (2005)</strong>: The definitive reference on Risch algorithm</p>
+<ul>
+<li>Treatment of all cases</li>
+<li>Detailed proofs and algorithms</li>
+<li>Recommended for implementers</li>
+</ul>
+</li>
+<li>
+<p><strong>Geddes, Czapor, Labahn (1992)</strong>: Classic computer algebra textbook</p>
+<ul>
+<li>Integration chapter covers Risch algorithm</li>
+<li>Broader context of symbolic computation</li>
+</ul>
+</li>
+</ul>
+<h3 id="online-resources"><a class="header" href="#online-resources">Online Resources</a></h3>
+<ul>
+<li>
+<p><strong>SymPy Risch Implementation</strong>: https://github.com/sympy/sympy/tree/master/sympy/integrals</p>
+<ul>
+<li>Production-quality reference implementation</li>
+<li>MathHook's design closely follows SymPy's architecture</li>
+</ul>
+</li>
+<li>
+<p><strong>Wolfram MathWorld</strong>: https://mathworld.wolfram.com/RischAlgorithm.html</p>
+<ul>
+<li>Overview and historical context</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>The Risch algorithm is a landmark achievement in symbolic computation:</p>
+<ul>
+<li><strong>Complete</strong>: Decides all elementary integration questions</li>
+<li><strong>Algorithmic</strong>: Deterministic polynomial-time procedure</li>
+<li><strong>Powerful</strong>: Proves impossibility when no elementary form exists</li>
+</ul>
+<p>MathHook's implementation provides:</p>
+<ul>
+<li><strong>Basic coverage</strong>: Exponential and logarithmic cases (most common)</li>
+<li><strong>High performance</strong>: Rust implementation 10-100x faster than SymPy</li>
+<li><strong>Planned growth</strong>: Algebraic extensions and complete non-elementary detection coming</li>
+</ul>
+<p><strong>When to use Risch layer</strong>:</p>
+<ul>
+<li>All heuristics failed (Layers 1-6)</li>
+<li>Expression involves exponentials or logarithms</li>
+<li>Need definitive answer on integrability</li>
+</ul>
+<p><strong>Next steps</strong>:</p>
+<ul>
+<li>Explore examples in <code>examples/integration_risch_examples.rs</code></li>
+<li>Read source code in <code>crates/mathhook-core/src/calculus/integrals/risch/</code></li>
+<li>Contribute algebraic extension implementation</li>
+</ul>
+<hr />
+<p><strong>Questions or Contributions</strong>:</p>
+<ul>
+<li>GitHub Issues: https://github.com/yourusername/mathhook/issues</li>
+<li>Documentation: https://docs.rs/mathhook-core</li>
+<li>Research Papers: See References section above</li>
+</ul>
+<h2 id="examples-1"><a class="header" href="#examples-1">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../calculus/integration.html">calculus.integration</a></p>
+</li>
+<li>
+<p><a href="../calculus/integration_strategies.html">calculus.integration_strategies</a></p>
+</li>
+<li>
+<p><a href="../appendix/glossary.html">appendix.glossary</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-notation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="architecture-crate-structure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-notation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="architecture-crate-structure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

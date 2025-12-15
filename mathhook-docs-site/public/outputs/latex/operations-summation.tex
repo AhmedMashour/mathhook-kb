@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Summation and Products }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Symbolic summation and products in MathHook provide closed-form formulas for arithmetic series, geometric series, power sums, and convergence analysis for infinite series.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Arithmetic Series:**
+$$\sum_{i=1}^{n} [a + (i-1)d] = \frac{n}{2} \times [2a + (n-1)d]$$
+
+**Geometric Series (Finite):**
+$$\sum_{i=1}^{n} ar^{i-1} = a \times \frac{1 - r^n}{1 - r} \quad \text{for } r \neq 1$$
+
+**Geometric Series (Infinite):**
+$$\sum_{i=1}^{\infty} ar^{i-1} = \frac{a}{1 - r} \quad \text{for } |r| < 1$$
+
+**Power Sums (Faulhaber's Formulas):**
+- $\sum_{i=1}^{n} 1 = n$
+- $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$ (Gauss's formula)
+- $\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}$
+- $\sum_{i=1}^{n} i^3 = \left[\frac{n(n+1)}{2}\right]^2$ (Nicomachus's theorem)
+
+**p-Series Convergence:**
+$$\sum_{n=1}^{\infty} \frac{1}{n^p} \begin{cases}
+\text{converges} & \text{if } p > 1 \\
+\text{diverges} & \text{if } p \leq 1
+\end{cases}$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Arithmetic Series (Gauss's Formula) }
+
+Sum of integers from 1 to n
+
+\begin{lstlisting}
+from mathhook import arithmetic_series
+
+# Sum of integers from 1 to 10
+sum_integers = arithmetic_series(first_term=1, common_diff=1, num_terms=10)
+print(sum_integers)  # 55
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Geometric Series }
+
+1 + 1/2 + 1/4 + ...
+
+\begin{lstlisting}
+from mathhook import geometric_series
+
+# 1 + 1/2 + 1/4
+sum_halves = geometric_series(first_term=1, common_ratio=0.5, num_terms=3)
+print(sum_halves)  # 1.75
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Infinite Geometric Series }
+
+Converges when |r| < 1
+
+\begin{lstlisting}
+from mathhook import infinite_geometric_series
+
+# 1 + 1/3 + 1/9 + ...
+sum_thirds = infinite_geometric_series(first_term=1, common_ratio=1/3)
+print(sum_thirds)  # 1.5
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Power Sums (Nicomachus's Theorem) }
+
+Sum of cubes equals square of sum
+
+\begin{lstlisting}
+from mathhook import power_sum
+
+# Verify Nicomachus's theorem for n=5
+sum_cubes = power_sum(power=3, upper_limit=5)
+sum_integers = power_sum(power=1, upper_limit=5)
+print(sum_cubes)  # 225
+print(sum_integers ** 2)  # 225 (15^2)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

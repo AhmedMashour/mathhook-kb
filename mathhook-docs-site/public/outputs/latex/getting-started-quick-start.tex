@@ -1,0 +1,210 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Quick Start }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Get up and running with MathHook in 5 minutes. Learn basic expression creation,
+parsing, differentiation, and common operations across Rust, Python, and Node.js.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Quick Start
+
+This guide will get you up and running with MathHook in 5 minutes.
+
+## Your First Expression
+
+Create symbolic expressions using the high-level API with ergonomic macros (Rust)
+or method chaining (Python/Node.js).
+
+## Common Operations
+
+- **Parsing LaTeX**: Transform LaTeX notation into symbolic expressions
+- **Computing Derivatives**: Automatic symbolic differentiation
+- **Solving Equations**: Symbolic equation solving
+- **Matrix Operations**: Symbolic linear algebra
+- **Step-by-Step Explanations**: Educational features for learning
+
+## Expression Operators
+
+The `expr!` macro (Rust) supports mathematical operators:
+- Comparison: `==`, `<`, `>`, `<=`, `>=`
+- Method calls: `.abs()`, `.sqrt()`, `.simplify()`
+- Power operations: `^`, `**`, `.pow()`
+
+## Common Patterns
+
+- **Creating Expressions Programmatically**: Use macros for compile-time values,
+  explicit API for runtime values
+- **Substitution**: Replace symbols with values using HashMap
+- **Formatting Output**: Standard, LaTeX, and Wolfram notation
+
+## Common Mistakes
+
+- **Runtime Variables in Macros**: Use explicit API for loop variables
+- **Precedence Without Parentheses**: Always use explicit grouping
+- **Floating Point Comparison**: Use epsilon comparison for numerical values
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ First Expression - Quadratic }
+
+Build and simplify x^2 + 2x + 1
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+expr = x.pow(2).add(x.multiply(2)).add(1)
+simplified = expr.simplify()
+
+print(f"Original: {expr}")
+print(f"Simplified: {simplified}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Parsing LaTeX }
+
+Parse LaTeX notation into symbolic expression
+
+\begin{lstlisting}
+from mathhook import Parser, ParserConfig
+
+parser = Parser(ParserConfig.default())
+expr = parser.parse(r"\frac{x^2 + 1}{2}")
+print(expr)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Computing Derivatives }
+
+Compute first and second derivatives of x^3
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+expr = x.pow(3)
+
+derivative = expr.derivative(x)
+second_derivative = expr.nth_derivative(x, 2)
+
+print(f"f(x) = {expr}")
+print(f"f'(x) = {derivative}")
+print(f"f''(x) = {second_derivative}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Solving Equations }
+
+Solve x^2 = 4 symbolically
+
+\begin{lstlisting}
+from mathhook import Expression, MathSolver
+
+x = Expression.symbol('x')
+solver = MathSolver()
+equation = Expression.equation(x.pow(2), Expression.integer(4))
+solutions = solver.solve(equation, x)
+
+print(f"Solutions: {solutions}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Substitution }
+
+Substitute x = 3 into x^2 + 2x + 1
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+expr = x.pow(2).add(x.multiply(2)).add(1)
+
+vars = {'x': Expression.integer(3)}
+result = expr.substitute(vars)
+print(f"Result: {result}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Creating Expressions Programmatically }
+
+Use macros for compile-time values, explicit API for runtime
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Direct creation
+expr = x.pow(2).add(3)
+
+# Runtime creation
+terms = []
+for i in range(5):
+    terms.append(
+        Expression.mul([
+            Expression.integer(i),
+            x.pow(Expression.integer(i))
+        ])
+    )
+polynomial = Expression.add(terms)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

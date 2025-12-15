@@ -1,0 +1,705 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Solver Equations - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/api-solver-equations.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="symbolic-and-numerical-equation-solving"><a class="header" href="#symbolic-and-numerical-equation-solving">Symbolic and Numerical Equation Solving</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>api.solver.equations</code></p>
+</blockquote>
+<p>Find solutions to equations symbolically and numerically. Supports linear, quadratic,
+polynomial, and transcendental equations with automatic strategy selection. Includes
+symbolic solving, numerical fallback, and parametric solutions.</p>
+<h1 id="equation-solving"><a class="header" href="#equation-solving">Equation Solving</a></h1>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>MathHook's solver finds solutions to equations using:</p>
+<ul>
+<li><strong>Linear equations</strong>: Direct algebraic solution <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mord mathnormal">b</span><span class="mord">/</span><span class="mord mathnormal">a</span></span></span></span></li>
+<li><strong>Quadratic equations</strong>: Quadratic formula with complex root support</li>
+<li><strong>Polynomial equations</strong>: Factorization and root finding</li>
+<li><strong>Transcendental equations</strong>: Symbolic when possible, numerical fallback</li>
+<li><strong>Matrix equations</strong>: Left and right division for noncommutative systems</li>
+</ul>
+<h2 id="mathematical-foundations"><a class="header" href="#mathematical-foundations">Mathematical Foundations</a></h2>
+<h3 id="quadratic-formula"><a class="header" href="#quadratic-formula">Quadratic Formula</a></h3>
+<p>For <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>:
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2764em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5904em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">a</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">±</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9134em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">4</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span></span></span><span style="top:-2.8734em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1266em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h3 id="discriminant"><a class="header" href="#discriminant">Discriminant</a></h3>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">Δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: Two distinct real roots</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: One repeated real root</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord">Δ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>: Two complex conjugate roots</li>
+</ul>
+<h2 id="solver-strategies"><a class="header" href="#solver-strategies">Solver Strategies</a></h2>
+<h3 id="automatic-strategy-selection"><a class="header" href="#automatic-strategy-selection">Automatic Strategy Selection</a></h3>
+<ol>
+<li>Detect equation type (linear, quadratic, polynomial, transcendental)</li>
+<li>Apply appropriate technique:
+<ul>
+<li>Linear: Algebraic isolation</li>
+<li>Quadratic: Quadratic formula</li>
+<li>Polynomial: Factorization then root finding</li>
+<li>Transcendental: Symbolic simplification or numerical methods</li>
+</ul>
+</li>
+<li>Return all solutions (real and complex)</li>
+</ol>
+<h3 id="numerical-fallback"><a class="header" href="#numerical-fallback">Numerical Fallback</a></h3>
+<p>When no closed-form solution exists (e.g., <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>):</p>
+<ul>
+<li>Newton's method: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></li>
+<li>Configurable tolerance and max iterations</li>
+<li>Returns numerical approximation</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="linear-equations"><a class="header" href="#linear-equations">Linear Equations</a></h3>
+<p>Solve linear equations ax + b = 0</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: 2x + 3 = 0
+let eq1 = expr!(2 * x + 3);
+let mut solver = MathSolver::new();
+let sol1 = solver.solve(&amp;eq1, &amp;x);
+// Result: x = -3/2
+
+// Solve: 5x - 10 = 0
+let eq2 = expr!(5 * x - 10);
+let sol2 = solver.solve(&amp;eq2, &amp;x);
+// Result: x = 2
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: 2x + 3 = 0
+eq1 = 2*x + 3
+sol1 = solve(eq1, x)
+# Result: x = -3/2
+
+# Solve: 5x - 10 = 0
+eq2 = 5*x - 10
+sol2 = solve(eq2, x)
+# Result: x = 2
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const x = symbol('x');
+
+// Solve: 2x + 3 = 0
+const eq1 = parse('2*x + 3');
+const sol1 = solve(eq1, x);
+// Result: x = -3/2
+
+// Solve: 5x - 10 = 0
+const eq2 = parse('5*x - 10');
+const sol2 = solve(eq2, x);
+// Result: x = 2
+
+</code></pre>
+</details>
+<h3 id="quadratic-equations"><a class="header" href="#quadratic-equations">Quadratic Equations</a></h3>
+<p>Solve quadratic equations using quadratic formula</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: x² - 5x + 6 = 0
+let eq1 = expr!(x ^ 2 - 5 * x + 6);
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&amp;eq1, &amp;x);
+// Result: [x = 2, x = 3]
+
+// Solve: x² - 4 = 0 (difference of squares)
+let eq2 = expr!(x ^ 2 - 4);
+let sol2 = solver.solve(&amp;eq2, &amp;x);
+// Result: [x = -2, x = 2]
+
+// Complex roots: x² + 1 = 0
+let eq3 = expr!(x ^ 2 + 1);
+let sol3 = solver.solve(&amp;eq3, &amp;x);
+// Result: [x = i, x = -i]
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x² - 5x + 6 = 0
+eq1 = x**2 - 5*x + 6
+solutions = solve(eq1, x)
+# Result: [x = 2, x = 3]
+
+# Solve: x² - 4 = 0
+eq2 = x**2 - 4
+sol2 = solve(eq2, x)
+# Result: [x = -2, x = 2]
+
+# Complex roots
+eq3 = x**2 + 1
+sol3 = solve(eq3, x)
+# Result: [x = i, x = -i]
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const x = symbol('x');
+
+// Solve: x² - 5x + 6 = 0
+const eq1 = parse('x^2 - 5*x + 6');
+const solutions = solve(eq1, x);
+// Result: [x = 2, x = 3]
+
+// Solve: x² - 4 = 0
+const eq2 = parse('x^2 - 4');
+const sol2 = solve(eq2, x);
+// Result: [x = -2, x = 2]
+
+// Complex roots
+const eq3 = parse('x^2 + 1');
+const sol3 = solve(eq3, x);
+// Result: [x = i, x = -i]
+
+</code></pre>
+</details>
+<h3 id="polynomial-equations"><a class="header" href="#polynomial-equations">Polynomial Equations</a></h3>
+<p>Solve polynomial equations via factorization</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: x³ - 6x² + 11x - 6 = 0
+// Factors: (x - 1)(x - 2)(x - 3)
+let cubic = expr!(x ^ 3 - 6 * (x ^ 2) + 11 * x - 6);
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&amp;cubic, &amp;x);
+// Result: [x = 1, x = 2, x = 3]
+
+// Solve: x⁴ - 1 = 0
+let quartic = expr!(x ^ 4 - 1);
+let sol2 = solver.solve(&amp;quartic, &amp;x);
+// Result: [x = 1, x = -1, x = i, x = -i]
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve
+
+x = symbol('x')
+
+# Solve: x³ - 6x² + 11x - 6 = 0
+cubic = x**3 - 6*x**2 + 11*x - 6
+solutions = solve(cubic, x)
+# Result: [x = 1, x = 2, x = 3]
+
+# Solve: x⁴ - 1 = 0
+quartic = x**4 - 1
+sol2 = solve(quartic, x)
+# Result: [x = 1, x = -1, x = i, x = -i]
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const x = symbol('x');
+
+// Solve: x³ - 6x² + 11x - 6 = 0
+const cubic = parse('x^3 - 6*x^2 + 11*x - 6');
+const solutions = solve(cubic, x);
+// Result: [x = 1, x = 2, x = 3]
+
+// Solve: x⁴ - 1 = 0
+const quartic = parse('x^4 - 1');
+const sol2 = solve(quartic, x);
+// Result: [x = 1, x = -1, x = i, x = -i]
+
+</code></pre>
+</details>
+<h3 id="transcendental-equations"><a class="header" href="#transcendental-equations">Transcendental Equations</a></h3>
+<p>Solve equations with trigonometric, exponential functions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+
+// Solve: sin(x) = 0
+let eq1 = expr!(sin(x));
+let mut solver = MathSolver::new();
+let solutions = solver.solve(&amp;eq1, &amp;x);
+// Result: [x = 0, x = π, x = 2π, ...] (periodic)
+
+// Solve: e^x = 5
+let eq2 = expr!(exp(x) - 5);
+let sol2 = solver.solve(&amp;eq2, &amp;x);
+// Result: x = ln(5)
+
+// Numerical fallback: x = cos(x)
+let eq3 = expr!(x - cos(x));
+let mut solver = MathSolver::new()
+    .with_numerical_fallback(true)
+    .with_tolerance(1e-10);
+let sol3 = solver.solve(&amp;eq3, &amp;x);
+// Result: x ≈ 0.739085133...
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve, sin, exp, cos
+
+x = symbol('x')
+
+# Solve: sin(x) = 0
+eq1 = sin(x)
+solutions = solve(eq1, x)
+# Result: [x = 0, x = π, x = 2π, ...]
+
+# Solve: e^x = 5
+eq2 = exp(x) - 5
+sol2 = solve(eq2, x)
+# Result: x = ln(5)
+
+# Numerical fallback
+eq3 = x - cos(x)
+sol3 = solve(eq3, x, numerical=True)
+# Result: x ≈ 0.739085133...
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const x = symbol('x');
+
+// Solve: sin(x) = 0
+const eq1 = parse('sin(x)');
+const solutions = solve(eq1, x);
+// Result: [x = 0, x = π, x = 2π, ...]
+
+// Solve: e^x = 5
+const eq2 = parse('exp(x) - 5');
+const sol2 = solve(eq2, x);
+// Result: x = ln(5)
+
+// Numerical fallback
+const eq3 = parse('x - cos(x)');
+const sol3 = solve(eq3, x, { numerical: true });
+// Result: x ≈ 0.739085133...
+
+</code></pre>
+</details>
+<h3 id="real-world-application-projectile-motion"><a class="header" href="#real-world-application-projectile-motion">Real-World Application: Projectile Motion</a></h3>
+<p>Physics application finding time to hit ground</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let t = symbol!(t);
+let v0 = symbol!(v0);  // Initial velocity
+let h = symbol!(h);    // Initial height
+
+// Position: y(t) = -16t² + v₀t + h
+let position = expr!(-16 * (t ^ 2) + v0 * t + h);
+
+// Substitute values: v₀ = 64 ft/s, h = 80 ft
+let position_vals = position.substitute(&amp;v0, &amp;expr!(64))
+                             .substitute(&amp;h, &amp;expr!(80));
+
+// Find time when projectile hits ground (y = 0)
+let mut solver = MathSolver::new();
+let times = solver.solve(&amp;position_vals, &amp;t);
+// Result: t ≈ 5 seconds (ignoring negative solution)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve
+
+t = symbol('t')
+
+# Position: y(t) = -16t² + 64t + 80
+position = -16*t**2 + 64*t + 80
+
+# Find time when y = 0
+times = solve(position, t)
+# Result: t ≈ 5 seconds (ignore negative)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const t = symbol('t');
+
+// Position: y(t) = -16t² + 64t + 80
+const position = parse('-16*t^2 + 64*t + 80');
+
+// Find time when y = 0
+const times = solve(position, t);
+// Result: t ≈ 5 seconds
+
+</code></pre>
+</details>
+<h3 id="parametric-solutions"><a class="header" href="#parametric-solutions">Parametric Solutions</a></h3>
+<p>Solve in terms of parameters</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::prelude::*;
+
+let x = symbol!(x);
+let a = symbol!(a);
+let b = symbol!(b);
+
+// Solve: ax + b = 0 (parametric in a, b)
+let equation = expr!(a * x + b);
+let mut solver = MathSolver::new();
+let solution = solver.solve(&amp;equation, &amp;x);
+// Result: x = -b/a (symbolic solution)
+
+// Now substitute specific values
+let specific = solution.substitute(&amp;a, &amp;expr!(2))
+                       .substitute(&amp;b, &amp;expr!(6));
+// Result: x = -3
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook import symbol, solve
+
+x = symbol('x')
+a = symbol('a')
+b = symbol('b')
+
+# Solve: ax + b = 0
+equation = a*x + b
+solution = solve(equation, x)
+# Result: x = -b/a
+
+# Substitute specific values
+specific = solution.subs([(a, 2), (b, 6)])
+# Result: x = -3
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">import { symbol, parse, solve } from 'mathhook';
+
+const x = symbol('x');
+const a = symbol('a');
+const b = symbol('b');
+
+// Solve: ax + b = 0
+const equation = parse('a*x + b');
+const solution = solve(equation, x);
+// Result: x = -b/a
+
+// Substitute specific values
+const specific = solution.substitute(a, 2).substitute(b, 6);
+// Result: x = -3
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::solvers::MathSolver</code></li>
+<li><strong>Python</strong>: <code>mathhook.solver.solve</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.solver.solve</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../api/advanced/system_solving.html">api.advanced.system_solving</a></p>
+</li>
+<li>
+<p><a href="../api/advanced/matrix_equations.html">api.advanced.matrix_equations</a></p>
+</li>
+<li>
+<p><a href="../api/operations/substitution.html">api.operations.substitution</a></p>
+</li>
+<li>
+<p><a href="../api/calculus/operations.html">api.calculus.operations</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="api-parser-latex.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="appendix-changelog.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="api-parser-latex.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="appendix-changelog.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

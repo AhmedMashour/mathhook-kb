@@ -1,0 +1,124 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic Simplification }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MathHook provides comprehensive symbolic simplification for mathematical expressions, with full support for noncommutative algebra (matrices, operators, quaternions). The simplification system implements canonical forms and mathematical identities to reduce expressions to their simplest equivalent representation.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Power Rule:**
+$$x^a \cdot x^b \rightarrow x^{a+b}$$
+
+**Noncommutative Algebra:**
+For noncommutative symbols (matrices, operators):
+- $AB \neq BA$ in general
+- $(A + B)^2 = A^2 + AB + BA + B^2$ (4 terms, not 3)
+
+**Rational Arithmetic:**
+- Exact representation: $\frac{1}{3}$ stays as rational, not float
+- Automatic simplification: Reduces fractions to lowest terms
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Simplification }
+
+Identity elements and constant folding
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Identity elements
+expr = (x + 0) * 1
+simplified = expr.simplify()
+# Result: x
+
+# Constant folding
+expr = 2 + 3
+# Result: 5
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Power Rule }
+
+Combine like powers with same base
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Combine like powers
+expr = x**2 * x**3
+simplified = expr.simplify()
+# Result: x^5
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Noncommutative Matrices }
+
+Matrix multiplication does NOT commute
+
+\begin{lstlisting}
+from mathhook import symbol
+
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+
+# Matrix multiplication does NOT commute
+expr = A * B
+# Simplification preserves order: A*B ≠ B*A
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

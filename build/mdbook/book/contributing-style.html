@@ -1,0 +1,471 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Style - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/contributing-style.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="code-style-guide"><a class="header" href="#code-style-guide">Code Style Guide</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>contributing.style</code></p>
+</blockquote>
+<p>Code style ensures maintainability and consistency across MathHook.
+Covers macros, file organization, naming conventions, and comments policy.</p>
+<h1 id="code-style-guide-1"><a class="header" href="#code-style-guide-1">Code Style Guide</a></h1>
+<p>Code style ensures maintainability and consistency across MathHook.</p>
+<h2 id="required-commands"><a class="header" href="#required-commands">Required Commands</a></h2>
+<p>Run before every commit:</p>
+<pre><code class="language-bash">cargo fmt                      # Format code
+cargo clippy -- -D warnings    # Lint (zero warnings allowed)
+</code></pre>
+<h2 id="macros-over-constructors"><a class="header" href="#macros-over-constructors">Macros Over Constructors</a></h2>
+<p><strong>Always use macros in application code:</strong></p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ✅ ALWAYS - Use macros
+symbol!(x)                     // Scalar symbol
+symbol!(A; matrix)             // Matrix symbol
+symbol!(p; operator)           // Operator symbol
+symbols![x, y, z]              // Multiple symbols
+function!(sin, x)              // Function call
+expr!(x ^ 2 + 2 * x + 1)       // Expression
+
+// ❌ NEVER - Direct constructors in app code
+Symbol::new("x")               // Forbidden
+Symbol::matrix("A")            // Forbidden
+Expression::Function { ... }   // Forbidden
+<span class="boring">}</span></code></pre></pre>
+<h3 id="runtime-variables"><a class="header" href="#runtime-variables">Runtime Variables</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ❌ WRONG - Creates symbol named "i", not integer i
+for i in 0..10 {
+    expr!(i)  // Bug!
+}
+
+// ✅ RIGHT - Explicit API for runtime values
+for i in 0..10 {
+    Expression::integer(i)
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="file-size-limit"><a class="header" href="#file-size-limit">File Size Limit</a></h2>
+<p><strong>Maximum 500 lines</strong> per file (including comments and blanks).</p>
+<pre><code class="language-bash"># Check file size
+wc -l filename.rs
+
+# If approaching 400 lines, plan the split
+</code></pre>
+<h2 id="module-naming"><a class="header" href="#module-naming">Module Naming</a></h2>
+<pre><code>✅ Correct:
+src/
+├── parser.rs            # Module file
+└── parser/              # Submodules
+    ├── lexer.rs
+    └── grammar.rs
+
+❌ Wrong:
+src/
+└── parser/
+    └── mod.rs           # Never use mod.rs
+</code></pre>
+<h2 id="comments-policy"><a class="header" href="#comments-policy">Comments Policy</a></h2>
+<p><strong>Default: No comments.</strong> Code should be self-documenting.</p>
+<h3 id="allowed-comments"><a class="header" href="#allowed-comments">Allowed Comments</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Mathematical formula: x = (-b ± √(b²-4ac)) / 2a
+// O(n²) but n &lt; 10 in practice
+// x must be positive for real sqrt
+<span class="boring">}</span></code></pre></pre>
+<h3 id="forbidden-comments"><a class="header" href="#forbidden-comments">Forbidden Comments</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ❌ Create a new expression
+// ❌ Loop through items
+// ❌ Return the result
+// ❌ Increment counter
+// ❌ Check if null
+<span class="boring">}</span></code></pre></pre>
+<p>If the code needs a comment explaining what it does, the code needs rewriting.</p>
+<h2 id="documentation-comments"><a class="header" href="#documentation-comments">Documentation Comments</a></h2>
+<h3 id="module-level-"><a class="header" href="#module-level-">Module Level (<code>//!</code>)</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Trigonometric function implementations.
+//!
+//! Provides exact symbolic evaluation for sin, cos, tan, and their inverses.
+<span class="boring">}</span></code></pre></pre>
+<h3 id="public-api-"><a class="header" href="#public-api-">Public API (<code>///</code>)</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Compute sine of an expression.
+///
+/// # Arguments
+///
+/// * `arg` - The input expression
+///
+/// # Returns
+///
+/// * `Ok(Expression)` - The evaluated result
+/// * `Err(MathError)` - Domain error if applicable
+///
+/// # Examples
+///
+/// ```rust
+/// use mathhook::prelude::*;
+///
+/// let result = sin(&amp;expr!(0)).unwrap();
+/// assert_eq!(result, expr!(0));
+/// ```
+pub fn sin(arg: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt; { ... }
+<span class="boring">}</span></code></pre></pre>
+<h2 id="naming-conventions"><a class="header" href="#naming-conventions">Naming Conventions</a></h2>
+<h3 id="functions-and-variables"><a class="header" href="#functions-and-variables">Functions and Variables</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// snake_case for functions and variables
+fn compute_derivative(expr: &amp;Expression) -&gt; Expression { ... }
+let result_value = evaluate(&amp;expr)?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="types-and-traits"><a class="header" href="#types-and-traits">Types and Traits</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// PascalCase for types
+struct Expression { ... }
+trait Evaluable { ... }
+enum MathError { ... }
+<span class="boring">}</span></code></pre></pre>
+<h3 id="constants"><a class="header" href="#constants">Constants</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// SCREAMING_SNAKE_CASE for constants
+const MAX_ITERATIONS: usize = 1000;
+static PI_VALUE: LazyLock&lt;Expression&gt; = ...;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<h3 id="return-types"><a class="header" href="#return-types">Return Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Infallible operations → direct return
+pub fn add(terms: Vec&lt;Expression&gt;) -&gt; Expression { ... }
+
+// Fallible operations → Result
+pub fn evaluate(expr: &amp;Expression) -&gt; Result&lt;Expression, MathError&gt; { ... }
+<span class="boring">}</span></code></pre></pre>
+<h3 id="no-panics-in-library-code"><a class="header" href="#no-panics-in-library-code">No Panics in Library Code</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ❌ NEVER
+fn divide(a: f64, b: f64) -&gt; f64 {
+    if b == 0.0 { panic!("division by zero"); }
+    a / b
+}
+
+// ✅ ALWAYS
+fn divide(a: f64, b: f64) -&gt; Result&lt;f64, MathError&gt; {
+    if b == 0.0 { return Err(MathError::DivisionByZero); }
+    Ok(a / b)
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="imports-organization"><a class="header" href="#imports-organization">Imports Organization</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 1. Standard library
+use std::collections::HashMap;
+use std::sync::LazyLock;
+
+// 2. External crates
+use num_rational::Ratio;
+
+// 3. Crate modules
+use crate::core::Expression;
+use crate::error::MathError;
+
+// 4. Local modules
+use super::data::SPECIAL_VALUES;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="expression-construction"><a class="header" href="#expression-construction">Expression Construction</a></h2>
+<h3 id="power-operations"><a class="header" href="#power-operations">Power Operations</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// All three are equivalent - use what's clearest
+expr!(x ^ 2)       // Mathematical notation
+expr!(x ** 2)      // Python-style
+expr!(x.pow(2))    // Method call
+<span class="boring">}</span></code></pre></pre>
+<h3 id="precedence"><a class="header" href="#precedence">Precedence</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ^ binds tighter than * and /
+expr!(2 * x ^ 2)   // Parsed as 2 * (x^2)
+
+// Right-associative
+expr!(2 ^ 3 ^ 4)   // Parsed as 2^(3^4) = 2^81
+<span class="boring">}</span></code></pre></pre>
+<h2 id="what-to-avoid"><a class="header" href="#what-to-avoid">What to Avoid</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Pattern</th><th>Problem</th><th>Alternative</th></tr></thead><tbody>
+<tr><td><code>Symbol::new("x")</code></td><td>Bypasses macro</td><td><code>symbol!(x)</code></td></tr>
+<tr><td><code>mod.rs</code></td><td>Old pattern</td><td><code>modulename.rs</code></td></tr>
+<tr><td><code>== 0.0</code> for floats</td><td>Floating point errors</td><td><code>abs() &lt; EPSILON</code></td></tr>
+<tr><td><code>unwrap()</code> in lib</td><td>Can panic</td><td>Return <code>Result</code></td></tr>
+<tr><td>Comments restating code</td><td>Noise</td><td>Delete them</td></tr>
+<tr><td>Files &gt; 500 lines</td><td>Unmaintainable</td><td>Split module</td></tr>
+</tbody></table>
+</div>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../contributing/development.html">contributing.development</a></p>
+</li>
+<li>
+<p><a href="../contributing/testing.html">contributing.testing</a></p>
+</li>
+<li>
+<p><a href="../contributing/documentation.html">contributing.documentation</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="contributing-documentation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="contributing-testing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="contributing-documentation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="contributing-testing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

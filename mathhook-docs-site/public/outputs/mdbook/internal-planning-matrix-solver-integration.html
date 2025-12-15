@@ -1,0 +1,508 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Planning Matrix Solver Integration - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/internal-planning-matrix-solver-integration.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="matrix-solver-integration-plan"><a class="header" href="#matrix-solver-integration-plan">Matrix Solver Integration Plan</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>internal.planning.matrix-solver-integration</code></p>
+</blockquote>
+<p>Connect existing matrix decompositions (LU, QR, Cholesky) with solver infrastructure.
+Eliminates code duplication where SystemSolver.solve_nxn_system() reimplements Gaussian
+elimination despite Matrix.lu_decomposition() already existing.</p>
+<h1 id="matrix-solver-integration-plan-1"><a class="header" href="#matrix-solver-integration-plan-1">Matrix Solver Integration Plan</a></h1>
+<p><strong>Date</strong>: 2025-12-06T1530
+<strong>Status</strong>: Ready for Execution
+<strong>Estimated Effort</strong>: 3.5 days</p>
+<hr />
+<h2 id="executive-summary"><a class="header" href="#executive-summary">Executive Summary</a></h2>
+<p>Connect existing matrix decompositions (LU, QR, Cholesky) with solver infrastructure. Currently <code>SystemSolver.solve_nxn_system()</code> reimplements Gaussian elimination despite <code>Matrix.lu_decomposition()</code> already existing. This plan eliminates that duplication.</p>
+<hr />
+<h2 id="phase-0-forwardbackward-substitution-foundation"><a class="header" href="#phase-0-forwardbackward-substitution-foundation">Phase 0: Forward/Backward Substitution (Foundation)</a></h2>
+<p><strong>Priority</strong>: P0 - Required for all subsequent phases
+<strong>File</strong>: <code>crates/mathhook-core/src/matrices/unified/operations.rs</code></p>
+<h3 id="methods-to-add"><a class="header" href="#methods-to-add">Methods to Add</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    /// Solve Lx = b for lower triangular L
+    pub fn forward_substitution(&amp;self, b: &amp;[Expression]) -&gt; Result&lt;Vec&lt;Expression&gt;, MathError&gt;;
+
+    /// Solve Ux = b for upper triangular U
+    pub fn backward_substitution(&amp;self, b: &amp;[Expression]) -&gt; Result&lt;Vec&lt;Expression&gt;, MathError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="algorithms"><a class="header" href="#algorithms">Algorithms</a></h3>
+<p><strong>Forward substitution</strong> (Ly = b):</p>
+<pre><code>For i = 0 to n-1:
+    sum = Σ(L[i][j] * x[j]) for j = 0 to i-1
+    x[i] = (b[i] - sum) / L[i][i]
+    if L[i][i] == 0: return Err(DivisionByZero)
+</code></pre>
+<p><strong>Backward substitution</strong> (Ux = y):</p>
+<pre><code>For i = n-1 down to 0:
+    sum = Σ(U[i][j] * x[j]) for j = i+1 to n-1
+    x[i] = (b[i] - sum) / U[i][i]
+    if U[i][i] == 0: return Err(DivisionByZero)
+</code></pre>
+<h3 id="tests-required"><a class="header" href="#tests-required">Tests Required</a></h3>
+<ul>
+<li>Identity matrix (trivial)</li>
+<li>2x2, 3x3 triangular matrices</li>
+<li>Zero diagonal element → DivisionByZero</li>
+<li>Symbolic coefficients</li>
+</ul>
+<hr />
+<h2 id="phase-1-matrixsolveb-using-lu"><a class="header" href="#phase-1-matrixsolveb-using-lu">Phase 1: Matrix.solve(b) Using LU</a></h2>
+<p><strong>Priority</strong>: P0 - Core integration
+<strong>File</strong>: <code>crates/mathhook-core/src/matrices/unified/operations.rs</code></p>
+<h3 id="method-to-add"><a class="header" href="#method-to-add">Method to Add</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    /// Solve Ax = b using LU decomposition
+    ///
+    /// Algorithm:
+    /// 1. Compute PA = LU
+    /// 2. Solve Ly = Pb (forward substitution)
+    /// 3. Solve Ux = y (backward substitution)
+    pub fn solve(&amp;self, b: &amp;[Expression]) -&gt; Result&lt;Vec&lt;Expression&gt;, MathError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="helper-needed"><a class="header" href="#helper-needed">Helper Needed</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn apply_permutation(p: &amp;Option&lt;Matrix&gt;, b: &amp;[Expression]) -&gt; Vec&lt;Expression&gt;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-cases"><a class="header" href="#error-cases">Error Cases</a></h3>
+<ul>
+<li>Non-square matrix → DomainError</li>
+<li>Dimension mismatch → DomainError</li>
+<li>Singular matrix → DivisionByZero</li>
+</ul>
+<h3 id="tests-required-1"><a class="header" href="#tests-required-1">Tests Required</a></h3>
+<ul>
+<li>2x2 integer solution</li>
+<li>3x3 rational solution</li>
+<li>Identity matrix (trivial)</li>
+<li>Singular matrix → error</li>
+<li>Dimension mismatch → error</li>
+</ul>
+<hr />
+<h2 id="phase-2-replace-systemsolversolve_nxn_system"><a class="header" href="#phase-2-replace-systemsolversolve_nxn_system">Phase 2: Replace SystemSolver.solve_nxn_system()</a></h2>
+<p><strong>Priority</strong>: P0 - Eliminate duplication
+<strong>File</strong>: <code>crates/mathhook-core/src/algebra/solvers/systems.rs</code></p>
+<h3 id="current-state-lines-407-518"><a class="header" href="#current-state-lines-407-518">Current State (lines 407-518)</a></h3>
+<ul>
+<li>Manually extracts coefficients into augmented matrix</li>
+<li>Reimplements Gaussian elimination with partial pivoting</li>
+<li>Performs back substitution inline</li>
+</ul>
+<h3 id="refactored-approach"><a class="header" href="#refactored-approach">Refactored Approach</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn solve_nxn_system(&amp;self, equations: &amp;[Expression], variables: &amp;[Symbol]) -&gt; SolverResult {
+    // 1. Build coefficient matrix A and RHS vector b
+    let (a_matrix, b_vec) = self.build_system_matrix(equations, variables);
+
+    // 2. Use Matrix.solve() which uses LU decomposition
+    match a_matrix.solve(&amp;b_vec) {
+        Ok(solution) =&gt; SolverResult::Multiple(solution),
+        Err(MathError::DivisionByZero) =&gt; self.check_singularity_type(&amp;a_matrix, &amp;b_vec),
+        Err(_) =&gt; SolverResult::NoSolution,
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="lines-to-delete"><a class="header" href="#lines-to-delete">Lines to Delete</a></h3>
+<ul>
+<li>Lines 426-479 (Gaussian elimination reimplementation)</li>
+<li>Lines 480-518 (back substitution reimplementation)</li>
+</ul>
+<h3 id="import-to-add"><a class="header" href="#import-to-add">Import to Add</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use crate::matrices::Matrix;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="phase-3-spd-detection--cholesky-routing"><a class="header" href="#phase-3-spd-detection--cholesky-routing">Phase 3: SPD Detection → Cholesky Routing</a></h2>
+<p><strong>Priority</strong>: P1 - Performance optimization
+<strong>File</strong>: <code>crates/mathhook-core/src/matrices/unified/operations.rs</code></p>
+<h3 id="enhanced-solve-method"><a class="header" href="#enhanced-solve-method">Enhanced solve() Method</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn solve(&amp;self, b: &amp;[Expression]) -&gt; Result&lt;Vec&lt;Expression&gt;, MathError&gt; {
+    // Try Cholesky first for SPD matrices (2x faster)
+    if self.is_symmetric() {
+        if let Some(chol) = self.cholesky_decomposition() {
+            let y = chol.l.forward_substitution(b)?;
+            let lt = chol.l.transpose();
+            return lt.backward_substitution(&amp;y);
+        }
+    }
+
+    // Fall back to LU
+    self.solve_via_lu(b)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="expected-performance"><a class="header" href="#expected-performance">Expected Performance</a></h3>
+<ul>
+<li>2x speedup for symmetric positive definite matrices</li>
+</ul>
+<hr />
+<h2 id="phase-4-qr-based-least-squares"><a class="header" href="#phase-4-qr-based-least-squares">Phase 4: QR-Based Least Squares</a></h2>
+<p><strong>Priority</strong>: P1 - Overdetermined systems
+<strong>File</strong>: <code>crates/mathhook-core/src/matrices/unified/operations.rs</code></p>
+<h3 id="method-to-add-1"><a class="header" href="#method-to-add-1">Method to Add</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Matrix {
+    /// Solve min ||Ax - b||_2 using QR decomposition
+    ///
+    /// For m×n matrix (m &gt;= n):
+    /// 1. Compute A = QR
+    /// 2. Compute Q^T * b
+    /// 3. Solve Rx = (Q^T * b)[0:n]
+    pub fn solve_least_squares(&amp;self, b: &amp;[Expression]) -&gt; Result&lt;Vec&lt;Expression&gt;, MathError&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="helper-needed-1"><a class="header" href="#helper-needed-1">Helper Needed</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn matrix_vector_multiply(m: &amp;Matrix, v: &amp;[Expression]) -&gt; Vec&lt;Expression&gt;
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="phase-5-matrix-inversion-using-lu"><a class="header" href="#phase-5-matrix-inversion-using-lu">Phase 5: Matrix Inversion Using LU</a></h2>
+<p><strong>Priority</strong>: P2 - Optimization
+<strong>File</strong>: <code>crates/mathhook-core/src/matrices/unified/operations.rs</code></p>
+<h3 id="enhanced-inverse-method"><a class="header" href="#enhanced-inverse-method">Enhanced inverse() Method</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn inverse(&amp;self) -&gt; Matrix {
+    match self {
+        Matrix::Identity(_) | Matrix::Scalar(_) | Matrix::Diagonal(_) =&gt; {
+            // Keep existing fast paths
+        }
+        _ =&gt; self.inverse_via_lu().unwrap_or_else(|| self.gauss_jordan_inverse()),
+    }
+}
+
+fn inverse_via_lu(&amp;self) -&gt; Option&lt;Matrix&gt; {
+    // Solve A * X = I column by column
+    for j in 0..n {
+        let e_j = unit_vector(j, n);
+        let col = self.solve(&amp;e_j)?;
+        // Store in result matrix
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="dependency-order"><a class="header" href="#dependency-order">Dependency Order</a></h2>
+<pre><code>Phase 0: Forward/Backward Substitution
+    ↓
+Phase 1: Matrix.solve(b)
+    ↓
+Phase 2: Replace solve_nxn_system ←── Phase 3: Cholesky Routing
+    ↓
+Phase 4: QR Least Squares
+    ↓
+Phase 5: LU-based Inverse
+</code></pre>
+<hr />
+<h2 id="verification-strategy"><a class="header" href="#verification-strategy">Verification Strategy</a></h2>
+<h3 id="sympy-validation"><a class="header" href="#sympy-validation">SymPy Validation</a></h3>
+<pre><code class="language-python"># Create validation script at scripts/validate_matrix_solver.py
+from sympy import Matrix
+
+A = Matrix([[2, 1], [1, 3]])
+b = Matrix([5, 7])
+x = A.solve(b)  # Compare with Rust output
+</code></pre>
+<h3 id="rust-tests"><a class="header" href="#rust-tests">Rust Tests</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_solve_via_lu_correctness() {
+    let a = Matrix::from_arrays([[2, 1], [1, 3]]);
+    let b = vec![expr!(5), expr!(7)];
+    let x = a.solve(&amp;b).unwrap();
+
+    // Verify: A * x == b
+    let ax = matrix_vector_multiply(&amp;a, &amp;x);
+    assert_eq!(ax[0].simplify(), b[0].simplify());
+    assert_eq!(ax[1].simplify(), b[1].simplify());
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="risk-mitigation"><a class="header" href="#risk-mitigation">Risk Mitigation</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Risk</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>Singular matrix</td><td>Check LU diagonal before solving</td></tr>
+<tr><td>Numerical instability</td><td>Use <code>.simplify()</code> after each operation</td></tr>
+<tr><td>Performance regression</td><td>Benchmark before/after with <code>./scripts/bench.sh</code></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="files-summary"><a class="header" href="#files-summary">Files Summary</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Changes</th></tr></thead><tbody>
+<tr><td><code>matrices/unified/operations.rs</code></td><td>+180 lines (add solve methods)</td></tr>
+<tr><td><code>algebra/solvers/systems.rs</code></td><td>-170 lines (remove Gaussian), +50 lines (use Matrix.solve)</td></tr>
+<tr><td><code>matrices/decomposition/lu.rs</code></td><td>+20 lines (add is_singular helper)</td></tr>
+<tr><td><code>matrices/decomposition/decomposition_tests.rs</code></td><td>+100 lines (new tests)</td></tr>
+</tbody></table>
+</div>
+<p><strong>Net change</strong>: ~+80 lines, elimination of code duplication</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: ``</li>
+<li><strong>Python</strong>: ``</li>
+<li><strong>JavaScript</strong>: ``</li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../internal/planning/fast-path-implementation.html">internal.planning.fast-path-implementation</a></p>
+</li>
+<li>
+<p><a href="../internal/planning/fast-path-opportunities.html">internal.planning.fast-path-opportunities</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="internal-planning-fast-path-opportunities.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="internal-planning-phase3-and-phase5-summary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="internal-planning-fast-path-opportunities.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="internal-planning-phase3-and-phase5-summary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

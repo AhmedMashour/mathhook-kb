@@ -1,0 +1,293 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Common Patterns }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Common patterns and best practices when using MathHook, including macro usage
+guidelines, polynomial construction, substitution patterns, function composition,
+matrix operations, error handling, performance patterns, and educational features.
+Includes detailed pitfalls to avoid.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Common Patterns
+
+This chapter covers common patterns and best practices when using MathHook.
+
+## Macro Usage Guidelines
+
+**ALWAYS use macros for:**
+- Symbol creation: `symbol!(x)` not `Symbol::new("x")`
+- Simple expressions: `expr!(x + y)`
+- Function calls: `expr!(sin(x))`
+
+**Use explicit API for:**
+- Runtime/loop variables (macros see token 'i', not value)
+- Programmatic construction with runtime data
+- Dynamic polynomial building
+
+## Building Polynomials
+
+**Fixed Degree**: Use macros with `add:` helper
+**Dynamic Degree**: Use explicit API with loops
+
+## Substitution Patterns
+
+Single or multiple variable substitution using HashMap.
+
+## Working with Functions
+
+Create with `expr!` macro, `function!` macro, or `Expression::function()` for
+runtime function names. Compose functions by nesting.
+
+## Matrix Patterns
+
+Create from vectors, identity matrices, zero matrices. Perform symbolic matrix
+operations.
+
+## Error Handling
+
+Handle parsing errors with `match` on `Result`. Handle solver errors by checking
+result type.
+
+## Performance Patterns
+
+- Bulk operations: Use iterators and collect
+- Caching results: Store in HashMap keyed by string representation
+- Reuse expressions (immutable, cheap to clone)
+
+## Educational Patterns
+
+Use step-by-step explanations and derivative explanations for teaching.
+
+## Common Pitfalls
+
+1. **Runtime variables in macros**: Use explicit API for loop variables
+2. **Nested macro calls**: Use intermediate variables
+3. **Float equality**: Use epsilon comparison, not ==
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Macro Usage - Correct Patterns }
+
+When to use macros vs explicit API
+
+\begin{lstlisting}
+from mathhook import Expression
+
+# Python uses method chaining
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+
+expr = x.add(y)
+expr = Expression.integer(2).mul(x)
+expr = x.pow(2)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Runtime Variables - Explicit API Required }
+
+Why macros don't work with loop variables
+
+\begin{lstlisting}
+from mathhook import Expression
+
+# Python doesn't have compile-time macros
+# Always use explicit API (which is fine)
+
+x = Expression.symbol('x')
+coefficients = [1, 2, 3]
+terms = []
+for i, coeff in enumerate(coefficients):
+    coeff_expr = Expression.integer(coeff)
+    power_expr = Expression.integer(i)
+    term = coeff_expr.mul(x.pow(power_expr))
+    terms.append(term)
+polynomial = Expression.add(terms)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Building Polynomials - Dynamic Degree }
+
+Construct polynomials with runtime coefficients
+
+\begin{lstlisting}
+from mathhook import Expression
+
+def build_polynomial(coefficients, x):
+    terms = []
+    for i, coeff in enumerate(coefficients):
+        coeff_expr = Expression.integer(coeff)
+        power = Expression.integer(i)
+        term = coeff_expr.mul(x.pow(power))
+        terms.append(term)
+    return Expression.add(terms)
+
+x = Expression.symbol('x')
+poly = build_polynomial([1, -5, 6], x)  # x^2 - 5x + 6
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Substitution - Single and Multiple }
+
+Replace symbols with values
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+expr = x.mul(y).add(x).add(y)
+
+# Single substitution
+vars = {'x': Expression.integer(3)}
+result = expr.substitute(vars)
+
+# Multiple substitutions
+vars = {'x': Expression.integer(2), 'y': Expression.integer(3)}
+result = expr.substitute(vars)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Function Composition }
+
+Compose functions by nesting
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Build step by step
+inner = Expression.function('cos', [x])
+composed = Expression.function('sin', [inner])
+
+print(f"Composed function: {composed}")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Performance - Bulk Operations }
+
+Efficient batch processing
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Simplify many expressions
+expressions = [
+    x.add(x),
+    x.mul(Expression.integer(1)),
+    x.pow(2).add(x.pow(2).neg())
+]
+
+simplified = [e.simplify() for e in expressions]
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Performance - Caching Results }
+
+Cache frequently computed expressions
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+cache = {}
+
+expr = x.pow(2)
+key = str(expr)
+
+if key in cache:
+    print("Using cached result")
+else:
+    result = expr.simplify()
+    cache[key] = result
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Common Pitfall - Float Equality }
+
+Never use == for approximate values
+
+\begin{lstlisting}
+from mathhook import Expression
+
+# WRONG - comparing floats directly
+val1 = 3.14
+val2 = 3.14000000001
+# if val1 == val2:  # BAD!
+
+# CORRECT - use epsilon comparison
+tolerance = 1e-10
+if abs(val1 - val2) < tolerance:
+    print("Values are approximately equal")
+
+# OR use exact rationals
+exact = Expression.rational(314, 100)  # Exact 3.14
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

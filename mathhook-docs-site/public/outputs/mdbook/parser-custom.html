@@ -1,0 +1,638 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Custom - MathHook KB Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive documentation for MathHook symbolic mathematics library">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MathHook KB Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/AhmedMashour/mathhook-kb/edit/master/outputs/src/parser-custom.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<hr />
+<hr />
+<h1 id="custom-parsers-and-extensions"><a class="header" href="#custom-parsers-and-extensions">Custom Parsers and Extensions</a></h1>
+<blockquote>
+<p><strong>Topic</strong>: <code>parser.custom</code></p>
+</blockquote>
+<p>Extend MathHook's parser for domain-specific mathematical notation.
+Add custom functions, operators, preprocessors, and grammar modifications.</p>
+<h1 id="custom-parsers-and-extensions-1"><a class="header" href="#custom-parsers-and-extensions-1">Custom Parsers and Extensions</a></h1>
+<p>Extend MathHook's parser for domain-specific mathematical notation.</p>
+<h2 id="understanding-parser-extension"><a class="header" href="#understanding-parser-extension">Understanding Parser Extension</a></h2>
+<h3 id="what-can-you-extend"><a class="header" href="#what-can-you-extend">What Can You Extend?</a></h3>
+<p>MathHook's parser is modular and extensible. You can add:</p>
+<ul>
+<li><strong>Custom Functions</strong>: Domain-specific functions (chemistry, physics, engineering)</li>
+<li><strong>Custom Operators</strong>: New infix/prefix/postfix operators</li>
+<li><strong>Custom Notation</strong>: LaTeX macros, specialized symbols</li>
+<li><strong>Parser Preprocessors</strong>: Transform input before parsing</li>
+<li><strong>Lexer Tokens</strong>: New token types for specialized syntax</li>
+</ul>
+<h3 id="when-to-extend-the-parser"><a class="header" href="#when-to-extend-the-parser">When to Extend the Parser</a></h3>
+<p><strong>Use Built-In Features When:</strong></p>
+<ul>
+<li>Standard mathematical notation suffices</li>
+<li>Functions can be named conventionally</li>
+<li>LaTeX or Wolfram notation covers your needs</li>
+</ul>
+<p><strong>Extend the Parser When:</strong></p>
+<ul>
+<li>Domain-specific notation is essential (chemistry: <code>→</code>, physics: <code>⊗</code>)</li>
+<li>Custom operators with special precedence</li>
+<li>Proprietary mathematical notation</li>
+<li>Legacy system compatibility</li>
+</ul>
+<h3 id="architecture-overview"><a class="header" href="#architecture-overview">Architecture Overview</a></h3>
+<pre><code>Input String
+    ↓
+Preprocessor (optional) - Transform syntax before parsing
+    ↓
+Lexer - Tokenize input (recognizes custom tokens)
+    ↓
+Parser (LALRPOP) - Build expression tree
+    ↓
+Post-Processor (optional) - Transform parsed expression
+    ↓
+Expression
+</code></pre>
+<h2 id="domain-specific-examples"><a class="header" href="#domain-specific-examples">Domain-Specific Examples</a></h2>
+<h3 id="chemistry-notation"><a class="header" href="#chemistry-notation">Chemistry Notation</a></h3>
+<p>Custom parser for chemical equations:</p>
+<ul>
+<li><code>→</code> for yields</li>
+<li><code>⇌</code> for equilibrium</li>
+<li>Subscripts for molecular formulas</li>
+</ul>
+<h3 id="quantum-mechanics"><a class="header" href="#quantum-mechanics">Quantum Mechanics</a></h3>
+<p>Specialized notation:</p>
+<ul>
+<li><code>⊗</code> for tensor product</li>
+<li><code>⟨|⟩</code> for inner product</li>
+<li><code>[,]</code> for commutator</li>
+<li><code>{,}</code> for anticommutator</li>
+</ul>
+<h3 id="financial-mathematics"><a class="header" href="#financial-mathematics">Financial Mathematics</a></h3>
+<p>Finance-specific functions:</p>
+<ul>
+<li>NPV (Net Present Value)</li>
+<li>IRR (Internal Rate of Return)</li>
+<li>FV/PV (Future/Present Value)</li>
+<li>% operator for percentages</li>
+</ul>
+<h3 id="control-theory"><a class="header" href="#control-theory">Control Theory</a></h3>
+<p>System notation:</p>
+<ul>
+<li><code>*</code> as convolution</li>
+<li><code>ℒ</code> for Laplace transform</li>
+<li><code>//</code> for feedback connection</li>
+</ul>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="adding-custom-functions"><a class="header" href="#adding-custom-functions">Adding Custom Functions</a></h3>
+<p>Register domain-specific functions</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::ParserBuilder;
+
+let parser = ParserBuilder::new()
+    .add_function("erf", "error_function")
+    .add_function("Si", "sine_integral")
+    .add_function("Ci", "cosine_integral")
+    .build();
+
+let expr = parser.parse("erf(x) + Si(x)")?;
+// Parsed as: error_function(x) + sine_integral(x)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import ParserBuilder
+
+parser = (ParserBuilder()
+    .add_function("erf", "error_function")
+    .add_function("Si", "sine_integral")
+    .add_function("Ci", "cosine_integral")
+    .build())
+
+expr = parser.parse("erf(x) + Si(x)")
+# Parsed as: error_function(x) + sine_integral(x)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { ParserBuilder } = require('mathhook');
+
+const parser = new ParserBuilder()
+    .addFunction("erf", "error_function")
+    .addFunction("Si", "sine_integral")
+    .addFunction("Ci", "cosine_integral")
+    .build();
+
+const expr = parser.parse("erf(x) + Si(x)");
+// Parsed as: error_function(x) + sine_integral(x)
+
+</code></pre>
+</details>
+<h3 id="adding-custom-operators"><a class="header" href="#adding-custom-operators">Adding Custom Operators</a></h3>
+<p>Define new infix operators with precedence</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::ParserBuilder;
+use mathhook::parser::Precedence;
+
+let parser = ParserBuilder::new()
+    .add_operator("×", "*")      // Cross product symbol
+    .add_operator("⊗", "tensor") // Tensor product
+    .add_operator_with_precedence(
+        "⊕",
+        "direct_sum",
+        Precedence::Addition
+    )
+    .build();
+
+let expr = parser.parse("A ⊗ B")?;
+// Parsed as: tensor(A, B)
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import ParserBuilder, Precedence
+
+parser = (ParserBuilder()
+    .add_operator("×", "*")
+    .add_operator("⊗", "tensor")
+    .add_operator_with_precedence(
+        "⊕",
+        "direct_sum",
+        Precedence.ADDITION
+    )
+    .build())
+
+expr = parser.parse("A ⊗ B")
+# Parsed as: tensor(A, B)
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { ParserBuilder, Precedence } = require('mathhook');
+
+const parser = new ParserBuilder()
+    .addOperator("×", "*")
+    .addOperator("⊗", "tensor")
+    .addOperatorWithPrecedence(
+        "⊕",
+        "direct_sum",
+        Precedence.ADDITION
+    )
+    .build();
+
+const expr = parser.parse("A ⊗ B");
+// Parsed as: tensor(A, B)
+
+</code></pre>
+</details>
+<h3 id="preprocessor-transformations"><a class="header" href="#preprocessor-transformations">Preprocessor Transformations</a></h3>
+<p>Transform input before parsing</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::ParserBuilder;
+
+let parser = ParserBuilder::new()
+    .add_preprocessor(|input| {
+        input.replace("→", "-&gt;")   // Arrow notation
+             .replace("×", "*")     // Cross product
+             .replace("÷", "/")     // Division symbol
+    })
+    .build();
+
+let expr = parser.parse("x → ∞")?;
+// Preprocessed to: x -&gt; ∞
+// Then parsed normally
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import ParserBuilder
+
+def preprocess(input_str):
+    return (input_str
+        .replace("→", "-&gt;")
+        .replace("×", "*")
+        .replace("÷", "/"))
+
+parser = (ParserBuilder()
+    .add_preprocessor(preprocess)
+    .build())
+
+expr = parser.parse("x → ∞")
+# Preprocessed to: x -&gt; ∞
+# Then parsed normally
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { ParserBuilder } = require('mathhook');
+
+const parser = new ParserBuilder()
+    .addPreprocessor((input) =&gt; {
+        return input
+            .replace(/→/g, "-&gt;")
+            .replace(/×/g, "*")
+            .replace(/÷/g, "/");
+    })
+    .build();
+
+const expr = parser.parse("x → ∞");
+// Preprocessed to: x -&gt; ∞
+// Then parsed normally
+
+</code></pre>
+</details>
+<h3 id="domain-specific-parser-chemistry"><a class="header" href="#domain-specific-parser-chemistry">Domain-Specific Parser (Chemistry)</a></h3>
+<p>Complete chemistry equation parser</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::ParserBuilder;
+
+fn create_chemistry_parser() -&gt; Parser {
+    ParserBuilder::new()
+        .add_operator("→", "yields")
+        .add_operator("⇌", "equilibrium")
+        .add_operator("+", "plus")
+        .add_preprocessor(|input| {
+            // H2O → H_2*O
+            expand_chemical_formulas(input)
+        })
+        .add_postprocessor(|expr| {
+            balance_equation(expr)
+        })
+        .build()
+}
+
+let parser = create_chemistry_parser();
+let reaction = parser.parse("H₂ + O₂ → H₂O")?;
+let balanced = reaction.balance();  // 2H₂ + O₂ → 2H₂O
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import ParserBuilder
+
+def create_chemistry_parser():
+    return (ParserBuilder()
+        .add_operator("→", "yields")
+        .add_operator("⇌", "equilibrium")
+        .add_operator("+", "plus")
+        .add_preprocessor(expand_chemical_formulas)
+        .add_postprocessor(balance_equation)
+        .build())
+
+parser = create_chemistry_parser()
+reaction = parser.parse("H₂ + O₂ → H₂O")
+balanced = reaction.balance()  # 2H₂ + O₂ → 2H₂O
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { ParserBuilder } = require('mathhook');
+
+function createChemistryParser() {
+    return new ParserBuilder()
+        .addOperator("→", "yields")
+        .addOperator("⇌", "equilibrium")
+        .addOperator("+", "plus")
+        .addPreprocessor(expandChemicalFormulas)
+        .addPostprocessor(balanceEquation)
+        .build();
+}
+
+const parser = createChemistryParser();
+const reaction = parser.parse("H₂ + O₂ → H₂O");
+const balanced = reaction.balance();  // 2H₂ + O₂ → 2H₂O
+
+</code></pre>
+</details>
+<h3 id="custom-latex-macros"><a class="header" href="#custom-latex-macros">Custom LaTeX Macros</a></h3>
+<p>Expand LaTeX macros before parsing</p>
+<details>
+<summary><b>Rust</b></summary>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use mathhook::parser::LatexParserBuilder;
+
+let parser = LatexParserBuilder::new()
+    .add_macro(r"\RR", r"\mathbb{R}")    // Real numbers
+    .add_macro(r"\CC", r"\mathbb{C}")    // Complex numbers
+    .add_macro(r"\NN", r"\mathbb{N}")    // Natural numbers
+    .add_macro(r"\dd", r"\mathrm{d}")    // Differential d
+    .build();
+
+let expr = parser.parse(r"f: \RR \to \CC")?;
+// Expands to: f: \mathbb{R} \to \mathbb{C}
+
+<span class="boring">}</span></code></pre></pre>
+</details>
+<details>
+<summary><b>Python</b></summary>
+<pre><code class="language-python">from mathhook.parser import LatexParserBuilder
+
+parser = (LatexParserBuilder()
+    .add_macro(r"\RR", r"\mathbb{R}")
+    .add_macro(r"\CC", r"\mathbb{C}")
+    .add_macro(r"\NN", r"\mathbb{N}")
+    .add_macro(r"\dd", r"\mathrm{d}")
+    .build())
+
+expr = parser.parse(r"f: \RR \to \CC")
+# Expands to: f: \mathbb{R} \to \mathbb{C}
+
+</code></pre>
+</details>
+<details>
+<summary><b>JavaScript</b></summary>
+<pre><code class="language-javascript">const { LatexParserBuilder } = require('mathhook');
+
+const parser = new LatexParserBuilder()
+    .addMacro(String.raw`\RR`, String.raw`\mathbb{R}`)
+    .addMacro(String.raw`\CC`, String.raw`\mathbb{C}`)
+    .addMacro(String.raw`\NN`, String.raw`\mathbb{N}`)
+    .addMacro(String.raw`\dd`, String.raw`\mathrm{d}`)
+    .build();
+
+const expr = parser.parse(String.raw`f: \RR \to \CC`);
+// Expands to: f: \mathbb{R} \to \mathbb{C}
+
+</code></pre>
+</details>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<ul>
+<li><strong>Rust</strong>: <code>mathhook_core::parser::extensions</code></li>
+<li><strong>Python</strong>: <code>mathhook.parser.extensions</code></li>
+<li><strong>JavaScript</strong>: <code>mathhook.parser.extensions</code></li>
+</ul>
+<h2 id="see-also"><a class="header" href="#see-also">See Also</a></h2>
+<ul>
+<li>
+<p><a href="../parser/latex.html">parser.latex</a></p>
+</li>
+<li>
+<p><a href="../parser/wolfram.html">parser.wolfram</a></p>
+</li>
+<li>
+<p><a href="../parser/formatting.html">parser.formatting</a></p>
+</li>
+<li>
+<p><a href="../operations/functions.html">operations.functions</a></p>
+</li>
+<li>
+<p><a href="../advanced/pattern_matching.html">advanced.pattern_matching</a></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="operations-summation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="parser-formatting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="operations-summation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="parser-formatting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

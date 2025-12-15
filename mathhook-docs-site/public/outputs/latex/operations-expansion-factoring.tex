@@ -1,0 +1,141 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Expansion and Factoring }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Transform expressions between expanded and factored forms for easier manipulation and analysis.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Distributive Law:**
+$$a(b + c) = ab + ac$$
+
+**Binomial Expansion:**
+$$(x + y)^n = \sum_{k=0}^{n} \binom{n}{k} x^{n-k} y^k$$
+
+For small powers:
+- $$(x + y)^2 = x^2 + 2xy + y^2$$
+- $$(x + y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$$
+- $$(x - y)^2 = x^2 - 2xy + y^2$$
+
+**Special Products:**
+- **Difference of Squares:** $(x + y)(x - y) = x^2 - y^2$
+- **Perfect Square Trinomial:** $(x + y)^2 = x^2 + 2xy + y^2$
+
+**Noncommutative Expansion:**
+For matrices (noncommutative):
+$$(A + B)^2 = A^2 + AB + BA + B^2 \quad \text{(4 terms, cannot combine } AB \text{ and } BA\text{)}$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Simple Products }
+
+Expand products of sums
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Expand 2(x + 3)
+expr1 = 2 * (x + 3)
+expanded1 = expr1.expand()
+# Result: 2*x + 6
+
+# Expand (x + 1)(x + 2)
+expr2 = (x + 1) * (x + 2)
+expanded2 = expr2.expand()
+# Result: x**2 + 3*x + 2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Power Expansion }
+
+Expand expressions raised to integer powers
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+y = symbol('y')
+
+# Expand (x + 1)^2
+expr1 = (x + 1)**2
+expanded1 = expr1.expand()
+# Result: x**2 + 2*x + 1
+
+# Expand (x + y)^3
+expr2 = (x + y)**3
+expanded2 = expr2.expand()
+# Result: x**3 + 3*x**2*y + 3*x*y**2 + y**3
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Noncommutative Matrix Expansion }
+
+For matrices, order matters - (A+B)² has 4 terms
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Create matrix symbols
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+C = symbol('C', matrix=True)
+
+# Expand (A + B)^2 - preserves noncommutativity
+expr = (A + B)**2
+expanded = expr.expand()
+# Result: A**2 + A*B + B*A + B**2   (4 terms, NOT A**2 + 2*A*B + B**2)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}
