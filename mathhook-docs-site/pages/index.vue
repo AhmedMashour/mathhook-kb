@@ -786,9 +786,6 @@ const vScrollAnimate = {
 onMounted(async () => {
   mounted.value = true
 
-  // Start typewriter animation
-  startTypewriter()
-
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
