@@ -1,0 +1,37 @@
+{
+  "generated_at": "2025-12-15T20:00:00Z",
+  "outputs": {
+    "colab": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "jupyter": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "llm-rag": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "latex": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "mdbook": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "api-docs": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "json": {
+      "total_files": 116,
+      "categories": 18
+    },
+    "vue": {
+      "total_files": 116,
+      "categories": 18
+    }
+  }
+}

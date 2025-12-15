@@ -1,7 +1,8 @@
 // File data composable for outputs file browser
-// Updated: 2025-12-15T18:35:00Z
+// Updated: 2025-12-15T20:15:00Z
+// Optimized: Global caching, lazy loading, lightweight summary
 
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
 export interface FileItem {
   name: string
@@ -29,14 +30,22 @@ export interface OutputManifest {
   }>>
 }
 
+export interface OutputSummary {
+  generated_at: string
+  outputs: Record<string, { total_files: number; categories: number }>
+}
+
+// Output type key mapping
+type OutputTypeKey = 'colab' | 'jupyter' | 'llm-rag' | 'latex' | 'mdbook' | 'api-docs' | 'json' | 'vue'
+
 // Base paths for outputs (all served from /files/ in public folder)
-const BASE_PATHS = {
+const BASE_PATHS: Record<OutputTypeKey, string> = {
   jupyter: '/files/jupyter',
   colab: '/files/colab',
-  llmRag: '/files/llm-rag',
+  'llm-rag': '/files/llm-rag',
   latex: '/files/latex',
   mdbook: '/files/mdbook',
-  apiDocs: '/files/api-docs',
+  'api-docs': '/files/api-docs',
   json: '/files/json',
   vue: '/files/vue'
 }
@@ -50,45 +59,83 @@ const GITHUB_CONFIG = {
 }
 
 // File extension mappings
-const EXTENSIONS = {
+const EXTENSIONS: Record<OutputTypeKey, string> = {
   jupyter: 'ipynb',
   colab: 'ipynb',
-  llmRag: 'md',
+  'llm-rag': 'md',
   latex: 'tex',
   mdbook: 'md',
-  apiDocs: 'json',
+  'api-docs': 'json',
   json: 'json',
   vue: 'vue'
 }
 
-export function useFileData() {
-  // File lists for each output type
-  const colabFiles = ref<FileItem[]>([])
-  const jupyterFiles = ref<FileItem[]>([])
-  const ragFiles = ref<FileItem[]>([])
-  const latexFiles = ref<FileItem[]>([])
-  const mdbookFiles = ref<FileItem[]>([])
-  const apiDocsFiles = ref<FileItem[]>([])
-  const jsonFiles = ref<FileItem[]>([])
-  const vueFiles = ref<FileItem[]>([])
+// ============================================
+// GLOBAL CACHE (singleton, persists across navigations)
+// ============================================
+const globalCache = {
+  summary: null as OutputSummary | null,
+  manifests: new Map<OutputTypeKey, FileItem[]>(),
+  summaryPromise: null as Promise<OutputSummary | null> | null,
+  manifestPromises: new Map<OutputTypeKey, Promise<FileItem[]>>()
+}
 
-  // Loading and error states
-  const loading = ref(false)
-  const error = ref<string | null>(null)
+// Build correct Colab URL for a file
+function buildColabUrl(category: string, filename: string): string {
+  return `https://colab.research.google.com/github/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/blob/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.colabBasePath}/${category}/${filename}`
+}
 
-  // Build correct Colab URL for a file
-  function buildColabUrl(category: string, filename: string): string {
-    return `https://colab.research.google.com/github/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/blob/${GITHUB_CONFIG.branch}/${GITHUB_CONFIG.colabBasePath}/${category}/${filename}`
+// Build GitHub URL for a file
+function buildGithubUrl(basePath: string, category: string, filename: string): string {
+  const repoPath = basePath.replace('/files/', 'mathhook-docs-site/public/files/')
+  return `https://github.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/blob/${GITHUB_CONFIG.branch}/${repoPath}/${category}/${filename}`
+}
+
+// Fetch lightweight summary (only counts, ~500 bytes)
+async function fetchSummary(): Promise<OutputSummary | null> {
+  // Return cached
+  if (globalCache.summary) return globalCache.summary
+
+  // Return in-flight promise
+  if (globalCache.summaryPromise) return globalCache.summaryPromise
+
+  // Start fetch
+  globalCache.summaryPromise = (async () => {
+    try {
+      const response = await fetch('/files/summary.json')
+      if (!response.ok) return null
+      const data = await response.json()
+      globalCache.summary = data
+      return data
+    } catch (err) {
+      console.error('Error fetching summary:', err)
+      return null
+    } finally {
+      globalCache.summaryPromise = null
+    }
+  })()
+
+  return globalCache.summaryPromise
+}
+
+// Fetch single manifest (lazy, cached)
+async function fetchManifest(outputType: OutputTypeKey): Promise<FileItem[]> {
+  // Return cached
+  if (globalCache.manifests.has(outputType)) {
+    return globalCache.manifests.get(outputType)!
   }
 
-  // Build GitHub URL for a file
-  function buildGithubUrl(basePath: string, category: string, filename: string): string {
-    const repoPath = basePath.replace('/files/', 'mathhook-docs-site/public/files/')
-    return `https://github.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/blob/${GITHUB_CONFIG.branch}/${repoPath}/${category}/${filename}`
+  // Return in-flight promise
+  if (globalCache.manifestPromises.has(outputType)) {
+    return globalCache.manifestPromises.get(outputType)!
   }
 
-  // Generic manifest fetcher
-  async function fetchManifest(basePath: string, extension: string, isColab: boolean = false): Promise<FileItem[]> {
+  const basePath = BASE_PATHS[outputType]
+  const extension = EXTENSIONS[outputType]
+  const isColab = outputType === 'colab'
+
+  // Start fetch
+  const promise = (async () => {
     try {
       const manifestUrl = `${basePath}/manifest.json`
       const response = await fetch(manifestUrl)
@@ -113,7 +160,6 @@ export function useFileData() {
             githubUrl: buildGithubUrl(basePath, category, item.filename)
           }
 
-          // Add Colab URL for colab files
           if (isColab) {
             fileItem.colabUrl = item.colab_url || buildColabUrl(category, item.filename)
           }
@@ -122,12 +168,125 @@ export function useFileData() {
         }
       }
 
+      // Cache result
+      globalCache.manifests.set(outputType, files)
       return files
     } catch (err) {
-      console.error(`Error fetching manifest from ${basePath}:`, err)
+      console.error(`Error fetching manifest for ${outputType}:`, err)
       return []
+    } finally {
+      globalCache.manifestPromises.delete(outputType)
+    }
+  })()
+
+  globalCache.manifestPromises.set(outputType, promise)
+  return promise
+}
+
+// ============================================
+// COMPOSABLE: For index page (counts only)
+// ============================================
+export function useOutputSummary() {
+  const summary = ref<OutputSummary | null>(null)
+  const loading = ref(false)
+  const error = ref<string | null>(null)
+
+  async function load() {
+    if (summary.value) return // Already loaded
+
+    loading.value = true
+    error.value = null
+
+    try {
+      summary.value = await fetchSummary()
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Unknown error'
+    } finally {
+      loading.value = false
     }
   }
+
+  const fileCounts = computed(() => {
+    if (!summary.value) return {}
+    return Object.fromEntries(
+      Object.entries(summary.value.outputs).map(([key, val]) => [key, val.total_files])
+    )
+  })
+
+  return {
+    summary,
+    loading,
+    error,
+    load,
+    fileCounts
+  }
+}
+
+// ============================================
+// COMPOSABLE: For single output type page
+// ============================================
+export function useOutputFiles(outputType: OutputTypeKey) {
+  const files = ref<FileItem[]>([])
+  const loading = ref(false)
+  const error = ref<string | null>(null)
+
+  async function load() {
+    // Check cache first
+    if (globalCache.manifests.has(outputType)) {
+      files.value = globalCache.manifests.get(outputType)!
+      return
+    }
+
+    loading.value = true
+    error.value = null
+
+    try {
+      files.value = await fetchManifest(outputType)
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Unknown error'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const categories = computed(() => {
+    const uniqueCategories = new Set(files.value.map(f => f.category))
+    return Array.from(uniqueCategories).sort()
+  })
+
+  async function refresh() {
+    globalCache.manifests.delete(outputType)
+    await load()
+  }
+
+  return {
+    files,
+    loading,
+    error,
+    load,
+    refresh,
+    categories
+  }
+}
+
+// ============================================
+// LEGACY COMPOSABLE: Full compatibility
+// (only use if you need ALL files at once)
+// ============================================
+export function useFileData() {
+  // File lists for each output type
+  const colabFiles = ref<FileItem[]>([])
+  const jupyterFiles = ref<FileItem[]>([])
+  const ragFiles = ref<FileItem[]>([])
+  const latexFiles = ref<FileItem[]>([])
+  const mdbookFiles = ref<FileItem[]>([])
+  const apiDocsFiles = ref<FileItem[]>([])
+  const jsonFiles = ref<FileItem[]>([])
+  const vueFiles = ref<FileItem[]>([])
+
+  // Loading and error states
+  const loading = ref(false)
+  const error = ref<string | null>(null)
 
   // Fetch all files from all manifests
   async function fetchAllFiles(): Promise<void> {
@@ -135,16 +294,16 @@ export function useFileData() {
     error.value = null
 
     try {
-      // Fetch all manifests in parallel
+      // Fetch all manifests in parallel (but uses cache if available)
       const [colab, jupyter, rag, latex, mdbook, apiDocs, json, vue] = await Promise.all([
-        fetchManifest(BASE_PATHS.colab, EXTENSIONS.colab, true),
-        fetchManifest(BASE_PATHS.jupyter, EXTENSIONS.jupyter),
-        fetchManifest(BASE_PATHS.llmRag, EXTENSIONS.llmRag),
-        fetchManifest(BASE_PATHS.latex, EXTENSIONS.latex),
-        fetchManifest(BASE_PATHS.mdbook, EXTENSIONS.mdbook),
-        fetchManifest(BASE_PATHS.apiDocs, EXTENSIONS.apiDocs),
-        fetchManifest(BASE_PATHS.json, EXTENSIONS.json),
-        fetchManifest(BASE_PATHS.vue, EXTENSIONS.vue)
+        fetchManifest('colab'),
+        fetchManifest('jupyter'),
+        fetchManifest('llm-rag'),
+        fetchManifest('latex'),
+        fetchManifest('mdbook'),
+        fetchManifest('api-docs'),
+        fetchManifest('json'),
+        fetchManifest('vue')
       ])
 
       colabFiles.value = colab
@@ -207,13 +366,10 @@ export function useFileData() {
     return Array.from(allCategories).sort()
   })
 
-  // Initialize on mount
-  onMounted(() => {
-    fetchAllFiles()
-  })
-
   // Refresh all data
   async function refresh(): Promise<void> {
+    // Clear cache
+    globalCache.manifests.clear()
     await fetchAllFiles()
   }
 

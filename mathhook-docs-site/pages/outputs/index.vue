@@ -20,7 +20,7 @@
           description="Interactive book format with code examples in Rust, Python, and JavaScript. Perfect for Rust developers."
           link-url="/outputs/mdbook"
           link-text="Browse Files"
-          :file-count="mdbookFiles.length"
+          :file-count="fileCounts['mdbook'] || 0"
           color="rust"
           :animation-delay="100"
         >
@@ -36,7 +36,7 @@
           description="Executable notebooks with live code cells. Download and run locally or open in Colab. Perfect for data scientists."
           link-url="/outputs/jupyter"
           link-text="Browse Notebooks"
-          :file-count="jupyterFiles.length"
+          :file-count="fileCounts['jupyter'] || 0"
           color="amber"
           :animation-delay="200"
         >
@@ -52,7 +52,7 @@
           description="Machine-readable API documentation in OpenAPI format. Perfect for integration and tooling."
           link-url="/outputs/api-docs"
           link-text="Browse API Docs"
-          :file-count="apiDocsFiles.length"
+          :file-count="fileCounts['api-docs'] || 0"
           color="green"
           :animation-delay="300"
         >
@@ -68,7 +68,7 @@
           description="Professional LaTeX source files ready for compilation. Perfect for academic papers, offline reading, and printing."
           link-url="/outputs/latex"
           link-text="Browse Files"
-          :file-count="latexFiles.length"
+          :file-count="fileCounts['latex'] || 0"
           color="violet"
           :animation-delay="400"
         >
@@ -84,7 +84,7 @@
           description="Colab-optimized notebooks with pre-configured dependencies. Open directly in Google Colab for zero-setup execution."
           link-url="/outputs/colab"
           link-text="Browse Files"
-          :file-count="colabFiles.length"
+          :file-count="fileCounts['colab'] || 0"
           color="amber"
           :animation-delay="500"
         >
@@ -100,7 +100,7 @@
           description="Documentation chunks optimized for vector databases and AI retrieval. Perfect for building MathHook-aware AI assistants."
           link-url="/outputs/llm-rag"
           link-text="Browse Files"
-          :file-count="ragFiles.length"
+          :file-count="fileCounts['llm-rag'] || 0"
           color="cyan"
           :animation-delay="600"
         >
@@ -116,7 +116,7 @@
           description="Raw JSON documentation data for programmatic access and custom integrations."
           link-url="/outputs/json"
           link-text="Browse Files"
-          :file-count="jsonFiles.length"
+          :file-count="fileCounts['json'] || 0"
           color="cyan"
           :animation-delay="700"
         >
@@ -132,7 +132,7 @@
           description="Vue.js components for building interactive documentation interfaces and dashboards."
           link-url="/outputs/vue"
           link-text="Browse Files"
-          :file-count="vueFiles.length"
+          :file-count="fileCounts['vue'] || 0"
           color="green"
           :animation-delay="800"
         >
@@ -149,21 +149,16 @@
 </template>
 
 <script setup>
-import { useFileData } from '~/composables/useFileData'
+import { onMounted } from 'vue'
+import { useOutputSummary } from '~/composables/useFileData'
 
-// Get file data from composable
-const {
-  colabFiles,
-  jupyterFiles,
-  ragFiles,
-  latexFiles,
-  mdbookFiles,
-  apiDocsFiles,
-  jsonFiles,
-  vueFiles,
-  loading,
-  error
-} = useFileData()
+// Use lightweight summary (only ~500 bytes instead of ~200KB)
+const { fileCounts, loading, error, load } = useOutputSummary()
+
+// Load summary on mount
+onMounted(() => {
+  load()
+})
 
 useHead({
   title: 'Documentation Outputs - MathHook',
