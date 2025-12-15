@@ -389,8 +389,8 @@ const { data: schema, pending: loading, error: fetchError, refresh } = await use
         statusMessage: 'Invalid topic format'
       })
     }
-    // Fetch from static JSON files (works on all hosting platforms)
-    const data = await $fetch(`/data/${t}.json`)
+    // Fetch from server API route (works during SSR)
+    const data = await $fetch(`/api/docs/${t}`)
     return data
   },
   {
