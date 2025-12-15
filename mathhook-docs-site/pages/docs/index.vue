@@ -180,6 +180,23 @@
         </div>
       </div>
 
+      <!-- Error State -->
+      <div v-else-if="fetchError" class="bg-rust-core/10 border-l-4 border-rust-core p-6 rounded-r-xl">
+        <div class="flex items-start">
+          <span class="text-3xl mr-3">❌</span>
+          <div class="flex-1">
+            <h2 class="text-xl font-semibold text-rust-core mb-2">Failed to Load Documentation</h2>
+            <p class="text-chalk-400 mb-4">{{ fetchError.message || 'Unable to load documentation index' }}</p>
+            <button
+              @click="refreshData"
+              class="px-4 py-2 bg-rust-core/20 hover:bg-rust-core/30 text-rust-core font-medium rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Categories - All content in DOM for SEO, browser defers rendering of off-screen sections -->
       <div v-else class="space-y-10">
         <section
@@ -356,8 +373,8 @@ const getCategory = (topicName) => {
 }
 
 // SSR-compatible data fetching - renders full HTML for SEO crawlers
-const { data: categories, pending: loading } = await useAsyncData('docs-index', async () => {
-  // Use API route for SSR (server can read file directly)
+const { data: categories, pending: loading, error: fetchError, refresh: refreshData } = await useAsyncData('docs-index', async () => {
+  // Fetch from server API route (works during SSR)
   const index = await $fetch('/api/docs-index')
 
   const grouped = {}
