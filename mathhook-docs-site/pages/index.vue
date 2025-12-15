@@ -656,67 +656,15 @@ const scrollY = ref(0)
 const parallax = ref({ x: 0, y: 0 })
 const copiedCommand = ref(null)
 
-// Typewriter animation state
-const typedText = ref('')
-const showCursor = ref(true)
-const typingStarted = ref(false)
-const typingComplete = ref(false)
-const typedSegments = ref([])
-
-// Full tagline with color segments
-const taglineSegments = [
+// Tagline words for staggered reveal animation
+const taglineWords = [
   { text: 'Symbolic', color: 'text-rust-core' },
-  { text: ' Power. ', color: 'text-white' },
+  { text: 'Power.', color: 'text-white' },
   { text: 'Educational', color: 'text-solve-cyan' },
-  { text: ' Clarity. ', color: 'text-white' },
+  { text: 'Clarity.', color: 'text-white' },
   { text: 'Native', color: 'text-step-green' },
-  { text: ' Speed.', color: 'text-white' }
+  { text: 'Speed.', color: 'text-white' }
 ]
-
-// Typewriter effect function
-const startTypewriter = () => {
-  const fullText = taglineSegments.map(s => s.text).join('')
-  let currentIndex = 0
-  const typingSpeed = 45 // ms per character
-
-  const typeNextChar = () => {
-    // Show cursor when typing starts
-    if (currentIndex === 0) {
-      typingStarted.value = true
-    }
-
-    if (currentIndex <= fullText.length) {
-      // Build segments based on current typed text
-      let remainingLength = currentIndex
-      const newSegments = []
-
-      for (const segment of taglineSegments) {
-        if (remainingLength <= 0) break
-
-        const charsToTake = Math.min(segment.text.length, remainingLength)
-        if (charsToTake > 0) {
-          newSegments.push({
-            text: segment.text.substring(0, charsToTake),
-            color: segment.color
-          })
-          remainingLength -= charsToTake
-        }
-      }
-
-      typedSegments.value = newSegments
-      currentIndex++
-
-      if (currentIndex <= fullText.length) {
-        setTimeout(typeNextChar, typingSpeed)
-      } else {
-        typingComplete.value = true
-      }
-    }
-  }
-
-  // Start typing after a short delay (wait for other animations to begin)
-  setTimeout(typeNextChar, 500)
-}
 
 // Features data
 const features = [
