@@ -1,0 +1,128 @@
+# Advanced: Noncommutative API Reference - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:27:30 UTC
+# Source: mathhook/docs/src/advanced/noncommutative-api-reference.md
+
+topic: "advanced.noncommutative_api_reference"
+title: "Noncommutative Algebra API Reference"
+description: |
+  Complete API reference for MathHook's noncommutative algebra support,
+  including symbol creation macros, type queries, and equation solving.
+
+code_refs:
+  rust: "mathhook_core::noncommutative::api"
+  python: "mathhook.noncommutative.api"
+  nodejs: "mathhook.noncommutative.api"
+
+examples:
+  - title: "Symbol Creation Macros"
+    explanation: "Create symbols with different types"
+    code:
+      rust: |
+        // Scalar (default)
+        let x = symbol!(x);
+
+        // Matrix (noncommutative)
+        let A = symbol!(A; matrix);
+
+        // Operator (noncommutative)
+        let p = symbol!(p; operator);
+
+        // Quaternion (noncommutative)
+        let i = symbol!(i; quaternion);
+      python: |
+        # Scalar
+        x = symbols('x')
+
+        # Matrix
+        A = MatrixSymbol('A', n, n)
+
+        # Operator (quantum mechanics)
+        p = Operator('p')
+
+        # Quaternion
+        from sympy.algebras.quaternion import Quaternion
+        i = Quaternion(0, 1, 0, 0)
+      nodejs: |
+        // Scalar
+        const x = symbol('x');
+
+        // Matrix
+        const A = symbol('A', {type: 'matrix'});
+
+        // Operator
+        const p = symbol('p', {type: 'operator'});
+
+        // Quaternion
+        const i = symbol('i', {type: 'quaternion'});
+
+  - title: "Bulk Symbol Creation"
+    explanation: "Create multiple symbols at once"
+    code:
+      rust: |
+        // Multiple scalars
+        let scalars = symbols![x, y, z];
+
+        // Multiple matrices
+        let matrices = symbols![A, B, C => matrix];
+
+        // Multiple operators
+        let operators = symbols![p, x, H => operator];
+      python: |
+        # Multiple scalars
+        x, y, z = symbols('x y z')
+
+        # Multiple matrices
+        A, B, C = symbols('A B C', cls=MatrixSymbol)
+      nodejs: |
+        // Multiple symbols
+        const [x, y, z] = symbols(['x', 'y', 'z']);
+
+        // Multiple matrices
+        const [A, B, C] = symbols(['A', 'B', 'C'], {type: 'matrix'});
+
+  - title: "Type Queries"
+    explanation: "Check symbol type and commutativity"
+    code:
+      rust: |
+        let x = symbol!(x);
+        let A = symbol!(A; matrix);
+
+        // Type check
+        assert_eq!(x.symbol_type(), SymbolType::Scalar);
+        assert_eq!(A.symbol_type(), SymbolType::Matrix);
+
+        // Commutativity check
+        assert_eq!(x.commutativity(), Commutativity::Commutative);
+        assert_eq!(A.commutativity(), Commutativity::Noncommutative);
+      python: |
+        x = symbols('x')
+        A = MatrixSymbol('A', n, n)
+
+        # Type check
+        print(type(x))  # Symbol
+        print(type(A))  # MatrixSymbol
+
+        # Commutativity (implicit in type)
+        print(A.is_commutative)  # False
+      nodejs: |
+        const x = symbol('x');
+        const A = symbol('A', {type: 'matrix'});
+
+        // Type check
+        console.log(x.type);  // 'scalar'
+        console.log(A.type);  // 'matrix'
+
+        // Commutativity
+        console.log(x.is_commutative);  // true
+        console.log(A.is_commutative);  // false
+
+related_topics:
+  - "advanced.noncommutative_algebra"
+  - "advanced.noncommutative_examples"
+  - "core.symbols"
+  - "core.macros"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/noncommutative-api-reference.md"
+  timestamp: "2025-12-15T18:27:30Z"

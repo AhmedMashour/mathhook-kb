@@ -1,0 +1,229 @@
+# Installation Guide for MathHook CAS
+# Generated: 2025-12-15T00:00:00Z
+# Source: mathhook/docs/src/getting-started/installation.md
+
+topic: "getting-started.installation"
+title: "Installation"
+
+description: |
+  Complete installation guide for MathHook across Rust, Python, and Node.js platforms,
+  including platform-specific requirements, troubleshooting, and optional features.
+
+article:
+  content: |
+    # Installation
+
+    This guide covers installation of MathHook for Rust, Python, and Node.js.
+
+    ## Rust
+
+    ### Requirements
+
+    - Rust 1.70 or higher
+    - Cargo (comes with Rust)
+
+    ### Adding to Your Project
+
+    Add MathHook to your `Cargo.toml`:
+
+    ```toml
+    [dependencies]
+    mathhook-core = "0.1"
+    ```
+
+    For the high-level API with ergonomic macros:
+
+    ```toml
+    [dependencies]
+    mathhook = "0.1"
+    ```
+
+    ### Verifying Installation
+
+    Create a simple test program and run with `cargo run`.
+
+    ## Python
+
+    ### Requirements
+
+    - Python 3.8 or higher
+    - pip
+
+    ### Installing via pip
+
+    ```bash
+    pip install mathhook
+    ```
+
+    ### Installing from Source
+
+    For the latest development version, clone the repository and use maturin.
+
+    ### Virtual Environments
+
+    We recommend using a virtual environment for Python installations.
+
+    ## Node.js/TypeScript
+
+    ### Requirements
+
+    - Node.js 18 or higher
+    - npm or yarn
+
+    ### Installing via npm
+
+    ```bash
+    npm install mathhook-node
+    ```
+
+    Or with yarn:
+
+    ```bash
+    yarn add mathhook-node
+    ```
+
+    ## Building from Source
+
+    ### Prerequisites
+
+    - Rust toolchain (rustup recommended)
+    - Git
+    - For Python bindings: Python 3.8+, maturin
+    - For Node.js bindings: Node.js 18+, npm
+
+    ### Platform-Specific Notes
+
+    - **Windows**: Requires Visual Studio Build Tools
+    - **macOS**: Requires XCode Command Line Tools
+    - **Linux**: Requires GCC/Clang and python3-dev for Python bindings
+
+    ## Optional Dependencies
+
+    - **SIMD Support**: Auto-detected, or enable with `features = ["simd"]`
+    - **Parallel Processing**: Enable with `features = ["parallel"]`
+
+    ## Troubleshooting
+
+    - **Rust**: LALRPOP errors → `cargo install lalrpop && cargo clean && cargo build`
+    - **Python**: Import errors → `pip install --force-reinstall mathhook`
+    - **Node.js**: Native module errors → `npm rebuild mathhook-node`
+
+  sections:
+    - title: "Rust Installation"
+      content: |
+        Minimum Rust 1.70, installed via Cargo. Add `mathhook-core` or `mathhook`
+        (high-level API with macros) to dependencies.
+
+    - title: "Python Installation"
+      content: |
+        Python 3.8+ required. Install via `pip install mathhook` or build from source
+        using maturin for development versions.
+
+    - title: "Node.js Installation"
+      content: |
+        Node.js 18+ required. Install via npm (`npm install mathhook-node`) or yarn.
+        TypeScript types included.
+
+    - title: "Building from Source"
+      content: |
+        Clone repository, build Rust core with cargo, then build language bindings
+        (Python with maturin, Node.js with npm).
+
+    - title: "Platform-Specific Requirements"
+      content: |
+        Windows needs Visual Studio Build Tools. macOS needs XCode Command Line Tools.
+        Linux needs GCC/Clang and python3-dev.
+
+    - title: "Optional Features"
+      content: |
+        SIMD support (auto-detected or explicit), parallel processing (feature flag),
+        both enhance performance for specific workloads.
+
+code_refs:
+  rust: "mathhook::prelude"
+  python: "mathhook"
+  nodejs: "mathhook-node"
+
+examples:
+  - title: "Rust Installation Verification"
+    explanation: "Verify Rust installation with a simple test program"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        fn main() {
+            let x = symbol!(x);
+            let expr = expr!(x ^ 2);
+            println!("Expression: {}", expr);
+        }
+      python: |
+        from mathhook import Expression
+
+        x = Expression.symbol('x')
+        expr = x.pow(2)
+        print(f"Expression: {expr}")
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        const x = Expression.symbol('x');
+        const expr = x.pow(2);
+        console.log(`Expression: ${expr.toString()}`);
+
+  - title: "Python Virtual Environment Setup"
+    explanation: "Best practice for Python installation using virtual environments"
+    code:
+      rust: |
+        # Not applicable for Rust
+      python: |
+        # Create and activate virtual environment
+        python -m venv venv
+        source venv/bin/activate  # On Windows: venv\Scripts\activate
+        pip install mathhook
+      nodejs: |
+        // Not applicable for Node.js
+        // Use npm or yarn directly
+
+  - title: "Building from Source"
+    explanation: "Complete source build for all platforms"
+    code:
+      rust: |
+        # Clone and build Rust core
+        git clone https://github.com/AhmedMashour/mathhook.git
+        cd mathhook
+        cargo build --release
+        cargo test
+      python: |
+        # Build Python bindings from source
+        cd crates/mathhook-python
+        pip install maturin
+        maturin develop --release
+      nodejs: |
+        // Build Node.js bindings from source
+        cd crates/mathhook-node
+        npm install
+        npm run build
+
+use_cases:
+  - "Setting up MathHook development environment"
+  - "Installing MathHook for production Python applications"
+  - "Integrating MathHook into TypeScript/Node.js projects"
+  - "Contributing to MathHook core library"
+
+related_topics:
+  - "getting-started.quick-start"
+  - "getting-started.basic-usage"
+  - "bindings.python"
+  - "bindings.nodejs"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "getting-started/installation.md"
+  generated_at: "2025-12-15T00:00:00Z"
+  platforms:
+    - rust
+    - python
+    - nodejs
+  min_versions:
+    rust: "1.70"
+    python: "3.8"
+    nodejs: "18"

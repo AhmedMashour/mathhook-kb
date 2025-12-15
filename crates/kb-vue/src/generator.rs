@@ -261,11 +261,11 @@ mod tests {
             title: "Test Example".to_string(),
             description: "A test example".to_string(),
             mathematical_definition: Some("f(x) = x^2".to_string()),
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::example".to_string(),
                 python: "test.example".to_string(),
                 nodejs: "test.example".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Power Rule".to_string(),
                 explanation: "Test explanation".to_string(),

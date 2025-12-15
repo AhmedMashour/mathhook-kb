@@ -1,0 +1,102 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/feature-gap-tests-2025-12-15T0430.md
+# Topic: Feature Gap Tests Archive
+# Type: internal-documentation
+
+topic: "internal.feature-gap-tests"
+title: "Feature Gap Tests Archive"
+description: |
+  Archive of test cases documenting features not yet implemented in MathHook.
+  Tests were removed from test suite - copy back when implementing features.
+
+document_type: "internal"
+audience: ["developers", "maintainers"]
+
+article:
+  content: |
+    # Feature Gap Tests Archive
+
+    **Archived:** 2025-12-15T04:30
+    **Purpose:** Tests documenting features not yet implemented in MathHook
+
+    These tests were removed from the test suite because they test features that don't exist yet.
+    When implementing these features, copy the relevant test back to the appropriate test file.
+
+    ---
+
+    ## Pattern Matching Tests
+
+    **Source:** `crates/mathhook-core/tests/algebra_tests/pattern_matching.rs`
+
+    ### test_sequence_wildcard
+    ```rust
+    #[test]
+    #[ignore = "FEATURE GAP: Sequence wildcard pattern not yet implemented"]
+    fn test_sequence_wildcard() {
+        let _x = symbol!(x);
+        let _expr = expr!(1 + 2 + 3 + x);
+        // Pattern: 1 + __rest (where __rest matches remaining terms)
+        // Would need a sequence/rest wildcard pattern type
+    }
+    ```
+
+    [Additional 45 test cases documented - omitted for brevity]
+
+    ---
+
+    ## Summary
+
+    | Category | Count | Notes |
+    |----------|-------|-------|
+    | Pattern Matching | 4 | Sequence wildcards, rule system, associative matching, function collection |
+    | Special Functions | 14 | Gamma/digamma recurrence, erf symmetry, hypergeometric, elliptic |
+    | Transcendental Equations | 28 | Full equation solver not implemented |
+    | **Total** | **46** | |
+
+    ## Implementation Priority
+
+    1. **High Priority** - Would enable many use cases:
+       - Transcendental equation solver (basic exp/log/trig)
+       - Symbol/function collection APIs
+
+    2. **Medium Priority** - Mathematical completeness:
+       - Special function simplification rules (recurrence relations)
+       - Hypergeometric functions
+
+    3. **Lower Priority** - Advanced features:
+       - Elliptic integrals
+       - Sequence wildcards in patterns
+       - Associative pattern matching
+
+key_findings:
+  - "46 tests archived documenting unimplemented features"
+  - "Pattern Matching gaps: 4 tests (sequence wildcards, rule system, associative matching, function collection)"
+  - "Special Functions gaps: 14 tests (gamma/digamma recurrence, erf symmetry, hypergeometric, elliptic integrals)"
+  - "Transcendental Equations gaps: 28 tests (exp/log/trig equation solving not implemented)"
+  - "High priority: Transcendental equation solver and symbol/function collection APIs"
+  - "Medium priority: Special function simplification rules and hypergeometric functions"
+  - "Lower priority: Elliptic integrals and advanced pattern matching"
+
+action_items:
+  - "Implement basic transcendental equation solver (exp, log, trig)"
+  - "Create symbol/function collection APIs (expr.find_functions(), etc.)"
+  - "Add special function simplification rules (recurrence relations)"
+  - "Implement hypergeometric functions (2F1)"
+  - "Add elliptic integral functions (K, E)"
+  - "Implement sequence wildcard patterns (__rest matching)"
+  - "Add custom rewrite rule system API"
+  - "Implement full associative pattern matching"
+
+related_topics:
+  - "internal.overview"
+  - "internal.investigation"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/feature-gap-tests-2025-12-15T0430.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "pending"
+  document_category: "internal"
+  archived_date: "2025-12-15T04:30"
+  total_tests_archived: 46
+  test_categories: 3

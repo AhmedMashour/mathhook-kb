@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "The Expression type is the foundation of MathHook. Expressions are immutable,\n32-byte cache-optimized structures representing mathematical constructs from\nnumbers to complex symbolic operations.\n",
+    "title": "Core Expression System",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/core/expressions": {
+      "post": {
+        "description": "The Expression type is the foundation of MathHook. Expressions are immutable,\n32-byte cache-optimized structures representing mathematical constructs from\nnumbers to complex symbolic operations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "canonical_forms_and_equality": {
+                  "description": "Automatic normalization ensures equivalent expressions are equal",
+                  "summary": "Canonical Forms and Equality",
+                  "value": {
+                    "expression": "x + y"
+                  }
+                },
+                "creating_expressions_with_macros": {
+                  "description": "Use expr!() and symbol!() macros for ergonomic expression creation",
+                  "summary": "Creating Expressions with Macros",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "immutability_and_operations": {
+                  "description": "All operations return new expressions, original unchanged",
+                  "summary": "Immutability and Operations",
+                  "value": {
+                    "expression": "x + 1"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Core Expression System",
+        "tags": [
+          "api"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "api operations",
+      "name": "api"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Compute limits of expressions as variables approach values, infinity, or points of discontinuity.\n",
+    "title": "Limits",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/operations/limits": {
+      "post": {
+        "description": "Compute limits of expressions as variables approach values, infinity, or points of discontinuity.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "direct_substitution": {
+                  "description": "For continuous functions, substitute directly",
+                  "summary": "Direct Substitution",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "l'hôpital's_rule_(0/0_form)": {
+                  "description": "Use derivatives to resolve indeterminate forms",
+                  "summary": "L'Hôpital's Rule (0/0 Form)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "limits_at_infinity": {
+                  "description": "Behavior as x approaches ±∞",
+                  "summary": "Limits at Infinity",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Limits",
+        "tags": [
+          "operations"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "operations operations",
+      "name": "operations"
+    }
+  ]
+}

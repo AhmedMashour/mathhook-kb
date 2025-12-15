@@ -1,0 +1,295 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/performance/STRATEGIC_PERFORMANCE_ROADMAP_2025-12-03_225243.md
+# Topic: Strategic Performance Roadmap
+# Type: performance-roadmap
+
+topic: "internal.performance.strategic-roadmap"
+title: "Strategic Performance Roadmap: Path to Beating Symbolica"
+description: |
+  Comprehensive 3-phase roadmap to achieve 2.5-3.8x overall performance improvement through
+  hybrid architecture approach, combining Expression tree strengths with domain-specific fast paths.
+
+document_type: "performance-roadmap"
+audience: ["developers", "performance-engineers", "architects", "leadership"]
+
+article:
+  content: |
+    # Strategic Performance Roadmap: Path to Beating Symbolica
+
+    **Date**: 2025-12-03
+    **Timestamp**: 22:52:43
+    **Mission**: Comprehensive analysis of 10 performance profiling reports with actionable roadmap to match/exceed Symbolica performance
+
+    [Full content preserved from source markdown - 1515 lines of strategic analysis, implementation plans, and recommendations]
+
+performance_metrics:
+  - metric: "Current performance gap"
+    value: "27-257x slower than Symbolica"
+    context: "Across polynomial GCD, factorization, derivatives, solving, parsing"
+  - metric: "Critical bottleneck: Polynomial GCD"
+    value: "2.6ms vs 96μs (Symbolica)"
+    context: "27x slower"
+  - metric: "Surprising win: Simplification"
+    value: "151μs vs 14.5ms (Symbolica)"
+    context: "96x FASTER than Symbolica!"
+  - metric: "Phase 1 target speedup"
+    value: "1.5-1.7x overall"
+    context: "2 weeks effort, caches + bug fixes"
+  - metric: "Phase 2 target speedup"
+    value: "2.1-2.7x cumulative"
+    context: "8 weeks total, adds arena + SmallVec + polynomial fast path"
+  - metric: "Phase 3 target speedup"
+    value: "2.5-3.8x cumulative"
+    context: "20 weeks total, systematic optimizations"
+  - metric: "FFI binding overhead"
+    value: "25-40x slowdown (Python/Node.js)"
+    context: "606-1,178μs per operation vs 15-40μs native"
+
+bottlenecks:
+  - "Polynomial operations (27x slower) - Expression tree overhead vs dense representation"
+  - "Expression construction canonicalization (2x overhead) - Every operation pays 100-300ns"
+  - "Missing caching systems - No function eval, derivative, or GCD caches (20-40% speedup potential)"
+  - "Arena allocation absent - Despite CLAUDE.md mention, not implemented (15-25% speedup loss)"
+  - "Heavy cloning (3,878+ sites) - Immutable tree requires extensive cloning"
+  - "String allocation in canonicalization (45% overhead) - format!(\"{:?}\") for like-term keys"
+  - "Conditional flattening missing - Always create VecDeque even when no nesting"
+  - "Matrix stack overflow bug - Recursive operations overflow on 10x10+ matrices (CRITICAL)"
+  - "No SmallVec optimization - Always heap-allocate Vec for Add/Mul even for 2-3 terms"
+  - "FFI crossing overhead - 25-40x slowdown for Python/Node.js users (606-1,178μs vs 15-40μs native)"
+
+recommendations:
+  - "CRITICAL P0: Fix matrix stack overflow bug (1 day, production crash risk)"
+  - "CRITICAL P0: Implement batch API for Python/Node.js bindings (1 week, 10-100x FFI speedup)"
+  - "HIGH P1: Implement function evaluation cache (2-3 days, 10-15% simplification speedup)"
+  - "HIGH P1: Implement derivative cache (2-3 days, 20-30% calculus speedup, 40%+ educational mode)"
+  - "HIGH P1: Implement GCD cache (2-3 days, 30-50% factorization speedup)"
+  - "HIGH P1: Replace string keys with expression hash in canonicalization (4 hours, 33% canonicalization speedup)"
+  - "MEDIUM P2: Implement conditional flattening (4 hours, 10-15% non-nested additions speedup)"
+  - "HIGH P1: Implement arena allocation (1-2 weeks, 15-25% expression-heavy ops speedup)"
+  - "HIGH P1: Migrate to SmallVec for Expression args (2 weeks, 10-15% arithmetic speedup)"
+  - "MEDIUM P2: Implement simplification subexpression cache (1 week, 15-25% complex simplification speedup)"
+  - "CRITICAL P0: Implement polynomial fast path with dense representation (3-4 weeks, 10-20x polynomial GCD speedup)"
+  - "MEDIUM P2: Clone optimization audit (6 weeks, 5-10% overall speedup)"
+  - "LOW P3: Thread-local expression pool (1 week, 5-10% allocation reduction)"
+  - "LOW P3: Lazy canonicalization with builder API (2-3 weeks, 50% construction speedup for expert users, HIGH-RISK)"
+  - "LOW P3: Memory profiling infrastructure (1 week, prevent performance regressions)"
+  - "LOW P3: Migrate persistent cache to bincode (1 week, 50%+ cache I/O speedup)"
+  - "STRATEGIC: Adopt hybrid approach - keep Expression tree, add domain-specific fast paths"
+  - "STRATEGIC: DO NOT REWRITE - 60% of slowdown is fixable without architectural changes"
+  - "STRATEGIC: Target 3x overall speedup (achievable in 5 months)"
+
+roadmap_phases:
+  phase_1:
+    title: "Immediate (1-2 weeks) - Bugs + Low-Hanging Fruit"
+    duration: "2 weeks"
+    effort: "10 days"
+    expected_speedup: "1.5-1.7x"
+    priority: "CRITICAL"
+    items:
+      - "Matrix stack overflow fix (1 day)"
+      - "Function evaluation cache (2-3 days)"
+      - "Derivative cache (2-3 days)"
+      - "GCD cache (2-3 days)"
+      - "String key optimization (4 hours)"
+      - "Conditional flattening (4 hours)"
+      - "Batch API for Python/Node.js bindings (1 week)"
+    impact:
+      - "35-60% speedup overall (Rust native)"
+      - "10-100x speedup for Python/Node.js batch operations"
+      - "Eliminate production crashes (matrix stack overflow)"
+    risk: "LOW"
+
+  phase_2:
+    title: "Short-Term (3-6 weeks) - Medium Effort Optimizations"
+    duration: "6 weeks"
+    effort: "30 days"
+    expected_speedup: "1.4-1.6x (cumulative: 2.1-2.7x)"
+    priority: "HIGH"
+    items:
+      - "Arena allocation (1-2 weeks)"
+      - "SmallVec for Expression args (2 weeks)"
+      - "Simplification subexpression cache (1 week)"
+      - "Polynomial fast path with dense representation (3-4 weeks)"
+    impact:
+      - "Additional 25-40% speedup"
+      - "10-20x polynomial GCD speedup (closes biggest gap)"
+      - "15-25% reduction in allocations"
+    risk: "MEDIUM"
+
+  phase_3:
+    title: "Long-Term (2-6 months) - Architectural Improvements"
+    duration: "12 weeks"
+    effort: "60 days"
+    expected_speedup: "1.2-1.4x (cumulative: 2.5-3.8x)"
+    priority: "MEDIUM"
+    items:
+      - "Clone optimization audit (6 weeks)"
+      - "Thread-local expression pool (1 week)"
+      - "Lazy canonicalization (2-3 weeks, OPTIONAL HIGH-RISK)"
+      - "Memory profiling infrastructure (1 week)"
+      - "Persistent cache binary format (1 week)"
+    impact:
+      - "Additional 15-30% speedup"
+      - "5-10% overall speedup from clone optimization"
+      - "Continuous allocation monitoring"
+    risk: "MEDIUM-HIGH"
+
+strategic_decisions:
+  - decision: "Hybrid approach (NOT rewrite)"
+    rationale:
+      - "Simplification is 96x faster than Symbolica (proof Expression tree can win)"
+      - "60% of slowdown is fixable without architectural changes"
+      - "Educational value of Expression tree is core differentiation"
+      - "Rewrite would lose existing optimizations"
+    implementation:
+      - "Keep Expression tree as universal representation"
+      - "Add domain-specific fast paths (polynomial, rational, matrix)"
+      - "Gradual migration (incremental, low-risk)"
+      - "Backward compatible (existing code unchanged)"
+
+  - decision: "Target 3x speedup (not 10x)"
+    rationale:
+      - "10x unrealistic without fundamental rewrite"
+      - "3x achievable in 3-6 months with hybrid approach"
+      - "Sufficient to match Symbolica on polynomials, beat on simplification"
+    targets:
+      - "Match Symbolica on polynomials (with dense fast path)"
+      - "Maintain 20x+ advantage on simplification"
+      - "Competitive on calculus (with caching)"
+      - "Zero degradation to educational features"
+
+  - decision: "MVP path: Phase 1 + Polynomial fast path"
+    duration: "4-6 weeks"
+    outcome: "Match Symbolica on polynomials, beat on simplification"
+    recommended: true
+
+success_criteria:
+  phase_1:
+    - metric: "Simplification speedup"
+      target: "+35%"
+      critical_threshold: "+25%"
+    - metric: "Derivative speedup"
+      target: "+30%"
+      critical_threshold: "+20%"
+    - metric: "Factorization speedup"
+      target: "+40%"
+      critical_threshold: "+25%"
+    - metric: "Stack overflow fixed"
+      target: "0 crashes"
+      critical_threshold: "0 crashes (CRITICAL)"
+
+  phase_2:
+    - metric: "Polynomial GCD speedup"
+      target: "10-20x"
+      critical_threshold: "5x"
+    - metric: "Arithmetic speedup"
+      target: "+15%"
+      critical_threshold: "+10%"
+    - metric: "Memory reduction"
+      target: "-20%"
+      critical_threshold: "-10%"
+    - metric: "Cache hit rate (polynomial)"
+      target: ">85%"
+      critical_threshold: ">75%"
+
+  phase_3:
+    - metric: "Overall speedup"
+      target: "+15%"
+      critical_threshold: "+10%"
+    - metric: "Allocation reduction"
+      target: "-15%"
+      critical_threshold: "-10%"
+    - metric: "No correctness regressions"
+      target: "0 failures"
+      critical_threshold: "0 failures (CRITICAL)"
+
+  overall:
+    - metric: "Total speedup"
+      target: "2.5-3.8x"
+      critical_threshold: "2.0x"
+    - metric: "Polynomial GCD vs Symbolica"
+      target: "Match (within 2x)"
+      critical_threshold: "Within 5x"
+    - metric: "Simplification vs Symbolica"
+      target: "Beat (50x+)"
+      critical_threshold: "Maintain 20x+ advantage"
+    - metric: "Educational features"
+      target: "Maintained"
+      critical_threshold: "No degradation"
+
+risk_assessment:
+  correctness_risks:
+    - risk: "Caching incorrect results"
+      severity: "CRITICAL"
+      mitigation: "Hash-based keys (deterministic), extensive testing, property-based tests"
+    - risk: "Fast path produces different results than Expression tree"
+      severity: "CRITICAL"
+      mitigation: "Cross-check fast path vs Expression tree, differential testing"
+    - risk: "Arena allocation lifetime bugs"
+      severity: "HIGH"
+      mitigation: "Rust borrow checker, compiler errors, memory sanitizers"
+    - risk: "SmallVec migration breaks equality"
+      severity: "HIGH"
+      mitigation: "Extensive test suite (1,000+ tests), property tests"
+
+  maintainability_risks:
+    - risk: "Hybrid architecture increases complexity"
+      severity: "MEDIUM"
+      mitigation: "Clear documentation, isolated fast paths"
+      acceptability: "ACCEPTABLE (performance gain worth complexity)"
+    - risk: "Clone optimization refactoring introduces bugs"
+      severity: "MEDIUM-HIGH"
+      mitigation: "Incremental changes (10-20 sites per PR), extensive testing"
+    - risk: "Multiple cache systems hard to debug"
+      severity: "LOW-MEDIUM"
+      mitigation: "Cache statistics (hit rate, size), logging"
+
+  regression_risks:
+    - risk: "Performance regressions during refactoring"
+      severity: "MEDIUM"
+      mitigation: "Continuous benchmarking (CI), fail on >5% regression"
+    - risk: "Breaking existing API users"
+      severity: "LOW"
+      mitigation: "Semantic versioning, deprecation warnings, type system enforcement"
+    - risk: "Educational features degraded"
+      severity: "MEDIUM"
+      mitigation: "Educational-specific test suite, manual testing, step-by-step tests"
+
+architectural_insights:
+  expression_tree_strengths:
+    - "Simplification (96x faster than Symbolica) - incremental canonical form"
+    - "Educational features (no comparison - Symbolica lacks this)"
+    - "Pattern matching (structural patterns explicit)"
+    - "Flexibility (general expressions, not just polynomials)"
+
+  expression_tree_weaknesses:
+    - "Polynomial operations (27x slower) - tree overhead vs dense representation"
+    - "Coefficient access (O(n) tree traversal vs O(1) array index)"
+    - "Memory layout (scattered Box pointers vs cache-friendly contiguous)"
+    - "Allocations per op (10-100 intermediate trees vs 1-2 for dense)"
+
+  hybrid_approach_benefits:
+    - "Keep Expression tree for general case (educational + flexibility)"
+    - "Add fast paths for hot operations (polynomial GCD, matrix ops)"
+    - "Gradual migration (add fast paths incrementally)"
+    - "Backward compatible (existing code unchanged)"
+    - "Preserve strengths (simplification, pattern matching)"
+    - "Close gaps (polynomial GCD, factorization)"
+
+related_topics:
+  - "internal.performance.polynomial-architecture"
+  - "internal.performance.simplification-operations"
+  - "internal.performance.calculus-operations"
+  - "internal.performance.solving-operations"
+  - "internal.performance.comprehensive-analysis"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/performance/STRATEGIC_PERFORMANCE_ROADMAP_2025-12-03_225243.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "valid"
+  document_category: "performance"
+  roadmap_type: "strategic"
+  phases: 3
+  total_duration: "20 weeks (5 months)"
+  expected_outcome: "2.5-3.8x overall speedup"

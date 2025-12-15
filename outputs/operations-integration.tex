@@ -1,0 +1,168 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Symbolic Integration }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MathHook's integration system provides symbolic integration capabilities with an 8-layer strategy architecture from fast heuristics to complete Risch algorithm. Coverage: 93-95% of elementary integrals.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Fundamental Theorem of Calculus:**
+$$\int_a^b f(x) \, dx = F(b) - F(a)$$
+where $F'(x) = f(x)$.
+
+**Integration by Parts:**
+$$\int u \, dv = uv - \int v \, du$$
+
+**U-Substitution:**
+$$\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$$
+where $u = g(x)$ and $du = g'(x) \, dx$.
+
+**Power Rule:**
+$$\int x^n \, dx = \frac{x^{n+1}}{n+1} + C \quad (n \neq -1)$$
+
+**Logarithm Special Case:**
+$$\int \frac{1}{x} \, dx = \ln|x| + C$$
+
+\end{equation}
+
+
+
+\section{Introduction}
+
+## 8-Layer Strategy Dispatcher
+
+The integration strategy tries techniques in this exact order:
+
+```
+Layer 1: Table Lookup             - O(1) hash lookup for common patterns
+Layer 2: Rational Functions       - Partial fraction decomposition
+Layer 3: Function Registry        - Built-in function antiderivatives
+Layer 4: Integration by Parts     - LIATE heuristic for products
+Layer 5: U-Substitution           - Chain rule patterns
+Layer 6: Trigonometric            - Trig identities and reduction
+Layer 7: Risch Algorithm          - Complete algorithm for elementary functions
+Layer 8: Symbolic Fallback        - Return unevaluated integral
+```
+
+**Performance Profile:**
+- Layers 1-4: Microseconds to milliseconds (fast path, 90% of integrals)
+- Layer 5-6: Milliseconds (medium complexity, 5-8%)
+- Layer 7: Milliseconds to seconds (hard cases, 2-5%)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Integration (Layer 1: Table Lookup) }
+
+Direct table hits for common patterns
+
+\begin{lstlisting}
+from mathhook import symbol, integrate
+
+x = symbol('x')
+
+# Polynomial
+poly = x**3
+result = integrate(poly, x)
+# Result: x**4/4
+
+# Rational
+rational = 1/(x+1)
+result = integrate(rational, x)
+# Result: log(x+1)
+
+# Trigonometric
+trig = sin(x)
+result = integrate(trig, x)
+# Result: -cos(x)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Integration by Parts (Layer 4: LIATE) }
+
+∫u dv = uv - ∫v du using LIATE rule
+
+\begin{lstlisting}
+from mathhook import symbol, integrate, exp, sin
+
+x = symbol('x')
+
+# ∫x*e^x dx
+expr = x * exp(x)
+result = integrate(expr, x)
+# Result: x*exp(x) - exp(x)
+
+# ∫x*sin(x) dx
+expr2 = x * sin(x)
+result2 = integrate(expr2, x)
+# Result: -x*cos(x) + sin(x)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ U-Substitution (Layer 5) }
+
+∫f(g(x))*g'(x) dx = ∫f(u) du
+
+\begin{lstlisting}
+from mathhook import symbol, integrate, sin, exp
+
+x = symbol('x')
+
+# ∫2x*sin(x^2) dx
+expr = 2*x*sin(x**2)
+result = integrate(expr, x)
+# Result: -cos(x^2)
+
+# ∫2x*e^(x^2) dx
+expr2 = 2*x*exp(x**2)
+result2 = integrate(expr2, x)
+# Result: exp(x^2)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

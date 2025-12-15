@@ -1,0 +1,269 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Node.js/TypeScript API Guide }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Complete guide to using MathHook from Node.js and TypeScript via NAPI bindings.
+Provides comprehensive documentation for the JavaScript/TypeScript API including installation,
+quick start, API reference, integration patterns with Express/Next.js, and performance best practices.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Node.js/TypeScript API Guide
+
+Complete guide to using MathHook from Node.js and TypeScript via NAPI bindings.
+
+## Installation
+
+```bash
+npm install mathhook
+# or
+yarn add mathhook
+# or
+pnpm add mathhook
+```
+
+**Requirements**:
+- Node.js 16.0 or higher
+- npm 7.0 or higher
+
+**Platform Support**:
+- Linux (x86_64, aarch64)
+- macOS (Intel, Apple Silicon)
+- Windows (x86_64)
+
+**TypeScript Support**: Type definitions included (.d.ts files bundled)
+
+## Quick Start
+
+### JavaScript
+
+```javascript
+const { Symbol, parse, simplify } = require('mathhook');
+
+// Create symbols
+const x = new Symbol('x');
+const y = new Symbol('y');
+
+// Build expressions
+const expr = parse('x^2 + 2*x + 1');
+
+// Simplify
+const simplified = simplify(expr);
+console.log(simplified.toString());  // (x + 1)^2
+```
+
+### TypeScript
+
+```typescript
+import { Symbol, Expression, parse, simplify } from 'mathhook';
+
+// Create symbols (with type safety)
+const x: Symbol = new Symbol('x');
+const y: Symbol = new Symbol('y');
+
+// Build expressions
+const expr: Expression = parse('x^2 + 2*x + 1');
+
+// Simplify
+const simplified: Expression = simplify(expr);
+console.log(simplified.toString());  // (x + 1)^2
+```
+
+## Why MathHook for Node.js?
+
+### Performance Comparison
+
+**Native Performance in JavaScript**:
+- Rust core compiled to native code via NAPI
+- No V8 overhead for mathematical operations
+- Faster than pure JavaScript CAS libraries
+
+```javascript
+const { parse, simplify } = require('mathhook');
+
+// Large polynomial expression
+const terms = Array.from({length: 100}, (_, i) => `${i}*x^${i}`);
+const exprStr = terms.join(' + ');
+
+// MathHook
+const start = Date.now();
+const expr = parse(exprStr);
+const result = simplify(expr);
+const mathhookTime = Date.now() - start;
+
+console.log(`MathHook: ${mathhookTime}ms`);
+// Typical: MathHook 1-5ms vs JavaScript CAS 100-500ms
+```
+
+### When to Use MathHook
+
+**Use MathHook when**:
+- Building web applications with symbolic math (calculators, graphing, education)
+- Server-side computation for math APIs
+- Real-time symbolic computation requirements
+- Need LaTeX parsing and rendering
+
+**Integration Points**:
+- Express/Fastify APIs for math endpoints
+- Next.js/Nuxt.js server-side rendering
+- WebSocket servers for interactive math applications
+- GraphQL resolvers for mathematical queries
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Parsing and Simplification }
+
+Parse mathematical expressions from strings and simplify them
+
+\begin{lstlisting}
+from mathhook import parse, simplify, expand
+
+expr = parse('x + x')
+result = simplify(expr)
+print(result)  # 2*x
+
+expr2 = parse('(x + 1)^2')
+expanded = expand(expr2)
+print(expanded)  # x^2 + 2*x + 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ TypeScript Type Safety }
+
+Use TypeScript for type-safe mathematical operations
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Derivatives in TypeScript }
+
+Compute symbolic derivatives with TypeScript type safety
+
+\begin{lstlisting}
+from mathhook import Symbol, parse, derivative
+
+x = Symbol('x')
+expr = parse('x^3')
+
+# First derivative
+df = derivative(expr, x)
+print(df)  # 3*x^2
+
+# Second derivative
+d2f = derivative(expr, x, order=2)
+print(d2f)  # 6*x
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Express.js API Integration }
+
+Build a REST API for mathematical operations using Express.js
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Next.js Server Actions }
+
+Use MathHook in Next.js server actions for server-side computation
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ WebSocket Server }
+
+Build a WebSocket server for real-time mathematical computation
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Evaluation with Context }
+
+Advanced evaluation with custom contexts and variable substitutions
+
+\begin{lstlisting}
+from mathhook import PyExpression as Expression, EvalContext
+
+x = Expression.symbol("x")
+y = Expression.symbol("y")
+
+# Formula: x² + 2xy + y²
+expr = x.pow(Expression.integer(2)).add(
+    Expression.integer(2).multiply(x).multiply(y)
+).add(y.pow(Expression.integer(2)))
+
+# Create numerical context with variable substitutions
+ctx = EvalContext.numeric({
+    "x": Expression.integer(3),
+    "y": Expression.integer(4)
+})
+
+# Evaluate: (3)² + 2(3)(4) + (4)² = 9 + 24 + 16 = 49
+result = expr.evaluate_with_context(ctx)
+print(result)  # 49
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

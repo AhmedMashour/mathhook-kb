@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Mathematical classification of partial differential equations into elliptic, parabolic,\nand hyperbolic types using the discriminant formula. Different PDE types require\ncompletely different solution methods and have distinct physical interpretations.\n",
+    "title": "PDE Classification",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/classification": {
+      "post": {
+        "description": "Mathematical classification of partial differential equations into elliptic, parabolic,\nand hyperbolic types using the discriminant formula. Different PDE types require\ncompletely different solution methods and have distinct physical interpretations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "heat_equation_classification_(parabolic)": {
+                  "description": "Heat equation has zero discriminant and is classified as parabolic",
+                  "summary": "Heat Equation Classification (Parabolic)",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "laplace_equation_classification_(elliptic)": {
+                  "description": "Laplace equation has negative discriminant and is classified as elliptic",
+                  "summary": "Laplace Equation Classification (Elliptic)",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "wave_equation_classification_(hyperbolic)": {
+                  "description": "Wave equation has positive discriminant and is classified as hyperbolic",
+                  "summary": "Wave Equation Classification (Hyperbolic)",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "PDE Classification",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

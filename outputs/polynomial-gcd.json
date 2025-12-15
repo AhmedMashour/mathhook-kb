@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Multiple GCD (Greatest Common Divisor) algorithms for polynomials, optimized for different use cases\nincluding univariate, multivariate, and modular GCD using Zippel's algorithm.\n",
+    "title": "GCD Algorithms",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/polynomial/gcd": {
+      "post": {
+        "description": "Multiple GCD (Greatest Common Divisor) algorithms for polynomials, optimized for different use cases\nincluding univariate, multivariate, and modular GCD using Zippel's algorithm.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "general-purpose_gcd": {
+                  "description": "Use PolynomialGcdOps trait for automatic algorithm selection",
+                  "summary": "General-Purpose GCD",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "multivariate_gcd_with_zippel_algorithm": {
+                  "description": "Compute GCD for polynomials in multiple variables",
+                  "summary": "Multivariate GCD with Zippel Algorithm",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "univariate_modular_gcd_with_cofactors": {
+                  "description": "Returns GCD and cofactors for Bezout identity verification",
+                  "summary": "Univariate Modular GCD with Cofactors",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "GCD Algorithms",
+        "tags": [
+          "polynomial"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "polynomial operations",
+      "name": "polynomial"
+    }
+  ]
+}

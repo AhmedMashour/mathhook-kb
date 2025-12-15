@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Parse and generate LaTeX notation for mathematical expressions. Full bidirectional\nsupport: LaTeX → Expression and Expression → LaTeX. Automatic type inference for\nmatrix symbols (\\mathbf{A}), operator symbols (\\hat{p}), and implicit multiplication.\n",
+    "title": "LaTeX Parsing and Mathematical Notation",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/parser/latex": {
+      "post": {
+        "description": "Parse and generate LaTeX notation for mathematical expressions. Full bidirectional\nsupport: LaTeX → Expression and Expression → LaTeX. Automatic type inference for\nmatrix symbols (\\mathbf{A}), operator symbols (\\hat{p}), and implicit multiplication.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_latex_parsing": {
+                  "description": "Parse standard mathematical expressions",
+                  "summary": "Basic LaTeX Parsing",
+                  "value": {
+                    "expression": "parse_latex(r\"2 + 3 \\cdot 4\")  # 2 + 3*4"
+                  }
+                },
+                "greek_letters_and_constants": {
+                  "description": "Parse Greek symbols and mathematical constants",
+                  "summary": "Greek Letters and Constants",
+                  "value": {
+                    "expression": "parse_latex(r\"\\alpha + \\beta + \\gamma\")"
+                  }
+                },
+                "matrix_and_operator_symbols": {
+                  "description": "Automatic type inference from LaTeX notation",
+                  "summary": "Matrix and Operator Symbols",
+                  "value": {
+                    "expression": "parse_latex(r\"\\mathbf{A} \\mathbf{B}\")"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "LaTeX Parsing and Mathematical Notation",
+        "tags": [
+          "api"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "api operations",
+      "name": "api"
+    }
+  ]
+}

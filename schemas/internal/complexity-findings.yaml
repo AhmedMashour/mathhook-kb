@@ -1,0 +1,106 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/COMPLEXITY_FINDINGS_2025-11-28.md
+# Topic: Code Complexity Findings - Educational Integration Plan Review
+# Type: internal-documentation
+
+topic: "internal.complexity-findings"
+title: "Code Complexity Findings - Educational Integration Plan Review"
+description: |
+  Analysis of actual code complexity in MathHook repository to verify educational integration
+  effort estimates. Identifies complexity hotspots and adjusts original time estimates.
+
+document_type: "internal"
+audience: ["developers", "maintainers"]
+
+article:
+  content: |
+    # Code Complexity Findings - Educational Integration Plan Review
+
+    ## Module Size Analysis
+
+    ### Simplification System (Most Complex for Phase 2.3)
+    ```
+    simplify.rs                    294 lines (entry point)
+    advanced_simplify.rs           271 lines (rules)
+    algebra/zero_detection.rs      454 lines (core complexity)
+    ─────────────────────────────────────────────
+    Total:                         ~1,000 lines
+
+    Complexity: VERY HIGH
+    - Multi-pass system (5+ simplification layers)
+    - 454-line zero_detection module uses polynomial algorithms
+    - Each pass needs independent step tracking
+    - Final integration challenge: Coordinating steps across passes
+    ```
+
+    ### Integration System (Complex for Phase 2.1)
+    ```
+    calculus/integrals/:
+    substitution.rs                792 lines
+    educational.rs                 686 lines (already has structure)
+    table.rs                        583 lines
+    rational.rs                     578 lines
+    basic.rs                        518 lines
+    strategy.rs                     446 lines
+    by_parts.rs                     ~400 lines (est.)
+    ─────────────────────────────────────────────
+    Total:                         ~4,000 lines
+
+    Complexity: HIGH
+    - 6+ integration strategies with different code paths
+    - 88 existing test functions (high test burden)
+    - Each method needs consistent step output format
+    - Major challenge: Unifying step descriptions across methods
+    ```
+
+    ### Matrix System (Complex but Manageable for Phase 3.1)
+    ```
+    matrices/:
+    operations.rs                  8,419 lines
+    types.rs                        8,524 lines
+    eigenvalues.rs                 8,021 lines
+    decomposition.rs               6,590 lines
+    Other modules                  ~1,000 lines
+    ─────────────────────────────────────────────
+    Total:                         ~32,000 lines
+
+    Complexity: VERY HIGH (code volume)
+    BUT: Operations themselves are well-isolated
+    - 44 test functions show robust implementation
+    - Explanation task is EDUCATIONAL (not implementation)
+    - Each operation is self-contained
+    - 15-20 hours is reasonable for explanations (not algorithms)
+    ```
+
+key_findings:
+  - "Simplification system: ~1,000 lines across 3 files, VERY HIGH complexity with multi-pass architecture"
+  - "Zero detection module: 454 lines of polynomial algorithms - most complex part"
+  - "Integration system: ~4,000 lines across 15 files with 6+ different strategies"
+  - "Matrix system: ~32,000 lines but operations well-isolated, task is educational not algorithmic"
+  - "Educational infrastructure: ~100 KB already exists (step_by_step.rs is 74KB!)"
+  - "Phase 1.4 underestimated: 30-60 min → 2-3 hours (multi-pass instrumentation)"
+  - "Phase 2.1 underestimated: 4-6 hrs → 6-8 hours (coordination across 6+ methods)"
+  - "Phase 2.3 underestimated: 6-8 hrs → 10-12 hours (zero_detection.rs complexity)"
+  - "Phase 4.3 underestimated: 15-20 hrs → 20-25 hours (testing 95+ operations)"
+
+action_items:
+  - "Adjust Phase 1 Task 1.4: Change from '30-60 min' to '2-3 hours' (multi-pass instrumentation)"
+  - "Adjust Phase 2 Task 2.1: Change from '4-6 hours' to '6-8 hours' (coordination complexity)"
+  - "Adjust Phase 2 Task 2.3: Change from '6-8 hours' to '10-12 hours' (zero_detection.rs)"
+  - "Adjust Phase 4 Task 4.3: Change from '15-20 hours' to '20-25 hours' (comprehensive testing)"
+  - "Adjust Grand Total: From 100-120 hours to 105-135 hours (most likely 115-125)"
+  - "Add 15-20 hour contingency for Tasks 2.1, 2.3, and 4.3 (high-risk areas)"
+
+related_topics:
+  - "internal.educational-plan"
+  - "internal.educational-effort-estimation"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/COMPLEXITY_FINDINGS_2025-11-28.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "pending"
+  document_category: "internal"
+  original_estimate: "100-120 hours"
+  revised_estimate: "105-135 hours"
+  most_likely: "115-125 hours"

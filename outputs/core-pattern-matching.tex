@@ -1,0 +1,249 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Pattern Matching }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Pattern matching is a powerful technique in MathHook for identifying, transforming,
+and simplifying mathematical expressions. MathHook combines Rust's native pattern
+matching with specialized mathematical pattern recognition to enable sophisticated
+symbolic manipulation including algebraic identities, calculus rules, and
+trigonometric transformations.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Common Mathematical Patterns:**
+
+- **Difference of Squares**: $$a^2 - b^2 = (a + b)(a - b)$$
+- **Perfect Square**: $$a^2 + 2ab + b^2 = (a + b)^2$$
+- **Power Rule**: $$\frac{d}{dx}(x^n) = nx^{n-1}$$
+- **Chain Rule**: $$\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$$
+- **Pythagorean Identity**: $$\sin^2(x) + \cos^2(x) = 1$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Rust Native Pattern Matching on Expressions }
+
+Using Rust's match statement to analyze expression structure
+
+\begin{lstlisting}
+from mathhook import Expression, expr
+
+def analyze_expression(e):
+    if e.is_integer():
+        return f"Integer: {e.value()}"
+    elif e.is_symbol():
+        return f"Variable: {e.name()}"
+    elif e.is_add():
+        return f"Sum of {len(e.terms())} terms"
+    elif e.is_mul():
+        return f"Product of {len(e.factors())} factors"
+    elif e.is_pow():
+        return f"Power: ({e.base()})^({e.exponent()})"
+    elif e.is_function():
+        return f"Function {e.name()}: {len(e.args())} args"
+    else:
+        return "Other expression type"
+
+expr_val = expr('x^2 + 2*x + 1')
+print(analyze_expression(expr_val))
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Algebraic Pattern: Difference of Squares }
+
+Recognizing and factoring difference of squares pattern
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+a = symbol('a')
+b = symbol('b')
+
+# Pattern: a² - b² = (a + b)(a - b)
+diff_squares = expr('a^2 - b^2')
+factored = diff_squares.factor()
+assert factored == expr('(a + b) * (a - b)')
+
+# Complex forms
+x = symbol('x')
+example = expr('x^4 - 16')
+factored_example = example.factor()
+assert factored_example == expr('(x^2 + 4) * (x^2 - 4)')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Calculus Pattern: Power Rule Derivative }
+
+Automatic pattern recognition for power rule differentiation
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pattern: d/dx(x^n) = n*x^(n-1)
+f = expr('x^5')
+df = f.derivative(x)
+assert df == expr('5 * x^4')
+
+# Works for any power
+sqrt_x = expr('x^(1/2)')
+d_sqrt = sqrt_x.derivative(x)
+assert d_sqrt == expr('(1/2) * x^(-1/2)')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Calculus Pattern: Chain Rule }
+
+Automatic chain rule application for composite functions
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pattern: chain rule
+f = expr('sin(x^2)')
+df = f.derivative(x)
+assert df == expr('2*x*cos(x^2)')
+
+# Nested composition
+nested = expr('sin(cos(x))')
+d_nested = nested.derivative(x)
+assert d_nested == expr('-sin(x)*cos(cos(x))')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Trigonometric Pattern: Pythagorean Identity }
+
+Automatic simplification using trigonometric identities
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+x = symbol('x')
+
+# Pythagorean identities
+identity = expr('sin(x)^2 + cos(x)^2')
+assert identity.simplify() == 1
+
+tan_identity = expr('1 + tan(x)^2')
+assert tan_identity.simplify() == expr('sec(x)^2')
+
+cot_identity = expr('1 + cot(x)^2')
+assert cot_identity.simplify() == expr('csc(x)^2')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Logarithm Pattern: Log Laws }
+
+Automatic application of logarithm expansion and combination rules
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+a = symbol('a')
+b = symbol('b')
+n = symbol('n')
+
+# Log laws
+log_product = expr('ln(a*b)')
+assert log_product.expand() == expr('ln(a) + ln(b)')
+
+log_quotient = expr('ln(a/b)')
+assert log_quotient.expand() == expr('ln(a) - ln(b)')
+
+log_power = expr('ln(a^n)')
+assert log_power.expand() == expr('n*ln(a)')
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Custom Pattern Matcher: Polynomial Detection }
+
+Implementing custom pattern recognition for polynomial expressions
+
+\begin{lstlisting}
+from mathhook import Expression, symbol, expr
+
+def is_polynomial(e, var):
+    if e.is_integer() or e.is_rational():
+        return True
+    elif e.is_symbol():
+        return e == var
+    elif e.is_pow():
+        base = e.base()
+        exp = e.exponent()
+        return (base.is_symbol() and base == var and
+                exp.is_integer() and exp.value() >= 0)
+    elif e.is_add() or e.is_mul():
+        terms = e.terms() if e.is_add() else e.factors()
+        return all(is_polynomial(t, var) for t in terms)
+    return False
+
+x = symbol('x')
+assert is_polynomial(expr('x^2 + 3*x + 1'), x)
+assert not is_polynomial(expr('sin(x)'), x)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

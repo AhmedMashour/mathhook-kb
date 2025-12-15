@@ -1,0 +1,152 @@
+# Advanced: Complex Numbers - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:25:00 UTC
+# Source: mathhook/docs/src/advanced/complex-numbers.md
+
+topic: "advanced.complex_numbers"
+title: "Complex Number Operations"
+description: |
+  Work with complex numbers in MathHook including imaginary unit i, complex
+  arithmetic, polar form, Euler's formula, and operations like conjugate,
+  magnitude, and argument.
+
+mathematical_definition: |
+  Complex number: $$z = a + bi$$ where $a, b \in \mathbb{R}$ and $i^2 = -1$
+
+  Polar form: $$z = r e^{i\theta} = r(\cos\theta + i\sin\theta)$$
+
+  where $r = |z| = \sqrt{a^2 + b^2}$ and $\theta = \arg(z) = \arctan(b/a)$
+
+article:
+  content: |
+    # Complex Number Operations
+
+    MathHook provides comprehensive support for complex number arithmetic,
+    conversions between rectangular and polar forms, and complex functions.
+
+    ## Creating Complex Numbers
+
+    ```rust
+    use mathhook::Expression;
+
+    // Imaginary unit
+    let i = Expression::i();
+
+    // Complex number: 3 + 4i
+    let z = expr!(3 + 4*i);
+
+    // Pure imaginary: 5i
+    let w = expr!(5*i);
+    ```
+
+    ## Operations
+
+    ### Addition/Subtraction
+    Component-wise: (a + bi) ± (c + di) = (a ± c) + (b ± d)i
+
+    ### Multiplication
+    (a + bi)(c + di) = (ac - bd) + (ad + bc)i
+
+    ### Division
+    Division by conjugate multiplication
+
+    ### Conjugate
+    conj(a + bi) = a - bi
+
+    ### Magnitude
+    |a + bi| = √(a² + b²)
+
+    ### Argument
+    arg(a + bi) = arctan(b/a)
+
+code_refs:
+  rust: "mathhook_core::complex"
+  python: "mathhook.complex"
+  nodejs: "mathhook.complex"
+
+examples:
+  - title: "Basic Complex Arithmetic"
+    code:
+      rust: |
+        let i = Expression::i();
+        let z1 = expr!(3 + 4*i);
+        let z2 = expr!(1 - 2*i);
+
+        let sum = expr!(z1 + z2);      // 4 + 2i
+        let product = expr!(z1 * z2);  // 11 - 2i
+      python: |
+        i = expr('I')
+        z1 = expr('3 + 4*I')
+        z2 = expr('1 - 2*I')
+
+        sum_z = z1 + z2       # 4 + 2*I
+        product = z1 * z2     # 11 - 2*I
+      nodejs: |
+        const i = expr('I');
+        const z1 = expr('3 + 4*I');
+        const z2 = expr('1 - 2*I');
+
+        const sum = z1.add(z2);      // 4 + 2*I
+        const product = z1.mul(z2);  // 11 - 2*I
+
+  - title: "Euler's Formula"
+    code:
+      rust: |
+        let theta = symbol!(theta);
+        let euler = expr!(exp(i * theta));
+
+        // Expands to: cos(theta) + i*sin(theta)
+        let expanded = euler.expand();
+      python: |
+        theta = symbol('theta')
+        euler = exp(I * theta)
+
+        # Expands to: cos(theta) + I*sin(theta)
+        expanded = expand(euler)
+      nodejs: |
+        const theta = symbol('theta');
+        const euler = exp(mul(I, theta));
+
+        // Expands to: cos(theta) + I*sin(theta)
+        const expanded = euler.expand();
+
+  - title: "Polar Form Conversion"
+    code:
+      rust: |
+        let z = expr!(3 + 4*i);
+
+        let magnitude = expr!(abs(z));  // 5
+        let angle = expr!(arg(z));      // arctan(4/3)
+
+        // Polar form: r*exp(i*theta)
+        let polar = expr!(magnitude * exp(i * angle));
+      python: |
+        z = expr('3 + 4*I')
+
+        magnitude = abs(z)  # 5
+        angle = arg(z)      # atan(4/3)
+
+        # Polar form
+        polar = magnitude * exp(I * angle)
+      nodejs: |
+        const z = expr('3 + 4*I');
+
+        const magnitude = abs(z);  // 5
+        const angle = arg(z);      // atan(4/3)
+
+        // Polar form
+        const polar = magnitude.mul(exp(I.mul(angle)));
+
+related_topics:
+  - "core.numbers"
+  - "core.functions"
+  - "operations.trigonometry"
+  - "advanced.special_functions"
+
+performance:
+  complexity: "O(1)"
+  typical_time: "0.1ms"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/complex-numbers.md"
+  timestamp: "2025-12-15T18:25:00Z"

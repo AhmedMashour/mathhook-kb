@@ -55,25 +55,35 @@ impl LatexGenerator {
 
         let empty_sections: Vec<tera::Map<String, tera::Value>> = vec![];
         if let Some(article) = &schema.article {
-            context.insert("introduction", &article.introduction.hook);
+            use kb_core::schema::Article;
+            match article {
+                Article::Simple(simple) => {
+                    // For simple articles, use content as introduction
+                    context.insert("introduction", &simple.content);
+                    context.insert("sections", &empty_sections);
+                }
+                Article::Structured(structured) => {
+                    context.insert("introduction", &structured.introduction.hook);
 
-            let sections: Vec<_> = article
-                .sections
-                .iter()
-                .map(|s| {
-                    let mut sec = tera::Map::new();
-                    sec.insert("title".to_string(), tera::Value::String(s.title.clone()));
-                    sec.insert(
-                        "content".to_string(),
-                        tera::Value::String(s.content.clone()),
-                    );
-                    sec
-                })
-                .collect();
-            context.insert("sections", &sections);
+                    let sections: Vec<_> = structured
+                        .sections
+                        .iter()
+                        .map(|s| {
+                            let mut sec = tera::Map::new();
+                            sec.insert("title".to_string(), tera::Value::String(s.title.clone()));
+                            sec.insert(
+                                "content".to_string(),
+                                tera::Value::String(s.content.clone()),
+                            );
+                            sec
+                        })
+                        .collect();
+                    context.insert("sections", &sections);
 
-            if let Some(conclusion) = &article.conclusion {
-                context.insert("conclusion", &conclusion.summary);
+                    if let Some(conclusion) = &structured.conclusion {
+                        context.insert("conclusion", &conclusion.summary);
+                    }
+                }
             }
         } else {
             context.insert("sections", &empty_sections);
@@ -221,11 +231,11 @@ mod tests {
             title: "Test Example".to_string(),
             description: "A test example".to_string(),
             mathematical_definition: Some("f(x) = x^2".to_string()),
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::example".to_string(),
                 python: "test.example".to_string(),
                 nodejs: "test.example".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Power Rule".to_string(),
                 explanation: "Test explanation".to_string(),

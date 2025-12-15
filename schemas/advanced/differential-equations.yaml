@@ -1,0 +1,93 @@
+# Advanced: Differential Equations - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:25:30 UTC
+# Source: mathhook/docs/src/advanced/differential-equations.md
+
+topic: "advanced.differential_equations"
+title: "Differential Equation Solving"
+description: |
+  Solve ordinary differential equations (ODEs) and partial differential equations
+  (PDEs) symbolically in MathHook, with support for initial conditions, boundary
+  conditions, and various solution methods.
+
+mathematical_definition: |
+  Ordinary Differential Equation (ODE):
+  $$F\left(x, y, \frac{dy}{dx}, \frac{d^2y}{dx^2}, \ldots\right) = 0$$
+
+  Partial Differential Equation (PDE):
+  $$F\left(x, y, u, \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y}, \ldots\right) = 0$$
+
+code_refs:
+  rust: "mathhook_core::solvers::ode"
+  python: "mathhook.solvers.ode"
+  nodejs: "mathhook.solvers.ode"
+
+examples:
+  - title: "First-Order ODE"
+    explanation: "Solve dy/dx = 2x with initial condition y(0) = 1"
+    code:
+      rust: |
+        let x = symbol!(x);
+        let y = Function::new("y", vec![x.clone()]);
+
+        let ode = expr!(diff(y, x) - 2*x);
+        let solver = ODESolver::new();
+
+        let solution = solver.solve(&ode, &y, Some((&x, expr!(0), expr!(1))));
+        // Result: y = x^2 + 1
+      python: |
+        x = symbol('x')
+        y = Function('y')(x)
+
+        ode = diff(y, x) - 2*x
+        solution = dsolve(ode, y, ics={y.subs(x, 0): 1})
+        # Result: y = x**2 + 1
+      nodejs: |
+        const x = symbol('x');
+        const y = func('y', [x]);
+
+        const ode = diff(y, x).sub(mul(2, x));
+        const solution = ode_solve(ode, y, {x0: 0, y0: 1});
+        // Result: y = x^2 + 1
+
+  - title: "Second-Order Linear ODE"
+    explanation: "Solve y'' + y = 0 (simple harmonic oscillator)"
+    code:
+      rust: |
+        let x = symbol!(x);
+        let y = Function::new("y", vec![x.clone()]);
+
+        let ode = expr!(diff(y, x, 2) + y);
+        let solution = ode_solver.solve(&ode, &y, None);
+        // Result: y = C1*cos(x) + C2*sin(x)
+      python: |
+        x = symbol('x')
+        y = Function('y')(x)
+
+        ode = diff(y, x, 2) + y
+        solution = dsolve(ode, y)
+        # Result: y = C1*cos(x) + C2*sin(x)
+      nodejs: |
+        const x = symbol('x');
+        const y = func('y', [x]);
+
+        const ode = diff(y, x, 2).add(y);
+        const solution = ode_solve(ode, y);
+        // Result: y = C1*cos(x) + C2*sin(x)
+
+related_topics:
+  - "operations.differentiation"
+  - "operations.integration"
+  - "operations.solving"
+  - "advanced.pde"
+  - "advanced.system_solving"
+
+use_cases:
+  - "Physics: Newton's laws, harmonic oscillators"
+  - "Engineering: Circuit analysis, control systems"
+  - "Biology: Population dynamics, epidemiology"
+  - "Chemistry: Reaction kinetics"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/differential-equations.md"
+  timestamp: "2025-12-15T18:25:30Z"

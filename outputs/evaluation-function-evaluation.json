@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "MathHook provides a unified, intelligent function evaluation system that handles both symbolic\nand numerical computation. The system uses the Universal Function Registry architecture to\ndispatch function calls to specialized implementations while maintaining mathematical correctness.\n",
+    "title": "Function Evaluation",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/evaluation/function-evaluation": {
+      "post": {
+        "description": "MathHook provides a unified, intelligent function evaluation system that handles both symbolic\nand numerical computation. The system uses the Universal Function Registry architecture to\ndispatch function calls to specialized implementations while maintaining mathematical correctness.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "composite_expression_evaluation": {
+                  "description": "Mixed symbolic and numeric evaluation",
+                  "summary": "Composite Expression Evaluation",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "elementary_functions": {
+                  "description": "Evaluating basic trigonometric and exponential functions",
+                  "summary": "Elementary Functions",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "special_value_evaluation": {
+                  "description": "Automatic simplification of known exact values",
+                  "summary": "Special Value Evaluation",
+                  "value": {
+                    "expression": "expr('sin(0)')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Function Evaluation",
+        "tags": [
+          "evaluation"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "evaluation operations",
+      "name": "evaluation"
+    }
+  ]
+}

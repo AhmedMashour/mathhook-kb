@@ -212,10 +212,18 @@ fn validate_command(schema_path: PathBuf) -> Result<()> {
     println!("   Examples: {}", schema.examples.len());
 
     if let Some(article) = &schema.article {
-        println!("   Article sections: {}", article.sections.len());
-        println!("   Sidebars: {}", article.sidebars.len());
-        if let Some(conclusion) = &article.conclusion {
-            println!("   Exercises: {}", conclusion.exercises.len());
+        use kb_core::schema::Article;
+        match article {
+            Article::Simple(_) => {
+                println!("   Article: Simple content");
+            }
+            Article::Structured(structured) => {
+                println!("   Article sections: {}", structured.sections.len());
+                println!("   Sidebars: {}", structured.sidebars.len());
+                if let Some(conclusion) = &structured.conclusion {
+                    println!("   Exercises: {}", conclusion.exercises.len());
+                }
+            }
         }
     }
 

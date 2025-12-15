@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Classical orthogonal polynomial families including Legendre, Chebyshev (1st and 2nd kind),\nHermite, and Laguerre polynomials with both symbolic expansion and numerical evaluation capabilities.\n",
+    "title": "Special Polynomial Families",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/polynomial/special-families": {
+      "post": {
+        "description": "Classical orthogonal polynomial families including Legendre, Chebyshev (1st and 2nd kind),\nHermite, and Laguerre polynomials with both symbolic expansion and numerical evaluation capabilities.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "chebyshev_polynomials_(first_kind)": {
+                  "description": "Defined by T_n(cos(theta)) = cos(n*theta)",
+                  "summary": "Chebyshev Polynomials (First Kind)",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "hermite_polynomials": {
+                  "description": "Solutions to Hermite's equation (physicist's convention)",
+                  "summary": "Hermite Polynomials",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "legendre_polynomials": {
+                  "description": "Solutions to Legendre's differential equation",
+                  "summary": "Legendre Polynomials",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Special Polynomial Families",
+        "tags": [
+          "polynomial"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "polynomial operations",
+      "name": "polynomial"
+    }
+  ]
+}

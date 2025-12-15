@@ -1,0 +1,47 @@
+topic: "architecture.function-intelligence"
+title: "Function Intelligence System"
+description: |
+  MathHook's function intelligence registry that enables automatic simplification,
+  differentiation, and symbolic manipulation of mathematical functions.
+
+article:
+  content: |
+    # Function Intelligence System
+
+    This chapter covers internal implementation details of the function intelligence system.
+
+    ## Function Registry
+
+    MathHook maintains a global registry of mathematical functions with their properties:
+
+    - **Differentiation rules**: How to differentiate each function
+    - **Simplification patterns**: Known identities and simplifications
+    - **Domain restrictions**: Valid input ranges
+    - **Special values**: Function behavior at key points
+
+    ## Automatic Simplification
+
+    The function intelligence system enables automatic simplification based on:
+
+    - Known identities (sin²(x) + cos²(x) = 1)
+    - Special values (sin(0) = 0, log(1) = 0)
+    - Composition rules (sin(asin(x)) = x)
+
+    ## Symbolic Differentiation
+
+    Functions in the registry include differentiation rules:
+
+    - Elementary functions (sin, cos, exp, log)
+    - Hyperbolic functions (sinh, cosh, tanh)
+    - Special functions (gamma, beta, erf)
+
+code_refs:
+  rust: "mathhook_core::function_registry"
+
+related_topics:
+  - "architecture.principles"
+  - "architecture.type-system"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "architecture/function-intelligence.md"

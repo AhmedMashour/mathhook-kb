@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Rigorous mathematical treatment of partial differential equations with proofs and references.\nCovers formal definitions, method of characteristics with geometric interpretation, existence\nand uniqueness theory (Cauchy-Kovalevskaya theorem), nonlinear PDEs, shock formation, weak\nsolutions, Rankine-Hugoniot jump conditions, and real-world applications (traffic flow,\ngroundwater contaminant transport). Includes complete derivations and MathHook implementation details.\n",
+    "title": "PDE Technical Guide - Mathematical Foundation and Implementation",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/technical_guide": {
+      "post": {
+        "description": "Rigorous mathematical treatment of partial differential equations with proofs and references.\nCovers formal definitions, method of characteristics with geometric interpretation, existence\nand uniqueness theory (Cauchy-Kovalevskaya theorem), nonlinear PDEs, shock formation, weak\nsolutions, Rankine-Hugoniot jump conditions, and real-world applications (traffic flow,\ngroundwater contaminant transport). Includes complete derivations and MathHook implementation details.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "burgers'_equation_(shock_formation_analysis)": {
+                  "description": "Demonstrate shock formation in Burgers' equation with Rankine-Hugoniot condition",
+                  "summary": "Burgers' Equation (Shock Formation Analysis)",
+                  "value": {
+                    "expression": "0"
+                  }
+                },
+                "traffic_flow_model_(lighthill-whitham-richards)": {
+                  "description": "Real-world application of conservation laws to traffic flow",
+                  "summary": "Traffic Flow Model (Lighthill-Whitham-Richards)",
+                  "value": {
+                    "expression": "100.0    # km/h"
+                  }
+                },
+                "transport_equation_(complete_derivation)": {
+                  "description": "Rigorous derivation of transport equation solution using method of characteristics",
+                  "summary": "Transport Equation (Complete Derivation)",
+                  "value": {
+                    "expression": "0 with u(x,0)"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "PDE Technical Guide - Mathematical Foundation and Implementation",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

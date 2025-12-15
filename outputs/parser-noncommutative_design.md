@@ -1,0 +1,406 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Parser Design for Noncommutative Algebra
+
+> **Topic**: `parser.noncommutative_design`
+
+Design documentation for MathHook's type-aware LaTeX parser that automatically infers symbol types.
+Enables seamless support for noncommutative algebra without explicit type annotations in mathematical expressions.
+
+
+
+
+
+# Parser Design for Noncommutative Algebra
+
+Design documentation for MathHook's type-aware LaTeX parser that automatically infers symbol types.
+
+## Overview
+
+The parser implements automatic type inference from LaTeX notation, enabling seamless support for noncommutative algebra without explicit type annotations in mathematical expressions.
+
+**Key Innovation**: LaTeX notation implicitly encodes symbol types:
+- `\mathbf{A}` → Matrix (noncommutative)
+- `\hat{p}` → Operator (noncommutative)
+- `x` → Scalar (commutative, default)
+
+## Design Rationale
+
+### Why LaTeX Notation?
+
+1. **Universal Standard**: LaTeX is the de facto standard for mathematical typesetting
+2. **Rich Semantics**: Notation conventions already encode meaning (bold for matrices, hat for operators)
+3. **User Familiarity**: Mathematicians and physicists already know these conventions
+4. **Minimal Overhead**: No separate type annotation syntax needed
+
+### Advantages Over Explicit Typing
+
+**With Type Inference** (our approach):
+```latex
+\mathbf{A}\mathbf{X} = \mathbf{B}
+```
+
+**Without Type Inference** (alternative):
+```
+matrix A * matrix X = matrix B
+```
+
+Benefits:
+- Cleaner syntax
+- Standard mathematical notation
+- No learning curve for users
+- Automatic type propagation
+
+## Type Inference Rules
+
+### Matrix Type
+
+**Trigger**: `\mathbf{identifier}`
+
+**Rationale**: Mathematical convention uses bold for matrices and vectors
+
+**Examples**:
+```latex
+\mathbf{A}     → Matrix symbol A
+\mathbf{B}     → Matrix symbol B
+\mathbf{x}     → Matrix symbol x (vector)
+```
+
+**Implementation**:
+- Parser detects `\mathbf{...}` pattern
+- Creates symbol with `SymbolType::Matrix`
+- Preserves identifier name inside braces
+
+### Operator Type
+
+**Trigger**: `\hat{identifier}`
+
+**Rationale**: Quantum mechanics convention uses hat notation for operators
+
+**Examples**:
+```latex
+\hat{p}        → Operator symbol p (momentum)
+\hat{x}        → Operator symbol x (position)
+\hat{H}        → Operator symbol H (Hamiltonian)
+```
+
+**Implementation**:
+- Parser detects `\hat{...}` pattern
+- Creates symbol with `SymbolType::Operator`
+- Preserves identifier name inside braces
+
+### Scalar Type (Default)
+
+**Trigger**: Plain identifier (no special notation)
+
+**Rationale**: Standard variables are commutative by default
+
+**Examples**:
+```latex
+x              → Scalar symbol x
+y              → Scalar symbol y
+\theta         → Scalar symbol theta
+```
+
+## Type System Integration
+
+### Symbol Type Enum
+
+```rust
+pub enum SymbolType {
+    Scalar,      // Commutative (default)
+    Matrix,      // Noncommutative
+    Operator,    // Noncommutative
+    Quaternion,  // Noncommutative
+}
+```
+
+### Commutativity Propagation
+
+**Rule**: Expression is noncommutative if any operand is noncommutative
+
+**Implementation**:
+```rust
+fn commutativity(expr: &Expression) -> Commutativity {
+    match expr {
+        Expression::Symbol(sym) => sym.commutativity(),
+        Expression::Mul(factors) => {
+            if factors.iter().any(|f| f.is_noncommutative()) {
+                Commutativity::Noncommutative
+            } else {
+                Commutativity::Commutative
+            }
+        }
+        // ... similar for other operations
+    }
+}
+```
+
+### Type Preservation
+
+**Guarantee**: Symbol types preserved through all operations
+
+## Implementation Challenges
+
+### Challenge 1: Parser State Management
+
+**Problem**: LALRPOP is stateless; cannot maintain type context
+
+**Solution**: Encode types in syntax tree structure (symbol metadata)
+
+**Result**: Type information flows through AST naturally
+
+### Challenge 2: Backward Compatibility
+
+**Problem**: Existing code assumes all symbols are scalars
+
+**Solution**: Default to scalar type; noncommutative types opt-in via notation
+
+**Result**: Zero breaking changes to existing code
+
+### Challenge 3: Performance
+
+**Problem**: Type checking on every operation could be expensive
+
+**Solution**: Cache type information in symbol itself (O(1) lookup)
+
+**Result**: No performance regression
+
+## Testing Strategy
+
+### Unit Tests
+
+Test individual type inference rules:
+
+1. `\mathbf{A}` → Matrix
+2. `\hat{p}` → Operator
+3. `x` → Scalar
+4. Mixed expressions preserve types
+
+### Integration Tests
+
+Test end-to-end workflows:
+
+1. Parse → Solve → Format
+2. Type preservation through operations
+3. Correct LaTeX output formatting
+
+### Edge Case Tests
+
+Test boundary conditions:
+
+1. Nested notation
+2. Malformed LaTeX
+3. Mixed notation precedence
+4. Empty identifiers
+5. Special characters
+
+
+
+
+
+
+
+
+
+
+
+
+## Examples
+
+
+### Matrix Type Inference
+
+LaTeX bold notation creates matrix symbols
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::parser::latex::parse_latex;
+
+// Bold notation → Matrix symbols
+let expr = parse_latex(r"\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}")?;
+
+// A and B are noncommutative matrices
+// A*B ≠ B*A in general
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook.parser import parse_latex
+
+# Bold notation → Matrix symbols
+expr = parse_latex(r"\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}")
+
+# A and B are noncommutative matrices
+# A*B ≠ B*A in general
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { parseLatex } = require('mathhook');
+
+// Bold notation → Matrix symbols
+const expr = parseLatex(String.raw`\mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}`);
+
+// A and B are noncommutative matrices
+// A*B ≠ B*A in general
+
+```
+</details>
+
+
+
+
+### Operator Type Inference
+
+LaTeX hat notation creates operator symbols
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::parser::latex::parse_latex;
+
+// Hat notation → Operator symbols
+let expr = parse_latex(r"[\hat{x}, \hat{p}] = i\hbar")?;
+
+// Canonical commutation relation
+// x and p are noncommutative operators
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook.parser import parse_latex
+
+# Hat notation → Operator symbols
+expr = parse_latex(r"[\hat{x}, \hat{p}] = i\hbar")
+
+# Canonical commutation relation
+# x and p are noncommutative operators
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { parseLatex } = require('mathhook');
+
+// Hat notation → Operator symbols
+const expr = parseLatex(String.raw`[\hat{x}, \hat{p}] = i\hbar`);
+
+// Canonical commutation relation
+// x and p are noncommutative operators
+
+```
+</details>
+
+
+
+
+### Mixed Type Expression
+
+Different symbol types in same expression
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook::parser::latex::parse_latex;
+
+// Quantum mechanics: scalar + operators + matrix
+let expr = parse_latex(r"\hbar \omega \hat{a}^\dagger \hat{a} + \mathbf{H}_0")?;
+
+// ℏ and ω: scalars (commutative)
+// â†, â: operators (noncommutative)
+// H₀: matrix (noncommutative)
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook.parser import parse_latex
+
+# Quantum mechanics: scalar + operators + matrix
+expr = parse_latex(r"\hbar \omega \hat{a}^\dagger \hat{a} + \mathbf{H}_0")
+
+# ℏ and ω: scalars (commutative)
+# â†, â: operators (noncommutative)
+# H₀: matrix (noncommutative)
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { parseLatex } = require('mathhook');
+
+// Quantum mechanics: scalar + operators + matrix
+const expr = parseLatex(String.raw`\hbar \omega \hat{a}^\dagger \hat{a} + \mathbf{H}_0`);
+
+// ℏ and ω: scalars (commutative)
+// â†, â: operators (noncommutative)
+// H₀: matrix (noncommutative)
+
+```
+</details>
+
+
+
+
+
+
+## Performance
+
+**Time Complexity**: O(1) - Type stored in symbol metadata
+
+
+## API Reference
+
+- **Rust**: `mathhook_core::parser::type_inference`
+- **Python**: `mathhook.parser.type_inference`
+- **JavaScript**: `mathhook.parser.typeInference`
+
+
+## See Also
+
+
+- [parser.latex](../parser/latex.md)
+
+- [core.symbols](../core/symbols.md)
+
+- [core.expressions](../core/expressions.md)
+
+- [advanced.noncommutative_algebra](../advanced/noncommutative_algebra.md)
+
+

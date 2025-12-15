@@ -4,9 +4,26 @@
 /// that can be rendered differently across output formats (tutorial vs reference vs marketing).
 use serde::{Deserialize, Serialize};
 
-/// Complete article structure with introduction, body sections, and conclusion
+/// Complete article structure - supports both simple content and structured format
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct Article {
+#[serde(untagged)]
+pub enum Article {
+    /// Simple markdown content (most common)
+    Simple(SimpleArticle),
+    /// Structured article with introduction, sections, conclusion
+    Structured(StructuredArticle),
+}
+
+/// Simple article with just markdown content
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct SimpleArticle {
+    /// Markdown content
+    pub content: String,
+}
+
+/// Structured article with introduction, body sections, and conclusion
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct StructuredArticle {
     /// Article introduction (sets context, explains importance)
     pub introduction: Introduction,
 
@@ -25,6 +42,27 @@ pub struct Article {
     /// Format-specific variations
     #[serde(skip_serializing_if = "Option::is_none")]
     pub variations: Option<ArticleVariations>,
+}
+
+impl Article {
+    /// Get the content as markdown string (works for both variants)
+    pub fn to_markdown(&self) -> String {
+        match self {
+            Article::Simple(s) => s.content.clone(),
+            Article::Structured(s) => {
+                let mut md = String::new();
+                md.push_str(&s.introduction.hook);
+                md.push_str("\n\n");
+                for section in &s.sections {
+                    md.push_str(&format!("## {}\n\n{}\n\n", section.title, section.content));
+                }
+                if let Some(conclusion) = &s.conclusion {
+                    md.push_str(&format!("## Conclusion\n\n{}\n", conclusion.summary));
+                }
+                md
+            }
+        }
+    }
 }
 
 /// Introduction section

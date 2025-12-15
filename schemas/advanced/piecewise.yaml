@@ -1,0 +1,174 @@
+# Advanced: Piecewise Functions - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:29:30 UTC
+# Source: mathhook/docs/src/advanced/piecewise.md
+
+topic: "advanced.piecewise"
+title: "Piecewise Functions"
+description: |
+  Define functions with different formulas in different regions, essential for
+  modeling discontinuous behavior, conditional logic, step functions, and
+  threshold-based systems.
+
+mathematical_definition: |
+  Piecewise function:
+  $$f(x) = \begin{cases}
+  f_1(x) & \text{if } C_1(x) \\
+  f_2(x) & \text{if } C_2(x) \\
+  \vdots & \\
+  f_n(x) & \text{if } C_n(x) \\
+  f_{\text{default}} & \text{otherwise}
+  \end{cases}$$
+
+code_refs:
+  rust: "mathhook_core::piecewise"
+  python: "mathhook.piecewise"
+  nodejs: "mathhook.piecewise"
+
+examples:
+  - title: "Absolute Value Function"
+    explanation: "|x| = { x if x ≥ 0, -x if x < 0 }"
+    code:
+      rust: |
+        let x = symbol!(x);
+
+        let abs_x = Expression::piecewise(
+            vec![
+                (expr!(x), expr!(x >= 0)),
+                (expr!(-x), expr!(x < 0)),
+            ],
+            None,
+        );
+      python: |
+        from sympy import symbols, Piecewise
+
+        x = symbols('x')
+        abs_x = Piecewise((x, x >= 0), (-x, x < 0))
+      nodejs: |
+        const x = symbol('x');
+
+        const abs_x = piecewise([
+            [x, ge(x, 0)],
+            [neg(x), lt(x, 0)]
+        ]);
+
+  - title: "Heaviside Step Function"
+    explanation: "H(x) = { 0 if x < 0, 1 if x ≥ 0 }"
+    code:
+      rust: |
+        let x = symbol!(x);
+
+        let heaviside = Expression::piecewise(
+            vec![
+                (expr!(0), expr!(x < 0)),
+                (expr!(1), expr!(x >= 0)),
+            ],
+            None,
+        );
+      python: |
+        from sympy import symbols, Heaviside
+
+        x = symbols('x')
+        H = Heaviside(x)  # Built-in Heaviside function
+      nodejs: |
+        const x = symbol('x');
+
+        const H = piecewise([
+            [0, lt(x, 0)],
+            [1, ge(x, 0)]
+        ]);
+
+  - title: "Tax Bracket Example"
+    explanation: "Progressive tax with income thresholds"
+    code:
+      rust: |
+        let income = symbol!(income);
+
+        // 10% on first $10k, 12% on next $30k, 22% on remainder
+        let tax = Expression::piecewise(
+            vec![
+                (expr!(0.10 * income), expr!(income <= 10000)),
+                (expr!(1000 + 0.12 * (income - 10000)), expr!(income <= 40000)),
+            ],
+            Some(expr!(4600 + 0.22 * (income - 40000))),
+        );
+
+        // Calculate tax for $50,000
+        let tax_owed = tax.substitute(&income, &expr!(50000));
+        // Result: 4600 + 0.22 * 10000 = $6,800
+      python: |
+        from sympy import symbols, Piecewise
+
+        income = symbols('income')
+
+        tax = Piecewise(
+            (0.10 * income, income <= 10000),
+            (1000 + 0.12 * (income - 10000), income <= 40000),
+            (4600 + 0.22 * (income - 40000), True)
+        )
+
+        tax_owed = tax.subs(income, 50000)
+        # Result: 6800
+      nodejs: |
+        const income = symbol('income');
+
+        const tax = piecewise([
+            [mul(0.10, income), le(income, 10000)],
+            [add(1000, mul(0.12, sub(income, 10000))), le(income, 40000)],
+            [add(4600, mul(0.22, sub(income, 40000))), true]
+        ]);
+
+        const tax_owed = tax.subs(income, 50000);
+
+  - title: "Differentiation of Piecewise"
+    explanation: "Derivative computed piece-by-piece"
+    code:
+      rust: |
+        let x = symbol!(x);
+
+        // f(x) = { x^2 if x ≥ 0, -x^2 if x < 0 }
+        let f = Expression::piecewise(
+            vec![
+                (expr!(x^2), expr!(x >= 0)),
+                (expr!(-x^2), expr!(x < 0)),
+            ],
+            None,
+        );
+
+        // Derivative
+        let df = f.derivative(&x, 1);
+        // Result: { 2x if x ≥ 0, -2x if x < 0 }
+      python: |
+        from sympy import symbols, Piecewise, diff
+
+        x = symbols('x')
+        f = Piecewise((x**2, x >= 0), (-x**2, x < 0))
+
+        df = diff(f, x)
+        # Result: Piecewise((2*x, x > 0), (-2*x, x < 0))
+      nodejs: |
+        const x = symbol('x');
+
+        const f = piecewise([
+            [pow(x, 2), ge(x, 0)],
+            [neg(pow(x, 2)), lt(x, 0)]
+        ]);
+
+        const df = diff(f, x);
+
+related_topics:
+  - "core.functions"
+  - "operations.solving"
+  - "operations.differentiation"
+  - "operations.integration"
+  - "advanced.assumptions"
+
+use_cases:
+  - "Physics: Step functions, potential barriers"
+  - "Economics: Tax brackets, tiered pricing"
+  - "Engineering: Saturating amplifiers, clipping"
+  - "Signal processing: Filters, thresholding"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/piecewise.md"
+  timestamp: "2025-12-15T18:29:30Z"

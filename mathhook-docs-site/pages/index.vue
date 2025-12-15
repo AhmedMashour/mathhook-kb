@@ -70,7 +70,7 @@
             Symbolic Power. Educational Clarity. Native Speed.
           </p>
           <p class="text-lg text-chalk-400 max-w-2xl mx-auto leading-relaxed">
-            The high-performance computer algebra system written in Rust with first-class bindings for Python and Node.js
+            A Rust computer algebra system with native Python and Node.js bindings. No GC, no compromises.
           </p>
         </div>
 
@@ -87,8 +87,8 @@
           </div>
           <div class="w-px h-10 bg-logic-navy-700"></div>
           <div class="text-center">
-            <div class="text-2xl font-bold text-step-green">21+</div>
-            <div class="text-chalk-500">Math topics</div>
+            <div class="text-2xl font-bold text-step-green">0</div>
+            <div class="text-chalk-500">Dependencies</div>
           </div>
         </div>
 
@@ -376,7 +376,7 @@
 
         <div class="mt-10 text-center">
           <NuxtLink to="/docs" class="inline-flex items-center gap-2 px-5 py-2.5 bg-logic-navy-800 border border-logic-navy-600 rounded-lg text-chalk hover:bg-logic-navy-700 transition-colors">
-            Explore all 21+ topics
+            Explore all topics
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
           </NuxtLink>
         </div>

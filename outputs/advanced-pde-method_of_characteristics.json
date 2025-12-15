@@ -1,0 +1,141 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "The Method of Characteristics is the primary technique for solving first-order\npartial differential equations (PDEs). It transforms the PDE into a system of\nordinary differential equations (ODEs) that can be solved along special curves\ncalled characteristic curves.\n",
+    "title": "Method of Characteristics",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/method_of_characteristics": {
+      "post": {
+        "description": "The Method of Characteristics is the primary technique for solving first-order\npartial differential equations (PDEs). It transforms the PDE into a system of\nordinary differential equations (ODEs) that can be solved along special curves\ncalled characteristic curves.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "general_usage_pattern": {
+                  "description": "Standard pattern for using method of characteristics in MathHook",
+                  "summary": "General Usage Pattern",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "transport_equation_solution": {
+                  "description": "Solving the transport equation using method of characteristics",
+                  "summary": "Transport Equation Solution",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Method of Characteristics",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

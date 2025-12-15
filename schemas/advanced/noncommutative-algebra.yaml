@@ -1,0 +1,142 @@
+# Advanced: Noncommutative Algebra - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:27:00 UTC
+# Source: mathhook/docs/src/advanced/noncommutative-algebra.md
+
+topic: "advanced.noncommutative_algebra"
+title: "Noncommutative Algebra"
+description: |
+  Support for noncommutative algebra in MathHook with four symbol types:
+  Scalar (commutative), Matrix, Operator, and Quaternion (all noncommutative).
+  Essential for quantum mechanics, linear algebra, and 3D rotations.
+
+mathematical_definition: |
+  Noncommutative multiplication: $$A \times B \neq B \times A$$
+
+  Symbol types:
+  - Scalar: $x \cdot y = y \cdot x$ (commutative)
+  - Matrix: $A \cdot B \neq B \cdot A$ (noncommutative)
+  - Operator: $[\hat{x}, \hat{p}] = \hat{x}\hat{p} - \hat{p}\hat{x} \neq 0$
+  - Quaternion: $i \cdot j = k$, but $j \cdot i = -k$
+
+code_refs:
+  rust: "mathhook_core::noncommutative"
+  python: "mathhook.noncommutative"
+  nodejs: "mathhook.noncommutative"
+
+examples:
+  - title: "Matrix Symbols"
+    explanation: "Create noncommutative matrix symbols"
+    code:
+      rust: |
+        let A = symbol!(A; matrix);
+        let B = symbol!(B; matrix);
+
+        // Order matters!
+        let AB = expr!(A * B);  // A*B
+        let BA = expr!(B * A);  // B*A ≠ A*B
+      python: |
+        A = MatrixSymbol('A', n, n)
+        B = MatrixSymbol('B', n, n)
+
+        AB = A * B  # Noncommutative
+        BA = B * A  # Different!
+      nodejs: |
+        const A = symbol('A', {type: 'matrix'});
+        const B = symbol('B', {type: 'matrix'});
+
+        const AB = A.mul(B);  // Noncommutative
+        const BA = B.mul(A);  // Different!
+
+  - title: "Quantum Operators"
+    explanation: "Position and momentum operators (canonical commutation relation)"
+    code:
+      rust: |
+        let x = symbol!(x; operator);
+        let p = symbol!(p; operator);
+
+        // Commutator: [x, p] = xp - px
+        let commutator = expr!((x * p) - (p * x));
+        // Physical result: [x, p] = iℏ
+      python: |
+        x = Operator('x')
+        p = Operator('p')
+
+        # Commutator
+        commutator = Commutator(x, p)
+        # Result: I*hbar
+      nodejs: |
+        const x = symbol('x', {type: 'operator'});
+        const p = symbol('p', {type: 'operator'});
+
+        // Commutator
+        const comm = x.mul(p).sub(p.mul(x));
+
+  - title: "Quaternions"
+    explanation: "3D rotation with quaternion multiplication"
+    code:
+      rust: |
+        let i = symbol!(i; quaternion);
+        let j = symbol!(j; quaternion);
+
+        let ij = expr!(i * j);  // i*j = k
+        let ji = expr!(j * i);  // j*i = -k (different!)
+      python: |
+        from sympy.algebras.quaternion import Quaternion
+
+        i = Quaternion(0, 1, 0, 0)
+        j = Quaternion(0, 0, 1, 0)
+
+        ij = i * j  # k
+        ji = j * i  # -k
+      nodejs: |
+        const i = symbol('i', {type: 'quaternion'});
+        const j = symbol('j', {type: 'quaternion'});
+
+        const ij = i.mul(j);  // k
+        const ji = j.mul(i);  // -k
+
+  - title: "LaTeX Type Inference"
+    explanation: "Parser infers types from LaTeX notation"
+    code:
+      rust: |
+        let parser = Parser::new(ParserConfig::default());
+
+        // Bold notation → Matrix type
+        let eq1 = parser.parse(r"\mathbf{A}\mathbf{X} = \mathbf{B}").unwrap();
+
+        // Hat notation → Operator type
+        let eq2 = parser.parse(r"\hat{H}\hat{\psi} = E\hat{\psi}").unwrap();
+      python: |
+        from sympy.parsing.latex import parse_latex
+
+        # Bold → Matrix
+        eq1 = parse_latex(r'\mathbf{A}\mathbf{X} = \mathbf{B}')
+
+        # Hat → Operator
+        eq2 = parse_latex(r'\hat{H}\hat{\psi} = E\hat{\psi}')
+      nodejs: |
+        const parser = new Parser();
+
+        // Bold → Matrix
+        const eq1 = parser.parse('\\mathbf{A}\\mathbf{X} = \\mathbf{B}');
+
+        // Hat → Operator
+        const eq2 = parser.parse('\\hat{H}\\hat{\\psi} = E\\hat{\\psi}');
+
+related_topics:
+  - "advanced.matrices"
+  - "advanced.noncommutative_api_reference"
+  - "advanced.noncommutative_examples"
+  - "core.symbols"
+  - "parser.latex"
+
+use_cases:
+  - "Quantum mechanics: Operator algebra, commutators"
+  - "Linear algebra: Matrix equations, transformations"
+  - "3D graphics: Quaternion rotations"
+  - "Physics: Angular momentum, spin operators"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/noncommutative-algebra.md"
+  timestamp: "2025-12-15T18:27:00Z"

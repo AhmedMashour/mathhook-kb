@@ -1,0 +1,266 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Matrix Operations and Noncommutative Algebra }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Symbolic and numeric matrix operations with full support for noncommutative algebra.
+Matrix symbols preserve multiplication order (AB ≠ BA), enabling correct handling of
+linear algebra, quantum mechanics operators, and transformation matrices.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Matrix Operations
+
+## Overview
+
+MathHook provides comprehensive matrix support with:
+- **Noncommutative multiplication**: Order preserved ($AB \neq BA$)
+- **Matrix symbols**: Distinguished from scalar symbols
+- **Left/Right division**: Correct handling for matrix equations
+- **Special matrices**: Identity, zero, diagonal
+- **LaTeX rendering**: Bold notation for matrices ($\mathbf{A}$)
+
+## Matrix Symbol Types
+
+### Creating Matrix Symbols
+Use `symbol!(name; matrix)` to create noncommutative matrix symbols:
+```rust
+let A = symbol!(A; matrix);
+let B = symbol!(B; matrix);
+```
+
+### Why Type Matters
+- **Noncommutative multiplication**: $AB \neq BA$
+- **LaTeX formatting**: Rendered as $\mathbf{A}$ (bold)
+- **Equation solving**: Left vs right division distinguished
+- **Educational messages**: Order-aware explanations
+
+## Matrix Operations
+
+### Multiplication (NONCOMMUTATIVE!)
+Order matters for matrix multiplication:
+- $A \times B \neq B \times A$ (general)
+- $(AB)C = A(BC)$ (associative)
+- Dimension compatibility: $A_{m \times n} \cdot B_{n \times p} = C_{m \times p}$
+
+### Addition/Subtraction (Commutative)
+Element-wise operations:
+- $A + B = B + A$ (commutative)
+- Must have same dimensions
+
+### Matrix Equations
+**Left Division**: $AX = B \Rightarrow X = A^{-1}B$
+**Right Division**: $XA = B \Rightarrow X = BA^{-1}$
+
+**Important**: $A^{-1}B \neq BA^{-1}$ in general!
+
+## Mathematical Background
+
+### Matrix Multiplication
+For $A_{m \times n}$ and $B_{n \times p}$:
+$$C_{ij} = \sum_{k=1}^{n} A_{ik} B_{kj}$$
+
+### Matrix Inverse
+For square matrix $A$, if $A^{-1}$ exists:
+$$A \times A^{-1} = A^{-1} \times A = I$$
+
+### Determinant (2×2)
+$$\det\begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc$$
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Creating Matrix Symbols }
+
+Matrix symbols are noncommutative - order matters
+
+\begin{lstlisting}
+from mathhook import symbol
+
+# Matrix symbols (noncommutative)
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+X = symbol('X', matrix=True)
+
+# Matrix multiplication - ORDER MATTERS!
+product_ab = A * B  # A*B
+product_ba = B * A  # B*A ≠ A*B
+
+# Matrix equation
+equation = A * X
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Creating Numeric Matrices }
+
+Build matrices from expression arrays
+
+\begin{lstlisting}
+from mathhook import Matrix, symbol
+
+x = symbol('x')
+
+# 2×2 matrix with symbolic entries
+matrix = Matrix([
+    [x, 1],
+    [0, x]
+])
+
+# 3×3 identity matrix
+identity = Matrix.identity(3)
+
+# Zero matrix
+zero = Matrix.zero(2, 3)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Multiplication (Critical!) }
+
+Order matters - demonstrate noncommutativity
+
+\begin{lstlisting}
+from mathhook import symbol
+
+A = symbol('A', matrix=True)
+B = symbol('B', matrix=True)
+C = symbol('C', matrix=True)
+
+# Order matters!
+ab = A * B  # AB
+ba = B * A  # BA ≠ AB
+
+# Associative
+abc_left = (A * B) * C   # (AB)C
+abc_right = A * (B * C)  # A(BC)
+# These are equal
+
+# Mixed scalar-matrix
+x = symbol('x')
+xAB = x * A * B  # Scalars commute with matrices
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Left Division vs Right Division }
+
+Solving matrix equations correctly
+
+\begin{lstlisting}
+from mathhook import symbol, solve
+
+A = symbol('A', matrix=True)
+X = symbol('X', matrix=True)
+B = symbol('B', matrix=True)
+
+# Left division: A*X = B
+left_eq = A*X - B
+solution_left = solve(left_eq, X)
+# Result: X = A⁻¹*B
+
+# Right division: X*A = B
+right_eq = X*A - B
+solution_right = solve(right_eq, X)
+# Result: X = B*A⁻¹
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Operations: Inverse and Determinant }
+
+Compute matrix properties
+
+\begin{lstlisting}
+from mathhook import symbol, Matrix, det
+
+A = symbol('A', matrix=True)
+
+# Symbolic inverse
+A_inv = A**(-1)
+
+# Symbolic determinant
+det_A = det(A)
+
+# Numeric determinant
+matrix = Matrix([
+    [1, 2],
+    [3, 4]
+])
+det_val = det(matrix)
+# Result: -2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Real-World Application: Quantum Mechanics }
+
+Pauli matrices and commutation relations
+
+\begin{lstlisting}
+from mathhook import Matrix, I
+
+# Pauli matrices
+sigma_x = Matrix([[0, 1], [1, 0]])
+sigma_y = Matrix([[0, -I], [I, 0]])
+sigma_z = Matrix([[1, 0], [0, -1]])
+
+# Commutation: [σ_x, σ_y] = 2iσ_z
+comm_xy = sigma_x*sigma_y - sigma_y*sigma_x
+expected = 2*I*sigma_z
+
+# Verify
+assert (comm_xy - expected).simplify() == Matrix.zero(2, 2)
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

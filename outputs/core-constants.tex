@@ -1,0 +1,215 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Mathematical Constants }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MathHook provides built-in mathematical constants with exact symbolic representation
+and high-precision numerical evaluation. Constants include π, e, i (imaginary unit),
+golden ratio (φ), Euler-Mascheroni constant (γ), infinity, and undefined values.
+All constants preserve mathematical exactness throughout symbolic computations.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Fundamental Constants:**
+
+- **Pi**: $$\pi = 3.14159265358979323846\ldots$$ (ratio of circle's circumference to diameter)
+- **Euler's Number**: $$e = 2.71828182845904523536\ldots = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n$$
+- **Imaginary Unit**: $$i^2 = -1$$
+- **Golden Ratio**: $$\varphi = \frac{1 + \sqrt{5}}{2} = 1.618033988749895\ldots$$
+- **Euler-Mascheroni**: $$\gamma = \lim_{n \to \infty} \left(\sum_{k=1}^{n} \frac{1}{k} - \ln(n)\right) = 0.5772156649015329\ldots$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Using Pi in Expressions }
+
+Pi constant for exact trigonometric and geometric calculations
+
+\begin{lstlisting}
+from mathhook import Expression, symbol, expr
+
+pi = Expression.pi()
+r = symbol('r')
+
+# Circle area
+area = expr('pi * r^2')
+
+# Circumference
+circumference = expr('2*pi*r')
+
+# Exact trig values
+assert expr('sin(pi)') == 0
+assert expr('cos(pi)') == -1
+assert expr('sin(pi/2)') == 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Euler's Number (e) and Natural Logarithm }
+
+Using e for exponential growth and logarithmic identities
+
+\begin{lstlisting}
+from mathhook import Expression, symbol, expr
+
+e = Expression.e()
+x = symbol('x')
+
+# Exponential growth
+growth = expr('e^(r*t)')
+
+# Logarithm identities
+assert expr('ln(e)') == 1
+assert expr('ln(e^x)').simplify() == x
+assert expr('e^(ln(x))').simplify() == x
+
+# Derivative property
+exp_x = expr('e^x')
+assert exp_x.derivative(x) == exp_x
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Imaginary Unit (i) and Euler's Identity }
+
+Complex numbers and the most beautiful equation in mathematics
+
+\begin{lstlisting}
+from mathhook import Expression, expr
+
+i = Expression.i()
+
+# Complex numbers
+z = expr('3 + 4*i')
+magnitude = expr('sqrt(3^2 + 4^2)')
+assert magnitude.simplify() == 5
+
+# Euler's identity
+euler = expr('e^(i*pi) + 1')
+assert euler.simplify() == 0
+
+# Powers of i
+assert expr('i^2').simplify() == -1
+assert expr('i^3').simplify() == expr('-i')
+assert expr('i^4').simplify() == 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Golden Ratio and Fibonacci Connection }
+
+Golden ratio in geometry and its relationship to Fibonacci sequence
+
+\begin{lstlisting}
+from mathhook import Expression, expr
+
+phi = Expression.golden_ratio()
+
+# Exact form
+phi_exact = expr('(1 + sqrt(5)) / 2')
+assert phi.simplify() == phi_exact.simplify()
+
+# Golden ratio property
+assert expr('phi^2').simplify() == expr('phi + 1')
+
+# Numerical value
+# φ ≈ 1.618033988749895
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Infinity and Undefined Values }
+
+Working with unbounded limits and indeterminate forms
+
+\begin{lstlisting}
+from mathhook import Expression, symbol, expr
+
+inf = Expression.infinity()
+
+# Defined operations
+assert expr('infinity + 1') == inf
+assert expr('infinity * 2') == inf
+assert expr('1 / infinity').simplify() == 0
+
+# Limits
+x = symbol('x')
+limit = expr('lim(1/x, x, infinity)')
+assert limit.simplify() == 0
+
+# Indeterminate forms return Undefined
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Real-World Physics: Harmonic Motion }
+
+Using π and e in simple harmonic oscillator equations
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+
+# Harmonic oscillator
+t = symbol('t')
+position = expr('2 * cos(pi*t + pi/4)')
+velocity = position.derivative(t)
+acceleration = velocity.derivative(t)
+
+# Verify differential equation
+omega = expr('pi')
+# a = -ω²x
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

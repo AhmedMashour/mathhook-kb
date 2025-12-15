@@ -1,0 +1,245 @@
+# Differentiation Schema
+# Generated: 2025-12-15T1540
+# Source: mathhook/docs/src/operations/differentiation.md
+
+topic: "operations.differentiation"
+title: "Symbolic Differentiation"
+
+description: |
+  Symbolic differentiation in MathHook uses automatic differentiation with the chain rule, product rule, quotient rule, and function-specific derivative rules.
+
+mathematical_definition: |
+  **Power Rule:**
+  $$\frac{d}{dx} x^n = n x^{n-1}$$
+
+  **Product Rule:**
+  $$\frac{d}{dx} [f(x) \cdot g(x)] = f'(x) \cdot g(x) + f(x) \cdot g'(x)$$
+
+  **Quotient Rule:**
+  $$\frac{d}{dx} \frac{f(x)}{g(x)} = \frac{f'(x) \cdot g(x) - f(x) \cdot g'(x)}{[g(x)]^2}$$
+
+  **Chain Rule:**
+  $$\frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x)$$
+
+  **Trigonometric Derivatives:**
+  - $\frac{d}{dx}\sin(x) = \cos(x)$
+  - $\frac{d}{dx}\cos(x) = -\sin(x)$
+  - $\frac{d}{dx}\tan(x) = \sec^2(x)$
+
+  **Exponential and Logarithmic:**
+  - $\frac{d}{dx}e^x = e^x$
+  - $\frac{d}{dx}\ln(x) = \frac{1}{x}$
+
+code_refs:
+  rust: "mathhook_core::calculus::derivatives::Derivative"
+  python: "mathhook.derivative"
+  nodejs: "mathhook.derivative"
+
+examples:
+  - title: "Power Rule"
+    explanation: "d/dx(x^n) = n*x^(n-1)"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let expr = expr!(x ^ 5);
+        let deriv = expr.derivative(&x, 1);
+        // Result: 5 * x^4
+      python: |
+        from mathhook import symbol, derivative
+
+        x = symbol('x')
+        expr = x**5
+        deriv = derivative(expr, x)
+        # Result: 5 * x^4
+      nodejs: |
+        const { symbol, derivative } = require('mathhook');
+
+        const x = symbol('x');
+        const expr = x.pow(5);
+        const deriv = derivative(expr, x);
+        // Result: 5 * x^4
+
+  - title: "Product Rule"
+    explanation: "d/dx(f·g) = f'·g + f·g'"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let f = expr!(x ^ 2);
+        let g = expr!(x ^ 3);
+        let product = expr!(mul: f, g);  // x^2 * x^3
+
+        let deriv = product.derivative(&x, 1);
+        // Result: 2*x * x^3 + x^2 * 3*x^2 = 5*x^4
+      python: |
+        from mathhook import symbol, derivative
+
+        x = symbol('x')
+        f = x**2
+        g = x**3
+        product = f * g
+
+        deriv = derivative(product, x)
+        # Result: 5*x^4
+      nodejs: |
+        const { symbol, derivative } = require('mathhook');
+
+        const x = symbol('x');
+        const product = x.pow(2).mul(x.pow(3));
+        const deriv = derivative(product, x);
+        // Result: 5*x^4
+
+  - title: "Chain Rule"
+    explanation: "d/dx(f(g(x))) = f'(g(x))·g'(x)"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let inner = expr!(x ^ 2);
+        let outer = expr!(sin(inner));  // sin(x^2)
+
+        let deriv = outer.derivative(&x, 1);
+        // Result: cos(x^2) * 2*x
+      python: |
+        from mathhook import symbol, derivative, sin
+
+        x = symbol('x')
+        inner = x**2
+        outer = sin(inner)  # sin(x^2)
+
+        deriv = derivative(outer, x)
+        # Result: cos(x^2) * 2*x
+      nodejs: |
+        const { symbol, derivative, parse } = require('mathhook');
+
+        const x = symbol('x');
+        const expr = parse('sin(x^2)');
+        const deriv = derivative(expr, x);
+        // Result: cos(x^2) * 2*x
+
+  - title: "Partial Derivatives"
+    explanation: "Multivariable differentiation"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+        let expr = expr!((x ^ 2) * y);
+
+        // Partial derivative with respect to x
+        let df_dx = expr.derivative(&x, 1);
+        // Result: 2*x*y
+
+        // Partial derivative with respect to y
+        let df_dy = expr.derivative(&y, 1);
+        // Result: x^2
+      python: |
+        from mathhook import symbol, derivative
+
+        x = symbol('x')
+        y = symbol('y')
+        expr = x**2 * y
+
+        # Partial derivative with respect to x
+        df_dx = derivative(expr, x)
+        # Result: 2*x*y
+
+        # Partial derivative with respect to y
+        df_dy = derivative(expr, y)
+        # Result: x^2
+      nodejs: |
+        const { symbol, derivative } = require('mathhook');
+
+        const x = symbol('x');
+        const y = symbol('y');
+        const expr = x.pow(2).mul(y);
+
+        // Partial derivative with respect to x
+        const df_dx = derivative(expr, x);
+        // Result: 2*x*y
+
+        // Partial derivative with respect to y
+        const df_dy = derivative(expr, y);
+        // Result: x^2
+
+  - title: "Higher-Order Derivatives"
+    explanation: "Second, third, or nth order derivatives"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let expr = expr!(x ^ 4);
+
+        // First derivative: 4*x^3
+        let first = expr.derivative(&x, 1);
+
+        // Second derivative: 12*x^2
+        let second = expr.derivative(&x, 2);
+
+        // Third derivative: 24*x
+        let third = expr.derivative(&x, 3);
+
+        // Fourth derivative: 24
+        let fourth = expr.derivative(&x, 4);
+      python: |
+        from mathhook import symbol, derivative
+
+        x = symbol('x')
+        expr = x**4
+
+        # First derivative: 4*x^3
+        first = derivative(expr, x, order=1)
+
+        # Second derivative: 12*x^2
+        second = derivative(expr, x, order=2)
+
+        # Third derivative: 24*x
+        third = derivative(expr, x, order=3)
+
+        # Fourth derivative: 24
+        fourth = derivative(expr, x, order=4)
+      nodejs: |
+        const { symbol, derivative } = require('mathhook');
+
+        const x = symbol('x');
+        const expr = x.pow(4);
+
+        // First derivative: 4*x^3
+        const first = derivative(expr, x, { order: 1 });
+
+        // Second derivative: 12*x^2
+        const second = derivative(expr, x, { order: 2 });
+
+performance:
+  complexity: "O(n) where n = expression tree size"
+  notes: |
+    - Creates new Expression tree (unavoidable for immutable design)
+    - Automatic simplification disabled by default (call .simplify() explicitly)
+    - Cache derivatives for repeated use
+
+use_cases:
+  - "Calculus: Computing derivatives for analysis"
+  - "Physics: Velocity from position, acceleration from velocity"
+  - "Optimization: Finding critical points (f' = 0)"
+  - "Machine Learning: Backpropagation gradients"
+
+related_topics:
+  - "operations.integration"
+  - "operations.limits"
+  - "operations.series"
+
+limitations:
+  - "Does not simplify automatically (call .simplify() if needed)"
+  - "Assumes continuous, differentiable functions"
+  - "Custom functions require manual derivative registration"
+  - "Does not handle implicit differentiation"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "operations/differentiation.md"

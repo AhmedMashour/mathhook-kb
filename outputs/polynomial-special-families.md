@@ -1,0 +1,473 @@
+---
+
+
+
+
+
+
+
+
+
+---
+
+# Special Polynomial Families
+
+> **Topic**: `polynomial.special-families`
+
+Classical orthogonal polynomial families including Legendre, Chebyshev (1st and 2nd kind),
+Hermite, and Laguerre polynomials with both symbolic expansion and numerical evaluation capabilities.
+
+
+
+## Mathematical Definition
+
+$$**Orthogonal Polynomials**: A sequence $\{P_n(x)\}$ satisfying orthogonality relation:
+
+$$\int_a^b P_n(x) P_m(x) w(x) \, dx = 0 \quad \text{for } n \neq m$$
+
+where $w(x)$ is the weight function on interval $[a, b]$.
+
+**Three-Term Recurrence**: All orthogonal polynomials satisfy:
+
+$$P_{n+1}(x) = (a_n x + b_n) P_n(x) - c_n P_{n-1}(x)$$
+
+**Family Definitions**:
+
+1. **Legendre**: Interval $[-1, 1]$, $w(x) = 1$
+   - Differential equation: $(1-x^2)P_n'' - 2xP_n' + n(n+1)P_n = 0$
+   - Recurrence: $P_{n+1} = \frac{(2n+1)xP_n - nP_{n-1}}{n+1}$
+
+2. **Chebyshev (1st)**: Interval $[-1, 1]$, $w(x) = \frac{1}{\sqrt{1-x^2}}$
+   - Definition: $T_n(\cos\theta) = \cos(n\theta)$
+   - Recurrence: $T_{n+1} = 2xT_n - T_{n-1}$
+
+3. **Chebyshev (2nd)**: Interval $[-1, 1]$, $w(x) = \sqrt{1-x^2}$
+   - Definition: $U_n(\cos\theta) = \frac{\sin((n+1)\theta)}{\sin\theta}$
+   - Recurrence: $U_{n+1} = 2xU_n - U_{n-1}$
+
+4. **Hermite**: Interval $(-\infty, \infty)$, $w(x) = e^{-x^2}$
+   - Differential equation: $H_n'' - 2xH_n' + 2nH_n = 0$
+   - Rodriguez formula: $H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n}(e^{-x^2})$
+   - Recurrence: $H_{n+1} = 2xH_n - 2nH_{n-1}$
+
+5. **Laguerre**: Interval $[0, \infty)$, $w(x) = e^{-x}$
+   - Differential equation: $xL_n'' + (1-x)L_n' + nL_n = 0$
+   - Recurrence: $L_{n+1} = \frac{(2n+1-x)L_n - nL_{n-1}}{n+1}$
+$$
+
+
+
+MathHook provides access to classical orthogonal polynomial families with both symbolic expansion and numerical evaluation.
+
+## Supported Families
+
+| Family | Symbol | Interval | Weight Function |
+|--------|--------|----------|-----------------|
+| Legendre | P_n(x) | [-1, 1] | w(x) = 1 |
+| Chebyshev (1st) | T_n(x) | [-1, 1] | w(x) = 1/sqrt(1-x^2) |
+| Chebyshev (2nd) | U_n(x) | [-1, 1] | w(x) = sqrt(1-x^2) |
+| Hermite | H_n(x) | (-inf, inf) | w(x) = exp(-x^2) |
+| Laguerre | L_n(x) | [0, inf) | w(x) = exp(-x) |
+
+## The OrthogonalPolynomial Trait
+
+All families implement a unified interface providing:
+- Symbolic polynomial generation
+- Numerical evaluation at specific points
+- Recurrence relation coefficients
+
+## Applications
+
+- **Numerical Integration**: Gaussian quadrature rules
+- **Spectral Methods**: Approximation and PDE solving
+- **Physics**: Quantum mechanics, electrostatics
+- **Signal Processing**: Filter design, approximation
+
+
+
+
+
+
+
+
+
+
+
+
+## Examples
+
+
+### Legendre Polynomials
+
+Solutions to Legendre's differential equation
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook_core::core::polynomial::special_families::Legendre;
+use mathhook_core::core::polynomial::special_families::OrthogonalPolynomial;
+use mathhook_core::symbol;
+
+let x = symbol!(x);
+
+// Symbolic expansion
+let p0 = Legendre::polynomial(0, &x);  // 1
+let p1 = Legendre::polynomial(1, &x);  // x
+let p2 = Legendre::polynomial(2, &x);  // (3x^2 - 1)/2
+
+// Numerical evaluation
+let val = Legendre::evaluate(2, 0.5);  // P_2(0.5) = -0.125
+
+// Recurrence: P_{n+1} = ((2n+1)x*P_n - n*P_{n-1}) / (n+1)
+let (a, b, c) = Legendre::recurrence_coefficients(2);
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol
+from mathhook.polynomial.special_families import Legendre
+
+x = symbol('x')
+
+# Symbolic expansion
+p0 = Legendre.polynomial(0, x)  # 1
+p1 = Legendre.polynomial(1, x)  # x
+p2 = Legendre.polynomial(2, x)  # (3*x^2 - 1)/2
+
+# Numerical evaluation
+val = Legendre.evaluate(2, 0.5)  # P_2(0.5) = -0.125
+
+# Recurrence: P_{n+1} = ((2n+1)*x*P_n - n*P_{n-1}) / (n+1)
+a, b, c = Legendre.recurrence_coefficients(2)
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol } = require('mathhook');
+const { Legendre } = require('mathhook/polynomial/special_families');
+
+const x = symbol('x');
+
+// Symbolic expansion
+const p0 = Legendre.polynomial(0, x);  // 1
+const p1 = Legendre.polynomial(1, x);  // x
+const p2 = Legendre.polynomial(2, x);  // (3*x^2 - 1)/2
+
+// Numerical evaluation
+const val = Legendre.evaluate(2, 0.5);  // P_2(0.5) = -0.125
+
+// Recurrence: P_{n+1} = ((2n+1)*x*P_n - n*P_{n-1}) / (n+1)
+const [a, b, c] = Legendre.recurrenceCoefficients(2);
+
+```
+</details>
+
+
+
+
+### Chebyshev Polynomials (First Kind)
+
+Defined by T_n(cos(theta)) = cos(n*theta)
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook_core::core::polynomial::special_families::ChebyshevT;
+use mathhook_core::core::polynomial::special_families::OrthogonalPolynomial;
+use mathhook_core::symbol;
+
+let x = symbol!(x);
+
+// Symbolic
+let t0 = ChebyshevT::polynomial(0, &x);  // 1
+let t1 = ChebyshevT::polynomial(1, &x);  // x
+let t2 = ChebyshevT::polynomial(2, &x);  // 2x^2 - 1
+
+// Numerical
+let val = ChebyshevT::evaluate(2, 0.5);  // T_2(0.5) = -0.5
+
+// Recurrence: T_{n+1} = 2x*T_n - T_{n-1}
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol
+from mathhook.polynomial.special_families import ChebyshevT
+
+x = symbol('x')
+
+# Symbolic
+t0 = ChebyshevT.polynomial(0, x)  # 1
+t1 = ChebyshevT.polynomial(1, x)  # x
+t2 = ChebyshevT.polynomial(2, x)  # 2*x^2 - 1
+
+# Numerical
+val = ChebyshevT.evaluate(2, 0.5)  # T_2(0.5) = -0.5
+
+# Recurrence: T_{n+1} = 2*x*T_n - T_{n-1}
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol } = require('mathhook');
+const { ChebyshevT } = require('mathhook/polynomial/special_families');
+
+const x = symbol('x');
+
+// Symbolic
+const t0 = ChebyshevT.polynomial(0, x);  // 1
+const t1 = ChebyshevT.polynomial(1, x);  // x
+const t2 = ChebyshevT.polynomial(2, x);  // 2*x^2 - 1
+
+// Numerical
+const val = ChebyshevT.evaluate(2, 0.5);  // T_2(0.5) = -0.5
+
+// Recurrence: T_{n+1} = 2*x*T_n - T_{n-1}
+
+```
+</details>
+
+
+
+
+### Hermite Polynomials
+
+Solutions to Hermite's equation (physicist's convention)
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook_core::core::polynomial::special_families::Hermite;
+use mathhook_core::core::polynomial::special_families::OrthogonalPolynomial;
+use mathhook_core::symbol;
+
+let x = symbol!(x);
+
+// Symbolic
+let h0 = Hermite::polynomial(0, &x);  // 1
+let h1 = Hermite::polynomial(1, &x);  // 2x
+let h2 = Hermite::polynomial(2, &x);  // 4x^2 - 2
+
+// Numerical
+let val = Hermite::evaluate(1, 0.5);  // H_1(0.5) = 1
+
+// Recurrence: H_{n+1} = 2x*H_n - 2n*H_{n-1}
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol
+from mathhook.polynomial.special_families import Hermite
+
+x = symbol('x')
+
+# Symbolic
+h0 = Hermite.polynomial(0, x)  # 1
+h1 = Hermite.polynomial(1, x)  # 2*x
+h2 = Hermite.polynomial(2, x)  # 4*x^2 - 2
+
+# Numerical
+val = Hermite.evaluate(1, 0.5)  # H_1(0.5) = 1
+
+# Recurrence: H_{n+1} = 2*x*H_n - 2*n*H_{n-1}
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol } = require('mathhook');
+const { Hermite } = require('mathhook/polynomial/special_families');
+
+const x = symbol('x');
+
+// Symbolic
+const h0 = Hermite.polynomial(0, x);  // 1
+const h1 = Hermite.polynomial(1, x);  // 2*x
+const h2 = Hermite.polynomial(2, x);  // 4*x^2 - 2
+
+// Numerical
+const val = Hermite.evaluate(1, 0.5);  // H_1(0.5) = 1
+
+// Recurrence: H_{n+1} = 2*x*H_n - 2*n*H_{n-1}
+
+```
+</details>
+
+
+
+
+### Laguerre Polynomials
+
+Solutions to Laguerre's equation
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook_core::core::polynomial::special_families::Laguerre;
+use mathhook_core::core::polynomial::special_families::OrthogonalPolynomial;
+use mathhook_core::symbol;
+
+let x = symbol!(x);
+
+// Symbolic
+let l0 = Laguerre::polynomial(0, &x);  // 1
+let l1 = Laguerre::polynomial(1, &x);  // 1 - x
+let l2 = Laguerre::polynomial(2, &x);  // (x^2 - 4x + 2)/2
+
+// Numerical
+let val = Laguerre::evaluate(1, 0.5);  // L_1(0.5) = 0.5
+
+// Recurrence: L_{n+1} = ((2n+1-x)*L_n - n*L_{n-1}) / (n+1)
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol
+from mathhook.polynomial.special_families import Laguerre
+
+x = symbol('x')
+
+# Symbolic
+l0 = Laguerre.polynomial(0, x)  # 1
+l1 = Laguerre.polynomial(1, x)  # 1 - x
+l2 = Laguerre.polynomial(2, x)  # (x^2 - 4*x + 2)/2
+
+# Numerical
+val = Laguerre.evaluate(1, 0.5)  # L_1(0.5) = 0.5
+
+# Recurrence: L_{n+1} = ((2*n+1-x)*L_n - n*L_{n-1}) / (n+1)
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol } = require('mathhook');
+const { Laguerre } = require('mathhook/polynomial/special_families');
+
+const x = symbol('x');
+
+// Symbolic
+const l0 = Laguerre.polynomial(0, x);  // 1
+const l1 = Laguerre.polynomial(1, x);  // 1 - x
+const l2 = Laguerre.polynomial(2, x);  // (x^2 - 4*x + 2)/2
+
+// Numerical
+const val = Laguerre.evaluate(1, 0.5);  // L_1(0.5) = 0.5
+
+// Recurrence: L_{n+1} = ((2*n+1-x)*L_n - n*L_{n-1}) / (n+1)
+
+```
+</details>
+
+
+
+
+### Variable Substitution
+
+Use any variable symbol in polynomial generation
+
+<details>
+<summary><b>Rust</b></summary>
+
+```rust
+use mathhook_core::core::polynomial::special_families::Legendre;
+use mathhook_core::core::polynomial::special_families::OrthogonalPolynomial;
+use mathhook_core::symbol;
+
+// Use variable t instead of x
+let t = symbol!(t);
+let p2_t = Legendre::polynomial(2, &t);
+// Result uses t: (3t^2 - 1)/2
+
+```
+</details>
+
+<details>
+<summary><b>Python</b></summary>
+
+```python
+from mathhook import symbol
+from mathhook.polynomial.special_families import Legendre
+
+# Use variable t instead of x
+t = symbol('t')
+p2_t = Legendre.polynomial(2, t)
+# Result uses t: (3*t^2 - 1)/2
+
+```
+</details>
+
+<details>
+<summary><b>JavaScript</b></summary>
+
+```javascript
+const { symbol } = require('mathhook');
+const { Legendre } = require('mathhook/polynomial/special_families');
+
+// Use variable t instead of x
+const t = symbol('t');
+const p2T = Legendre.polynomial(2, t);
+// Result uses t: (3*t^2 - 1)/2
+
+```
+</details>
+
+
+
+
+
+
+## Performance
+
+**Time Complexity**: O(n) for evaluation using recurrence relations
+
+
+## API Reference
+
+- **Rust**: `mathhook_core::polynomial::special_families`
+- **Python**: `mathhook.polynomial.special_families`
+- **JavaScript**: `mathhook.polynomial.special_families`
+
+
+## See Also
+
+
+- [polynomial.overview](../polynomial/overview.md)
+
+- [evaluation.function_evaluation](../evaluation/function_evaluation.md)
+
+

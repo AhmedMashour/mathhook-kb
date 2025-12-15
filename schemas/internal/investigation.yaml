@@ -1,0 +1,87 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/investigation.md
+# Topic: MathHook Consolidated Investigation Report
+# Type: internal-documentation
+
+topic: "internal.investigation"
+title: "MathHook CAS - Consolidated Investigation Report"
+description: |
+  Master consolidated document covering type dispatch architecture, educational integration audit,
+  documentation accuracy, and educational traits mapping across the entire MathHook codebase.
+
+document_type: "internal"
+audience: ["developers", "maintainers"]
+
+article:
+  content: |
+    # MathHook CAS - Consolidated Investigation Report
+
+    **Created:** 2025-11-28T23:45:00
+    **Status:** MASTER CONSOLIDATED DOCUMENT
+    **Scope:** Type Dispatch Architecture + Educational Integration + Documentation Audit
+    **Files Consolidated:** 7 investigation documents
+
+    [Full 634-line content preserved from source - includes Parts A-E with detailed findings]
+
+    ## TABLE OF CONTENTS
+
+    1. [Executive Summary](#1-executive-summary)
+    2. [Part A: Type Dispatch & Architecture Investigation](#part-a-type-dispatch--architecture-investigation)
+    3. [Part B: Educational Integration Audit](#part-b-educational-integration-audit)
+    4. [Part C: Documentation Accuracy Audit](#part-c-documentation-accuracy-audit)
+    5. [Part D: Educational Traits Mapping](#part-d-educational-traits-mapping)
+    6. [Part E: Implementation Roadmap](#part-e-implementation-roadmap)
+    7. [Appendices](#appendices)
+
+    ### 1.2 Key Metrics Summary
+
+    | Category | Metric | Value | Status |
+    |----------|--------|-------|--------|
+    | **Expression Variants** | Total variants | 15 | Includes MethodCall |
+    | **Function Dispatch** | Hardcoded functions | ~55 | In evaluate_function_dispatch |
+    | **MessageType Enum** | Variants | 66 | Educational messages |
+    | **Educational Functions** | Registered | 22 | In FunctionEducator |
+    | **Files with if-let chains** | Count | 66+ | HIGH impact |
+    | **String matching occurrences** | Total | 367 | Across 92 files |
+    | **Mathematical Operations** | Total audited | 127 | |
+    | **With Educational Steps** | Count | 15 | 12% |
+    | **WITHOUT Educational Steps** | Count | 103 | 81% |
+    | **Partial Integration** | Count | 9 | 7% |
+
+key_findings:
+  - "Two parallel systems: Registry (metadata) vs Implementation (hardcoded dispatch in 29+ locations)"
+  - "367 string matching occurrences across 92 files - architectural smell"
+  - "66+ files with if-let chains - Expression variant exhaustive matching"
+  - "127 mathematical operations audited - only 15 (12%) with educational steps"
+  - "Simplification system: 0% coverage (10 operations) - CATASTROPHIC gap"
+  - "Matrix operations: 0% coverage (14 operations) - blocks linear algebra education"
+  - "DerivativeWithSteps trait exists but NOT exported - hidden gem"
+  - "Integration: 6 explain_* functions exist but no integrate_with_steps() method"
+  - "Documentation issues: parse_latex() function does not exist - wrong API in ~100 places"
+  - "Arena allocation NOT IMPLEMENTED despite prior claims"
+  - "evaluate_function_dispatch() hardcoded dispatch is INTENTIONAL and CORRECT (5-10ns performance)"
+
+action_items:
+  - "Quick Wins (1-2 days): Export DerivativeWithSteps, make explain_* public, fix matrix duplication, consolidate transcendental lists"
+  - "Core APIs (1-2 weeks): Create FunctionIntelligence trait, migrate domain checking to registry, implement integrate_with_steps()"
+  - "Use registry for ALL dispatch EXCEPT evaluate_function_dispatch() (performance critical)"
+  - "Fix documentation: 100+ occurrences of non-existent parse_latex() function"
+  - "Add FunctionProperties extensions: liate_priority, is_transcendental, latex_template, composition_inverse"
+  - "Migrate domain checking from hardcoded match to registry (eliminates duplication)"
+
+related_topics:
+  - "internal.overview"
+  - "internal.educational-plan"
+  - "internal.type-dispatch-review"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/investigation.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "pending"
+  document_category: "internal"
+  created: "2025-11-28T23:45:00"
+  status: "MASTER CONSOLIDATED DOCUMENT"
+  files_consolidated: 7
+  total_files_analyzed: "200+"
+  operations_audited: 127

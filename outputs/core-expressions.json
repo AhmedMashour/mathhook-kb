@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "The Expression type is the foundation of MathHook. Expressions are represented as an enum\nwith variants for different mathematical constructs including numbers, variables, operations,\nfunctions, constants, matrices, and relations.\n",
+    "title": "Expressions",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/core/expressions": {
+      "post": {
+        "description": "The Expression type is the foundation of MathHook. Expressions are represented as an enum\nwith variants for different mathematical constructs including numbers, variables, operations,\nfunctions, constants, matrices, and relations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_expression_creation_with_macros": {
+                  "description": "Using expr! and symbol! macros for ergonomic expression creation",
+                  "summary": "Basic Expression Creation with Macros",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "canonical_form_normalization": {
+                  "description": "Expressions are automatically normalized to canonical form",
+                  "summary": "Canonical Form Normalization",
+                  "value": {
+                    "expression": "expr('x + y')"
+                  }
+                },
+                "immutable_operations": {
+                  "description": "All expression operations return new expressions without modifying originals",
+                  "summary": "Immutable Operations",
+                  "value": {
+                    "expression": "expr('x + 1')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Expressions",
+        "tags": [
+          "core"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "core operations",
+      "name": "core"
+    }
+  ]
+}

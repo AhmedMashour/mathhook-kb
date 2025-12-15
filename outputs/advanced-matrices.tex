@@ -1,0 +1,125 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Matrix Operations }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Work with matrices symbolically and numerically in MathHook, with full support
+for noncommutative algebra where order matters. Create matrices, perform
+operations, and solve matrix equations.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+Matrix multiplication: For $A_{m \times n}$ and $B_{n \times p}$:
+$$C_{ij} = \sum_{k=1}^{n} A_{ik} B_{kj}$$
+
+Matrix inverse: $A \times A^{-1} = A^{-1} \times A = I$
+
+Determinant (2×2): $$\det\begin{pmatrix} a & b \\ c & d \end{pmatrix} = ad - bc$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Creating Matrices }
+
+Create matrix symbols and numeric matrices
+
+\begin{lstlisting}
+# Matrix symbols
+A = MatrixSymbol('A', n, m)
+B = MatrixSymbol('B', m, p)
+
+# Numeric matrix
+M = Matrix([[1, 2], [3, 4]])
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Multiplication (Noncommutative) }
+
+A*B ≠ B*A in general
+
+\begin{lstlisting}
+A = MatrixSymbol('A', n, n)
+B = MatrixSymbol('B', n, n)
+
+AB = A * B  # Matrix product
+BA = B * A  # Different result!
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Solving Linear System Ax=b }
+
+Solve matrix equation using inverse
+
+\begin{lstlisting}
+A = Matrix([[2, 1], [1, -1]])
+b = Matrix([[5], [1]])
+
+# Solution
+x = A.inv() * b
+# Result: Matrix([[2], [1]])
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Matrix Equation A*X=B (Left Division) }
+
+Solve for matrix unknown X
+
+\begin{lstlisting}
+A, X, B = symbols('A X B', matrix=True)
+equation = Eq(A*X, B)
+solution = solve(equation, X)
+# Returns: X = A^(-1)*B
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -43,14 +43,24 @@ impl ColabGenerator {
                 "id": "setup"
             },
             "outputs": [],
-            "source": [
-                "# Install MathHook (if not already installed)\n",
-                "!pip install mathhook\n",
-                "\n",
-                "# Import MathHook\n",
-                "from mathhook import symbol, expr\n",
-                format!("from mathhook.{} import *\n", schema.code_refs.python)
-            ]
+            "source": if let Some(code_refs) = &schema.code_refs {
+                vec![
+                    "# Install MathHook (if not already installed)\n".to_string(),
+                    "!pip install mathhook\n".to_string(),
+                    "\n".to_string(),
+                    "# Import MathHook\n".to_string(),
+                    "from mathhook import symbol, expr\n".to_string(),
+                    format!("from mathhook.{} import *\n", code_refs.python)
+                ]
+            } else {
+                vec![
+                    "# Install MathHook (if not already installed)\n".to_string(),
+                    "!pip install mathhook\n".to_string(),
+                    "\n".to_string(),
+                    "# Import MathHook\n".to_string(),
+                    "from mathhook import symbol, expr\n".to_string()
+                ]
+            }
         }));
 
         if let Some(math_def) = &schema.mathematical_definition {
@@ -113,58 +123,77 @@ impl ColabGenerator {
         }
 
         if let Some(article) = &schema.article {
-            if let Some(conclusion) = &article.conclusion {
-                cells.push(json!({
-                    "cell_type": "markdown",
-                    "metadata": {
-                        "id": "conclusion"
-                    },
-                    "source": [
-                        "## Summary\n",
-                        "\n",
-                        format!("{}\n", conclusion.summary)
-                    ]
-                }));
-
-                if !conclusion.exercises.is_empty() {
+            use kb_core::schema::Article;
+            match article {
+                Article::Simple(simple) => {
+                    // For simple articles, just add the content as markdown
                     cells.push(json!({
                         "cell_type": "markdown",
                         "metadata": {
-                            "id": "exercises"
+                            "id": "article-content"
                         },
                         "source": [
-                            "## Try It Yourself\n",
+                            "## Content\n",
                             "\n",
-                            "Complete these exercises to test your understanding:\n"
+                            format!("{}\n", simple.content)
                         ]
                     }));
-
-                    for (idx, exercise) in conclusion.exercises.iter().enumerate() {
+                }
+                Article::Structured(structured) => {
+                    if let Some(conclusion) = &structured.conclusion {
                         cells.push(json!({
                             "cell_type": "markdown",
                             "metadata": {
-                                "id": format!("exercise-{}", idx)
+                                "id": "conclusion"
                             },
                             "source": [
-                                format!("### Exercise {}\n", idx + 1),
+                                "## Summary\n",
                                 "\n",
-                                format!("{}\n", exercise.prompt),
-                                "\n",
-                                format!("**Difficulty:** {:?}\n", exercise.difficulty)
+                                format!("{}\n", conclusion.summary)
                             ]
                         }));
 
-                        cells.push(json!({
-                            "cell_type": "code",
-                            "execution_count": null,
-                            "metadata": {
-                                "id": format!("exercise-{}-solution", idx)
-                            },
-                            "outputs": [],
-                            "source": [
-                                "# Your solution here\n"
-                            ]
-                        }));
+                        if !conclusion.exercises.is_empty() {
+                            cells.push(json!({
+                                "cell_type": "markdown",
+                                "metadata": {
+                                    "id": "exercises"
+                                },
+                                "source": [
+                                    "## Try It Yourself\n",
+                                    "\n",
+                                    "Complete these exercises to test your understanding:\n"
+                                ]
+                            }));
+
+                            for (idx, exercise) in conclusion.exercises.iter().enumerate() {
+                                cells.push(json!({
+                                    "cell_type": "markdown",
+                                    "metadata": {
+                                        "id": format!("exercise-{}", idx)
+                                    },
+                                    "source": [
+                                        format!("### Exercise {}\n", idx + 1),
+                                        "\n",
+                                        format!("{}\n", exercise.prompt),
+                                        "\n",
+                                        format!("**Difficulty:** {:?}\n", exercise.difficulty)
+                                    ]
+                                }));
+
+                                cells.push(json!({
+                                    "cell_type": "code",
+                                    "execution_count": null,
+                                    "metadata": {
+                                        "id": format!("exercise-{}-solution", idx)
+                                    },
+                                    "outputs": [],
+                                    "source": [
+                                        "# Your solution here\n"
+                                    ]
+                                }));
+                            }
+                        }
                     }
                 }
             }
@@ -264,11 +293,11 @@ mod tests {
             title: "Test Example".to_string(),
             description: "A test example".to_string(),
             mathematical_definition: Some("f(x) = x^2".to_string()),
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::example".to_string(),
                 python: "test.example".to_string(),
                 nodejs: "test.example".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Power Rule".to_string(),
                 explanation: "Test explanation".to_string(),

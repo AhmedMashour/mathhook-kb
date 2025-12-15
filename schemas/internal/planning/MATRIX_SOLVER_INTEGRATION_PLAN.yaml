@@ -1,0 +1,350 @@
+# Generated: 2025-12-15T19:30:00Z
+# Source: internal/planning/MATRIX_SOLVER_INTEGRATION_PLAN_2025-12-06T1530.md
+# Topic: Matrix Solver Integration Plan
+# Type: planning-document
+
+topic: "internal.planning.matrix-solver-integration"
+title: "Matrix Solver Integration Plan"
+description: |
+  Connect existing matrix decompositions (LU, QR, Cholesky) with solver infrastructure.
+  Eliminates code duplication where SystemSolver.solve_nxn_system() reimplements Gaussian
+  elimination despite Matrix.lu_decomposition() already existing.
+
+document_type: "planning"
+audience: ["developers", "architects"]
+
+article:
+  content: |
+    # Matrix Solver Integration Plan
+
+    **Date**: 2025-12-06T1530
+    **Status**: Ready for Execution
+    **Estimated Effort**: 3.5 days
+
+    ---
+
+    ## Executive Summary
+
+    Connect existing matrix decompositions (LU, QR, Cholesky) with solver infrastructure. Currently `SystemSolver.solve_nxn_system()` reimplements Gaussian elimination despite `Matrix.lu_decomposition()` already existing. This plan eliminates that duplication.
+
+    ---
+
+    ## Phase 0: Forward/Backward Substitution (Foundation)
+
+    **Priority**: P0 - Required for all subsequent phases
+    **File**: `crates/mathhook-core/src/matrices/unified/operations.rs`
+
+    ### Methods to Add
+
+    ```rust
+    impl Matrix {
+        /// Solve Lx = b for lower triangular L
+        pub fn forward_substitution(&self, b: &[Expression]) -> Result<Vec<Expression>, MathError>;
+
+        /// Solve Ux = b for upper triangular U
+        pub fn backward_substitution(&self, b: &[Expression]) -> Result<Vec<Expression>, MathError>;
+    }
+    ```
+
+    ### Algorithms
+
+    **Forward substitution** (Ly = b):
+    ```
+    For i = 0 to n-1:
+        sum = Σ(L[i][j] * x[j]) for j = 0 to i-1
+        x[i] = (b[i] - sum) / L[i][i]
+        if L[i][i] == 0: return Err(DivisionByZero)
+    ```
+
+    **Backward substitution** (Ux = y):
+    ```
+    For i = n-1 down to 0:
+        sum = Σ(U[i][j] * x[j]) for j = i+1 to n-1
+        x[i] = (b[i] - sum) / U[i][i]
+        if U[i][i] == 0: return Err(DivisionByZero)
+    ```
+
+    ### Tests Required
+    - Identity matrix (trivial)
+    - 2x2, 3x3 triangular matrices
+    - Zero diagonal element → DivisionByZero
+    - Symbolic coefficients
+
+    ---
+
+    ## Phase 1: Matrix.solve(b) Using LU
+
+    **Priority**: P0 - Core integration
+    **File**: `crates/mathhook-core/src/matrices/unified/operations.rs`
+
+    ### Method to Add
+
+    ```rust
+    impl Matrix {
+        /// Solve Ax = b using LU decomposition
+        ///
+        /// Algorithm:
+        /// 1. Compute PA = LU
+        /// 2. Solve Ly = Pb (forward substitution)
+        /// 3. Solve Ux = y (backward substitution)
+        pub fn solve(&self, b: &[Expression]) -> Result<Vec<Expression>, MathError>;
+    }
+    ```
+
+    ### Helper Needed
+
+    ```rust
+    fn apply_permutation(p: &Option<Matrix>, b: &[Expression]) -> Vec<Expression>
+    ```
+
+    ### Error Cases
+    - Non-square matrix → DomainError
+    - Dimension mismatch → DomainError
+    - Singular matrix → DivisionByZero
+
+    ### Tests Required
+    - 2x2 integer solution
+    - 3x3 rational solution
+    - Identity matrix (trivial)
+    - Singular matrix → error
+    - Dimension mismatch → error
+
+    ---
+
+    ## Phase 2: Replace SystemSolver.solve_nxn_system()
+
+    **Priority**: P0 - Eliminate duplication
+    **File**: `crates/mathhook-core/src/algebra/solvers/systems.rs`
+
+    ### Current State (lines 407-518)
+    - Manually extracts coefficients into augmented matrix
+    - Reimplements Gaussian elimination with partial pivoting
+    - Performs back substitution inline
+
+    ### Refactored Approach
+
+    ```rust
+    fn solve_nxn_system(&self, equations: &[Expression], variables: &[Symbol]) -> SolverResult {
+        // 1. Build coefficient matrix A and RHS vector b
+        let (a_matrix, b_vec) = self.build_system_matrix(equations, variables);
+
+        // 2. Use Matrix.solve() which uses LU decomposition
+        match a_matrix.solve(&b_vec) {
+            Ok(solution) => SolverResult::Multiple(solution),
+            Err(MathError::DivisionByZero) => self.check_singularity_type(&a_matrix, &b_vec),
+            Err(_) => SolverResult::NoSolution,
+        }
+    }
+    ```
+
+    ### Lines to Delete
+    - Lines 426-479 (Gaussian elimination reimplementation)
+    - Lines 480-518 (back substitution reimplementation)
+
+    ### Import to Add
+    ```rust
+    use crate::matrices::Matrix;
+    ```
+
+    ---
+
+    ## Phase 3: SPD Detection → Cholesky Routing
+
+    **Priority**: P1 - Performance optimization
+    **File**: `crates/mathhook-core/src/matrices/unified/operations.rs`
+
+    ### Enhanced solve() Method
+
+    ```rust
+    pub fn solve(&self, b: &[Expression]) -> Result<Vec<Expression>, MathError> {
+        // Try Cholesky first for SPD matrices (2x faster)
+        if self.is_symmetric() {
+            if let Some(chol) = self.cholesky_decomposition() {
+                let y = chol.l.forward_substitution(b)?;
+                let lt = chol.l.transpose();
+                return lt.backward_substitution(&y);
+            }
+        }
+
+        // Fall back to LU
+        self.solve_via_lu(b)
+    }
+    ```
+
+    ### Expected Performance
+    - 2x speedup for symmetric positive definite matrices
+
+    ---
+
+    ## Phase 4: QR-Based Least Squares
+
+    **Priority**: P1 - Overdetermined systems
+    **File**: `crates/mathhook-core/src/matrices/unified/operations.rs`
+
+    ### Method to Add
+
+    ```rust
+    impl Matrix {
+        /// Solve min ||Ax - b||_2 using QR decomposition
+        ///
+        /// For m×n matrix (m >= n):
+        /// 1. Compute A = QR
+        /// 2. Compute Q^T * b
+        /// 3. Solve Rx = (Q^T * b)[0:n]
+        pub fn solve_least_squares(&self, b: &[Expression]) -> Result<Vec<Expression>, MathError>;
+    }
+    ```
+
+    ### Helper Needed
+
+    ```rust
+    fn matrix_vector_multiply(m: &Matrix, v: &[Expression]) -> Vec<Expression>
+    ```
+
+    ---
+
+    ## Phase 5: Matrix Inversion Using LU
+
+    **Priority**: P2 - Optimization
+    **File**: `crates/mathhook-core/src/matrices/unified/operations.rs`
+
+    ### Enhanced inverse() Method
+
+    ```rust
+    fn inverse(&self) -> Matrix {
+        match self {
+            Matrix::Identity(_) | Matrix::Scalar(_) | Matrix::Diagonal(_) => {
+                // Keep existing fast paths
+            }
+            _ => self.inverse_via_lu().unwrap_or_else(|| self.gauss_jordan_inverse()),
+        }
+    }
+
+    fn inverse_via_lu(&self) -> Option<Matrix> {
+        // Solve A * X = I column by column
+        for j in 0..n {
+            let e_j = unit_vector(j, n);
+            let col = self.solve(&e_j)?;
+            // Store in result matrix
+        }
+    }
+    ```
+
+    ---
+
+    ## Dependency Order
+
+    ```
+    Phase 0: Forward/Backward Substitution
+        ↓
+    Phase 1: Matrix.solve(b)
+        ↓
+    Phase 2: Replace solve_nxn_system ←── Phase 3: Cholesky Routing
+        ↓
+    Phase 4: QR Least Squares
+        ↓
+    Phase 5: LU-based Inverse
+    ```
+
+    ---
+
+    ## Verification Strategy
+
+    ### SymPy Validation
+    ```python
+    # Create validation script at scripts/validate_matrix_solver.py
+    from sympy import Matrix
+
+    A = Matrix([[2, 1], [1, 3]])
+    b = Matrix([5, 7])
+    x = A.solve(b)  # Compare with Rust output
+    ```
+
+    ### Rust Tests
+    ```rust
+    #[test]
+    fn test_solve_via_lu_correctness() {
+        let a = Matrix::from_arrays([[2, 1], [1, 3]]);
+        let b = vec![expr!(5), expr!(7)];
+        let x = a.solve(&b).unwrap();
+
+        // Verify: A * x == b
+        let ax = matrix_vector_multiply(&a, &x);
+        assert_eq!(ax[0].simplify(), b[0].simplify());
+        assert_eq!(ax[1].simplify(), b[1].simplify());
+    }
+    ```
+
+    ---
+
+    ## Risk Mitigation
+
+    | Risk | Mitigation |
+    |------|------------|
+    | Singular matrix | Check LU diagonal before solving |
+    | Numerical instability | Use `.simplify()` after each operation |
+    | Performance regression | Benchmark before/after with `./scripts/bench.sh` |
+
+    ---
+
+    ## Files Summary
+
+    | File | Changes |
+    |------|---------|
+    | `matrices/unified/operations.rs` | +180 lines (add solve methods) |
+    | `algebra/solvers/systems.rs` | -170 lines (remove Gaussian), +50 lines (use Matrix.solve) |
+    | `matrices/decomposition/lu.rs` | +20 lines (add is_singular helper) |
+    | `matrices/decomposition/decomposition_tests.rs` | +100 lines (new tests) |
+
+    **Net change**: ~+80 lines, elimination of code duplication
+
+objectives:
+  - "Add forward and backward substitution methods to Matrix"
+  - "Implement Matrix.solve(b) using LU decomposition"
+  - "Replace SystemSolver.solve_nxn_system() to use Matrix.solve() instead of reimplementing Gaussian elimination"
+  - "Add Cholesky routing for SPD matrices (2x speedup)"
+  - "Add QR-based least squares solver for overdetermined systems"
+  - "Optimize matrix inversion using LU decomposition"
+
+phases:
+  - phase: "Phase 0: Forward/Backward Substitution"
+    status: "pending"
+    description: "Foundation methods required for all subsequent phases - add forward_substitution and backward_substitution to Matrix"
+  - phase: "Phase 1: Matrix.solve(b) Using LU"
+    status: "pending"
+    description: "Core integration - implement solve() using LU decomposition with permutation handling"
+  - phase: "Phase 2: Replace solve_nxn_system()"
+    status: "pending"
+    description: "Eliminate duplication by making SystemSolver use Matrix.solve() instead of reimplementing Gaussian elimination"
+  - phase: "Phase 3: SPD Detection → Cholesky Routing"
+    status: "pending"
+    description: "Performance optimization - use Cholesky decomposition for symmetric positive definite matrices (2x faster)"
+  - phase: "Phase 4: QR-Based Least Squares"
+    status: "pending"
+    description: "Add least squares solver using QR decomposition for overdetermined systems"
+  - phase: "Phase 5: Matrix Inversion Using LU"
+    status: "pending"
+    description: "Optimize inverse() by using LU decomposition instead of Gauss-Jordan"
+
+decisions:
+  - decision: "Use LU decomposition as the primary solver method"
+    rationale: "Already implemented and tested, provides O(n^3) complexity with good numerical stability"
+  - decision: "Add specialized routing for Cholesky and QR"
+    rationale: "Cholesky is 2x faster for SPD matrices, QR handles overdetermined systems better than LU"
+  - decision: "Delete Gaussian elimination from SystemSolver"
+    rationale: "Duplicates Matrix.lu_decomposition() functionality - violates DRY principle"
+  - decision: "Net positive line count acceptable (~+80 lines)"
+    rationale: "Gain code quality and eliminate duplication, worth the small increase"
+
+related_topics:
+  - "internal.planning.fast-path-implementation"
+  - "internal.planning.fast-path-opportunities"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/planning/MATRIX_SOLVER_INTEGRATION_PLAN_2025-12-06T1530.md"
+  generated_timestamp: "2025-12-15T19:30:00Z"
+  validation_status: "valid"
+  document_category: "planning"
+  estimated_effort: "3.5 days"
+  priority: "P0"

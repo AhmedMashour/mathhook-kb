@@ -1,0 +1,126 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Summary of Phase 3 (Educational Layer verification) and Phase 5 (Eliminate Internal Bridging)\nimplementation status. Phase 3 confirmed educational module requires no changes. Phase 5\nidentified 6 bridging patterns causing 2-4x overhead with implementation plan ready.\n",
+    "title": "IntPoly-First Phase 3 & Phase 5 Summary",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/internal/planning/phase3-and-phase5-summary": {
+      "post": {
+        "description": "Summary of Phase 3 (Educational Layer verification) and Phase 5 (Eliminate Internal Bridging)\nimplementation status. Phase 3 confirmed educational module requires no changes. Phase 5\nidentified 6 bridging patterns causing 2-4x overhead with implementation plan ready.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {},
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "IntPoly-First Phase 3 & Phase 5 Summary",
+        "tags": [
+          "internal"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "internal operations",
+      "name": "internal"
+    }
+  ]
+}

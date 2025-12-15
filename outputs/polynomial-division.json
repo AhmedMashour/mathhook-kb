@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Polynomial division algorithms including long division, exact division, and factorization capabilities\nsuch as square-free factorization, resultant, and discriminant computation.\n",
+    "title": "Polynomial Division and Factorization",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/polynomial/division": {
+      "post": {
+        "description": "Polynomial division algorithms including long division, exact division, and factorization capabilities\nsuch as square-free factorization, resultant, and discriminant computation.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "exact_division": {
+                  "description": "Division that errors if remainder is non-zero",
+                  "summary": "Exact Division",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "polynomial_long_division": {
+                  "description": "Compute quotient and remainder using standard division algorithm",
+                  "summary": "Polynomial Long Division",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                },
+                "trait-based_division": {
+                  "description": "Use PolynomialArithmetic trait for ergonomic API",
+                  "summary": "Trait-Based Division",
+                  "value": {
+                    "expression": "symbol('x')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Polynomial Division and Factorization",
+        "tags": [
+          "polynomial"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "polynomial operations",
+      "name": "polynomial"
+    }
+  ]
+}

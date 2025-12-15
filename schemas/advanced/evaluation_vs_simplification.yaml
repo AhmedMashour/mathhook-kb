@@ -1,0 +1,106 @@
+# Advanced: Evaluation vs Simplification - Schema for MathHook Knowledge Base
+# Generated: 2025-12-15 18:26:00 UTC
+# Source: mathhook/docs/src/advanced/evaluation_vs_simplification.md
+
+topic: "advanced.evaluation_vs_simplification"
+title: "Evaluation vs Simplification"
+description: |
+  Understand the key differences between evaluation (computing numerical results)
+  and simplification (algebraic transformation) in MathHook's symbolic engine.
+
+article:
+  content: |
+    # Evaluation vs Simplification
+
+    MathHook provides two distinct operations for transforming expressions:
+
+    ## Evaluation
+    - **Purpose**: Compute numerical values
+    - **Input**: Symbolic expression with concrete values
+    - **Output**: Numerical result (integer, float, rational)
+    - **Example**: eval(2 + 3) → 5
+
+    ## Simplification
+    - **Purpose**: Algebraic transformation to simpler form
+    - **Input**: Symbolic expression
+    - **Output**: Equivalent expression (may still be symbolic)
+    - **Example**: simplify(x + x) → 2*x
+
+    ## Key Differences
+
+    | Operation | Input | Output | Preserves Symbols |
+    |-----------|-------|--------|-------------------|
+    | Evaluate | Symbols → numbers | Numerical | No |
+    | Simplify | Symbols → symbols | Symbolic | Yes |
+
+    ## When to Use Each
+
+    ### Use Evaluation
+    - Final numerical answer needed
+    - Plotting or visualization
+    - Numerical comparison
+    - Performance-critical paths
+
+    ### Use Simplification
+    - Algebraic manipulation
+    - Pattern matching
+    - Symbolic solving
+    - Maintaining exact form
+
+code_refs:
+  rust: "mathhook_core::evaluation"
+  python: "mathhook.evaluation"
+  nodejs: "mathhook.evaluation"
+
+examples:
+  - title: "Evaluation Example"
+    code:
+      rust: |
+        let x = symbol!(x);
+        let expr = expr!(x^2 + 2*x + 1);
+
+        let evaluated = expr.substitute(&x, &expr!(3));
+        // Result: 16 (numerical)
+      python: |
+        x = symbol('x')
+        expr_val = x**2 + 2*x + 1
+
+        evaluated = expr_val.subs(x, 3)
+        # Result: 16
+      nodejs: |
+        const x = symbol('x');
+        const expr = add(pow(x, 2), mul(2, x), 1);
+
+        const evaluated = expr.subs(x, 3);
+        // Result: 16
+
+  - title: "Simplification Example"
+    code:
+      rust: |
+        let x = symbol!(x);
+        let expr = expr!(x + x + x);
+
+        let simplified = expr.simplify();
+        // Result: 3*x (still symbolic)
+      python: |
+        x = symbol('x')
+        expr_val = x + x + x
+
+        simplified = simplify(expr_val)
+        # Result: 3*x
+      nodejs: |
+        const x = symbol('x');
+        const expr = add(x, x, x);
+
+        const simplified = expr.simplify();
+        // Result: 3*x
+
+related_topics:
+  - "operations.simplification"
+  - "operations.substitution"
+  - "core.expression"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "advanced/evaluation_vs_simplification.md"
+  timestamp: "2025-12-15T18:26:00Z"

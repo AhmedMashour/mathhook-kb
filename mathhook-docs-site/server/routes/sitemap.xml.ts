@@ -1,7 +1,6 @@
 // Sitemap generator for MathHook documentation
 // This helps search engines discover all documentation pages
 
-import { serverQueryContent } from "#content/server";
 import { SitemapStream, streamToPromise } from "sitemap";
 import { Readable } from "stream";
 import fs from "fs";

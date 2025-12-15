@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Complete guide to using MathHook from Node.js and TypeScript via NAPI bindings.\nProvides comprehensive documentation for the JavaScript/TypeScript API including installation,\nquick start, API reference, integration patterns with Express/Next.js, and performance best practices.\n",
+    "title": "Node.js/TypeScript API Guide",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/bindings/nodejs": {
+      "post": {
+        "description": "Complete guide to using MathHook from Node.js and TypeScript via NAPI bindings.\nProvides comprehensive documentation for the JavaScript/TypeScript API including installation,\nquick start, API reference, integration patterns with Express/Next.js, and performance best practices.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "basic_parsing_and_simplification": {
+                  "description": "Parse mathematical expressions from strings and simplify them",
+                  "summary": "Basic Parsing and Simplification",
+                  "value": {
+                    "expression": "parse('x + x')"
+                  }
+                },
+                "derivatives_in_typescript": {
+                  "description": "Compute symbolic derivatives with TypeScript type safety",
+                  "summary": "Derivatives in TypeScript",
+                  "value": {
+                    "expression": "Symbol('x')"
+                  }
+                },
+                "typescript_type_safety": {
+                  "description": "Use TypeScript for type-safe mathematical operations",
+                  "summary": "TypeScript Type Safety",
+                  "value": {
+                    "expression": "x**2"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Node.js/TypeScript API Guide",
+        "tags": [
+          "bindings"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "bindings operations",
+      "name": "bindings"
+    }
+  ]
+}

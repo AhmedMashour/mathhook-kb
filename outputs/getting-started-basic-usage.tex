@@ -1,0 +1,255 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Basic Usage }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Comprehensive guide to using MathHook including expression creation with macros
+and constructors, simplification, pattern matching, symbol manipulation, number
+types, constants, and function expressions.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Basic Usage
+
+This chapter provides a guide to using MathHook in your projects.
+
+## Expression Creation
+
+### Using Macros
+
+The recommended way to create expressions is using the `expr!` and `symbol!` macros
+for clean, readable code.
+
+### Using Constructors
+
+For programmatic construction, use explicit constructors like `Expression::integer()`,
+`Expression::rational()`, `Expression::float()`.
+
+## Simplification
+
+Simplification transforms expressions to their canonical form by combining like terms,
+applying identities, and evaluating constants.
+
+## Pattern Matching
+
+Work with expression structure using Rust's pattern matching on `Expression` enum
+variants: `Add`, `Mul`, `Pow`, etc.
+
+## Working with Symbols
+
+Symbols represent variables in expressions. Symbols with the same name are equal.
+
+## Number Types
+
+MathHook supports integers (exact, arbitrary precision), rationals (exact fractions),
+floats (approximate), and complex numbers.
+
+## Constants
+
+Built-in mathematical constants: π, e, i (imaginary unit), φ (golden ratio),
+γ (Euler-Mascheroni constant).
+
+## Function Expressions
+
+Create function calls using `expr!` macro or `function!` macro for elementary
+functions: sin, cos, tan, log, etc.
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Expression Creation - Macros }
+
+Create expressions using ergonomic macros
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+
+# Method chaining for expressions
+expr1 = x.add(y)
+expr2 = Expression.integer(2).mul(x)
+expr3 = x.pow(2)
+
+# Complex expressions
+expr4 = x.add(1).mul(x.sub(1))
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Expression Creation - Constructors }
+
+Programmatic construction with explicit API
+
+\begin{lstlisting}
+from mathhook import Expression
+
+# Numbers
+int_val = Expression.integer(42)
+float_val = Expression.float(3.14)
+rational_val = Expression.rational(3, 4)  # 3/4
+
+# Operations
+sum_val = Expression.integer(1).add(Expression.integer(2))
+product_val = Expression.integer(2).mul(x)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Simplification }
+
+Transform expressions to canonical form
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Combine like terms
+expr = x.add(x)
+simplified = expr.simplify()
+# Result: 2*x
+
+# Apply identities
+expr = x.mul(Expression.integer(1))
+simplified = expr.simplify()
+# Result: x
+
+# Evaluate constants
+expr = Expression.integer(2).add(Expression.integer(3))
+simplified = expr.simplify()
+# Result: 5
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Pattern Matching (Rust) }
+
+Inspect expression structure with pattern matching
+
+\begin{lstlisting}
+# Python doesn't have Rust-style pattern matching
+# Use type checking instead
+from mathhook import Expression
+
+x = Expression.symbol('x')
+y = Expression.symbol('y')
+test_expr = x.add(y)
+
+# Check expression type
+if test_expr.is_add():
+    print("Addition expression")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Number Types }
+
+Different number representations in MathHook
+
+\begin{lstlisting}
+from mathhook import Expression
+
+# Integers (exact)
+int_val = Expression.integer(123456789)
+
+# Rationals (exact fractions)
+frac = Expression.rational(22, 7)  # 22/7 ≈ π
+
+# Floats (approximate)
+float_val = Expression.float(3.14159265359)
+
+# Complex numbers
+complex_val = Expression.complex(
+    Expression.integer(3),
+    Expression.integer(4)
+)  # 3 + 4i
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Mathematical Constants }
+
+Built-in mathematical constants
+
+\begin{lstlisting}
+from mathhook import Expression
+
+pi = Expression.pi()
+e = Expression.e()
+i = Expression.i()              # imaginary unit
+phi = Expression.golden_ratio()
+gamma = Expression.euler_gamma()
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Function Expressions }
+
+Create elementary function calls
+
+\begin{lstlisting}
+from mathhook import Expression
+
+x = Expression.symbol('x')
+
+# Elementary functions
+sin_x = Expression.function('sin', [x])
+cos_x = Expression.function('cos', [x])
+log_x = Expression.function('log', [x])
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

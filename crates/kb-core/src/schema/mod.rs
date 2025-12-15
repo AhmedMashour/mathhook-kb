@@ -28,9 +28,11 @@ pub struct Schema {
     pub mathematical_definition: Option<String>,
 
     /// Code references across languages
-    pub code_refs: CodeReferences,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code_refs: Option<CodeReferences>,
 
     /// Code examples demonstrating usage
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub examples: Vec<Example>,
 
     /// Article content (rich narrative, tutorial, explanations)
@@ -72,10 +74,12 @@ pub struct CodeReferences {
     /// Rust function path (e.g., "mathhook_core::calculus::derivative")
     pub rust: String,
 
-    /// Python function path (e.g., "mathhook.calculus.derivative")
+    /// Python function path (e.g., "mathhook.calculus.derivative") - optional
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub python: String,
 
-    /// Node.js function path (e.g., "mathhook.calculus.derivative")
+    /// Node.js function path (e.g., "mathhook.calculus.derivative") - optional
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub nodejs: String,
 }
 
@@ -85,7 +89,8 @@ pub struct Example {
     /// Example title (e.g., "Power Rule")
     pub title: String,
 
-    /// Explanation of what this example demonstrates
+    /// Explanation of what this example demonstrates (optional)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub explanation: String,
 
     /// Code snippets in different languages
@@ -99,13 +104,16 @@ pub struct Example {
 /// Code snippets in supported languages
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct CodeSnippets {
-    /// Rust code
+    /// Rust code (optional for non-Rust bindings)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub rust: String,
 
-    /// Python code
+    /// Python code (optional, defaults to empty)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub python: String,
 
-    /// JavaScript/Node.js code
+    /// JavaScript/Node.js code (optional, defaults to empty)
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub nodejs: String,
 }
 
@@ -113,15 +121,43 @@ pub struct CodeSnippets {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Performance {
     /// Time complexity (e.g., "O(n)")
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub complexity: String,
 
     /// Typical execution time
     #[serde(skip_serializing_if = "Option::is_none")]
     pub typical_time: Option<String>,
 
-    /// Benchmark data
-    #[serde(default, skip_serializing_if = "HashMap::is_empty")]
+    /// Benchmark data - accepts any format and converts to map
+    #[serde(default, deserialize_with = "deserialize_benchmarks", skip_serializing_if = "HashMap::is_empty")]
     pub benchmarks: HashMap<String, String>,
+}
+
+/// Deserialize benchmarks flexibly - accepts map, sequence, or anything else
+fn deserialize_benchmarks<'de, D>(deserializer: D) -> std::result::Result<HashMap<String, String>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde_json::Value;
+
+    let value = Value::deserialize(deserializer)?;
+
+    match value {
+        Value::Object(map) => {
+            let mut result = HashMap::new();
+            for (k, v) in map {
+                let v_str = match v {
+                    Value::String(s) => s,
+                    Value::Number(n) => n.to_string(),
+                    other => other.to_string(),
+                };
+                result.insert(k, v_str);
+            }
+            Ok(result)
+        }
+        // Any other format (array, string, number, bool, null) returns empty map
+        _ => Ok(HashMap::new()),
+    }
 }
 
 /// Interactive playground configuration

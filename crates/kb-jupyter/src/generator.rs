@@ -32,135 +32,144 @@ impl JupyterGenerator {
 
         // If schema has article content, use rich article format
         if let Some(article) = &schema.article {
-            // Add introduction section
-            let intro = self.templates.render_introduction(
-                &article.introduction.hook,
-                &article.introduction.learning_objectives,
-                &article.introduction.prerequisites,
-                article.introduction.estimated_time.as_ref(),
-            )?;
-            notebook.add_markdown(intro);
-
-            // Add Jupyter-specific tutorial intro if provided
-            if let Some(variations) = &article.variations {
-                if let Some(jupyter) = &variations.jupyter {
-                    if let Some(tutorial_intro) = &jupyter.tutorial_intro {
-                        notebook.add_markdown(tutorial_intro.clone());
-                    }
+            use kb_core::schema::Article;
+            match article {
+                Article::Simple(simple) => {
+                    // For simple articles, just add content
+                    notebook.add_markdown(format!("## Overview\n\n{}", simple.content));
                 }
-            }
-
-            // Add sections
-            for section in &article.sections {
-                let subsections: Vec<HashMap<String, String>> = section
-                    .subsections
-                    .iter()
-                    .map(|subsection| {
-                        let mut map = HashMap::new();
-                        map.insert("title".to_string(), subsection.title.clone());
-                        map.insert("content".to_string(), subsection.content.clone());
-                        map
-                    })
-                    .collect();
-
-                let section_md = self.templates.render_section(
-                    &section.title,
-                    &section.content,
-                    &subsections,
-                )?;
-                notebook.add_markdown(section_md);
-
-                // Add code examples from section
-                for example_ref in &section.code_examples {
-                    // Find the example in schema.examples
-                    if let Some(example) = schema.examples.iter().find(|e| e.title == *example_ref)
-                    {
-                        let example_md = self.templates.render_example(
-                            &example.title,
-                            &example.explanation,
-                            &example.code.python,
-                            example.expected_output.as_ref(),
-                        )?;
-                        notebook.add_markdown(example_md);
-
-                        // Add interactive code cell
-                        notebook.add_code(example.code.python.clone());
-                    }
-                }
-            }
-
-            // Add interactive prompts if provided
-            if let Some(variations) = &article.variations {
-                if let Some(jupyter) = &variations.jupyter {
-                    for (idx, prompt) in jupyter.interactive_prompts.iter().enumerate() {
-                        notebook.add_markdown(format!(
-                            "### 🤔 Interactive Checkpoint {}\n\n{}",
-                            idx + 1,
-                            prompt
-                        ));
-                        notebook.add_code("# Your answer here\n".to_string());
-                    }
-                }
-            }
-
-            // Add sidebars
-            for sidebar in &article.sidebars {
-                let sidebar_type_str = match sidebar.sidebar_type {
-                    kb_core::schema::SidebarType::Tip => "tip",
-                    kb_core::schema::SidebarType::Warning => "warning",
-                    kb_core::schema::SidebarType::Note => "note",
-                    kb_core::schema::SidebarType::Info => "info",
-                    kb_core::schema::SidebarType::Performance => "performance",
-                    kb_core::schema::SidebarType::BestPractice => "best_practice",
-                };
-
-                let sidebar_md = self.templates.render_sidebar(
-                    sidebar_type_str,
-                    &sidebar.title,
-                    &sidebar.content,
-                )?;
-                notebook.add_markdown(sidebar_md);
-            }
-
-            // Add conclusion
-            if let Some(conclusion) = &article.conclusion {
-                // Convert Resource to String for rendering
-                let further_reading: Vec<String> = conclusion
-                    .further_reading
-                    .iter()
-                    .map(|r| {
-                        if let Some(url) = &r.url {
-                            format!("[{}]({})", r.title, url)
-                        } else {
-                            r.title.clone()
-                        }
-                    })
-                    .collect();
-
-                let conclusion_md = self.templates.render_conclusion(
-                    &conclusion.summary,
-                    &conclusion.next_steps,
-                    &further_reading,
-                )?;
-                notebook.add_markdown(conclusion_md);
-
-                // Add exercises
-                for (idx, exercise) in conclusion.exercises.iter().enumerate() {
-                    let difficulty_str = match exercise.difficulty {
-                        kb_core::schema::ExerciseDifficulty::Beginner => "Beginner",
-                        kb_core::schema::ExerciseDifficulty::Intermediate => "Intermediate",
-                        kb_core::schema::ExerciseDifficulty::Advanced => "Advanced",
-                        kb_core::schema::ExerciseDifficulty::Expert => "Expert",
-                    };
-
-                    let exercise_md = self.templates.render_exercise(
-                        idx + 1,
-                        &exercise.prompt,
-                        difficulty_str,
-                        &exercise.prompt,
-                        &exercise.hints,
+                Article::Structured(structured) => {
+                    // Add introduction section
+                    let intro = self.templates.render_introduction(
+                        &structured.introduction.hook,
+                        &structured.introduction.learning_objectives,
+                        &structured.introduction.prerequisites,
+                        structured.introduction.estimated_time.as_ref(),
                     )?;
-                    notebook.add_markdown(exercise_md);
+                    notebook.add_markdown(intro);
+
+                    // Add Jupyter-specific tutorial intro if provided
+                    if let Some(variations) = &structured.variations {
+                        if let Some(jupyter) = &variations.jupyter {
+                            if let Some(tutorial_intro) = &jupyter.tutorial_intro {
+                                notebook.add_markdown(tutorial_intro.clone());
+                            }
+                        }
+                    }
+
+                    // Add sections
+                    for section in &structured.sections {
+                        let subsections: Vec<HashMap<String, String>> = section
+                            .subsections
+                            .iter()
+                            .map(|subsection| {
+                                let mut map = HashMap::new();
+                                map.insert("title".to_string(), subsection.title.clone());
+                                map.insert("content".to_string(), subsection.content.clone());
+                                map
+                            })
+                            .collect();
+
+                        let section_md = self.templates.render_section(
+                            &section.title,
+                            &section.content,
+                            &subsections,
+                        )?;
+                        notebook.add_markdown(section_md);
+
+                        // Add code examples from section
+                        for example_ref in &section.code_examples {
+                            // Find the example in schema.examples
+                            if let Some(example) = schema.examples.iter().find(|e| e.title == *example_ref)
+                            {
+                                let example_md = self.templates.render_example(
+                                    &example.title,
+                                    &example.explanation,
+                                    &example.code.python,
+                                    example.expected_output.as_ref(),
+                                )?;
+                                notebook.add_markdown(example_md);
+
+                                // Add interactive code cell
+                                notebook.add_code(example.code.python.clone());
+                            }
+                        }
+                    }
+
+                    // Add interactive prompts if provided
+                    if let Some(variations) = &structured.variations {
+                        if let Some(jupyter) = &variations.jupyter {
+                            for (idx, prompt) in jupyter.interactive_prompts.iter().enumerate() {
+                                notebook.add_markdown(format!(
+                                    "### 🤔 Interactive Checkpoint {}\n\n{}",
+                                    idx + 1,
+                                    prompt
+                                ));
+                                notebook.add_code("# Your answer here\n".to_string());
+                            }
+                        }
+                    }
+
+                    // Add sidebars
+                    for sidebar in &structured.sidebars {
+                        let sidebar_type_str = match sidebar.sidebar_type {
+                            kb_core::schema::SidebarType::Tip => "tip",
+                            kb_core::schema::SidebarType::Warning => "warning",
+                            kb_core::schema::SidebarType::Note => "note",
+                            kb_core::schema::SidebarType::Info => "info",
+                            kb_core::schema::SidebarType::Performance => "performance",
+                            kb_core::schema::SidebarType::BestPractice => "best_practice",
+                        };
+
+                        let sidebar_md = self.templates.render_sidebar(
+                            sidebar_type_str,
+                            &sidebar.title,
+                            &sidebar.content,
+                        )?;
+                        notebook.add_markdown(sidebar_md);
+                    }
+
+                    // Add conclusion
+                    if let Some(conclusion) = &structured.conclusion {
+                        // Convert Resource to String for rendering
+                        let further_reading: Vec<String> = conclusion
+                            .further_reading
+                            .iter()
+                            .map(|r| {
+                                if let Some(url) = &r.url {
+                                    format!("[{}]({})", r.title, url)
+                                } else {
+                                    r.title.clone()
+                                }
+                            })
+                            .collect();
+
+                        let conclusion_md = self.templates.render_conclusion(
+                            &conclusion.summary,
+                            &conclusion.next_steps,
+                            &further_reading,
+                        )?;
+                        notebook.add_markdown(conclusion_md);
+
+                        // Add exercises
+                        for (idx, exercise) in conclusion.exercises.iter().enumerate() {
+                            let difficulty_str = match exercise.difficulty {
+                                kb_core::schema::ExerciseDifficulty::Beginner => "Beginner",
+                                kb_core::schema::ExerciseDifficulty::Intermediate => "Intermediate",
+                                kb_core::schema::ExerciseDifficulty::Advanced => "Advanced",
+                                kb_core::schema::ExerciseDifficulty::Expert => "Expert",
+                            };
+
+                            let exercise_md = self.templates.render_exercise(
+                                idx + 1,
+                                &exercise.prompt,
+                                difficulty_str,
+                                &exercise.prompt,
+                                &exercise.hints,
+                            )?;
+                            notebook.add_markdown(exercise_md);
+                        }
+                    }
                 }
             }
         } else {
@@ -288,11 +297,11 @@ mod tests {
             title: "Test Example".to_string(),
             description: "A test example".to_string(),
             mathematical_definition: Some("f(x) = x^2".to_string()),
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::example".to_string(),
                 python: "test.example".to_string(),
                 nodejs: "test.example".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Simple Example".to_string(),
                 explanation: "This is a test".to_string(),

@@ -1,0 +1,141 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Quick-start tutorial for solving partial differential equations with MathHook.\nCovers transport equation solving in 30 seconds, common PDE patterns, and complete examples.\n",
+    "title": "PDE Quick Start - 5 Minutes to Your First Solution",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/quick_start": {
+      "post": {
+        "description": "Quick-start tutorial for solving partial differential equations with MathHook.\nCovers transport equation solving in 30 seconds, common PDE patterns, and complete examples.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "complete_working_example_-_full_workflow": {
+                  "description": "End-to-end example with verification and characteristic trajectory",
+                  "summary": "Complete Working Example - Full Workflow",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "transport_equation_-_basic_solution": {
+                  "description": "Solve transport equation with sinusoidal initial condition",
+                  "summary": "Transport Equation - Basic Solution",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "PDE Quick Start - 5 Minutes to Your First Solution",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

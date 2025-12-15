@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Limits }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Compute limits of expressions as variables approach values, infinity, or points of discontinuity.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Epsilon-Delta Definition (ε-δ):**
+$$\lim_{x \to a} f(x) = L$$
+means: For every $\varepsilon > 0$, there exists $\delta > 0$ such that:
+$$0 < |x - a| < \delta \implies |f(x) - L| < \varepsilon$$
+
+**Limit Laws:**
+1. **Sum/Difference:** $\lim_{x \to a} [f(x) \pm g(x)] = \lim_{x \to a} f(x) \pm \lim_{x \to a} g(x)$
+2. **Product:** $\lim_{x \to a} [f(x) \cdot g(x)] = \lim_{x \to a} f(x) \cdot \lim_{x \to a} g(x)$
+3. **Quotient:** $\lim_{x \to a} \frac{f(x)}{g(x)} = \frac{\lim_{x \to a} f(x)}{\lim_{x \to a} g(x)}$ (if denominator $\neq 0$)
+
+**L'Hôpital's Rule (0/0 or ∞/∞):**
+$$\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}$$
+(if the limit on the right exists)
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Direct Substitution }
+
+For continuous functions, substitute directly
+
+\begin{lstlisting}
+from mathhook import symbol, limit, pi
+
+x = symbol('x')
+
+# Limit: lim(x→2) x² = 4
+expr1 = x**2
+limit1 = limit(expr1, x, 2)
+# Result: 4
+
+# Limit: lim(x→π) sin(x) = 0
+expr2 = sin(x)
+limit2 = limit(expr2, x, pi)
+# Result: 0
+
+\end{lstlisting}
+
+
+
+
+\subsection{ L'Hôpital's Rule (0/0 Form) }
+
+Use derivatives to resolve indeterminate forms
+
+\begin{lstlisting}
+from mathhook import symbol, limit, sin, cos
+
+x = symbol('x')
+
+# Limit: lim(x→0) sin(x)/x = 1
+expr = sin(x)/x
+result = limit(expr, x, 0)
+# Result: 1
+
+# Limit: lim(x→0) (1 - cos(x))/x²
+expr2 = (1 - cos(x))/x**2
+result2 = limit(expr2, x, 0)
+# Result: 1/2
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Limits at Infinity }
+
+Behavior as x approaches ±∞
+
+\begin{lstlisting}
+from mathhook import symbol, limit, oo
+
+x = symbol('x')
+
+# Limit: lim(x→∞) (2x² + 1)/(x² + 3)
+expr1 = (2*x**2 + 1)/(x**2 + 3)
+limit1 = limit(expr1, x, oo)
+# Result: 2
+
+# Limit: lim(x→∞) (x + 1)/(x² + 1)
+expr2 = (x + 1)/(x**2 + 1)
+limit2 = limit(expr2, x, oo)
+# Result: 0
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

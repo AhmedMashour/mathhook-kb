@@ -1,0 +1,154 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ WebAssembly Bindings }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+WebAssembly (WASM) bindings for MathHook, enabling browser-based symbolic mathematics
+without requiring Node.js. Documentation is under development.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# WebAssembly Bindings
+
+Language-specific documentation is under development.
+
+For now, please refer to:
+- Python: [mathhook-python README](../../crates/mathhook-python/README.md)
+- Node.js: [mathhook-node README](../../crates/mathhook-node/README.md)
+- [PyPI](https://pypi.org/project/mathhook/) for Python package
+- [npm](https://www.npmjs.com/package/mathhook-node) for Node.js package
+
+## Planned Features
+
+The WebAssembly bindings will enable:
+
+### Browser-Native Symbolic Math
+- Run MathHook directly in browsers without server-side computation
+- Zero dependencies on Node.js or Python runtimes
+- Full symbolic computation in client-side JavaScript
+
+### Use Cases
+- **Interactive Calculators**: Build symbolic calculators that run entirely in the browser
+- **Educational Tools**: Create math learning platforms with instant feedback
+- **Offline Applications**: Enable offline symbolic computation in web apps
+- **Mobile Web Apps**: Provide full CAS capabilities on mobile browsers
+
+### Integration Targets
+- Vanilla JavaScript (ES6+)
+- React/Vue/Angular components
+- Web Workers for background computation
+- Progressive Web Apps (PWA)
+
+### Performance Characteristics
+- Near-native performance through WebAssembly
+- Smaller bundle size compared to pure JavaScript CAS
+- Efficient memory usage through Rust's ownership model
+- SIMD support for numerical operations (where available)
+
+## Current Status
+
+**Status**: Under development
+
+**Tracking Issue**: [GitHub Issue #XXX](https://github.com/AhmedMashour/mathhook/issues/XXX)
+
+**Target Release**: Q2 2025
+
+## Temporary Alternatives
+
+While WASM bindings are under development, consider:
+
+1. **Node.js Bindings** for server-side rendering:
+   - Use Next.js/Nuxt.js server actions
+   - Build REST APIs with Express/Fastify
+   - See [Node.js API Guide](./nodejs.md)
+
+2. **Python Bindings** for Jupyter/computational notebooks:
+   - Use in Jupyter notebooks
+   - Build Python-based web APIs (FastAPI, Flask)
+   - See [Python API Guide](./python.md)
+
+3. **Rust Direct** for maximum performance:
+   - Build custom WASM modules using wasm-bindgen
+   - Direct access to mathhook-core crate
+   - See [mathhook-core documentation](../core/overview.md)
+
+## Stay Updated
+
+To receive updates on WASM bindings development:
+- Watch the [GitHub repository](https://github.com/AhmedMashour/mathhook)
+- Join the [Discord community](https://discord.gg/mathhook)
+- Subscribe to the [newsletter](https://mathhook.dev/newsletter)
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Planned Browser Usage (Future) }
+
+Example of how WASM bindings will be used in browsers (not yet available)
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ React Component Example (Future) }
+
+Planned integration with React components using WASM
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Web Worker Integration (Future) }
+
+Offload heavy symbolic computation to Web Workers
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,890 @@
+# Generated: 2025-12-15T19:30:00Z
+# Source: internal/planning/fast_path_opportunities_assessment_2025-12-06T2153.md
+# Topic: Fast Path Opportunities Assessment
+# Type: planning-document
+
+topic: "internal.planning.fast-path-opportunities"
+title: "Fast Path Opportunities Assessment"
+description: |
+  Comprehensive analysis of 15+ high-priority opportunities for IntPoly and NumericMatrix
+  fast-paths across MathHook's algebra, calculus, and matrix operations. Identifies concrete
+  performance improvements through direct numeric computation instead of Expression tree operations.
+
+document_type: "planning"
+audience: ["developers", "architects", "performance-engineers"]
+
+article:
+  content: |
+    # Fast Path Opportunities Assessment
+
+    **Date**: 2025-12-06T21:53
+    **Context**: Post-IntPoly implementation analysis
+    **Goal**: Identify remaining opportunities for fast-path optimizations
+
+    ---
+
+    ## Executive Summary
+
+    This document catalogs **15+ high-priority opportunities** for IntPoly and NumericMatrix fast-paths across MathHook's algebra, calculus, and matrix operations.
+
+    **Key Insight**: Many operations currently use Expression trees when they could operate entirely on numeric types (IntPoly, RationalPoly, NumericMatrix).
+
+    **Potential Impact**: 10-100x speedups for common operations like:
+    - Polynomial GCD and factorization
+    - System of equations solving
+    - Matrix decompositions and solving
+    - Differentiation and integration
+
+    ---
+
+    ## Methodology
+
+    For each opportunity, we assess:
+
+    1. **Current State**: How the operation works today
+    2. **Opportunity**: What fast-path could be added
+    3. **Impact**: Expected performance improvement
+    4. **Complexity**: Implementation difficulty (Low/Medium/High)
+    5. **Priority**: P0 (critical) to P3 (nice-to-have)
+
+    **Priority Levels**:
+    - **P0**: Critical bottlenecks, used in hot paths
+    - **P1**: High-frequency operations, significant impact
+    - **P2**: Moderate impact, less common operations
+    - **P3**: Niche use cases, polish/completeness
+
+    ---
+
+    ## Category 1: Polynomial Operations
+
+    ### 1. Polynomial GCD
+
+    **File**: `crates/mathhook-core/src/algebra/gcd.rs`
+
+    **Current State**:
+    - `Expression::gcd()` has IntPoly fast-path for univariate integer polynomials
+    - Falls back to symbolic GCD for rational coefficients
+    - Symbolic GCD uses Euclidean algorithm on Expression trees
+
+    **Opportunity**: Add RationalPoly fast-path
+
+    ```rust
+    // Current fallback
+    if vars.len() == 1 {
+        // Try IntPoly
+        if IntPoly::can_convert(self, &vars[0]) { /* ... */ }
+
+        // NEW: Try RationalPoly
+        if RationalPoly::can_convert(self, &vars[0]) {
+            let p1 = RationalPoly::try_from_expression(self, &vars[0])?;
+            let p2 = RationalPoly::try_from_expression(other, &vars[0])?;
+            return Ok(p1.gcd(&p2).to_expression(&vars[0]));
+        }
+
+        // Fall back to symbolic
+        return symbolic_gcd_euclidean(self, other, &vars[0]);
+    }
+    ```
+
+    **Impact**: 10-50x speedup for rational coefficient polynomials
+
+    **Complexity**: Low (reuse IntPoly pattern)
+
+    **Priority**: P1 (common in symbolic math)
+
+    ---
+
+    ### 2. Polynomial Division
+
+    **File**: `crates/mathhook-core/src/algebra/polynomial_division.rs`
+
+    **Current State**:
+    - `polynomial_division()` has IntPoly fast-path (lines 85-106)
+    - Falls back to symbolic division for rational coefficients
+
+    **Opportunity**: Add RationalPoly fast-path
+
+    ```rust
+    // After IntPoly check
+    if RationalPoly::can_convert(&dividend, var) && RationalPoly::can_convert(&divisor, var) {
+        let p_dividend = RationalPoly::try_from_expression(&dividend, var)?;
+        let p_divisor = RationalPoly::try_from_expression(&divisor, var)?;
+
+        let (quotient_poly, remainder_poly) = p_dividend.div_rem(&p_divisor);
+
+        return Ok((
+            quotient_poly.to_expression(var),
+            remainder_poly.to_expression(var),
+        ));
+    }
+    ```
+
+    **Impact**: 10-50x speedup for rational polynomials
+
+    **Complexity**: Low
+
+    **Priority**: P1
+
+    ---
+
+    ### 3. Polynomial Factorization
+
+    **File**: `crates/mathhook-core/src/core/polynomial/algorithms/factorization.rs`
+
+    **Current State**:
+    - Square-free factorization operates on Expression trees
+    - Calls GCD and division repeatedly (each call bridges Expression ↔ IntPoly)
+
+    **Opportunity**: Operate entirely in Poly<T>
+
+    ```rust
+    // NEW: Internal implementation
+    fn square_free_factorization_poly<T: Ring>(poly: &Poly<T>) -> Vec<(Poly<T>, usize)> {
+        let derivative = poly.derivative();
+        let g = poly.gcd(&derivative);
+        let (h, _) = poly.div_rem(&g);
+
+        // Yun's algorithm - ALL in Poly<T>, no conversions
+        let mut factors = Vec::new();
+        let mut current_g = g;
+        let mut current_h = h;
+        let mut multiplicity = 1;
+
+        while !current_h.is_one() {
+            let s = current_g.gcd(&current_h);
+            let (factor, _) = current_h.div_rem(&s);
+
+            if !factor.is_one() {
+                factors.push((factor, multiplicity));
+            }
+
+            current_g = current_g.div_rem(&s).0;
+            current_h = s;
+            multiplicity += 1;
+        }
+
+        factors
+    }
+
+    // Public wrapper converts once at entry/exit
+    pub fn square_free_factorization(
+        poly: &Expression,
+        var: &Symbol,
+    ) -> Result<Vec<(Expression, usize)>> {
+        if IntPoly::can_convert(poly, var) {
+            let p = IntPoly::try_from_expression(poly, var)?;
+            let factors = square_free_factorization_poly(&p);
+            return Ok(factors.into_iter()
+                .map(|(f, m)| (f.to_expression(var), m))
+                .collect());
+        }
+        // ... RationalPoly, symbolic fallback
+    }
+    ```
+
+    **Impact**: 50-200x speedup (eliminates O(n) conversions for multiplicity n)
+
+    **Complexity**: Medium (refactor existing algorithm)
+
+    **Priority**: P0 (hot path in factorization)
+
+    ---
+
+    ### 4. Polynomial Evaluation
+
+    **File**: `crates/mathhook-core/src/core/expression/mod.rs` (eval methods)
+
+    **Current State**:
+    - `Expression.eval()` walks entire Expression tree
+    - Polynomial evaluation is O(n) tree walk even for simple polynomials
+
+    **Opportunity**: Detect polynomial structure, evaluate with Horner's method
+
+    ```rust
+    impl Expression {
+        pub fn eval(&self, var: &Symbol, value: &Expression) -> Expression {
+            // NEW: Try polynomial fast-path
+            if self.is_polynomial_in(&[var.clone()]) {
+                if let Some(poly) = IntPoly::try_from_expression(self, var) {
+                    if let Ok(val_i64) = value.as_integer() {
+                        return Expression::integer(poly.evaluate_i64(val_i64));
+                    }
+                }
+                // Try RationalPoly if IntPoly fails
+            }
+
+            // Fall back to tree walk
+            self.eval_tree(var, value)
+        }
+    }
+    ```
+
+    **Impact**: 5-20x speedup for polynomial evaluation
+
+    **Complexity**: Low
+
+    **Priority**: P1 (common operation)
+
+    ---
+
+    ### 5. Polynomial Derivative (Symbolic)
+
+    **File**: `crates/mathhook-core/src/calculus/derivatives/symbolic.rs`
+
+    **Current State**:
+    - `derivative()` walks Expression tree applying rules
+    - For polynomials, this is inefficient (power rule on each term)
+
+    **Opportunity**: Polynomial fast-path using Poly<T>::derivative()
+
+    ```rust
+    pub fn derivative(expr: &Expression, var: &Symbol) -> Expression {
+        // NEW: Polynomial fast-path
+        if expr.is_polynomial_in(&[var.clone()]) {
+            if let Some(poly) = IntPoly::try_from_expression(expr, var) {
+                return poly.derivative().to_expression(var);
+            }
+            if let Some(poly) = RationalPoly::try_from_expression(expr, var) {
+                return poly.derivative().to_expression(var);
+            }
+        }
+
+        // Fall back to symbolic rules
+        derivative_symbolic(expr, var)
+    }
+    ```
+
+    **Impact**: 10-50x speedup for polynomial derivatives
+
+    **Complexity**: Low
+
+    **Priority**: P1
+
+    ---
+
+    ### 6. Polynomial Integration (Definite)
+
+    **File**: `crates/mathhook-core/src/calculus/integration/definite.rs`
+
+    **Current State**:
+    - Definite integration uses symbolic integration + evaluation
+    - For polynomials, this is overkill
+
+    **Opportunity**: Direct polynomial antiderivative + numeric evaluation
+
+    ```rust
+    pub fn definite_integral(
+        expr: &Expression,
+        var: &Symbol,
+        lower: &Expression,
+        upper: &Expression,
+    ) -> Result<Expression> {
+        // NEW: Polynomial fast-path
+        if expr.is_polynomial_in(&[var.clone()]) {
+            if let (Some(poly), Ok(a), Ok(b)) = (
+                IntPoly::try_from_expression(expr, var),
+                lower.as_integer(),
+                upper.as_integer(),
+            ) {
+                let antiderivative = poly.antiderivative();
+                let f_b = antiderivative.evaluate_i64(b);
+                let f_a = antiderivative.evaluate_i64(a);
+                return Ok(Expression::integer(f_b - f_a));
+            }
+        }
+
+        // Fall back to symbolic
+        definite_integral_symbolic(expr, var, lower, upper)
+    }
+    ```
+
+    **Impact**: 20-100x speedup for definite polynomial integrals
+
+    **Complexity**: Low (add antiderivative() to Poly<T>)
+
+    **Priority**: P1
+
+    ---
+
+    ## Category 2: Matrix Operations
+
+    ### 7. Matrix-Vector Multiplication
+
+    **File**: `crates/mathhook-core/src/matrices/operations.rs`
+
+    **Current State**:
+    - Matrix multiplication operates on Expression elements
+    - Each operation goes through Expression arithmetic
+
+    **Opportunity**: NumericMatrix fast-path for numeric matrices
+
+    ```rust
+    impl Matrix {
+        pub fn multiply_vector(&self, vec: &[Expression]) -> Vec<Expression> {
+            // NEW: Numeric fast-path
+            if self.is_numeric() && vec.iter().all(|e| e.is_numeric()) {
+                let mat = NumericMatrix::from_expressions(self);
+                let vec_numeric: Vec<f64> = vec.iter()
+                    .map(|e| e.as_numeric().unwrap())
+                    .collect();
+
+                let result = mat.multiply_vector(&vec_numeric);
+                return result.into_iter()
+                    .map(Expression::from_float)
+                    .collect();
+            }
+
+            // Symbolic multiplication
+            self.multiply_vector_symbolic(vec)
+        }
+    }
+    ```
+
+    **Impact**: 50-500x speedup for numeric matrix-vector products
+
+    **Complexity**: Medium (create NumericMatrix type)
+
+    **Priority**: P0 (extremely common operation)
+
+    ---
+
+    ### 8. Matrix Inversion
+
+    **File**: `crates/mathhook-core/src/matrices/inverse.rs`
+
+    **Current State**:
+    - Gauss-Jordan elimination on Expression matrices
+    - Each arithmetic operation is symbolic
+
+    **Opportunity**: NumericMatrix fast-path with LU decomposition
+
+    ```rust
+    impl Matrix {
+        pub fn inverse(&self) -> Result<Matrix> {
+            // NEW: Numeric fast-path
+            if self.is_numeric() {
+                let mat = NumericMatrix::from_expressions(self);
+                let inv = mat.inverse_lu()?;
+                return Ok(Matrix::from_numeric(&inv));
+            }
+
+            // Symbolic Gauss-Jordan
+            self.inverse_gauss_jordan()
+        }
+    }
+    ```
+
+    **Impact**: 100-1000x speedup for numeric matrices
+
+    **Complexity**: Medium (implement NumericMatrix with BLAS)
+
+    **Priority**: P0
+
+    ---
+
+    ### 9. Matrix Determinant
+
+    **File**: `crates/mathhook-core/src/matrices/determinant.rs`
+
+    **Current State**:
+    - Determinant via cofactor expansion (O(n!)) or LU decomposition on Expression
+
+    **Opportunity**: NumericMatrix fast-path with LU decomposition
+
+    ```rust
+    impl Matrix {
+        pub fn determinant(&self) -> Expression {
+            // NEW: Numeric fast-path
+            if self.is_numeric() {
+                let mat = NumericMatrix::from_expressions(self);
+                let det = mat.determinant_lu();
+                return Expression::from_float(det);
+            }
+
+            // Symbolic determinant
+            self.determinant_symbolic()
+        }
+    }
+    ```
+
+    **Impact**: 50-500x speedup for numeric determinants
+
+    **Complexity**: Low (reuse LU decomposition)
+
+    **Priority**: P1
+
+    ---
+
+    ### 10. System of Linear Equations
+
+    **File**: `crates/mathhook-core/src/algebra/solvers/systems.rs`
+
+    **Current State**:
+    - `solve_nxn_system()` uses Gaussian elimination on Expression matrices
+    - No numeric fast-path
+
+    **Opportunity**: NumericMatrix fast-path for numeric systems
+
+    ```rust
+    fn solve_nxn_system(
+        &self,
+        equations: &[Expression],
+        variables: &[Symbol],
+    ) -> SolverResult {
+        let (a_matrix, b_vec) = self.build_system_matrix(equations, variables);
+
+        // NEW: Numeric fast-path
+        if a_matrix.is_numeric() && b_vec.iter().all(|e| e.is_numeric()) {
+            let a_numeric = NumericMatrix::from_expressions(&a_matrix);
+            let b_numeric: Vec<f64> = b_vec.iter()
+                .map(|e| e.as_numeric().unwrap())
+                .collect();
+
+            match a_numeric.solve_lu(&b_numeric) {
+                Ok(solution) => {
+                    let expr_solution: Vec<Expression> = solution.into_iter()
+                        .map(Expression::from_float)
+                        .collect();
+                    return SolverResult::Multiple(expr_solution);
+                }
+                Err(_) => return SolverResult::NoSolution,
+            }
+        }
+
+        // Symbolic Gaussian elimination
+        self.solve_nxn_system_symbolic(&a_matrix, &b_vec)
+    }
+    ```
+
+    **Impact**: 50-500x speedup for numeric systems
+
+    **Complexity**: Medium
+
+    **Priority**: P0
+
+    ---
+
+    ## Category 3: Algebraic Operations
+
+    ### 11. Rational Function Simplification
+
+    **File**: `crates/mathhook-core/src/algebra/rational.rs`
+
+    **Current State**:
+    - Rational simplification uses Expression GCD
+    - For polynomial rationals, this is inefficient
+
+    **Opportunity**: Poly<T> fast-path for polynomial numerator/denominator
+
+    ```rust
+    pub fn simplify_rational(
+        numerator: &Expression,
+        denominator: &Expression,
+    ) -> (Expression, Expression) {
+        // NEW: Polynomial fast-path
+        if let Some(var) = common_variable(numerator, denominator) {
+            if let (Some(num_poly), Some(den_poly)) = (
+                IntPoly::try_from_expression(numerator, &var),
+                IntPoly::try_from_expression(denominator, &var),
+            ) {
+                let gcd = num_poly.gcd(&den_poly);
+                let (simplified_num, _) = num_poly.div_rem(&gcd);
+                let (simplified_den, _) = den_poly.div_rem(&gcd);
+
+                return (
+                    simplified_num.to_expression(&var),
+                    simplified_den.to_expression(&var),
+                );
+            }
+        }
+
+        // Symbolic GCD
+        simplify_rational_symbolic(numerator, denominator)
+    }
+    ```
+
+    **Impact**: 10-50x speedup for polynomial rationals
+
+    **Complexity**: Low
+
+    **Priority**: P1
+
+    ---
+
+    ### 12. Partial Fraction Decomposition
+
+    **File**: `crates/mathhook-core/src/algebra/partial_fractions.rs`
+
+    **Current State**:
+    - Partial fractions uses symbolic operations throughout
+    - Factorization, polynomial division, solving for coefficients all symbolic
+
+    **Opportunity**: Multi-level fast-path strategy
+
+    ```rust
+    pub fn partial_fraction_decomposition(
+        numerator: &Expression,
+        denominator: &Expression,
+        var: &Symbol,
+    ) -> Result<Vec<RationalTerm>> {
+        // Step 1: Factor denominator (uses square-free fast-path)
+        let factors = square_free_factorization(denominator, var)?;
+
+        // Step 2: For each factor, solve for coefficients
+        // NEW: Use Poly<T> operations instead of symbolic
+        if IntPoly::can_convert(numerator, var) {
+            let num_poly = IntPoly::try_from_expression(numerator, var)?;
+
+            let mut terms = Vec::new();
+            for (factor, multiplicity) in factors {
+                let factor_poly = IntPoly::try_from_expression(&factor, var)?;
+
+                // Solve for coefficients using polynomial arithmetic
+                let coeffs = solve_coefficients_poly(&num_poly, &factor_poly, multiplicity);
+
+                terms.extend(coeffs);
+            }
+
+            return Ok(terms);
+        }
+
+        // Symbolic fallback
+        partial_fraction_symbolic(numerator, denominator, var)
+    }
+    ```
+
+    **Impact**: 20-100x speedup for polynomial partial fractions
+
+    **Complexity**: Medium (refactor coefficient solving)
+
+    **Priority**: P2
+
+    ---
+
+    ### 13. Polynomial Remainder Theorem
+
+    **File**: `crates/mathhook-core/src/algebra/theorems.rs`
+
+    **Current State**:
+    - Remainder theorem uses symbolic division
+
+    **Opportunity**: Direct polynomial evaluation (Horner's method)
+
+    ```rust
+    pub fn remainder_theorem(
+        poly: &Expression,
+        divisor_root: &Expression,
+        var: &Symbol,
+    ) -> Expression {
+        // Remainder when dividing by (x - a) is just p(a)
+
+        // NEW: Polynomial fast-path
+        if let Some(p) = IntPoly::try_from_expression(poly, var) {
+            if let Ok(a) = divisor_root.as_integer() {
+                return Expression::integer(p.evaluate_i64(a));
+            }
+        }
+
+        // Symbolic evaluation
+        poly.eval(var, divisor_root)
+    }
+    ```
+
+    **Impact**: 5-20x speedup
+
+    **Complexity**: Low
+
+    **Priority**: P2
+
+    ---
+
+    ## Category 4: Higher-Level Operations
+
+    ### 14. Groebner Basis Computation
+
+    **File**: `crates/mathhook-core/src/algebra/groebner/buchberger.rs`
+
+    **Current State**:
+    - Buchberger's algorithm operates on multivariate Expression polynomials
+    - S-polynomial computation, reduction all symbolic
+
+    **Opportunity**: Multivariate Poly<T> representation
+
+    **Complexity**: High (requires multivariate polynomial type)
+
+    **Priority**: P3 (complex, lower frequency)
+
+    **Note**: This is a Phase 10+ optimization requiring architectural changes.
+
+    ---
+
+    ### 15. Resultant and Discriminant
+
+    **File**: `crates/mathhook-core/src/algebra/resultant.rs`
+
+    **Current State**:
+    - Resultant computed via Sylvester matrix determinant (symbolic)
+
+    **Opportunity**: Polynomial coefficient extraction + numeric determinant
+
+    ```rust
+    pub fn resultant(
+        poly1: &Expression,
+        poly2: &Expression,
+        var: &Symbol,
+    ) -> Expression {
+        // NEW: Polynomial fast-path
+        if let (Some(p1), Some(p2)) = (
+            IntPoly::try_from_expression(poly1, var),
+            IntPoly::try_from_expression(poly2, var),
+        ) {
+            let sylvester = build_sylvester_matrix_numeric(&p1, &p2);
+            let det = sylvester.determinant_lu();
+            return Expression::integer(det as i64);
+        }
+
+        // Symbolic resultant
+        resultant_symbolic(poly1, poly2, var)
+    }
+    ```
+
+    **Impact**: 50-200x speedup for polynomial resultants
+
+    **Complexity**: Medium
+
+    **Priority**: P2
+
+    ---
+
+    ## Implementation Priorities
+
+    ### Phase 1 (P0 - Critical)
+    1. **Polynomial Square-Free Factorization** (eliminate bridging)
+    2. **NumericMatrix System Solver** (50-500x speedup)
+    3. **NumericMatrix Inverse** (100-1000x speedup)
+    4. **NumericMatrix-Vector Multiply** (50-500x speedup)
+
+    ### Phase 2 (P1 - High Impact)
+    1. **RationalPoly GCD**
+    2. **RationalPoly Division**
+    3. **Polynomial Evaluation Fast-Path**
+    4. **Polynomial Derivative Fast-Path**
+    5. **Polynomial Integration (Definite)**
+    6. **Matrix Determinant (Numeric)**
+    7. **Rational Function Simplification**
+
+    ### Phase 3 (P2 - Moderate Impact)
+    1. **Partial Fraction Decomposition**
+    2. **Polynomial Remainder Theorem**
+    3. **Resultant/Discriminant**
+
+    ### Phase 4 (P3 - Polish/Completeness)
+    1. **Groebner Basis** (requires multivariate Poly<T>)
+
+    ---
+
+    ## Performance Impact Estimates
+
+    ### By Operation Category
+
+    | Category | Current Avg Time | With Fast-Paths | Speedup |
+    |----------|------------------|-----------------|---------|
+    | Polynomial GCD | 500μs | 10μs | 50x |
+    | Polynomial Division | 200μs | 5μs | 40x |
+    | Square-Free Factorization | 2ms | 20μs | 100x |
+    | Matrix Inversion (10x10) | 50ms | 50μs | 1000x |
+    | System Solver (10x10) | 30ms | 60μs | 500x |
+    | Polynomial Evaluation | 100μs | 5μs | 20x |
+
+    ### Cumulative Impact
+
+    **Scenario**: Symbolic algebra workflow (factor, simplify, solve)
+
+    **Before Fast-Paths**:
+    - Factor polynomial: 2ms
+    - Simplify rational: 1ms
+    - Solve system: 30ms
+    - **Total**: 33ms
+
+    **After Fast-Paths**:
+    - Factor polynomial: 20μs
+    - Simplify rational: 20μs
+    - Solve system: 60μs
+    - **Total**: 100μs
+
+    **Overall Speedup**: 330x
+
+    ---
+
+    ## Implementation Strategy
+
+    ### Pattern: Poly<T> Generic Operations
+
+    For each operation, follow this pattern:
+
+    1. **Internal Generic Implementation**:
+       ```rust
+       fn operation_poly<T: Ring>(poly: &Poly<T>, ...) -> Result<Poly<T>> {
+           // Operate entirely in Poly<T>, no Expression
+       }
+       ```
+
+    2. **Public Expression Wrapper**:
+       ```rust
+       pub fn operation(expr: &Expression, ...) -> Result<Expression> {
+           // Try IntPoly
+           if IntPoly::can_convert(expr, var) {
+               let p = IntPoly::try_from_expression(expr, var)?;
+               let result = operation_poly(&p, ...)?;
+               return Ok(result.to_expression(var));
+           }
+
+           // Try RationalPoly
+           if RationalPoly::can_convert(expr, var) {
+               let p = RationalPoly::try_from_expression(expr, var)?;
+               let result = operation_poly(&p, ...)?;
+               return Ok(result.to_expression(var));
+           }
+
+           // Symbolic fallback
+           operation_symbolic(expr, ...)
+       }
+       ```
+
+    3. **Test Cross-Language Consistency**:
+       ```rust
+       #[test]
+       fn test_operation_intpoly_matches_symbolic() {
+           let cases = vec![
+               (expr!(x^2 + 2*x + 1), ...),
+               (expr!(x^3 - 1), ...),
+           ];
+
+           for (input, ...) in cases {
+               let fast_result = operation_fast_path(&input, ...);
+               let symbolic_result = operation_symbolic(&input, ...);
+               assert_eq!(fast_result, symbolic_result);
+           }
+       }
+       ```
+
+    ---
+
+    ## Validation Strategy
+
+    For each fast-path implementation:
+
+    1. **Correctness**: Compare fast-path result with symbolic result
+    2. **Performance**: Benchmark before/after with criterion
+    3. **Cross-Language**: Verify Rust/Python/JS equivalence
+    4. **Edge Cases**: Test zero, constant, high-degree polynomials
+
+    ---
+
+    ## Risk Assessment
+
+    ### Low Risk (Should Implement First)
+    - RationalPoly GCD/division (proven pattern)
+    - Polynomial evaluation (simple conversion)
+    - Matrix determinant (reuse LU)
+
+    ### Medium Risk (Require Careful Testing)
+    - Square-free factorization refactor (complex algorithm)
+    - NumericMatrix implementation (numerical stability)
+    - Partial fraction decomposition (multi-step process)
+
+    ### High Risk (Phase 10+)
+    - Groebner basis (major architectural change)
+    - Multivariate polynomial type (new abstraction)
+
+    ---
+
+    ## Conclusion
+
+    **Key Takeaway**: There are 15+ concrete opportunities for 10-1000x speedups through systematic application of the fast-path pattern.
+
+    **Immediate Actions**:
+    1. Implement P0 fast-paths (square-free, NumericMatrix)
+    2. Add RationalPoly fast-paths (GCD, division)
+    3. Benchmark improvements
+    4. Document patterns for future contributors
+
+    **Long-Term Vision**: MathHook operates primarily on numeric types (Poly<T>, NumericMatrix) with Expression trees only at API boundaries.
+
+objectives:
+  - "Identify 15+ high-priority opportunities for IntPoly and NumericMatrix fast-paths"
+  - "Assess current state and optimization potential for polynomial operations"
+  - "Evaluate matrix operation fast-path opportunities"
+  - "Define implementation priorities across 4 phases (P0-P3)"
+  - "Establish validation and testing strategies for fast-path implementations"
+  - "Document systematic patterns for adding fast-paths to existing operations"
+
+priorities:
+  - priority: "P0 - Critical"
+    operations:
+      - "Polynomial Square-Free Factorization (eliminate bridging)"
+      - "NumericMatrix System Solver (50-500x speedup)"
+      - "NumericMatrix Inverse (100-1000x speedup)"
+      - "NumericMatrix-Vector Multiply (50-500x speedup)"
+  - priority: "P1 - High Impact"
+    operations:
+      - "RationalPoly GCD"
+      - "RationalPoly Division"
+      - "Polynomial Evaluation Fast-Path"
+      - "Polynomial Derivative Fast-Path"
+      - "Polynomial Integration (Definite)"
+      - "Matrix Determinant (Numeric)"
+      - "Rational Function Simplification"
+  - priority: "P2 - Moderate Impact"
+    operations:
+      - "Partial Fraction Decomposition"
+      - "Polynomial Remainder Theorem"
+      - "Resultant/Discriminant"
+  - priority: "P3 - Polish/Completeness"
+    operations:
+      - "Groebner Basis (requires multivariate Poly<T>)"
+
+performance_impact:
+  polynomial_gcd:
+    current: "500μs"
+    optimized: "10μs"
+    speedup: "50x"
+  polynomial_division:
+    current: "200μs"
+    optimized: "5μs"
+    speedup: "40x"
+  square_free_factorization:
+    current: "2ms"
+    optimized: "20μs"
+    speedup: "100x"
+  matrix_inversion:
+    current: "50ms"
+    optimized: "50μs"
+    speedup: "1000x"
+  system_solver:
+    current: "30ms"
+    optimized: "60μs"
+    speedup: "500x"
+  polynomial_evaluation:
+    current: "100μs"
+    optimized: "5μs"
+    speedup: "20x"
+
+implementation_pattern:
+  internal_generic: "fn operation_poly<T: Ring>(poly: &Poly<T>) -> Result<Poly<T>>"
+  public_wrapper: "Try IntPoly → Try RationalPoly → Symbolic fallback"
+  testing: "Compare fast-path result with symbolic result for correctness"
+
+related_topics:
+  - "internal.planning.intpoly-first-implementation"
+  - "internal.planning.matrix-solver-integration"
+  - "internal.planning.bridging-elimination"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/planning/fast_path_opportunities_assessment_2025-12-06T2153.md"
+  generated_timestamp: "2025-12-15T19:30:00Z"
+  validation_status: "valid"
+  document_category: "planning"
+  assessment_scope: "15+ optimization opportunities"
+  estimated_total_impact: "10-1000x speedups across operations"

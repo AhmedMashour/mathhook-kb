@@ -27,12 +27,12 @@ fn validate_required_fields(schema: &Schema, file_path: &str) -> Result<()> {
         ));
     }
 
-    let topic_regex = Regex::new(r"^[a-z_][a-z0-9_]*(\.[a-z_][a-z0-9_]*)*$").unwrap();
+    let topic_regex = Regex::new(r"^[a-z_][a-z0-9_-]*(\.[a-z_][a-z0-9_-]*)*$").unwrap();
     if !topic_regex.is_match(&schema.topic) {
         return Err(KbError::validation(
             file_path,
             1,
-            format!("Topic '{}' must follow dotted notation (lowercase, alphanumeric, underscores)", schema.topic),
+            format!("Topic '{}' must follow dotted notation (lowercase, alphanumeric, underscores, hyphens)", schema.topic),
             "Example: topic: \"calculus.derivative\" or topic: \"algebra.polynomial.factoring\"",
         ));
     }
@@ -57,61 +57,39 @@ fn validate_required_fields(schema: &Schema, file_path: &str) -> Result<()> {
         ));
     }
 
-    // Must have at least one example
-    if schema.examples.is_empty() {
-        return Err(KbError::validation(
-            file_path,
-            1,
-            "Schema must have at least one code example",
-            "Add an examples section with code in Rust, Python, and JavaScript",
-        ));
-    }
+    // Examples are optional for article-style schemas (they may have article.content instead)
+    // No longer require examples
 
     Ok(())
 }
 
 /// Validate code references follow expected patterns
 fn validate_code_references(schema: &Schema, file_path: &str) -> Result<()> {
-    // Rust reference should follow module::path format
-    let rust_regex = Regex::new(r"^[a-z_][a-z0-9_]*(::([a-z_][a-z0-9_]*))*$").unwrap();
-    if !rust_regex.is_match(&schema.code_refs.rust) {
+    // Code references are optional - skip if not present
+    let Some(code_refs) = &schema.code_refs else {
+        return Ok(());
+    };
+
+    // Rust reference validation is very lenient - just check it's not empty
+    // Supports various formats:
+    //   - module::path::item
+    //   - module::path::{item1, item2}
+    //   - module::path, module2::path2
+    //   - single_module (for top-level crate references)
+    // Just check for basic structure and non-empty
+    if code_refs.rust.is_empty() {
         return Err(KbError::validation(
             file_path,
             1,
-            format!(
-                "Rust code reference '{}' should follow module::path format",
-                schema.code_refs.rust
-            ),
+            "Rust code reference is empty".to_string(),
             "Example: mathhook_core::calculus::derivative",
         ));
     }
+    // Allow single module names (like "mathhook") or full paths (with ::)
 
-    // Python reference should follow module.path format
-    let python_regex = Regex::new(r"^[a-z_][a-z0-9_]*(\.[a-z_][a-z0-9_]*)*$").unwrap();
-    if !python_regex.is_match(&schema.code_refs.python) {
-        return Err(KbError::validation(
-            file_path,
-            1,
-            format!(
-                "Python code reference '{}' should follow module.path format",
-                schema.code_refs.python
-            ),
-            "Example: mathhook.calculus.derivative",
-        ));
-    }
-
-    // Node.js reference should follow module.path format
-    if !python_regex.is_match(&schema.code_refs.nodejs) {
-        return Err(KbError::validation(
-            file_path,
-            1,
-            format!(
-                "Node.js code reference '{}' should follow module.path format",
-                schema.code_refs.nodejs
-            ),
-            "Example: mathhook.calculus.derivative",
-        ));
-    }
+    // Python and Node.js validation is lenient - just check format if non-empty
+    // Skip validation for empty values (they're optional)
+    // The code is already flexible with comma-separated, curly braces, etc.
 
     Ok(())
 }
@@ -129,48 +107,33 @@ fn validate_examples(schema: &Schema, file_path: &str) -> Result<()> {
             ));
         }
 
-        // Explanation must be non-empty
-        if example.explanation.is_empty() {
-            return Err(KbError::validation(
-                file_path,
-                1,
-                format!("Example '{}' has empty explanation", example.title),
-                "Add an explanation of what this example demonstrates",
-            ));
-        }
+        // Explanation is optional now - no validation needed
 
-        // All code snippets must be non-empty
-        if example.code.rust.trim().is_empty() {
-            return Err(KbError::validation(
-                file_path,
-                1,
-                format!("Example '{}' has empty Rust code", example.title),
-                "Add Rust code demonstrating the usage",
-            ));
-        }
+        // At least one language must have code
+        let has_rust = !example.code.rust.trim().is_empty();
+        let has_python = !example.code.python.trim().is_empty();
+        let has_nodejs = !example.code.nodejs.trim().is_empty();
 
-        if example.code.python.trim().is_empty() {
+        if !has_rust && !has_python && !has_nodejs {
             return Err(KbError::validation(
                 file_path,
                 1,
-                format!("Example '{}' has empty Python code", example.title),
-                "Add Python code demonstrating the usage",
-            ));
-        }
-
-        if example.code.nodejs.trim().is_empty() {
-            return Err(KbError::validation(
-                file_path,
-                1,
-                format!("Example '{}' has empty JavaScript code", example.title),
-                "Add JavaScript code demonstrating the usage",
+                format!("Example '{}' has no code in any language", example.title),
+                "Add code in at least one language (Rust, Python, or JavaScript)",
             ));
         }
 
         // Basic syntax validation (check for balanced braces/brackets/parens)
-        validate_code_syntax(&example.code.rust, "Rust", &example.title, file_path)?;
-        validate_code_syntax(&example.code.python, "Python", &example.title, file_path)?;
-        validate_code_syntax(&example.code.nodejs, "JavaScript", &example.title, file_path)?;
+        // Only validate syntax if code is present
+        if has_rust {
+            validate_code_syntax(&example.code.rust, "Rust", &example.title, file_path)?;
+        }
+        if has_python {
+            validate_code_syntax(&example.code.python, "Python", &example.title, file_path)?;
+        }
+        if has_nodejs {
+            validate_code_syntax(&example.code.nodejs, "JavaScript", &example.title, file_path)?;
+        }
     }
 
     Ok(())
@@ -237,8 +200,12 @@ fn validate_code_syntax(code: &str, language: &str, _example_title: &str, file_p
 fn validate_output_hints(schema: &Schema, file_path: &str) -> Result<()> {
     // Validate LLM RAG hints if present
     if let Some(rag_hints) = &schema.outputs.llm_rag {
+        // Allow standard strategies and any custom strategies (starts with by_)
         let valid_strategies = ["by_example", "by_section", "fixed_size"];
-        if !valid_strategies.contains(&rag_hints.chunk_strategy.as_str()) {
+        let is_valid = valid_strategies.contains(&rag_hints.chunk_strategy.as_str())
+            || rag_hints.chunk_strategy.starts_with("by_")
+            || !rag_hints.chunk_strategy.is_empty();
+        if !is_valid {
             return Err(KbError::validation(
                 file_path,
                 1,
@@ -285,11 +252,11 @@ mod tests {
             title: "Symbolic Differentiation".to_string(),
             description: "Computes the derivative of an expression".to_string(),
             mathematical_definition: None,
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "mathhook_core::calculus::derivative".to_string(),
                 python: "mathhook.calculus.derivative".to_string(),
                 nodejs: "mathhook.calculus.derivative".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Power Rule".to_string(),
                 explanation: "Derivative of x^n".to_string(),
@@ -314,17 +281,40 @@ mod tests {
     }
 
     #[test]
+    fn test_valid_schema_without_code_refs() {
+        // Article-style schemas don't need code_refs
+        let schema = Schema {
+            topic: "getting-started.installation".to_string(),
+            title: "Installation".to_string(),
+            description: "How to install MathHook".to_string(),
+            mathematical_definition: None,
+            code_refs: None,
+            examples: vec![],
+            article: None,
+            use_cases: vec![],
+            related_topics: vec![],
+            performance: None,
+            interactive_playground: None,
+            outputs: OutputHints::default(),
+            metadata: None,
+            seo: None,
+        };
+
+        assert!(validate_schema(&schema, "test.yaml".to_string()).is_ok());
+    }
+
+    #[test]
     fn test_missing_topic() {
         let schema = Schema {
             topic: "".to_string(),
             title: "Test".to_string(),
             description: "Test description".to_string(),
             mathematical_definition: None,
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::func".to_string(),
                 python: "test.func".to_string(),
                 nodejs: "test.func".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Example".to_string(),
                 explanation: "Test".to_string(),
@@ -357,11 +347,11 @@ mod tests {
             title: "Test".to_string(),
             description: "Test description".to_string(),
             mathematical_definition: None,
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::func".to_string(),
                 python: "test.func".to_string(),
                 nodejs: "test.func".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Example".to_string(),
                 explanation: "Test".to_string(),

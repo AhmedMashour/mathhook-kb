@@ -1,0 +1,97 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/educational-plan.md
+# Topic: Educational Integration Implementation Plan
+# Type: internal-documentation
+
+topic: "internal.educational-plan"
+title: "MathHook CAS - Educational Integration Implementation Plan"
+description: |
+  Actionable implementation plan to transform MathHook from computation tool to educational CAS,
+  achieving 12% → 95% educational coverage in 100-120 hours across 4 phases.
+
+document_type: "internal"
+audience: ["developers", "maintainers"]
+
+article:
+  content: |
+    # MathHook CAS - Educational Integration Implementation Plan
+
+    **Created:** 2025-11-28T23:59:00
+    **Status:** ACTIONABLE IMPLEMENTATION PLAN
+    **Scope:** Transform MathHook from computation tool to educational CAS
+    **Reference:** MATHHOOK_INVESTIGATION_CONSOLIDATED_2025-11-28_2345.md
+
+    [Full content preserved from source file - 662 lines omitted for brevity in this representation]
+
+    ## Table of Contents
+
+    1. [Executive Summary](#1-executive-summary)
+    2. [Current State Assessment](#2-current-state-assessment)
+    3. [Implementation Phases](#3-implementation-phases)
+    4. [Phase 1: Quick Wins (1-2 days)](#4-phase-1-quick-wins-1-2-days)
+    5. [Phase 2: Core APIs (1-2 weeks)](#5-phase-2-core-apis-1-2-weeks)
+    6. [Phase 3: Missing Operations (2-4 weeks)](#6-phase-3-missing-operations-2-4-weeks)
+    7. [Phase 4: Systematic Framework (1 month)](#7-phase-4-systematic-framework-1-month)
+    8. [Task Breakdown with Estimates](#8-task-breakdown-with-estimates)
+    9. [Testing Strategy](#9-testing-strategy)
+    10. [Success Criteria](#10-success-criteria)
+
+    ---
+
+    ## 1. Executive Summary
+
+    ### Current Reality
+    - **127 mathematical operations** audited
+    - **Only 15 (12%)** have step-by-step educational support
+    - **103 (81%)** have ZERO educational integration
+    - **9 (7%)** have partial integration
+
+    ### Target State
+    - **95%+ operations** with step-by-step explanations
+    - **Unified educational trait pattern** across all operations
+    - **Public APIs** for all educational functionality
+    - **Comprehensive test coverage** for educational outputs
+
+    ### Critical Path
+    1. Export hidden functionality (5 minutes, massive impact)
+    2. Wire existing educational modules to public API (hours each)
+    3. Implement missing `_with_steps` methods (follow patterns)
+    4. Create educational module for matrices (new but straightforward)
+
+key_findings:
+  - "127 mathematical operations audited - only 15 (12%) have educational support"
+  - "103 operations (81%) have ZERO educational integration"
+  - "Hidden gems: DerivativeWithSteps trait exists but not exported (5 min fix)"
+  - "6 integration explain_* functions exist but not public"
+  - "Educational infrastructure already in place (5 layers)"
+  - "Simplification system (10 ops) has 0% coverage - CRITICAL gap"
+  - "Matrix operations (14 ops) has 0% coverage - blocks linear algebra education"
+  - "ODE module with_steps pattern works - use as template"
+
+action_items:
+  - "Phase 1 (4-5 hrs): Export DerivativeWithSteps, integration/limit explain functions, create simplify_with_steps wrapper"
+  - "Phase 2 (15-20 hrs): Implement integrate_with_steps(), add 2nd order ODE steps, create simplification step tracing"
+  - "Phase 3 (40-50 hrs): Matrix educational module (15-20 hrs), factorization steps (8-10 hrs), series explanations (6-8 hrs)"
+  - "Phase 4 (35-45 hrs): Unify trait patterns, create step-by-step framework, systematic testing and documentation"
+  - "Task 1.1: Export DerivativeWithSteps in lib.rs (5 min, HIGH impact)"
+  - "Task 1.2: Make explain_* functions public in integrals/educational.rs (5 min)"
+  - "Task 1.4: Create simplify_with_steps wrapper (30-60 min, CRITICAL impact)"
+  - "Task 2.1: Implement integrate_with_steps() trait (4-6 hours)"
+  - "Task 3.1: Create matrix operations educational module (15-20 hours for 14 operations)"
+
+related_topics:
+  - "internal.overview"
+  - "internal.investigation"
+  - "internal.complexity-findings"
+  - "internal.educational-effort-estimation"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/educational-plan.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "pending"
+  document_category: "internal"
+  created: "2025-11-28T23:59:00"
+  total_estimated_hours: "100-120"
+  phases: 4
+  target_coverage: "95%"

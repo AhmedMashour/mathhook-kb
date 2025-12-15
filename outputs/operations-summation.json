@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Symbolic summation and products in MathHook provide closed-form formulas for arithmetic series, geometric series, power sums, and convergence analysis for infinite series.\n",
+    "title": "Summation and Products",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/operations/summation": {
+      "post": {
+        "description": "Symbolic summation and products in MathHook provide closed-form formulas for arithmetic series, geometric series, power sums, and convergence analysis for infinite series.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "arithmetic_series_(gauss's_formula)": {
+                  "description": "Sum of integers from 1 to n",
+                  "summary": "Arithmetic Series (Gauss's Formula)",
+                  "value": {
+                    "expression": "arithmetic_series(first_term"
+                  }
+                },
+                "geometric_series": {
+                  "description": "1 + 1/2 + 1/4 + ...",
+                  "summary": "Geometric Series",
+                  "value": {
+                    "expression": "geometric_series(first_term"
+                  }
+                },
+                "infinite_geometric_series": {
+                  "description": "Converges when |r| < 1",
+                  "summary": "Infinite Geometric Series",
+                  "value": {
+                    "expression": "infinite_geometric_series(first_term"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Summation and Products",
+        "tags": [
+          "operations"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "operations operations",
+      "name": "operations"
+    }
+  ]
+}

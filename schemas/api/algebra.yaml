@@ -1,0 +1,318 @@
+# MathHook Algebra API - Simplification and Algebraic Operations
+# Generated: 2025-12-15T14:56
+# Source: docs/src/operations/simplification.md
+
+topic: "api.algebra.simplification"
+title: "Symbolic Simplification"
+description: |
+  Comprehensive symbolic simplification for mathematical expressions, with full
+  support for noncommutative algebra (matrices, operators, quaternions). Implements
+  canonical forms and mathematical identities to reduce expressions to simplest form.
+
+article:
+  content: |
+    # Symbolic Simplification
+
+    ## Overview
+
+    MathHook's simplification system transforms expressions to canonical form through:
+    - **Arithmetic Simplification**: Collect like terms, flatten operations, remove identities
+    - **Power Rule**: Combine like powers ($x^a \cdot x^b \rightarrow x^{a+b}$)
+    - **Noncommutative Algebra**: Preserve order for matrices, operators, quaternions
+    - **Rational Arithmetic**: Exact computation with arbitrary precision
+
+    ## Capabilities
+
+    ### Arithmetic Operations
+    - **Addition**: Collects like terms, flattens nested sums, removes 0
+    - **Multiplication**: Combines factors, flattens products, removes 1, applies power rule
+    - **Power**: Simplifies exponents, distributes when safe (commutative only)
+
+    ### Noncommutative Algebra
+    - **Matrices**: Preserves order ($AB \neq BA$)
+    - **Operators**: Quantum mechanics commutators $[x,p] = xp - px$
+    - **Quaternions**: $ij = k$ but $ji = -k$
+
+    ### Numerical Stability
+    - **Checked arithmetic**: Integer operations use checked_mul, checked_add
+    - **BigInt promotion**: Automatic on overflow
+    - **Iterative flattening**: Avoids stack overflow for deeply nested expressions
+
+    ## Performance
+
+    ### Targets
+    - **Simplification time**: <1ms for expressions with <100 nodes
+    - **Memory**: Minimal allocations through iterative flattening
+    - **Cache efficiency**: 32-byte expression size (2 per cache line)
+
+    ### Optimization Strategies
+    - **Iterative flattening**: Avoids recursion stack overflow
+    - **Early exit**: Returns immediately for identity elements
+    - **Power combining**: O(n) grouping of like powers
+
+code_refs:
+  rust: "mathhook_core::simplify::Simplify"
+  python: "mathhook.simplify"
+  nodejs: "mathhook.simplify"
+
+examples:
+  - title: "Basic Simplification"
+    explanation: "Identity elements and constant folding"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+
+        // Identity elements
+        let expr = expr!((x + 0) * 1);
+        let simplified = expr.simplify();
+        // Result: x
+
+        // Constant folding
+        let expr = expr!(2 + 3);
+        let simplified = expr.simplify();
+        // Result: 5
+      python: |
+        from mathhook import symbol
+
+        x = symbol('x')
+
+        # Identity elements
+        expr = (x + 0) * 1
+        simplified = expr.simplify()
+        # Result: x
+
+        # Constant folding
+        expr = 2 + 3
+        simplified = expr.simplify()
+        # Result: 5
+      nodejs: |
+        import { symbol, parse } from 'mathhook';
+
+        const x = symbol('x');
+
+        // Identity elements
+        const expr = parse('(x + 0) * 1');
+        const simplified = expr.simplify();
+        // Result: x
+
+        // Constant folding
+        const expr2 = parse('2 + 3');
+        const simplified2 = expr2.simplify();
+        // Result: 5
+
+  - title: "Power Rule Simplification"
+    explanation: "Combine like powers with same base"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+
+        // Combine like powers
+        let expr = expr!((x^2) * (x^3));
+        let simplified = expr.simplify();
+        // Result: x^5
+
+        // Multiple powers
+        let expr = expr!((x^2) * (x^3) * (x^4));
+        let simplified = expr.simplify();
+        // Result: x^9
+      python: |
+        from mathhook import symbol
+
+        x = symbol('x')
+
+        # Combine like powers
+        expr = x**2 * x**3
+        simplified = expr.simplify()
+        # Result: x^5
+
+        # Multiple powers
+        expr = x**2 * x**3 * x**4
+        simplified = expr.simplify()
+        # Result: x^9
+      nodejs: |
+        import { symbol, parse } from 'mathhook';
+
+        const x = symbol('x');
+
+        // Combine like powers
+        const expr = parse('x^2 * x^3');
+        const simplified = expr.simplify();
+        // Result: x^5
+
+        // Multiple powers
+        const expr2 = parse('x^2 * x^3 * x^4');
+        const simplified2 = expr2.simplify();
+        // Result: x^9
+
+  - title: "Noncommutative Algebra"
+    explanation: "Preserve order for noncommutative symbols"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        // Scalar symbols (commutative) - factors can be sorted
+        let x = symbol!(x);
+        let y = symbol!(y);
+        let expr = expr!(y * x);
+        let simplified = expr.simplify();
+        // Result: x * y (sorted alphabetically)
+
+        // Matrix symbols (noncommutative) - order preserved
+        let A = symbol!(A; matrix);
+        let B = symbol!(B; matrix);
+        let expr = expr!(B * A);
+        let simplified = expr.simplify();
+        // Result: B * A (original order preserved)
+      python: |
+        from mathhook import symbol
+
+        # Scalar symbols (commutative)
+        x = symbol('x')
+        y = symbol('y')
+        expr = y * x
+        simplified = expr.simplify()
+        # Result: x * y (sorted)
+
+        # Matrix symbols (noncommutative)
+        A = symbol('A', matrix=True)
+        B = symbol('B', matrix=True)
+        expr = B * A
+        simplified = expr.simplify()
+        # Result: B * A (order preserved)
+      nodejs: |
+        import { symbol, parse } from 'mathhook';
+
+        // Scalar symbols (commutative)
+        const x = symbol('x');
+        const y = symbol('y');
+        const expr = parse('y * x');
+        const simplified = expr.simplify();
+        // Result: x * y (sorted)
+
+        // Matrix symbols (noncommutative)
+        const A = symbol('A', { type: 'matrix' });
+        const B = symbol('B', { type: 'matrix' });
+        const expr2 = parse('B * A');
+        const simplified2 = expr2.simplify();
+        // Result: B * A (order preserved)
+
+  - title: "Power Distribution (Commutative Only)"
+    explanation: "Distribute powers for scalars, not for matrices"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        // Scalars (commutative): distributes power
+        let x = symbol!(x);
+        let y = symbol!(y);
+        let expr = expr!((x * y) ^ 2);
+        let simplified = expr.simplify();
+        // Result: x^2 * y^2 (distributed)
+
+        // Matrices (noncommutative): does NOT distribute
+        let A = symbol!(A; matrix);
+        let B = symbol!(B; matrix);
+        let expr = expr!((A * B) ^ 2);
+        let simplified = expr.simplify();
+        // Result: (A*B)^2 (NOT distributed to A^2 * B^2)
+      python: |
+        from mathhook import symbol
+
+        # Scalars (commutative)
+        x = symbol('x')
+        y = symbol('y')
+        expr = (x * y)**2
+        simplified = expr.simplify()
+        # Result: x^2 * y^2
+
+        # Matrices (noncommutative)
+        A = symbol('A', matrix=True)
+        B = symbol('B', matrix=True)
+        expr = (A * B)**2
+        simplified = expr.simplify()
+        # Result: (A*B)^2
+      nodejs: |
+        import { symbol, parse } from 'mathhook';
+
+        // Scalars (commutative)
+        const expr = parse('(x * y)^2');
+        const simplified = expr.simplify();
+        // Result: x^2 * y^2
+
+        // Matrices (noncommutative)
+        const A = symbol('A', { type: 'matrix' });
+        const B = symbol('B', { type: 'matrix' });
+        const expr2 = parse('(A * B)^2');
+        const simplified2 = expr2.simplify();
+        // Result: (A*B)^2
+
+  - title: "Rational Arithmetic"
+    explanation: "Exact rational computation with arbitrary precision"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let expr = expr!(1/3 + 1/6);  // Rational arithmetic
+        let simplified = expr.simplify();
+        // Result: 1/2 (exact rational, not 0.5)
+
+        // Arbitrary precision
+        let expr = expr!(1/999999999 + 1/999999999);
+        let simplified = expr.simplify();
+        // Result: 2/999999999 (exact, no overflow)
+      python: |
+        from mathhook import expr as parse_expr
+
+        expr = parse_expr('1/3 + 1/6')
+        simplified = expr.simplify()
+        # Result: 1/2 (exact rational)
+
+        # Arbitrary precision
+        expr = parse_expr('1/999999999 + 1/999999999')
+        simplified = expr.simplify()
+        # Result: 2/999999999 (exact)
+      nodejs: |
+        import { parse } from 'mathhook';
+
+        const expr = parse('1/3 + 1/6');
+        const simplified = expr.simplify();
+        // Result: 1/2 (exact rational)
+
+        // Arbitrary precision
+        const expr2 = parse('1/999999999 + 1/999999999');
+        const simplified2 = expr2.simplify();
+        // Result: 2/999999999 (exact)
+
+use_cases:
+  - "Simplifying intermediate results in symbolic computation"
+  - "Cleaning up expressions before presentation or LaTeX output"
+  - "Detecting equivalent expressions through canonical forms"
+  - "Educational tools: show step-by-step simplification"
+  - "Pattern matching: simplified forms enable better recognition"
+
+related_topics:
+  - "api.core.expressions"
+  - "api.operations.expansion_factoring"
+  - "api.operations.substitution"
+  - "api.advanced.noncommutative_algebra"
+
+performance:
+  complexity: "O(n) for n-node expression tree"
+  typical_time: "10-100μs for <10 nodes, <1ms for <100 nodes"
+  memory: "Minimal allocations (iterative flattening)"
+  optimization_notes: "Benchmark with cargo bench --bench simplification_benchmarks"
+
+limitations:
+  - "Factorization not yet implemented (planned)"
+  - "Limited trigonometric identities (basic Pythagorean only)"
+  - "Advanced simplification (Gröbner bases, polynomial division) future work"
+  - "Symbolic zero detection may not recognize all equivalent-to-zero expressions"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "api/algebra.md, operations/simplification.md"
+  timestamp: "2025-12-15T14:56"

@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "MathHook provides built-in mathematical constants with exact symbolic representation\nand high-precision numerical evaluation. Constants include π, e, i (imaginary unit),\ngolden ratio (φ), Euler-Mascheroni constant (γ), infinity, and undefined values.\nAll constants preserve mathematical exactness throughout symbolic computations.\n",
+    "title": "Mathematical Constants",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/core/constants": {
+      "post": {
+        "description": "MathHook provides built-in mathematical constants with exact symbolic representation\nand high-precision numerical evaluation. Constants include π, e, i (imaginary unit),\ngolden ratio (φ), Euler-Mascheroni constant (γ), infinity, and undefined values.\nAll constants preserve mathematical exactness throughout symbolic computations.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "euler's_number_(e)_and_natural_logarithm": {
+                  "description": "Using e for exponential growth and logarithmic identities",
+                  "summary": "Euler's Number (e) and Natural Logarithm",
+                  "value": {
+                    "expression": "Expression.e()"
+                  }
+                },
+                "imaginary_unit_(i)_and_euler's_identity": {
+                  "description": "Complex numbers and the most beautiful equation in mathematics",
+                  "summary": "Imaginary Unit (i) and Euler's Identity",
+                  "value": {
+                    "expression": "Expression.i()"
+                  }
+                },
+                "using_pi_in_expressions": {
+                  "description": "Pi constant for exact trigonometric and geometric calculations",
+                  "summary": "Using Pi in Expressions",
+                  "value": {
+                    "expression": "Expression.pi()"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Mathematical Constants",
+        "tags": [
+          "core"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "core operations",
+      "name": "core"
+    }
+  ]
+}

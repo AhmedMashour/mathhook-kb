@@ -37,57 +37,74 @@ impl MdBookGenerator {
             context.insert("math_definition", math_def);
         }
 
-        // Add code references
-        context.insert("rust_ref", &schema.code_refs.rust);
-        context.insert("python_ref", &schema.code_refs.python);
-        context.insert("nodejs_ref", &schema.code_refs.nodejs);
+        // Add code references (optional)
+        if let Some(code_refs) = &schema.code_refs {
+            context.insert("rust_ref", &code_refs.rust);
+            context.insert("python_ref", &code_refs.python);
+            context.insert("nodejs_ref", &code_refs.nodejs);
+        } else {
+            context.insert("rust_ref", "");
+            context.insert("python_ref", "");
+            context.insert("nodejs_ref", "");
+        }
 
         // Check if article content exists
         if let Some(article) = &schema.article {
-            context.insert("has_article", &true);
-            context.insert("hook", &article.introduction.hook);
+            use kb_core::schema::Article;
+            match article {
+                Article::Simple(simple) => {
+                    context.insert("has_article", &true);
+                    context.insert("hook", &simple.content);
+                    let empty_sections: Vec<tera::Map<String, tera::Value>> = vec![];
+                    context.insert("sections", &empty_sections);
+                }
+                Article::Structured(structured) => {
+                    context.insert("has_article", &true);
+                    context.insert("hook", &structured.introduction.hook);
 
-            // Add sections
-            let sections: Vec<_> = article
-                .sections
-                .iter()
-                .map(|s| {
-                    let mut section_ctx = tera::Map::new();
-                    section_ctx.insert("title".to_string(), tera::Value::String(s.title.clone()));
-                    section_ctx.insert(
-                        "content".to_string(),
-                        tera::Value::String(s.content.clone()),
-                    );
-                    section_ctx
-                })
-                .collect();
-            context.insert("sections", &sections);
-
-            // Add mdBook-specific deep dives if available
-            if let Some(variations) = &article.variations {
-                if let Some(mdbook) = &variations.mdbook {
-                    let deep_dives: Vec<_> = mdbook
-                        .deep_dives
+                    // Add sections
+                    let sections: Vec<_> = structured
+                        .sections
                         .iter()
-                        .map(|d| {
-                            let mut dive_ctx = tera::Map::new();
-                            dive_ctx
-                                .insert("title".to_string(), tera::Value::String(d.title.clone()));
-                            dive_ctx.insert(
+                        .map(|s| {
+                            let mut section_ctx = tera::Map::new();
+                            section_ctx.insert("title".to_string(), tera::Value::String(s.title.clone()));
+                            section_ctx.insert(
                                 "content".to_string(),
-                                tera::Value::String(d.content.clone()),
+                                tera::Value::String(s.content.clone()),
                             );
-                            dive_ctx
+                            section_ctx
                         })
                         .collect();
-                    context.insert("deep_dives", &deep_dives);
+                    context.insert("sections", &sections);
 
-                    if let Some(impl_notes) = &mdbook.implementation_notes {
-                        context.insert("implementation_notes", impl_notes);
-                    }
+                    // Add mdBook-specific deep dives if available
+                    if let Some(variations) = &structured.variations {
+                        if let Some(mdbook) = &variations.mdbook {
+                            let deep_dives: Vec<_> = mdbook
+                                .deep_dives
+                                .iter()
+                                .map(|d| {
+                                    let mut dive_ctx = tera::Map::new();
+                                    dive_ctx
+                                        .insert("title".to_string(), tera::Value::String(d.title.clone()));
+                                    dive_ctx.insert(
+                                        "content".to_string(),
+                                        tera::Value::String(d.content.clone()),
+                                    );
+                                    dive_ctx
+                                })
+                                .collect();
+                            context.insert("deep_dives", &deep_dives);
 
-                    if let Some(complexity) = &mdbook.complexity_analysis {
-                        context.insert("complexity_analysis", complexity);
+                            if let Some(impl_notes) = &mdbook.implementation_notes {
+                                context.insert("implementation_notes", impl_notes);
+                            }
+
+                            if let Some(complexity) = &mdbook.complexity_analysis {
+                                context.insert("complexity_analysis", complexity);
+                            }
+                        }
                     }
                 }
             }
@@ -346,11 +363,11 @@ mod tests {
             title: "Test Example".to_string(),
             description: "A test example for mdBook".to_string(),
             mathematical_definition: Some("f(x) = x^2".to_string()),
-            code_refs: CodeReferences {
+            code_refs: Some(CodeReferences {
                 rust: "test::example".to_string(),
                 python: "test.example".to_string(),
                 nodejs: "test.example".to_string(),
-            },
+            }),
             examples: vec![Example {
                 title: "Power Rule".to_string(),
                 explanation: "Demonstrates the power rule".to_string(),

@@ -1,0 +1,204 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Expression Formatting }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Format mathematical expressions for display in multiple notations.
+Supports LaTeX, Unicode, Wolfram, and custom formatters for different output targets.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Expression Formatting
+
+Format mathematical expressions for display in multiple notations.
+
+## Understanding Expression Formatting
+
+### What is Expression Formatting?
+
+Expression formatting converts internal `Expression` structures to human-readable or machine-parseable strings. MathHook provides multiple output formats:
+
+- **LaTeX**: Academic papers, presentations, web rendering (MathJax/KaTeX)
+- **Unicode**: Pretty terminal output, notebooks, readable display
+- **Wolfram**: Mathematica/Wolfram Language compatibility
+- **String**: Rust Debug format for debugging
+
+### How It Works (Architecture)
+
+**Formatter Trait**:
+```rust
+pub trait Formatter {
+    fn format(&self, expr: &Expression) -> String;
+}
+```
+
+**Implementations**:
+- `LaTeXFormatter` - Recursive descent with LaTeX command generation
+- `UnicodeFormatter` - Unicode mathematical symbols (superscripts, subscripts)
+- `WolframFormatter` - Wolfram Language bracket notation
+- Type-aware formatting for noncommutative symbols
+
+## Format Comparison
+
+| **Expression** | **LaTeX** | **Unicode** | **Wolfram** |
+|----------------|-----------|-------------|-------------|
+| x² + 2x + 1 | `x^{2} + 2 \cdot x + 1` | `x² + 2·x + 1` | `x^2 + 2*x + 1` |
+| sin(x) | `\sin(x)` | `sin(x)` | `Sin[x]` |
+| √2 | `\sqrt{2}` | `√2` | `Sqrt[2]` |
+| π·r² | `\pi \cdot r^{2}` | `π·r²` | `Pi*r^2` |
+
+## Unicode Mathematical Symbols
+
+Supported Unicode ranges:
+- **Superscripts**: ⁰¹²³⁴⁵⁶⁷⁸⁹
+- **Subscripts**: ₀₁₂₃₄₅₆₇₈₉
+- **Greek**: α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω
+- **Operators**: · × ÷ ± ∓ ≤ ≥ ≠ ≈ ∞
+- **Roots**: √ ∛ ∜
+- **Set theory**: ∈ ∉ ⊂ ⊃ ⊆ ⊇ ∪ ∩ ∅
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Formatting }
+
+Format expressions in different notations
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter, UnicodeFormatter, WolframFormatter
+
+x = symbol('x')
+expr_obj = expr('x^2 + 2*x + 1')
+
+# LaTeX
+latex = LatexFormatter().format(expr_obj)
+print(latex)   # x^{2} + 2 \cdot x + 1
+
+# Unicode (pretty-print)
+unicode = UnicodeFormatter().format(expr_obj)
+print(unicode) # x² + 2·x + 1
+
+# Wolfram
+wolfram = WolframFormatter().format(expr_obj)
+print(wolfram) # x^2 + 2*x + 1
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Type-Aware Formatting }
+
+Noncommutative symbols formatted correctly
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+# Matrix symbols (bold)
+A = symbol('A', type='matrix')
+B = symbol('B', type='matrix')
+matrix_expr = expr('A * B')
+
+formatter = LatexFormatter()
+print(formatter.format(matrix_expr))
+# Output: \mathbf{A}\mathbf{B}
+
+# Operator symbols (hat)
+p = symbol('p', type='operator')
+x = symbol('x', type='operator')
+op_expr = expr('p * x')
+
+print(formatter.format(op_expr))
+# Output: \hat{p}\hat{x}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Customized LaTeX Output }
+
+Configure formatter behavior
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+# Configure formatter
+formatter = LatexFormatter(
+    precision=6,
+    explicit_multiplication=True,
+    compact_fractions=False
+)
+
+expr_obj = expr('2*x / 3')
+print(formatter.format(expr_obj))
+# Output: \frac{2 \cdot x}{3}
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Educational Step Formatting }
+
+Format step-by-step explanations
+
+\begin{lstlisting}
+from mathhook import symbol, expr
+from mathhook.formatter import LatexFormatter
+
+x = symbol('x')
+expr_obj = expr('x^2 + 2*x + 1')
+
+# Generate step-by-step LaTeX
+formatter = LatexFormatter()
+
+print(f"Step 1: Start with {formatter.format(expr_obj)}")
+factored = expr_obj.factor()  # (x+1)^2
+print(f"Step 2: Factor as {formatter.format(factored)}")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

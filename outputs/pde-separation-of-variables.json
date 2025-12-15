@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Separation of variables is the fundamental technique for solving linear partial differential\nequations (PDEs) with boundary conditions. This method transforms a PDE into a system of\nordinary differential equations (ODEs) that can be solved independently, then combines the\nsolutions into an infinite series.\n",
+    "title": "Separation of Variables for PDEs",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/pde/separation-of-variables": {
+      "post": {
+        "description": "Separation of variables is the fundamental technique for solving linear partial differential\nequations (PDEs) with boundary conditions. This method transforms a PDE into a system of\nordinary differential equations (ODEs) that can be solved independently, then combines the\nsolutions into an infinite series.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "heat_equation_with_dirichlet_bcs": {
+                  "description": "Solve 1D heat equation with fixed boundary conditions",
+                  "summary": "Heat Equation with Dirichlet BCs",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "laplace_equation_on_rectangle": {
+                  "description": "Solve Laplace's equation on rectangular domain",
+                  "summary": "Laplace Equation on Rectangle",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "wave_equation": {
+                  "description": "Solve 1D wave equation with Dirichlet boundary conditions",
+                  "summary": "Wave Equation",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Separation of Variables for PDEs",
+        "tags": [
+          "pde"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "pde operations",
+      "name": "pde"
+    }
+  ]
+}

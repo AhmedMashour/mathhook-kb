@@ -1,0 +1,424 @@
+# Basic Usage Guide for MathHook CAS
+# Generated: 2025-12-15T00:00:00Z
+# Source: mathhook/docs/src/getting-started/basic-usage.md
+
+topic: "getting-started.basic-usage"
+title: "Basic Usage"
+
+description: |
+  Comprehensive guide to using MathHook including expression creation with macros
+  and constructors, simplification, pattern matching, symbol manipulation, number
+  types, constants, and function expressions.
+
+article:
+  content: |
+    # Basic Usage
+
+    This chapter provides a guide to using MathHook in your projects.
+
+    ## Expression Creation
+
+    ### Using Macros
+
+    The recommended way to create expressions is using the `expr!` and `symbol!` macros
+    for clean, readable code.
+
+    ### Using Constructors
+
+    For programmatic construction, use explicit constructors like `Expression::integer()`,
+    `Expression::rational()`, `Expression::float()`.
+
+    ## Simplification
+
+    Simplification transforms expressions to their canonical form by combining like terms,
+    applying identities, and evaluating constants.
+
+    ## Pattern Matching
+
+    Work with expression structure using Rust's pattern matching on `Expression` enum
+    variants: `Add`, `Mul`, `Pow`, etc.
+
+    ## Working with Symbols
+
+    Symbols represent variables in expressions. Symbols with the same name are equal.
+
+    ## Number Types
+
+    MathHook supports integers (exact, arbitrary precision), rationals (exact fractions),
+    floats (approximate), and complex numbers.
+
+    ## Constants
+
+    Built-in mathematical constants: π, e, i (imaginary unit), φ (golden ratio),
+    γ (Euler-Mascheroni constant).
+
+    ## Function Expressions
+
+    Create function calls using `expr!` macro or `function!` macro for elementary
+    functions: sin, cos, tan, log, etc.
+
+  sections:
+    - title: "Expression Creation with Macros"
+      content: |
+        Use `symbol!(x)` for symbols, `expr!(x + y)` for expressions. Macros provide
+        clean syntax with compile-time checking.
+
+    - title: "Expression Creation with Constructors"
+      content: |
+        Use `Expression::integer()`, `Expression::rational()`, `Expression::float()`
+        for programmatic construction with runtime values.
+
+    - title: "Simplification"
+      content: |
+        Call `.simplify()` to transform expressions to canonical form: combine like terms,
+        apply identities (x * 1 → x), evaluate constants (2 + 3 → 5).
+
+    - title: "Pattern Matching"
+      content: |
+        Match on `Expression` enum: `Expression::Add(terms)`, `Expression::Mul(factors)`,
+        `Expression::Pow(base, exp)` to inspect structure.
+
+    - title: "Symbols"
+      content: |
+        Create with `symbol!(x)`. Symbols with same name are equal, different names
+        are not equal. Used to represent variables.
+
+    - title: "Number Types"
+      content: |
+        - Integers: `Expression::integer(123456789)` - exact, arbitrary precision
+        - Rationals: `Expression::rational(22, 7)` - exact fractions
+        - Floats: `Expression::float(3.14159)` - approximate
+        - Complex: `Expression::complex(real, imag)` - complex numbers
+
+    - title: "Mathematical Constants"
+      content: |
+        Built-in: `Expression::pi()`, `Expression::e()`, `Expression::i()`,
+        `Expression::golden_ratio()`, `Expression::euler_gamma()`.
+
+    - title: "Function Expressions"
+      content: |
+        Create with `expr!(sin(x))` or `function!(sin, x)` for elementary functions.
+
+code_refs:
+  rust: "mathhook::prelude::Expression"
+  python: "mathhook.Expression"
+  nodejs: "mathhook-node.Expression"
+
+examples:
+  - title: "Expression Creation - Macros"
+    explanation: "Create expressions using ergonomic macros"
+    code:
+      rust: |
+        use mathhook::prelude::*;
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+
+        // Simple arithmetic
+        let expr1 = expr!(x + y);
+        let expr2 = expr!(2 * x);
+        let expr3 = expr!(x ^ 2);
+
+        // Complex expressions with explicit grouping
+        let expr4 = expr!((x + 1) * (x - 1));
+
+        // Multi-term expressions
+        let expr5 = expr!(add: (2*x), (3*y), (-5));
+      python: |
+        from mathhook import Expression
+
+        x = Expression.symbol('x')
+        y = Expression.symbol('y')
+
+        # Method chaining for expressions
+        expr1 = x.add(y)
+        expr2 = Expression.integer(2).mul(x)
+        expr3 = x.pow(2)
+
+        # Complex expressions
+        expr4 = x.add(1).mul(x.sub(1))
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        const x = Expression.symbol('x');
+        const y = Expression.symbol('y');
+
+        // Method chaining for expressions
+        const expr1 = x.add(y);
+        const expr2 = Expression.integer(2).mul(x);
+        const expr3 = x.pow(2);
+
+        // Complex expressions
+        const expr4 = x.add(1).mul(x.sub(1));
+
+  - title: "Expression Creation - Constructors"
+    explanation: "Programmatic construction with explicit API"
+    code:
+      rust: |
+        use mathhook::Expression;
+
+        // Numbers
+        let int = Expression::integer(42);
+        let float = Expression::float(3.14);
+        let rational = Expression::rational(3, 4);  // 3/4
+
+        // Operations
+        let sum = expr!(1 + 2);
+        let product = expr!(2 * x);
+      python: |
+        from mathhook import Expression
+
+        # Numbers
+        int_val = Expression.integer(42)
+        float_val = Expression.float(3.14)
+        rational_val = Expression.rational(3, 4)  # 3/4
+
+        # Operations
+        sum_val = Expression.integer(1).add(Expression.integer(2))
+        product_val = Expression.integer(2).mul(x)
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        // Numbers
+        const intVal = Expression.integer(42);
+        const floatVal = Expression.float(3.14);
+        const rationalVal = Expression.rational(3, 4);  // 3/4
+
+        // Operations
+        const sumVal = Expression.integer(1).add(Expression.integer(2));
+        const productVal = Expression.integer(2).mul(x);
+
+  - title: "Simplification"
+    explanation: "Transform expressions to canonical form"
+    code:
+      rust: |
+        let x = symbol!(x);
+
+        // Combine like terms
+        let expr = expr!(x + x);
+        let simplified = expr.simplify();
+        // Result: 2*x
+
+        // Apply identities
+        let expr = expr!(x * 1);
+        let simplified = expr.simplify();
+        // Result: x
+
+        // Evaluate constants
+        let expr = expr!(2 + 3);
+        let simplified = expr.simplify();
+        // Result: 5
+      python: |
+        from mathhook import Expression
+
+        x = Expression.symbol('x')
+
+        # Combine like terms
+        expr = x.add(x)
+        simplified = expr.simplify()
+        # Result: 2*x
+
+        # Apply identities
+        expr = x.mul(Expression.integer(1))
+        simplified = expr.simplify()
+        # Result: x
+
+        # Evaluate constants
+        expr = Expression.integer(2).add(Expression.integer(3))
+        simplified = expr.simplify()
+        # Result: 5
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        const x = Expression.symbol('x');
+
+        // Combine like terms
+        const expr = x.add(x);
+        const simplified = expr.simplify();
+        // Result: 2*x
+
+        // Apply identities
+        const expr2 = x.mul(Expression.integer(1));
+        const simplified2 = expr2.simplify();
+        // Result: x
+
+        // Evaluate constants
+        const expr3 = Expression.integer(2).add(Expression.integer(3));
+        const simplified3 = expr3.simplify();
+        // Result: 5
+
+  - title: "Pattern Matching (Rust)"
+    explanation: "Inspect expression structure with pattern matching"
+    code:
+      rust: |
+        use mathhook::Expression;
+
+        let x = symbol!(x);
+        let y = symbol!(y);
+        let test_expr = expr!(x + y);
+
+        match test_expr {
+            Expression::Add(terms) => {
+                println!("Addition with {} terms", terms.len());
+            }
+            Expression::Mul(factors) => {
+                println!("Multiplication with {} factors", factors.len());
+            }
+            Expression::Pow(base, exp) => {
+                println!("Power: base={}, exp={}", base, exp);
+            }
+            _ => {}
+        }
+      python: |
+        # Python doesn't have Rust-style pattern matching
+        # Use type checking instead
+        from mathhook import Expression
+
+        x = Expression.symbol('x')
+        y = Expression.symbol('y')
+        test_expr = x.add(y)
+
+        # Check expression type
+        if test_expr.is_add():
+            print("Addition expression")
+      nodejs: |
+        // TypeScript/JavaScript doesn't have pattern matching
+        // Use type checking instead
+        import { Expression } from 'mathhook-node';
+
+        const x = Expression.symbol('x');
+        const y = Expression.symbol('y');
+        const testExpr = x.add(y);
+
+        // Check expression type
+        if (testExpr.isAdd()) {
+            console.log("Addition expression");
+        }
+
+  - title: "Number Types"
+    explanation: "Different number representations in MathHook"
+    code:
+      rust: |
+        // Integers (exact, arbitrary precision)
+        let int = Expression::integer(123456789);
+
+        // Rationals (exact fractions)
+        let frac = Expression::rational(22, 7);  // 22/7 ≈ π
+
+        // Floats (approximate)
+        let float = Expression::float(3.14159265359);
+
+        // Complex numbers
+        let complex = Expression::complex(
+            Expression::integer(3),
+            Expression::integer(4)
+        );  // 3 + 4i
+      python: |
+        from mathhook import Expression
+
+        # Integers (exact)
+        int_val = Expression.integer(123456789)
+
+        # Rationals (exact fractions)
+        frac = Expression.rational(22, 7)  # 22/7 ≈ π
+
+        # Floats (approximate)
+        float_val = Expression.float(3.14159265359)
+
+        # Complex numbers
+        complex_val = Expression.complex(
+            Expression.integer(3),
+            Expression.integer(4)
+        )  # 3 + 4i
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        // Integers (exact)
+        const intVal = Expression.integer(123456789);
+
+        // Rationals (exact fractions)
+        const frac = Expression.rational(22, 7);  // 22/7 ≈ π
+
+        // Floats (approximate)
+        const floatVal = Expression.float(3.14159265359);
+
+        // Complex numbers
+        const complexVal = Expression.complex(
+            Expression.integer(3),
+            Expression.integer(4)
+        );  // 3 + 4i
+
+  - title: "Mathematical Constants"
+    explanation: "Built-in mathematical constants"
+    code:
+      rust: |
+        let pi = Expression::pi();
+        let e = Expression::e();
+        let i = Expression::i();              // imaginary unit
+        let phi = Expression::golden_ratio();
+        let gamma = Expression::euler_gamma();
+      python: |
+        from mathhook import Expression
+
+        pi = Expression.pi()
+        e = Expression.e()
+        i = Expression.i()              # imaginary unit
+        phi = Expression.golden_ratio()
+        gamma = Expression.euler_gamma()
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        const pi = Expression.pi();
+        const e = Expression.e();
+        const i = Expression.i();              // imaginary unit
+        const phi = Expression.goldenRatio();
+        const gamma = Expression.eulerGamma();
+
+  - title: "Function Expressions"
+    explanation: "Create elementary function calls"
+    code:
+      rust: |
+        // Elementary functions using expr! macro
+        let sin_x = expr!(sin(x));
+        let cos_x = expr!(cos(x));
+        let log_x = expr!(log(x));
+
+        // Or using function! macro
+        let tan_x = function!(tan, x);
+      python: |
+        from mathhook import Expression
+
+        x = Expression.symbol('x')
+
+        # Elementary functions
+        sin_x = Expression.function('sin', [x])
+        cos_x = Expression.function('cos', [x])
+        log_x = Expression.function('log', [x])
+      nodejs: |
+        import { Expression } from 'mathhook-node';
+
+        const x = Expression.symbol('x');
+
+        // Elementary functions
+        const sinX = Expression.function('sin', [x]);
+        const cosX = Expression.function('cos', [x]);
+        const logX = Expression.function('log', [x]);
+
+use_cases:
+  - "Learning fundamental MathHook operations"
+  - "Reference for expression construction patterns"
+  - "Understanding MathHook type system"
+  - "Building complex symbolic expressions programmatically"
+
+related_topics:
+  - "getting-started.quick-start"
+  - "getting-started.common-patterns"
+  - "core.expressions"
+  - "core.symbols-numbers"
+  - "operations.simplification"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "getting-started/basic-usage.md"
+  generated_at: "2025-12-15T00:00:00Z"
+  audience: "beginners_to_intermediate"

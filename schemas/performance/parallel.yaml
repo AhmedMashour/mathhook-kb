@@ -1,0 +1,39 @@
+topic: "performance.parallel"
+title: "Parallel Processing"
+description: |
+  This chapter is under development. Please check back soon for complete documentation
+  on MathHook's parallel processing and concurrency strategies.
+
+article:
+  content: |
+    # Chapter Placeholder
+
+    This chapter is under development. Please check back soon for complete documentation.
+
+    For now, please refer to:
+    - [Performance module documentation](https://docs.rs/mathhook-core/latest/mathhook_core/core/performance/)
+
+code_refs:
+  rust: "mathhook_core::core::performance"
+  python: "mathhook"
+  nodejs: "mathhook-node"
+
+examples:
+  - title: "Refer to Documentation"
+    explanation: "Check the rustdoc for current parallel processing details"
+    code:
+      rust: |
+        // See https://docs.rs/mathhook-core/latest/mathhook_core/core/performance/
+
+related_topics:
+  - "performance.comparison"
+  - "performance.architecture"
+  - "performance.benchmarking"
+  - "performance.simd"
+  - "performance.caching"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "performance/parallel.md"
+  status: "placeholder"
+  generated_at: "2025-12-15T03:30:00Z"

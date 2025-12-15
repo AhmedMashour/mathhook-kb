@@ -1,0 +1,136 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Substitution }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Replace variables with values or expressions to evaluate, simplify, or transform expressions.
+
+\end{abstract}
+
+
+\section{Mathematical Definition}
+
+\begin{equation}
+**Function Evaluation:**
+$$f(a) = f(x)|_{x=a}$$
+Substitute $x = a$ into function $f(x)$.
+
+**Composition:**
+$$f(g(x)) = f(u)|_{u=g(x)}$$
+Substitute $u = g(x)$ into function $f(u)$.
+
+**U-Substitution (Integration):**
+$$\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du$$
+where $u = g(x)$ and $du = g'(x) \, dx$.
+
+**Change of Variables (Multivariable):**
+$$\frac{\partial f}{\partial x} = \frac{\partial f}{\partial u} \cdot \frac{\partial u}{\partial x}$$
+
+\end{equation}
+
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Single Variable Substitution }
+
+Replace variable with number
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+
+# Substitute x = 2 into x² + 3x
+expr1 = x**2 + 3*x
+result1 = expr1.subs(x, 2)
+# Result: 10
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Expression Substitution }
+
+Replace with another expression
+
+\begin{lstlisting}
+from mathhook import symbol
+
+x = symbol('x')
+y = symbol('y')
+
+# Substitute x = y + 1 into x² + 3x
+expression = x**2 + 3*x
+substituted = expression.subs(x, y + 1)
+# Result: (y+1)^2 + 3(y+1)
+
+# Expand for cleaner form
+expanded = substituted.expand()
+# Result: y^2 + 5*y + 4
+
+\end{lstlisting}
+
+
+
+
+\subsection{ U-Substitution for Integration }
+
+Transform difficult integrals
+
+\begin{lstlisting}
+from mathhook import symbol, integrate
+
+x = symbol('x')
+u = symbol('u')
+
+# Integrate: ∫ 2x·e^(x²) dx
+integrand = 2*x*exp(x**2)
+
+# Manual substitution
+u_expr = x**2  # u = x²
+integrand_u = integrand.subs(x**2, u)
+# Result: ∫ e^u du = e^u + C
+
+# Back-substitute: e^(x²) + C
+result = exp(u).subs(u, u_expr)
+# Result: e^(x²) + C
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}

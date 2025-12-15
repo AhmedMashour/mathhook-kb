@@ -1,0 +1,79 @@
+# Generated: 2025-12-15T19:00:00Z
+# Source: internal/type-dispatch-review.md
+# Topic: Comprehensive Type Dispatch & Educational Integration Review
+# Type: internal-documentation
+
+topic: "internal.type-dispatch-review"
+title: "Comprehensive Type Dispatch & Educational Integration Review"
+description: |
+  Module-by-module review examining type inference/dispatch, performance, abstraction quality,
+  and educational stepping coverage across all MathHook modules (Matrices, Solvers, ODE, PDE, etc).
+
+document_type: "internal"
+audience: ["developers", "maintainers"]
+
+article:
+  content: |
+    # Comprehensive Type Dispatch & Educational Integration Review
+
+    > **Date:** 2025-11-28 | **Status:** INTERNAL - Remove before publication
+    > **Scope:** All MathHook features - Matrices, Solvers, ODE/PDE, Pattern Matching, Calculus, Function Dispatch
+
+    ---
+
+    ## Executive Summary
+
+    This document consolidates findings from 6 specialized review agents examining type inference/dispatch, performance, abstraction quality, and educational stepping coverage across all MathHook modules.
+
+    ### Overall Assessment
+
+    | Module | Type Dispatch | Performance | Abstraction | Educational | Overall |
+    |--------|---------------|-------------|-------------|-------------|---------|
+    | **Matrices** | 4.5/5 | 3.5/5 | 4/5 | 1.5/5 | 4/5 |
+    | **Solvers** | 4.5/5 | 4/5 | 4/5 | 4.5/5 | 4.2/5 |
+    | **ODE** | 4.5/5 | 4/5 | 4.5/5 | 4.5/5 | 4.6/5 |
+    | **PDE** | 2/5 | 3/5 | 3.5/5 | 1/5 | 2.4/5 |
+    | **Pattern Matching** | 4/5 | 3.5/5 | 4/5 | 0/5 | 3.4/5 |
+    | **Calculus** | 4/5 | 3.5/5 | 4/5 | 3.5/5 | 4.2/5 |
+    | **Function Dispatch** | 4/5 | 5/5 | 3/5 | 2/5 | 3.5/5 |
+
+    **Key Findings:**
+    - ODE module is production-ready with excellent architecture (4.6/5)
+    - PDE module has critical implementation gaps - NOT production-ready (2.4/5)
+    - Educational coverage varies dramatically (0% to 100% by module)
+    - Function dispatch has architectural split (registry vs hardcoded)
+    - Pattern matching API is hidden despite being complete
+
+key_findings:
+  - "ODE module: PRODUCTION READY - excellent enum classification, O(1) registry dispatch, 90% educational coverage"
+  - "PDE module: NOT PRODUCTION READY - uses heuristics instead of math, hardcoded coefficients (1,1,0), empty boundary conditions"
+  - "Solver module: 100% educational coverage - all major solvers have solve_with_explanation()"
+  - "Matrices: 9 specialized variants with zero-cost abstractions, but O(n!) cofactor determinant needs fixing"
+  - "Pattern Matching: Complete implementation but API hidden (5 min fix to expose)"
+  - "Calculus: DerivativeWithSteps complete, IntegrationWithSteps MISSING, no series education"
+  - "Function Dispatch: Dual-layer system - registry metadata never used for evaluation (architectural gap)"
+  - "Educational coverage summary: Solver 100%, ODE 90%, Derivatives 80%, Limits 70%, Integration 40%, Matrices 10%, Pattern/PDE 0%"
+
+action_items:
+  - "P0 (This Week): Expose Pattern API (5 min), Fix PDE Symbol::scalar() violations (1 hr), Export DerivativeWithSteps (5 min)"
+  - "P1 (1-2 Weeks): Add LinearAlgebra message category (2-3 hrs), Add IntegrationWithSteps trait (2-3 hrs), Fix PDE coefficient extraction (4-8 hrs)"
+  - "P2 (2-4 Weeks): Matrix educational stepping (10-14 hrs), Pattern matching educational (10-14 hrs), PDE boundary conditions (8-12 hrs)"
+  - "P3 (1+ Month): Function registry integration (major refactor), Two-tier dispatch implementation, PDE complete rewrite"
+  - "Replace PDE heuristic classification with proper coefficient extraction and B²-4AC discriminant"
+  - "Replace cofactor expansion with Gaussian elimination for matrix determinants"
+  - "Use ODE module as template for PDE rewrite"
+
+related_topics:
+  - "internal.overview"
+  - "internal.investigation"
+  - "internal.educational-plan"
+
+metadata:
+  schema_version: "1.0"
+  source_file: "internal/type-dispatch-review.md"
+  generated_timestamp: "2025-12-15T19:00:00Z"
+  validation_status: "pending"
+  document_category: "internal"
+  review_date: "2025-11-28"
+  total_codebase_analyzed: "60000+ LOC"
+  specialized_agents: 6

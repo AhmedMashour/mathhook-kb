@@ -1,0 +1,148 @@
+{
+  "components": {
+    "schemas": {
+      "Error": {
+        "properties": {
+          "code": {
+            "description": "Error code",
+            "type": "string"
+          },
+          "error": {
+            "description": "Error message",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "properties": {
+          "expression": {
+            "description": "Mathematical expression to evaluate",
+            "type": "string"
+          },
+          "variables": {
+            "description": "Variable values for evaluation",
+            "type": "object"
+          }
+        },
+        "required": [
+          "expression"
+        ],
+        "type": "object"
+      },
+      "Response": {
+        "properties": {
+          "latex": {
+            "description": "LaTeX representation",
+            "type": "string"
+          },
+          "result": {
+            "description": "Computed result",
+            "type": "string"
+          },
+          "steps": {
+            "description": "Step-by-step solution",
+            "items": {
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "expression": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Three complete, real-world examples demonstrating MathHook's PDE solving capabilities across heat, wave, and Laplace equations.\nEach example includes full problem setup, mathematical formulation, MathHook implementation, and physical interpretation.\n",
+    "title": "Complete PDE Examples",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/advanced/pde/examples": {
+      "post": {
+        "description": "Three complete, real-world examples demonstrating MathHook's PDE solving capabilities across heat, wave, and Laplace equations.\nEach example includes full problem setup, mathematical formulation, MathHook implementation, and physical interpretation.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "electrostatic_potential_in_rectangular_plate": {
+                  "description": "10cm × 5cm plate with grounded sides and fixed potential top edge.",
+                  "summary": "Electrostatic Potential in Rectangular Plate",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "heat_diffusion_in_steel_rod_-_complete_implementation": {
+                  "description": "1-meter steel rod cooling from 100°C with ice water at ends. Full implementation with error handling.",
+                  "summary": "Heat Diffusion in Steel Rod - Complete Implementation",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                },
+                "vibrating_guitar_string_-_musical_analysis": {
+                  "description": "E4 guitar string with musical frequency analysis and standing wave nodes.",
+                  "summary": "Vibrating Guitar String - Musical Analysis",
+                  "value": {
+                    "expression": "symbol('u')"
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {},
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            },
+            "description": "Successful computation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Invalid input"
+          }
+        },
+        "summary": "Complete PDE Examples",
+        "tags": [
+          "advanced"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://api.mathhook.org/v1"
+    }
+  ],
+  "tags": [
+    {
+      "description": "advanced operations",
+      "name": "advanced"
+    }
+  ]
+}

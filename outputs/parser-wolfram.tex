@@ -1,0 +1,192 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{ Wolfram Language Notation }
+\author{MathHook CAS}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Parse and generate Mathematica/Wolfram Language syntax for compatibility with Wolfram products.
+Supports bidirectional conversion between MathHook expressions and Wolfram notation.
+
+\end{abstract}
+
+
+
+
+\section{Introduction}
+
+# Wolfram Language Notation
+
+Parse and generate Mathematica/Wolfram Language syntax for compatibility with Wolfram products.
+
+## Understanding Wolfram Notation
+
+### What is Wolfram Language?
+
+Wolfram Language (used in Mathematica, Wolfram Alpha, Wolfram Cloud) is a symbolic computation language with:
+
+- **Capital letter functions**: `Sin`, `Cos`, `Exp` (not `sin`, `cos`, `exp`)
+- **Bracket notation**: Function calls use `[]` (e.g., `Sin[x]`, not `Sin(x)`)
+- **Symbolic core**: Everything is an expression tree (similar to MathHook)
+- **Pattern matching**: Powerful transformation rules (MathHook: simplification)
+
+### Why Wolfram Compatibility?
+
+- **Academic Migration**: Many researchers use Mathematica
+- **Cross-Platform**: Export MathHook results to Wolfram Alpha
+- **Data Exchange**: Import/export equations between systems
+- **Validation**: Compare MathHook results with Mathematica
+
+### How It Works (Architecture)
+
+**Parser:**
+- Recognizes Wolfram function tokens (`Sin`, `Cos`, `D`, `Integrate`)
+- Bracket parsing: `f[x, y, z]` → Function call
+- PascalCase → snake_case conversion for custom functions
+
+**Formatter:**
+- Lowercase → Capitalized function names (`sin` → `Sin`)
+- Parentheses → Brackets (`(...)` → `[...]`)
+- Operator precedence matching Wolfram
+
+## Wolfram ↔ MathHook Translation Table
+
+| **Operation** | **Wolfram** | **MathHook** | **Notes** |
+|---------------|-------------|--------------|-----------|
+| Addition | `a + b` | `a + b` | Same |
+| Multiplication | `a * b` or `a b` | `a * b` | Same |
+| Division | `a / b` | `a / b` | Same |
+| Power | `a^b` | `a^b` | Same |
+| Function call | `f[x]` | `f(x)` | Brackets vs parens |
+| Derivative | `D[f, x]` | `f.derivative(&x, 1)` | Functional vs method |
+| Integral | `Integrate[f, x]` | `f.integrate(&x)` | Functional vs method |
+| Sqrt | `Sqrt[x]` | `sqrt(x)` | Capital vs lowercase |
+| Sin | `Sin[x]` | `sin(x)` | Capital vs lowercase |
+| Cos | `Cos[x]` | `cos(x)` | Capital vs lowercase |
+| Exp | `Exp[x]` | `exp(x)` | Capital vs lowercase |
+| Log | `Log[x]` | `log(x)` | Capital vs lowercase |
+
+
+
+
+
+\section{Examples}
+
+
+\subsection{ Basic Wolfram Parsing }
+
+Parse common Wolfram Language expressions
+
+\begin{lstlisting}
+from mathhook.parser import parse_wolfram
+
+# Functions (capital letters, brackets)
+expr = parse_wolfram("Sin[x]")
+expr = parse_wolfram("Exp[x]")
+expr = parse_wolfram("Log[x]")
+
+# Powers use ^ (not brackets)
+expr = parse_wolfram("x^2")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Calculus Operations }
+
+Wolfram calculus notation
+
+\begin{lstlisting}
+from mathhook.parser import parse_wolfram
+
+# Derivative: D[expr, var]
+expr = parse_wolfram("D[x^2, x]")  # 2x
+
+# Integral: Integrate[expr, var]
+expr = parse_wolfram("Integrate[x^2, x]")  # x^3/3
+
+# Definite integral: Integrate[expr, {var, a, b}]
+expr = parse_wolfram("Integrate[x^2, {x, 0, 1}]")
+
+# Limit: Limit[expr, var -> value]
+expr = parse_wolfram("Limit[Sin[x]/x, x -> 0]")
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Generating Wolfram Output }
+
+Format MathHook expressions as Wolfram Language
+
+\begin{lstlisting}
+from mathhook import symbol, expr, WolframFormatter
+
+formatter = WolframFormatter()
+x = symbol('x')
+
+# Functions
+expr_obj = expr('sin(x)')
+print(formatter.format(expr_obj))  # Sin[x]
+
+# Complex expressions
+expr_obj = expr('(x + 1) / (x - 1)')
+print(formatter.format(expr_obj))  # (x + 1)/(x - 1)
+
+\end{lstlisting}
+
+
+
+
+\subsection{ Cross-Platform Validation }
+
+Export to Wolfram for verification
+
+\begin{lstlisting}
+from mathhook import symbol, expr, WolframFormatter
+
+# Compute derivative in MathHook
+x = symbol('x')
+f = expr('x^3 + 2*x^2 + x')
+df = f.derivative(x, 1)
+
+# Export to Wolfram for verification
+formatter = WolframFormatter()
+wolfram_code = formatter.format(df)
+
+print("Verify in Wolfram Alpha:")
+print(f"Simplify[{wolfram_code}]")
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\end{document}
