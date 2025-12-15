@@ -9,49 +9,50 @@
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 py-10 pt-24 relative z-10">
       <!-- Header Section -->
-      <OutputsOutputsHeader />
+      <OutputsHeader />
 
       <!-- Output Cards Grid -->
       <div class="grid md:grid-cols-2 gap-6 mb-12">
         <!-- mdBook -->
-        <OutputsExpandableOutputCard
+        <OutputsOutputCard
           title="Rust mdBook"
           subtitle="Searchable Rust documentation"
           description="Interactive book format with code examples in Rust, Python, and JavaScript. Perfect for Rust developers."
-          link-url="/outputs/mdbook/"
-          link-text="Open Book"
+          link-url="/outputs/mdbook"
+          link-text="Browse Files"
+          :file-count="mdbookFiles.length"
           color="rust"
           :animation-delay="100"
-          :files="mdbookFiles"
         >
           <template #icon>
             <OutputsIconsBookIcon class="w-7 h-7 text-rust-core" />
           </template>
-        </OutputsExpandableOutputCard>
+        </OutputsOutputCard>
 
         <!-- Jupyter Book -->
-        <OutputsExpandableOutputCard
-          title="Jupyter Book"
+        <OutputsOutputCard
+          title="Jupyter Notebooks"
           subtitle="Interactive Python notebooks"
           description="Executable notebooks with live code cells. Download and run locally or open in Colab. Perfect for data scientists."
-          link-url="/outputs/jupyter/"
+          link-url="/outputs/jupyter"
           link-text="Browse Notebooks"
+          :file-count="jupyterFiles.length"
           color="amber"
           :animation-delay="200"
-          :files="jupyterFiles"
         >
           <template #icon>
             <OutputsIconsNotebookIcon class="w-7 h-7 text-amber-500" />
           </template>
-        </OutputsExpandableOutputCard>
+        </OutputsOutputCard>
 
         <!-- API Documentation -->
         <OutputsOutputCard
-          title="API Playground"
-          subtitle="Interactive OpenAPI docs"
-          description="Try MathHook APIs directly in your browser with Swagger UI. Test requests and see responses in real-time."
-          link-url="/outputs/api-docs/"
-          link-text="Try API"
+          title="API Documentation"
+          subtitle="OpenAPI specifications"
+          description="Machine-readable API documentation in OpenAPI format. Perfect for integration and tooling."
+          link-url="/outputs/api-docs"
+          link-text="Browse API Docs"
+          :file-count="apiDocsFiles.length"
           color="green"
           :animation-delay="300"
         >
@@ -61,54 +62,84 @@
         </OutputsOutputCard>
 
         <!-- LaTeX Documents -->
-        <OutputsExpandableOutputCard
+        <OutputsOutputCard
           title="LaTeX Documents"
           subtitle="Academic paper format"
           description="Professional LaTeX source files ready for compilation. Perfect for academic papers, offline reading, and printing."
-          link-url="/outputs/latex/"
+          link-url="/outputs/latex"
           link-text="Browse Files"
+          :file-count="latexFiles.length"
           color="violet"
           :animation-delay="400"
-          :files="latexFiles"
         >
           <template #icon>
             <OutputsIconsDocumentIcon class="w-7 h-7 text-violet-500" />
           </template>
-        </OutputsExpandableOutputCard>
+        </OutputsOutputCard>
 
         <!-- Google Colab -->
-        <OutputsExpandableOutputCard
+        <OutputsOutputCard
           title="Google Colab Notebooks"
           subtitle="Cloud executable notebooks"
           description="Colab-optimized notebooks with pre-configured dependencies. Open directly in Google Colab for zero-setup execution."
-          link-url="/outputs/colab/"
+          link-url="/outputs/colab"
           link-text="Browse Files"
-          external-action-url="https://colab.research.google.com/github/AhmedMashour/mathhook-kb/tree/master/mathhook-docs-site/public/outputs/colab/"
-          external-action-text="Open in Colab"
+          :file-count="colabFiles.length"
           color="amber"
           :animation-delay="500"
-          :files="colabFiles"
         >
           <template #icon>
             <OutputsIconsPlayIcon class="w-7 h-7 text-amber-500" />
           </template>
-        </OutputsExpandableOutputCard>
+        </OutputsOutputCard>
 
         <!-- LLM-RAG Chunks -->
-        <OutputsExpandableOutputCard
+        <OutputsOutputCard
           title="LLM-RAG Optimized"
           subtitle="For AI assistants & search"
           description="Documentation chunks optimized for vector databases and AI retrieval. Perfect for building MathHook-aware AI assistants."
-          link-url="/outputs/llm-rag/"
+          link-url="/outputs/llm-rag"
           link-text="Browse Files"
+          :file-count="ragFiles.length"
           color="cyan"
-          :animation-delay="700"
-          :files="ragFiles"
+          :animation-delay="600"
         >
           <template #icon>
             <OutputsIconsComputerIcon class="w-7 h-7 text-solve-cyan" />
           </template>
-        </OutputsExpandableOutputCard>
+        </OutputsOutputCard>
+
+        <!-- JSON Data -->
+        <OutputsOutputCard
+          title="JSON Data"
+          subtitle="Structured data format"
+          description="Raw JSON documentation data for programmatic access and custom integrations."
+          link-url="/outputs/json"
+          link-text="Browse Files"
+          :file-count="jsonFiles.length"
+          color="cyan"
+          :animation-delay="700"
+        >
+          <template #icon>
+            <OutputsIconsTerminalIcon class="w-7 h-7 text-solve-cyan" />
+          </template>
+        </OutputsOutputCard>
+
+        <!-- Vue Components -->
+        <OutputsOutputCard
+          title="Vue Components"
+          subtitle="Interactive UI components"
+          description="Vue.js components for building interactive documentation interfaces and dashboards."
+          link-url="/outputs/vue"
+          link-text="Browse Files"
+          :file-count="vueFiles.length"
+          color="green"
+          :animation-delay="800"
+        >
+          <template #icon>
+            <OutputsIconsComputerIcon class="w-7 h-7 text-step-green" />
+          </template>
+        </OutputsOutputCard>
       </div>
 
       <!-- Build Info Section -->
@@ -127,8 +158,11 @@ const {
   ragFiles,
   latexFiles,
   mdbookFiles,
-  colabLoading,
-  colabError
+  apiDocsFiles,
+  jsonFiles,
+  vueFiles,
+  loading,
+  error
 } = useFileData()
 
 useHead({

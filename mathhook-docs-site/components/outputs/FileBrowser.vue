@@ -34,25 +34,46 @@
     <div class="space-y-4">
       <div v-for="(categoryFiles, category) in groupedFiles" :key="category" class="category-group">
         <!-- Category Header -->
-        <button
-          @click="toggleCategory(category)"
-          class="w-full flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-logic-navy-700/30 transition-colors group"
-        >
-          <svg
-            class="w-4 h-4 text-chalk-400 transition-transform duration-200"
-            :class="{ 'rotate-90': expandedCategories.includes(category) }"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-logic-navy-700/30 transition-colors group">
+          <!-- Section Select All Checkbox -->
+          <input
+            type="checkbox"
+            :checked="isCategoryFullySelected(category)"
+            :indeterminate="isCategoryPartiallySelected(category)"
+            @change.stop="toggleCategorySelection(category)"
+            @click.stop
+            class="w-4 h-4 rounded border-logic-navy-600 bg-logic-navy-800 focus:ring-rust-core/50 cursor-pointer"
+            :class="checkboxColorClass"
+            :title="`Select all files in ${formatCategoryName(category)}`"
+          />
+
+          <button
+            @click="toggleCategory(category)"
+            class="flex-1 flex items-center gap-2"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-          <svg class="w-5 h-5" :class="folderColorClass" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-          </svg>
-          <span class="text-chalk font-medium capitalize">{{ formatCategoryName(category) }}</span>
-          <span class="text-chalk-500 text-sm">({{ categoryFiles.length }} files)</span>
-        </button>
+            <svg
+              class="w-4 h-4 text-chalk-400 transition-transform duration-200"
+              :class="{ 'rotate-90': expandedCategories.includes(category) }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <svg class="w-5 h-5" :class="folderColorClass" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
+            <span class="text-chalk font-medium capitalize">{{ formatCategoryName(category) }}</span>
+            <span class="text-chalk-500 text-sm">({{ categoryFiles.length }} files)</span>
+            <span
+              v-if="getCategorySelectedCount(category) > 0"
+              class="text-xs px-2 py-0.5 rounded-full"
+              :class="badgeColorClass"
+            >
+              {{ getCategorySelectedCount(category) }} selected
+            </span>
+          </button>
+        </div>
 
         <!-- Files in Category -->
         <Transition name="expand">
@@ -142,7 +163,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const props = defineProps({
   files: {
@@ -239,6 +260,47 @@ const iconColorClass = computed(() => colorClasses[props.color].icon)
 const checkboxColorClass = computed(() => colorClasses[props.color].checkbox)
 const actionColorClass = computed(() => colorClasses[props.color].action)
 const downloadButtonClass = computed(() => colorClasses[props.color].button)
+const badgeColorClass = computed(() => colorClasses[props.color].button)
+
+// Category selection helpers
+function isCategoryFullySelected(category) {
+  const categoryFiles = groupedFiles.value[category] || []
+  if (categoryFiles.length === 0) return false
+  return categoryFiles.every(f => selectedFiles.value.includes(f.path))
+}
+
+function isCategoryPartiallySelected(category) {
+  const categoryFiles = groupedFiles.value[category] || []
+  const selectedInCategory = categoryFiles.filter(f => selectedFiles.value.includes(f.path))
+  return selectedInCategory.length > 0 && selectedInCategory.length < categoryFiles.length
+}
+
+function getCategorySelectedCount(category) {
+  const categoryFiles = groupedFiles.value[category] || []
+  return categoryFiles.filter(f => selectedFiles.value.includes(f.path)).length
+}
+
+function toggleCategorySelection(category) {
+  const categoryFiles = groupedFiles.value[category] || []
+  const isFullySelected = isCategoryFullySelected(category)
+
+  if (isFullySelected) {
+    // Deselect all files in this category
+    categoryFiles.forEach(f => {
+      const index = selectedFiles.value.indexOf(f.path)
+      if (index !== -1) {
+        selectedFiles.value.splice(index, 1)
+      }
+    })
+  } else {
+    // Select all files in this category
+    categoryFiles.forEach(f => {
+      if (!selectedFiles.value.includes(f.path)) {
+        selectedFiles.value.push(f.path)
+      }
+    })
+  }
+}
 
 // Methods
 function toggleCategory(category) {

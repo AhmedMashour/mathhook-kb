@@ -29,16 +29,16 @@ export interface OutputManifest {
   }>>
 }
 
-// Base paths for outputs (all served from /outputs/ in public folder)
+// Base paths for outputs (all served from /files/ in public folder)
 const BASE_PATHS = {
-  jupyter: '/outputs/jupyter',
-  colab: '/outputs/colab',
-  llmRag: '/outputs/llm-rag',
-  latex: '/outputs/latex',
-  mdbook: '/outputs/mdbook',
-  apiDocs: '/outputs/api-docs',
-  json: '/outputs/json',
-  vue: '/outputs/vue'
+  jupyter: '/files/jupyter',
+  colab: '/files/colab',
+  llmRag: '/files/llm-rag',
+  latex: '/files/latex',
+  mdbook: '/files/mdbook',
+  apiDocs: '/files/api-docs',
+  json: '/files/json',
+  vue: '/files/vue'
 }
 
 // GitHub config for Colab URLs
@@ -46,7 +46,7 @@ const GITHUB_CONFIG = {
   user: 'AhmedMashour',
   repo: 'mathhook-kb',
   branch: 'master',
-  colabBasePath: 'mathhook-docs-site/public/outputs/colab'
+  colabBasePath: 'mathhook-docs-site/public/files/colab'
 }
 
 // File extension mappings
@@ -83,7 +83,7 @@ export function useFileData() {
 
   // Build GitHub URL for a file
   function buildGithubUrl(basePath: string, category: string, filename: string): string {
-    const repoPath = basePath.replace('/outputs/', 'mathhook-docs-site/public/outputs/')
+    const repoPath = basePath.replace('/files/', 'mathhook-docs-site/public/files/')
     return `https://github.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/blob/${GITHUB_CONFIG.branch}/${repoPath}/${category}/${filename}`
   }
 

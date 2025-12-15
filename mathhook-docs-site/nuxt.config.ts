@@ -55,12 +55,12 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#0F172A' },
       ],
       link: [
-        // Favicon - comprehensive browser support (v=2 for cache busting)
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg?v=2' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=2', sizes: '32x32' },
-        { rel: 'shortcut icon', href: '/favicon.ico?v=2' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png?v=2', sizes: '180x180' },
-        { rel: 'manifest', href: '/site.webmanifest?v=2' },
+        // Favicon - comprehensive browser support (v=3 for cache busting)
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg?v=3' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico?v=3', sizes: '32x32' },
+        { rel: 'shortcut icon', href: '/favicon.ico?v=3' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png?v=3', sizes: '180x180' },
+        { rel: 'manifest', href: '/site.webmanifest?v=3' },
         // KaTeX CSS for math rendering
         {
           rel: 'stylesheet',
