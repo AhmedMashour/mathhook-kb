@@ -1,59 +1,94 @@
 <template>
   <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden relative">
-    <!-- Animated Background -->
+    <!-- Vibrant Animated Mesh Gradient Background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-      <!-- Base gradient -->
-      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-logic-navy-900/95 to-logic-navy-900"></div>
+      <!-- Base dark layer -->
+      <div class="absolute inset-0 bg-logic-navy-900"></div>
 
-      <!-- Animated gradient mesh -->
-      <div class="absolute inset-0 opacity-40">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-rust-core/20 via-transparent to-solve-cyan/20 animate-gradient-shift"></div>
+      <!-- Animated mesh gradient blobs -->
+      <div class="absolute inset-0">
+        <!-- Primary rust/orange blob - top right -->
+        <div
+          class="absolute w-[700px] h-[700px] rounded-full animate-blob-1"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(230, 69, 36, 0.4) 0%, rgba(230, 69, 36, 0.15) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            top: '-15%',
+            right: '-10%',
+            transform: `translate(${-mouseX * 0.03}px, ${mouseY * 0.03}px)`
+          }"
+        ></div>
+
+        <!-- Secondary cyan blob - bottom left -->
+        <div
+          class="absolute w-[600px] h-[600px] rounded-full animate-blob-2"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(6, 182, 212, 0.45) 0%, rgba(6, 182, 212, 0.15) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            bottom: '-10%',
+            left: '-10%',
+            transform: `translate(${mouseX * 0.025}px, ${-mouseY * 0.025}px)`
+          }"
+        ></div>
+
+        <!-- Tertiary purple/violet blob - center -->
+        <div
+          class="absolute w-[500px] h-[500px] rounded-full animate-blob-3"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.35) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%)',
+            filter: 'blur(80px)',
+            top: '35%',
+            left: '25%',
+            transform: `translate(${-mouseX * 0.02}px, ${mouseY * 0.02}px)`
+          }"
+        ></div>
+
+        <!-- Accent amber blob - top left -->
+        <div
+          class="absolute w-[400px] h-[400px] rounded-full animate-blob-4"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(245, 158, 11, 0.3) 0%, rgba(245, 158, 11, 0.1) 40%, transparent 70%)',
+            filter: 'blur(70px)',
+            top: '10%',
+            left: '10%',
+            transform: `translate(${mouseX * 0.015}px, ${-mouseY * 0.015}px)`
+          }"
+        ></div>
+
+        <!-- Accent green blob - bottom right -->
+        <div
+          class="absolute w-[350px] h-[350px] rounded-full animate-blob-5"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.08) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            bottom: '25%',
+            right: '15%',
+            transform: `translate(${-mouseX * 0.02}px, ${-mouseY * 0.02}px)`
+          }"
+        ></div>
       </div>
-
-      <!-- Large vibrant orbs with parallax -->
-      <div
-        class="absolute w-[800px] h-[800px] rounded-full blur-[150px] opacity-30"
-        :style="{
-          background: 'radial-gradient(circle, rgba(230, 69, 36, 0.5) 0%, transparent 70%)',
-          top: '-200px',
-          right: '-200px',
-          transform: `translate(${-mouseX * 0.02}px, ${mouseY * 0.02}px)`
-        }"
-      ></div>
-      <div
-        class="absolute w-[700px] h-[700px] rounded-full blur-[130px] opacity-25"
-        :style="{
-          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.5) 0%, transparent 70%)',
-          bottom: '-150px',
-          left: '-150px',
-          transform: `translate(${mouseX * 0.015}px, ${-mouseY * 0.015}px)`
-        }"
-      ></div>
-      <div
-        class="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-20"
-        :style="{
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 70%)',
-          top: '40%',
-          left: '30%',
-          transform: `translate(${-mouseX * 0.01}px, ${mouseY * 0.01}px)`
-        }"
-      ></div>
 
       <!-- Floating particles -->
-      <div v-for="i in 20" :key="i"
-           class="absolute w-1 h-1 rounded-full bg-white/20 animate-float-particle"
-           :style="{
-             left: `${Math.random() * 100}%`,
-             top: `${Math.random() * 100}%`,
-             animationDelay: `${Math.random() * 5}s`,
-             animationDuration: `${5 + Math.random() * 10}s`
-           }"
-      ></div>
-
-      <!-- Grid overlay -->
-      <div class="absolute inset-0 opacity-[0.03]"
-           style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px); background-size: 50px 50px;">
+      <div class="absolute inset-0">
+        <div v-for="i in 25" :key="'particle-'+i"
+             class="absolute rounded-full animate-float-particle-up"
+             :style="{
+               width: `${2 + Math.random() * 3}px`,
+               height: `${2 + Math.random() * 3}px`,
+               background: ['rgba(230, 69, 36, 0.5)', 'rgba(6, 182, 212, 0.5)', 'rgba(139, 92, 246, 0.4)', 'rgba(245, 158, 11, 0.4)', 'rgba(255, 255, 255, 0.3)'][Math.floor(Math.random() * 5)],
+               left: `${Math.random() * 100}%`,
+               top: `${Math.random() * 100}%`,
+               animationDelay: `${Math.random() * 8}s`,
+               animationDuration: `${10 + Math.random() * 15}s`
+             }"
+        ></div>
       </div>
+
+      <!-- Subtle grid overlay -->
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+
+      <!-- Readability overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900/30 via-transparent to-logic-navy-900/50"></div>
     </div>
 
     <!-- Navigation -->
@@ -538,20 +573,58 @@ onUnmounted(() => {
   animation: gradient-shift 20s ease-in-out infinite;
 }
 
-/* Floating particle animation */
-@keyframes float-particle {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translateY(-30px) translateX(10px);
-    opacity: 0.5;
-  }
+/* Blob animations - organic flowing movement */
+@keyframes blob-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(70px, -50px) scale(1.1); }
+  50% { transform: translate(35px, 70px) scale(0.95); }
+  75% { transform: translate(-50px, 35px) scale(1.05); }
 }
 
-.animate-float-particle {
-  animation: float-particle 10s ease-in-out infinite;
+@keyframes blob-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-60px, 45px) scale(1.05); }
+  50% { transform: translate(50px, -35px) scale(1.1); }
+  75% { transform: translate(25px, 60px) scale(0.95); }
+}
+
+@keyframes blob-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(45px, 55px) scale(1.08) rotate(10deg); }
+  66% { transform: translate(-35px, -45px) scale(0.92) rotate(-10deg); }
+}
+
+@keyframes blob-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-45px, -28px) scale(1.12); }
+  40% { transform: translate(38px, 45px) scale(0.9); }
+  60% { transform: translate(60px, -18px) scale(1.05); }
+  80% { transform: translate(-28px, 55px) scale(0.95); }
+}
+
+@keyframes blob-5 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(55px, 38px) scale(1.1) rotate(5deg); }
+  50% { transform: translate(-45px, 65px) scale(0.95) rotate(-5deg); }
+  75% { transform: translate(38px, -55px) scale(1.05) rotate(8deg); }
+}
+
+.animate-blob-1 { animation: blob-1 20s ease-in-out infinite; }
+.animate-blob-2 { animation: blob-2 25s ease-in-out infinite; }
+.animate-blob-3 { animation: blob-3 18s ease-in-out infinite; }
+.animate-blob-4 { animation: blob-4 22s ease-in-out infinite; }
+.animate-blob-5 { animation: blob-5 24s ease-in-out infinite; }
+
+/* Floating particle animation - upward movement */
+@keyframes float-particle-up {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(40px); opacity: 0; }
+}
+
+.animate-float-particle-up {
+  animation: float-particle-up 15s ease-in-out infinite;
 }
 
 /* Slow pulse */

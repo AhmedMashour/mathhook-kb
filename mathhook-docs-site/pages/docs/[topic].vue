@@ -1,29 +1,67 @@
 <template>
   <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden relative">
-    <!-- Subtle Animated Background -->
+    <!-- Subtle Animated Background (optimized for reading) -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-      <!-- Base gradient -->
-      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900 via-logic-navy-900/98 to-logic-navy-900"></div>
+      <!-- Base dark layer -->
+      <div class="absolute inset-0 bg-logic-navy-900"></div>
 
-      <!-- Subtle ambient orbs -->
-      <div
-        class="absolute w-[600px] h-[600px] rounded-full blur-[180px] opacity-15"
-        :style="{
-          background: 'radial-gradient(circle, rgba(230, 69, 36, 0.4) 0%, transparent 70%)',
-          top: '-300px',
-          right: '-200px',
-          transform: `translate(${-mouseX * 0.01}px, ${mouseY * 0.01}px)`
-        }"
-      ></div>
-      <div
-        class="absolute w-[500px] h-[500px] rounded-full blur-[150px] opacity-10"
-        :style="{
-          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%)',
-          bottom: '-200px',
-          left: '-100px',
-          transform: `translate(${mouseX * 0.008}px, ${-mouseY * 0.008}px)`
-        }"
-      ></div>
+      <!-- Subtle animated mesh gradient blobs -->
+      <div class="absolute inset-0">
+        <!-- Primary rust blob - top right (subtle) -->
+        <div
+          class="absolute w-[500px] h-[500px] rounded-full animate-blob-slow-1"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(230, 69, 36, 0.2) 0%, rgba(230, 69, 36, 0.08) 40%, transparent 70%)',
+            filter: 'blur(80px)',
+            top: '-15%',
+            right: '-10%',
+            transform: `translate(${-mouseX * 0.015}px, ${mouseY * 0.015}px)`
+          }"
+        ></div>
+
+        <!-- Secondary cyan blob - bottom left (subtle) -->
+        <div
+          class="absolute w-[450px] h-[450px] rounded-full animate-blob-slow-2"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(6, 182, 212, 0.22) 0%, rgba(6, 182, 212, 0.08) 40%, transparent 70%)',
+            filter: 'blur(80px)',
+            bottom: '-10%',
+            left: '-8%',
+            transform: `translate(${mouseX * 0.012}px, ${-mouseY * 0.012}px)`
+          }"
+        ></div>
+
+        <!-- Tertiary violet blob - center right (very subtle) -->
+        <div
+          class="absolute w-[350px] h-[350px] rounded-full animate-blob-slow-3"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 40%, transparent 70%)',
+            filter: 'blur(100px)',
+            top: '40%',
+            right: '5%',
+            transform: `translate(${-mouseX * 0.01}px, ${mouseY * 0.01}px)`
+          }"
+        ></div>
+      </div>
+
+      <!-- Very subtle floating particles -->
+      <div class="absolute inset-0">
+        <div v-for="i in 10" :key="'particle-'+i"
+             class="absolute rounded-full animate-float-particle-subtle"
+             :style="{
+               width: `${1 + Math.random() * 2}px`,
+               height: `${1 + Math.random() * 2}px`,
+               background: ['rgba(230, 69, 36, 0.3)', 'rgba(6, 182, 212, 0.3)', 'rgba(139, 92, 246, 0.25)'][Math.floor(Math.random() * 3)],
+               left: `${Math.random() * 100}%`,
+               top: `${Math.random() * 100}%`,
+               animationDelay: `${Math.random() * 10}s`,
+               animationDuration: `${15 + Math.random() * 20}s`
+             }"
+        ></div>
+      </div>
+
+      <!-- Readability overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900/50 via-logic-navy-900/30 to-logic-navy-900/60"></div>
     </div>
 
     <!-- Navigation -->
@@ -664,5 +702,39 @@ code {
 :deep(.katex .mopen),
 :deep(.katex .mclose) {
   color: inherit;
+}
+
+/* Subtle blob animations - slower and more gentle for reading */
+@keyframes blob-slow-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.05); }
+  66% { transform: translate(-30px, 40px) scale(0.98); }
+}
+
+@keyframes blob-slow-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-35px, 25px) scale(1.03); }
+  66% { transform: translate(25px, -30px) scale(0.97); }
+}
+
+@keyframes blob-slow-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 35px) scale(1.04); }
+}
+
+.animate-blob-slow-1 { animation: blob-slow-1 30s ease-in-out infinite; }
+.animate-blob-slow-2 { animation: blob-slow-2 35s ease-in-out infinite; }
+.animate-blob-slow-3 { animation: blob-slow-3 28s ease-in-out infinite; }
+
+/* Subtle floating particles */
+@keyframes float-particle-subtle {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  15% { opacity: 0.8; }
+  85% { opacity: 0.8; }
+  100% { transform: translateY(-80vh) translateX(30px); opacity: 0; }
+}
+
+.animate-float-particle-subtle {
+  animation: float-particle-subtle 20s ease-in-out infinite;
 }
 </style>

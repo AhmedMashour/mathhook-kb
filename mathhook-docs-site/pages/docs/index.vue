@@ -1,16 +1,82 @@
 <template>
   <div class="min-h-screen bg-logic-navy-900 text-chalk overflow-hidden">
-    <!-- Animated Background -->
-    <div class="fixed inset-0 pointer-events-none">
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
-      <div
-        class="absolute w-[500px] h-[500px] bg-rust-core/5 rounded-full blur-[100px] transition-transform duration-1000"
-        :style="{ transform: `translate(${parallax.x * 0.02}px, ${parallax.y * 0.02}px)`, top: '10%', left: '-10%' }"
-      ></div>
-      <div
-        class="absolute w-[400px] h-[400px] bg-solve-cyan/5 rounded-full blur-[80px] transition-transform duration-1000"
-        :style="{ transform: `translate(${parallax.x * -0.02}px, ${parallax.y * -0.02}px)`, bottom: '10%', right: '-5%' }"
-      ></div>
+    <!-- Vibrant Animated Mesh Gradient Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+      <!-- Base dark layer -->
+      <div class="absolute inset-0 bg-logic-navy-900"></div>
+
+      <!-- Animated mesh gradient blobs -->
+      <div class="absolute inset-0">
+        <!-- Primary rust/orange blob - top left -->
+        <div
+          class="absolute w-[600px] h-[600px] rounded-full animate-blob-1"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(230, 69, 36, 0.35) 0%, rgba(230, 69, 36, 0.15) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            top: '-10%',
+            left: '-10%',
+            transform: `translate(${parallax.x * 0.03}px, ${parallax.y * 0.03}px)`
+          }"
+        ></div>
+
+        <!-- Secondary cyan blob - bottom right -->
+        <div
+          class="absolute w-[500px] h-[500px] rounded-full animate-blob-2"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(6, 182, 212, 0.4) 0%, rgba(6, 182, 212, 0.15) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            bottom: '-5%',
+            right: '-5%',
+            transform: `translate(${parallax.x * -0.025}px, ${parallax.y * -0.025}px)`
+          }"
+        ></div>
+
+        <!-- Tertiary purple blob - center right -->
+        <div
+          class="absolute w-[450px] h-[450px] rounded-full animate-blob-3"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%)',
+            filter: 'blur(80px)',
+            top: '40%',
+            right: '20%',
+            transform: `translate(${parallax.x * 0.02}px, ${parallax.y * -0.02}px)`
+          }"
+        ></div>
+
+        <!-- Accent green blob - bottom left -->
+        <div
+          class="absolute w-[350px] h-[350px] rounded-full animate-blob-4"
+          :style="{
+            background: 'radial-gradient(circle at center, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0.08) 40%, transparent 70%)',
+            filter: 'blur(60px)',
+            bottom: '20%',
+            left: '15%',
+            transform: `translate(${parallax.x * 0.02}px, ${parallax.y * 0.02}px)`
+          }"
+        ></div>
+      </div>
+
+      <!-- Floating particles -->
+      <div class="absolute inset-0">
+        <div v-for="i in 20" :key="'particle-'+i"
+             class="absolute rounded-full animate-float-particle"
+             :style="{
+               width: `${2 + Math.random() * 3}px`,
+               height: `${2 + Math.random() * 3}px`,
+               background: ['rgba(230, 69, 36, 0.5)', 'rgba(6, 182, 212, 0.5)', 'rgba(139, 92, 246, 0.4)', 'rgba(255, 255, 255, 0.3)'][Math.floor(Math.random() * 4)],
+               left: `${Math.random() * 100}%`,
+               top: `${Math.random() * 100}%`,
+               animationDelay: `${Math.random() * 8}s`,
+               animationDuration: `${10 + Math.random() * 15}s`
+             }"
+        ></div>
+      </div>
+
+      <!-- Subtle grid overlay -->
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+
+      <!-- Readability overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-logic-navy-900/40 via-transparent to-logic-navy-900/60"></div>
     </div>
 
     <!-- Navigation -->
@@ -373,5 +439,49 @@ useHead({
 </script>
 
 <style scoped>
-/* Ensure smooth transitions for all interactive elements */
+/* Blob animations - organic flowing movement */
+@keyframes blob-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, -40px) scale(1.1); }
+  50% { transform: translate(30px, 60px) scale(0.95); }
+  75% { transform: translate(-40px, 30px) scale(1.05); }
+}
+
+@keyframes blob-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-50px, 40px) scale(1.05); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
+  75% { transform: translate(20px, 50px) scale(0.95); }
+}
+
+@keyframes blob-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(40px, 50px) scale(1.08) rotate(8deg); }
+  66% { transform: translate(-30px, -40px) scale(0.92) rotate(-8deg); }
+}
+
+@keyframes blob-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-40px, -25px) scale(1.1); }
+  40% { transform: translate(35px, 40px) scale(0.92); }
+  60% { transform: translate(55px, -15px) scale(1.05); }
+  80% { transform: translate(-25px, 50px) scale(0.95); }
+}
+
+.animate-blob-1 { animation: blob-1 20s ease-in-out infinite; }
+.animate-blob-2 { animation: blob-2 25s ease-in-out infinite; }
+.animate-blob-3 { animation: blob-3 18s ease-in-out infinite; }
+.animate-blob-4 { animation: blob-4 22s ease-in-out infinite; }
+
+/* Floating particles animation */
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(40px); opacity: 0; }
+}
+
+.animate-float-particle {
+  animation: float-particle 15s ease-in-out infinite;
+}
 </style>
