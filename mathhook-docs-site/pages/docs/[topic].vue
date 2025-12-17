@@ -240,19 +240,19 @@
                 <!-- Language Tabs with Animation -->
                 <div class="bg-logic-navy-900/80 border-b border-logic-navy-700/50">
                   <div class="flex">
-                    <button @click="activeTab[idx] = 'python'"
-                            :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'python' ? 'text-solve-cyan bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
-                      <span class="flex items-center justify-center gap-2">
-                        <span>🐍</span><span>Python</span>
-                      </span>
-                      <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'python' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
-                    </button>
                     <button @click="activeTab[idx] = 'rust'"
                             :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'rust' ? 'text-rust-core bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
                       <span class="flex items-center justify-center gap-2">
                         <span>🦀</span><span>Rust</span>
                       </span>
                       <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'rust' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
+                    </button>
+                    <button @click="activeTab[idx] = 'python'"
+                            :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'python' ? 'text-solve-cyan bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
+                      <span class="flex items-center justify-center gap-2">
+                        <span>🐍</span><span>Python</span>
+                      </span>
+                      <div :class="['absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-rust-core to-solve-cyan transition-all duration-300', activeTab[idx] === 'python' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0']"></div>
                     </button>
                     <button @click="activeTab[idx] = 'nodejs'"
                             :class="['flex-1 px-4 py-2.5 font-medium text-sm transition-all duration-300 relative', activeTab[idx] === 'nodejs' ? 'text-step-green bg-logic-navy-800' : 'text-chalk-500 hover:text-chalk hover:bg-logic-navy-800/50']">
@@ -266,7 +266,7 @@
 
                 <!-- Code Content with Copy Button -->
                 <div class="relative group/code">
-                  <button @click="copyCode(getCode(example, activeTab[idx] || 'python'), idx)"
+                  <button @click="copyCode(getCode(example, activeTab[idx] || 'rust'), idx)"
                           class="absolute top-3 right-3 px-3 py-1.5 bg-logic-navy-700/80 hover:bg-logic-navy-600 text-chalk-400 text-xs font-medium rounded-lg opacity-0 group-hover/code:opacity-100 transition-all duration-300 z-10 flex items-center gap-1.5 backdrop-blur-sm">
                     <span v-if="!copied[idx]">📋 Copy</span>
                     <span v-else class="text-step-green">✓ Copied!</span>
@@ -469,7 +469,7 @@ const showBackToTop = ref(false)
 watch(schema, (newSchema) => {
   if (newSchema?.examples) {
     newSchema.examples.forEach((_: CodeExample, idx: number) => {
-      activeTab.value[idx] = 'python'
+      activeTab.value[idx] = 'rust'
       copied.value[idx] = false
     })
   }
