@@ -12,14 +12,14 @@ export const useHomeData = () => {
 
   // Features data
   const features = [
-    { title: 'Symbolic Mathematics', description: 'Expressions, algebra, calculus, and matrix operations', icon: '∫', color: 'rust-core' },
-    { title: 'Multiple Input Formats', description: 'Parse LaTeX, Wolfram Language, and standard notation', icon: '📝', color: 'solve-cyan' },
-    { title: 'Equation Solving', description: 'Linear, quadratic, polynomial, and systems of equations', icon: '⚖️', color: 'amber-400' },
-    { title: 'Educational Focus', description: 'Step-by-step explanations for all operations', icon: '🎓', color: 'step-green' },
+    { title: 'Step-by-Step Learning', description: 'Educational explanations showing every rule applied', icon: '🎓', color: 'step-green' },
+    { title: 'Symbolic Calculus', description: 'Derivatives, integrals, limits with product/chain rules', icon: '∫', color: 'rust-core' },
+    { title: 'PDEs & ODEs', description: 'Heat, wave, Laplace equations with Fourier series', icon: '∂', color: 'solve-cyan' },
+    { title: 'Multiple Input Formats', description: 'Parse LaTeX, Wolfram Language, and standard notation', icon: '📝', color: 'amber-400' },
+    { title: 'Equation Solving', description: 'Linear, quadratic, polynomial, and systems of equations', icon: '⚖️', color: 'violet-400' },
     { title: 'High Performance', description: 'Rust-based core with SIMD optimizations', icon: '⚡', color: 'rust-core' },
-    { title: 'Language Bindings', description: 'Native support for Python and Node.js', icon: '🔗', color: 'violet-400' },
-    { title: 'Memory Efficient', description: '32-byte expressions for optimal cache performance', icon: '💾', color: 'solve-cyan' },
-    { title: 'Production Ready', description: 'Zero-copy parsing, arena allocation, thread-safe', icon: '🚀', color: 'step-green' }
+    { title: 'Language Bindings', description: 'Native support for Python and Node.js', icon: '🔗', color: 'solve-cyan' },
+    { title: 'Production Ready', description: 'Zero-copy parsing, 32B expressions, thread-safe', icon: '🚀', color: 'step-green' }
   ]
 
   // Benchmarks data

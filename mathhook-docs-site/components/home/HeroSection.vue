@@ -138,45 +138,45 @@
             </div>
 
             <!-- Code Content -->
-            <div class="p-6 text-left font-mono text-sm leading-relaxed min-h-[240px]">
+            <div class="p-6 text-left font-mono text-sm leading-relaxed min-h-[280px]">
               <Transition name="code-fade" mode="out-in">
                 <!-- Rust -->
                 <div v-if="activeLanguage === 'rust'" key="rust">
                   <div><span class="text-rust-core">use</span> <span class="text-solve-cyan">mathhook_core</span>::prelude::*;</div>
-                  <div class="mt-4 text-chalk-600">// Create expressions using ergonomic macros</div>
-                  <div><span class="text-rust-core">let</span> x = <span class="text-solve-cyan">symbol!</span>(x);</div>
-                  <div><span class="text-rust-core">let</span> expr = <span class="text-solve-cyan">expr!</span>((x ^ <span class="text-step-green">2</span>) + (<span class="text-step-green">2</span> * x) + <span class="text-step-green">1</span>);</div>
-                  <div class="mt-4 text-chalk-600">// Simplify and solve</div>
-                  <div><span class="text-rust-core">let</span> simplified = expr.<span class="text-solve-cyan">simplify</span>();</div>
-                  <div><span class="text-rust-core">let</span> solutions = solver.<span class="text-solve-cyan">solve</span>(&equation, &x);</div>
-                  <div class="mt-4 text-chalk-600">// Parse LaTeX: \frac{'{'}x{'}'}{'{'}2{'}'} + y²</div>
-                  <div><span class="text-rust-core">let</span> parsed = parser.<span class="text-solve-cyan">parse</span>(r<span class="text-amber-400">"\frac{'{'}x{'}'}{'{'}2{'}'}"</span>);</div>
+                  <div class="mt-3 text-chalk-600">// 🎓 Step-by-step derivative of eˣ·sin(x)</div>
+                  <div><span class="text-rust-core">let</span> expr = <span class="text-solve-cyan">parse!</span>(<span class="text-amber-400">"exp(x) * sin(x)"</span>);</div>
+                  <div><span class="text-rust-core">let</span> steps = expr.<span class="text-solve-cyan">derivative_with_steps</span>(<span class="text-amber-400">"x"</span>);</div>
+                  <div class="mt-3 text-chalk-600">// ✨ 7 educational steps:</div>
+                  <div class="text-step-green">// 1. Identify Product  →  2. State Product Rule</div>
+                  <div class="text-step-green">// 3. d/dx[eˣ] = eˣ    →  4. d/dx[sin(x)] = cos(x)</div>
+                  <div class="text-step-green">// 5. Result: cos(x)·eˣ + eˣ·sin(x)</div>
+                  <div><span class="text-rust-core">for</span> step <span class="text-rust-core">in</span> &steps { <span class="text-rust-core">println!</span>(<span class="text-amber-400">"{}"</span>, step); }</div>
                 </div>
 
                 <!-- Python -->
                 <div v-else-if="activeLanguage === 'python'" key="python">
-                  <div><span class="text-rust-core">from</span> <span class="text-solve-cyan">mathhook</span> <span class="text-rust-core">import</span> Expression, MathSolver</div>
-                  <div class="mt-4 text-chalk-600"># Create expressions</div>
-                  <div>x = Expression.<span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>)</div>
-                  <div>expr = x.<span class="text-solve-cyan">pow</span>(<span class="text-step-green">2</span>).<span class="text-solve-cyan">add</span>(x.<span class="text-solve-cyan">multiply</span>(<span class="text-step-green">2</span>)).<span class="text-solve-cyan">add</span>(<span class="text-step-green">1</span>)</div>
-                  <div class="mt-4 text-chalk-600"># Simplify and solve equations</div>
-                  <div>simplified = expr.<span class="text-solve-cyan">simplify</span>()</div>
-                  <div>solutions = solver.<span class="text-solve-cyan">solve</span>(equation, <span class="text-amber-400">'x'</span>)</div>
-                  <div class="mt-4 text-chalk-600"># Parse LaTeX and get LaTeX output</div>
-                  <div>parsed = Expression.<span class="text-solve-cyan">parse</span>(r<span class="text-amber-400">"\frac{'{'}x{'}'}{'{'}2{'}'}"</span>)</div>
+                  <div><span class="text-rust-core">from</span> <span class="text-solve-cyan">mathhook</span> <span class="text-rust-core">import</span> parse</div>
+                  <div class="mt-3 text-chalk-600"># 🎓 Step-by-step derivative of eˣ·sin(x)</div>
+                  <div>expr = <span class="text-solve-cyan">parse</span>(<span class="text-amber-400">"exp(x) * sin(x)"</span>)</div>
+                  <div>steps = expr.<span class="text-solve-cyan">derivative_with_steps</span>(<span class="text-amber-400">"x"</span>)</div>
+                  <div class="mt-3 text-chalk-600"># ✨ 7 educational steps:</div>
+                  <div class="text-step-green"># 1. Identify Product  →  2. State Product Rule</div>
+                  <div class="text-step-green"># 3. d/dx[eˣ] = eˣ    →  4. d/dx[sin(x)] = cos(x)</div>
+                  <div class="text-step-green"># 5. Result: cos(x)·eˣ + eˣ·sin(x)</div>
+                  <div><span class="text-rust-core">for</span> step <span class="text-rust-core">in</span> steps.steps: <span class="text-rust-core">print</span>(step.description)</div>
                 </div>
 
                 <!-- JavaScript -->
                 <div v-else key="javascript">
-                  <div><span class="text-rust-core">import</span> { JsExpression, JsMathSolver } <span class="text-rust-core">from</span> <span class="text-amber-400">'mathhook-node'</span>;</div>
-                  <div class="mt-4 text-chalk-600">// Create expressions</div>
-                  <div><span class="text-rust-core">const</span> x = JsExpression.<span class="text-solve-cyan">symbol</span>(<span class="text-amber-400">'x'</span>);</div>
-                  <div><span class="text-rust-core">const</span> expr = x.<span class="text-solve-cyan">pow</span>(<span class="text-step-green">2</span>).<span class="text-solve-cyan">add</span>(x.<span class="text-solve-cyan">multiply</span>(<span class="text-step-green">2</span>)).<span class="text-solve-cyan">add</span>(<span class="text-step-green">1</span>);</div>
-                  <div class="mt-4 text-chalk-600">// Simplify and solve equations</div>
-                  <div><span class="text-rust-core">const</span> simplified = expr.<span class="text-solve-cyan">simplify</span>();</div>
-                  <div><span class="text-rust-core">const</span> solutions = solver.<span class="text-solve-cyan">solve</span>(equation, <span class="text-amber-400">'x'</span>);</div>
-                  <div class="mt-4 text-chalk-600">// Parse LaTeX</div>
-                  <div><span class="text-rust-core">const</span> parsed = JsExpression.<span class="text-solve-cyan">parse</span>(String.raw<span class="text-amber-400">`\frac{'{'}x{'}'}{'{'}2{'}'}`</span>);</div>
+                  <div><span class="text-rust-core">import</span> { parse } <span class="text-rust-core">from</span> <span class="text-amber-400">'mathhook-node'</span>;</div>
+                  <div class="mt-3 text-chalk-600">// 🎓 Step-by-step derivative of eˣ·sin(x)</div>
+                  <div><span class="text-rust-core">const</span> expr = <span class="text-solve-cyan">parse</span>(<span class="text-amber-400">"exp(x) * sin(x)"</span>);</div>
+                  <div><span class="text-rust-core">const</span> steps = expr.<span class="text-solve-cyan">derivativeWithSteps</span>(<span class="text-amber-400">"x"</span>);</div>
+                  <div class="mt-3 text-chalk-600">// ✨ 7 educational steps:</div>
+                  <div class="text-step-green">// 1. Identify Product  →  2. State Product Rule</div>
+                  <div class="text-step-green">// 3. d/dx[eˣ] = eˣ    →  4. d/dx[sin(x)] = cos(x)</div>
+                  <div class="text-step-green">// 5. Result: cos(x)·eˣ + eˣ·sin(x)</div>
+                  <div>steps.steps.<span class="text-solve-cyan">forEach</span>(s => console.<span class="text-solve-cyan">log</span>(s.description));</div>
                 </div>
               </Transition>
             </div>
